@@ -1,0 +1,131 @@
+version: 1
+
+audit:
+  allowed_scopes:
+    - REQUIREMENTS
+    - ARCHITECTURE
+    - IMPLEMENTATION
+    - UNIT_TEST
+    - INTEGRATION_TEST
+    - FULL
+
+  allow_unresolved_blocking_issue: false
+
+criteria:
+  directory: ".github/skills/quality-review/criteria"
+  pattern: "*.criterion.md"
+  load_all: true
+
+  allowed_results:
+    - PASS
+    - NOT_APPLICABLE
+    - FAIL
+
+  require_all_applicable_pass: true
+  require_reason_when_not_applicable: true
+
+quality:
+  requirements:
+    require_internal_consistency: true
+    require_testable_behavior: true
+    allow_unresolved_material_ambiguity: false
+    allow_scope_conflict: false
+
+  architecture:
+    require_requirement_alignment: true
+    require_accepted_adr_alignment: true
+    allow_unjustified_complexity: false
+    allow_implicit_important_decision: false
+
+  implementation:
+    require_requirement_alignment: true
+    require_accepted_adr_alignment: true
+    allow_scope_expansion: false
+    allow_unjustified_complexity: false
+    require_testability: true
+
+  unit_test:
+    require_requirement_based_expected_result: true
+    allow_code_derived_expected_result: false
+    require_meaningful_assertion: true
+    allow_material_behavior_gap: false
+
+  integration_test:
+    require_requirement_based_expected_result: true
+    allow_code_derived_expected_result: false
+    allow_material_behavior_gap: false
+
+    external_case:
+      immutable: true
+
+    ai_initial:
+      must_be_independent_from_external_case: true
+
+    gap_fill:
+      must_remain_distinguishable_from_initial: true
+
+cross_phase:
+  require_semantic_consistency: true
+  allow_behavior_contradiction: false
+
+scope:
+  allow_scope_expansion: false
+
+complexity:
+  allow_unjustified_complexity: false
+  prefer_simplest_sufficient_solution: true
+
+severity:
+  allowed:
+    - CRITICAL
+    - HIGH
+    - MEDIUM
+    - LOW
+
+  blocking:
+    - CRITICAL
+    - HIGH
+    - MEDIUM
+
+  advisory:
+    - LOW
+
+issues:
+  allow_unresolved_blocking_issue: false
+
+  classifications:
+    - REQUIREMENT_QUALITY_ISSUE
+    - ARCHITECTURE_QUALITY_ISSUE
+    - IMPLEMENTATION_QUALITY_ISSUE
+    - UNIT_TEST_QUALITY_ISSUE
+    - INTEGRATION_TEST_QUALITY_ISSUE
+    - CROSS_PHASE_CONSISTENCY_ISSUE
+    - UNNECESSARY_COMPLEXITY
+    - SCOPE_EXPANSION
+    - EXPECTED_BEHAVIOR_MISMATCH
+    - INSUFFICIENT_TEST_ASSERTION
+    - MISSING_BEHAVIOR_COVERAGE
+
+routing:
+  REQUIREMENT_QUALITY_ISSUE: REQUIREMENTS
+  ARCHITECTURE_QUALITY_ISSUE: ARCHITECTURE
+  IMPLEMENTATION_QUALITY_ISSUE: IMPLEMENTATION
+  UNIT_TEST_QUALITY_ISSUE: UNIT_TEST
+  INTEGRATION_TEST_QUALITY_ISSUE: INTEGRATION_TEST
+
+  # Root CauseによってRouteが異なるため
+  # Agentが最上流原因を指定する
+  CROSS_PHASE_CONSISTENCY_ISSUE: ROOT_CAUSE
+
+  UNNECESSARY_COMPLEXITY: ROOT_CAUSE
+  SCOPE_EXPANSION: ROOT_CAUSE
+  EXPECTED_BEHAVIOR_MISMATCH: ROOT_CAUSE
+  INSUFFICIENT_TEST_ASSERTION: UNIT_TEST
+  MISSING_BEHAVIOR_COVERAGE: ROOT_CAUSE
+
+reports:
+  directory: "reports/quality-review"
+
+  required:
+    - quality-review-report.json
+    - quality-review-report.md

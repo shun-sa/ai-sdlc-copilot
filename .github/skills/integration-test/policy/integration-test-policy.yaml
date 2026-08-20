@@ -1,0 +1,334 @@
+version: 1
+
+# ============================================================
+# Test Result
+# ============================================================
+
+test_result:
+  required_pass_rate: 100
+  allowed_failures: 0
+  allowed_errors: 0
+
+# ============================================================
+# Test Case Origin
+# ============================================================
+
+case_origin:
+  allowed:
+    - AI_GENERATED
+    - EXTERNAL
+
+  ai_generation_stage:
+    allowed:
+      - INITIAL
+      - GAP_FILL
+
+  require_origin_for_all_cases: true
+
+# ============================================================
+# AI Generated Cases
+# ============================================================
+
+ai_generated_cases:
+  initial_generation_required: true
+
+  # AIが最初に生成したケースを実験結果として固定する
+  freeze_initial_cases_after_generation: true
+
+  # Coverage Gap確認後の不足補完を許可する
+  gap_fill_enabled: true
+
+  # GAP_FILLをINITIALとして扱うことを禁止
+  allow_gap_fill_as_initial: false
+
+# ============================================================
+# External Test Cases
+# ============================================================
+
+external_cases:
+  optional: true
+
+  missing_input:
+    require_user_decision: true
+    allow_continue_without_external_cases_after_confirmation: true
+    allow_implicit_no_external_cases: false
+
+  # 外部ケースは評価用データとして保護する
+  immutable: true
+
+  allow_change_case_id: false
+  allow_change_title_meaning: false
+  allow_change_input_meaning: false
+  allow_change_steps_meaning: false
+  allow_change_expected_result: false
+
+  allow_delete: false
+  allow_silent_skip: false
+
+  require_origin_external: true
+
+  # 外部ケースが存在する場合は全件を結果に含める
+  require_all_cases_accounted_for: true
+
+# ============================================================
+# Coverage
+# ============================================================
+
+coverage:
+  enabled: true
+
+  # AI INITIAL / Externalは研究評価値。
+  # PASS/FAILの閾値には使用しない。
+  initial_metrics:
+    ai_initial_coverage_required_for_measurement: true
+    external_coverage_required_when_provided: true
+    combined_initial_coverage_required_for_measurement: true
+
+    minimum_ai_initial_coverage_rate: null
+    minimum_external_coverage_rate: null
+    minimum_combined_initial_coverage_rate: null
+
+  comparison:
+    enabled: true
+
+    classifications:
+      - COMMON
+      - AI_ONLY
+      - EXTERNAL_ONLY
+      - MISSING
+
+  # MISSINGは必ず記録する
+  gap_analysis:
+    required: true
+    require_all_missing_items_reported: true
+
+  # 品質保証としてはGAP_FILL後100%を要求
+  final:
+    required_coverage_rate: 100
+    allow_missing: false
+
+  gap_fill:
+    required_when_missing: true
+
+# ============================================================
+# Test Criteria
+# ============================================================
+
+criteria:
+  directory: ".github/skills/integration-test/criteria"
+  pattern: "*.criterion.md"
+
+  # 存在するCriterionを全て評価対象とする
+  load_all: true
+
+  require_result_for_all_criteria: true
+
+  allowed_results:
+    - PASS
+    - NOT_APPLICABLE
+    - FAIL
+
+  require_reason_when_not_applicable: true
+
+# ============================================================
+# Integration Test Environment
+# ============================================================
+
+environment:
+  reproducible: true
+  disposable_when_possible: true
+
+  production_environment_allowed: false
+
+  require_test_environment_identification: true
+
+# ============================================================
+# Database
+# ============================================================
+
+database:
+  production_database_allowed: false
+  shared_database_allowed: false
+
+  disposable_database_required: true
+  isolated_test_data_required: true
+
+  production_credentials_allowed: false
+  production_data_allowed: false
+
+  schema_reproducible: true
+
+# ============================================================
+# External Services
+# ============================================================
+
+external_services:
+  production_service_allowed: false
+
+  strategy:
+    prefer:
+      - LOCAL_CONTAINER
+      - TEST_INSTANCE
+      - STUB
+      - MOCK
+
+  # 実際の外部サービス連携そのものが
+  # 結合試験対象である場合は専用テスト環境を使用する
+  dedicated_test_environment_allowed: true
+
+# ============================================================
+# Test Automation
+# ============================================================
+
+automation:
+  execute_all_automatable_cases: true
+
+  allowed_automation_blocked: 0
+
+  require_reason_when_blocked: true
+
+  allow_delete_blocked_case: false
+  allow_hide_blocked_case: false
+
+# ============================================================
+# External Test Specification Conflict
+# ============================================================
+
+test_spec_conflict:
+  allowed_unresolved: 0
+
+  require_report: true
+
+  allow_modify_external_case_to_resolve: false
+
+# ============================================================
+# Error Classification
+# ============================================================
+
+error_classification:
+  allowed:
+    - TEST_ERROR
+    - IMPLEMENTATION_ERROR
+    - ADR_REQUIRED
+    - REQUIREMENT_ERROR
+    - ENVIRONMENT_ERROR
+    - TEST_SPEC_CONFLICT
+    - AUTOMATION_BLOCKED
+
+  require_classification_for_all_failures: true
+
+  allow_unknown_error: false
+
+# ============================================================
+# Defect
+# ============================================================
+
+defects:
+  unresolved_allowed: false
+
+  aggregate_same_root_cause: true
+
+  distinguish_case_failure_and_unique_defect: true
+
+  detection_source_classification:
+    enabled: true
+
+    allowed:
+      - COMMON_DEFECT
+      - AI_ONLY_DEFECT
+      - EXTERNAL_ONLY_DEFECT
+
+  require_root_cause: true
+
+  # 特定可能な場合は必ずエラー箇所を記録する
+  require_error_location_when_identifiable: true
+
+# ============================================================
+# Regression / Re-execution
+# ============================================================
+
+regression:
+  required_after_defect: true
+
+  rerun_failed_case: true
+  rerun_related_cases: true
+  rerun_full_suite: true
+
+  full_suite_must_pass_after_fix: true
+
+# ============================================================
+# Flaky Test
+# ============================================================
+
+flaky_test:
+  allowed: false
+
+  repeat_count_when_suspected: 3
+
+  unresolved_flaky_test_allowed: false
+
+# ============================================================
+# Failure Handling
+# ============================================================
+
+failure_handling:
+  unresolved_error_allowed: false
+
+  allow_next_phase_with_failure: false
+  allow_next_phase_with_error: false
+
+  allow_next_phase_with_implementation_error: false
+  allow_next_phase_with_adr_required: false
+  allow_next_phase_with_requirement_error: false
+  allow_next_phase_with_environment_error: false
+  allow_next_phase_with_test_spec_conflict: false
+  allow_next_phase_with_automation_blocked: false
+
+# ============================================================
+# Traceability
+# ============================================================
+
+traceability:
+  enabled: true
+
+  require_requirement_id: true
+
+  require_related_adr_when_applicable: true
+
+  require_case_id: true
+  require_case_origin: true
+
+  require_integration_point: true
+
+  require_result: true
+
+# ============================================================
+# Reports
+# ============================================================
+
+reports:
+  directory: "reports/integration-test"
+
+  required:
+    - integration-test-plan.json
+    - case-comparison.json
+    - coverage-gap-report.json
+    - integration-test-evidence.json
+    - error-report.json
+    - error-report.md
+    - integration-test-report.json
+    - integration-test-report.md
+    - junit.xml
+
+  require_ai_external_separation: true
+
+  require_generation_stage_separation: true
+
+  require_error_cause_summary: true
+  require_error_count: true
+  require_error_location: true
+
+  require_coverage_comparison: true
+  require_missing_case_report: true
+
+  require_defect_detection_comparison: true

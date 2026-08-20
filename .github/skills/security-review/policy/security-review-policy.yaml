@@ -1,0 +1,127 @@
+version: 1
+
+audit:
+  allowed_scopes:
+    - REQUIREMENTS
+    - ARCHITECTURE
+    - IMPLEMENTATION
+    - UNIT_TEST
+    - INTEGRATION_TEST
+    - FULL
+
+  allow_unresolved_blocking_issue: false
+
+criteria:
+  directory: ".github/skills/security-review/criteria"
+  pattern: "*.criterion.md"
+  load_all: true
+
+  allowed_results:
+    - PASS
+    - NOT_APPLICABLE
+    - FAIL
+
+  require_all_applicable_pass: true
+  require_reason_when_not_applicable: true
+
+security:
+  authentication:
+    require_when_applicable: true
+    allow_authentication_bypass: false
+
+  authorization:
+    require_when_applicable: true
+    require_deny_behavior: true
+    allow_client_only_authorization: false
+
+  secrets:
+    allow_hardcoded_secret: false
+    allow_repository_credential: false
+    allow_production_credential_in_test: false
+    allow_secret_in_log: false
+    allow_secret_in_error_response: false
+
+  input_validation:
+    require_at_trust_boundary: true
+    allow_client_only_security_validation: false
+
+  injection:
+    allow_material_injection_risk: false
+
+  data_protection:
+    allow_unnecessary_sensitive_data_exposure: false
+    allow_sensitive_data_in_log: false
+    allow_production_sensitive_data_in_test: false
+
+  error_logging:
+    allow_internal_detail_external_exposure: false
+    allow_secret_logging: false
+
+  dependency_configuration:
+    allow_production_security_bypass: false
+    allow_debug_security_bypass: false
+
+  test:
+    require_applicable_security_behavior_test: true
+    allow_material_security_test_gap: false
+    require_requirement_based_expected_result: true
+    allow_code_derived_expected_result: false
+
+cross_phase:
+  require_security_consistency: true
+  allow_security_behavior_contradiction: false
+
+severity:
+  allowed:
+    - CRITICAL
+    - HIGH
+    - MEDIUM
+    - LOW
+
+  blocking:
+    - CRITICAL
+    - HIGH
+    - MEDIUM
+
+  advisory:
+    - LOW
+
+issues:
+  allow_unresolved_blocking_issue: false
+
+  classifications:
+    - SECURITY_REQUIREMENT_ISSUE
+    - AUTHENTICATION_ISSUE
+    - AUTHORIZATION_ISSUE
+    - SECRET_MANAGEMENT_ISSUE
+    - INPUT_VALIDATION_ISSUE
+    - INJECTION_RISK
+    - DATA_PROTECTION_ISSUE
+    - SENSITIVE_DATA_EXPOSURE
+    - ERROR_LOGGING_SECURITY_ISSUE
+    - DEPENDENCY_CONFIGURATION_ISSUE
+    - SECURITY_TEST_GAP
+    - CROSS_PHASE_SECURITY_CONSISTENCY_ISSUE
+
+routing:
+  SECURITY_REQUIREMENT_ISSUE: REQUIREMENTS
+
+  AUTHENTICATION_ISSUE: ROOT_CAUSE
+  AUTHORIZATION_ISSUE: ROOT_CAUSE
+  SECRET_MANAGEMENT_ISSUE: ROOT_CAUSE
+  INPUT_VALIDATION_ISSUE: ROOT_CAUSE
+  INJECTION_RISK: ROOT_CAUSE
+  DATA_PROTECTION_ISSUE: ROOT_CAUSE
+  SENSITIVE_DATA_EXPOSURE: ROOT_CAUSE
+  ERROR_LOGGING_SECURITY_ISSUE: ROOT_CAUSE
+  DEPENDENCY_CONFIGURATION_ISSUE: ROOT_CAUSE
+
+  SECURITY_TEST_GAP: ROOT_CAUSE
+  CROSS_PHASE_SECURITY_CONSISTENCY_ISSUE: ROOT_CAUSE
+
+reports:
+  directory: "reports/security-review"
+
+  required:
+    - security-review-report.json
+    - security-review-report.md

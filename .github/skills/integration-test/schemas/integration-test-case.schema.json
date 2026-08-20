@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/integration-test-case.schema.json",
+  "title": "Integration Test Case",
+  "description": "AI生成ケースと外部持込ケースで共通利用する結合試験ケースのCanonical Schema。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "origin",
+    "title",
+    "requirement_id",
+    "test_category",
+    "criterion",
+    "steps",
+    "expected_result",
+    "execution_type"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "AI_GENERATED",
+        "EXTERNAL"
+      ]
+    },
+    "generation_stage": {
+      "type": "string",
+      "enum": [
+        "INITIAL",
+        "GAP_FILL"
+      ]
+    },
+    "source_case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_file": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requirement_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "対応するRequirement ID。複数の場合はカンマ区切りで保持してよい。"
+    },
+    "related_adr": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "test_category": {
+      "type": "string",
+      "minLength": 1,
+      "description": "API、DATABASE等。カテゴリ追加を容易にするためSchemaではenum固定しない。"
+    },
+    "criterion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "criteria/*.criterion.md のファイル名から .criterion.md を除いた値。"
+    },
+    "precondition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "input": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "steps": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_result": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution_type": {
+      "type": "string",
+      "enum": [
+        "AUTOMATABLE",
+        "NOT_AUTOMATABLE"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "coverage_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Required Coverageとの意味的マッピング後に付与する。Normalize時点ではnull可。"
+    },
+    "coverage_keys": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "const": "AI_GENERATED"
+          }
+        },
+        "required": [
+          "origin"
+        ]
+      },
+      "then": {
+        "required": [
+          "generation_stage"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "source_case_id"
+              ]
+            },
+            {
+              "required": [
+                "source_file"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "const": "EXTERNAL"
+          }
+        },
+        "required": [
+          "origin"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_case_id",
+          "source_file"
+        ],
+        "not": {
+          "required": [
+            "generation_stage"
+          ]
+        }
+      }
+    }
+  ]
+}

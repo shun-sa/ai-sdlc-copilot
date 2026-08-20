@@ -1,0 +1,114 @@
+version: 1
+
+audit:
+  require_forward_traceability: true
+  require_reverse_traceability: true
+  allow_unresolved_blocking_issue: false
+
+requirements:
+  allow_invented_requirement_id: false
+  require_existing_reference: true
+
+global_requirements:
+  allow_source_reference_without_id: true
+  allow_generated_id: false
+
+adr:
+  downstream_status:
+    - Accepted
+
+  require_related_requirements: true
+  allow_invalid_requirement_reference: false
+  allow_superseded_as_current_decision: false
+
+  orphan_accepted_adr_allowed: false
+
+implementation:
+  require_mapping_for_implementation_responsible_requirement: true
+  allow_missing_mapping: false
+
+unit_test:
+  require_mapping_for_unit_testable_requirement: true
+  allow_missing_mapping: false
+
+  allow_not_applicable: true
+  require_reason_when_not_applicable: true
+
+integration_test:
+  require_mapping_for_integration_testable_requirement: true
+  allow_missing_mapping: false
+
+  allow_not_applicable: true
+  require_reason_when_not_applicable: true
+
+  origins:
+    - AI_GENERATED
+    - EXTERNAL
+
+  require_valid_requirement_reference_for_all_cases: true
+
+coverage:
+  requirement_to_implementation:
+    required_rate: 100
+
+  requirement_to_unit_test:
+    required_rate: 100
+
+  requirement_to_integration_test:
+    required_rate: 100
+
+  # ADRはすべてのRequirementに必要ではないため
+  # 一律100%を要求しない
+  requirement_to_adr:
+    enforce_rate: false
+
+orphan_artifacts:
+  allow_orphan_test: false
+  allow_orphan_accepted_adr: false
+
+stale_evidence:
+  allowed: false
+
+conflicts:
+  allowed: false
+
+severity:
+  blocking:
+    - CRITICAL
+    - HIGH
+
+issue_classification:
+  allowed:
+    - INVALID_REQUIREMENT_REFERENCE
+    - INVALID_ADR_REFERENCE
+    - REQUIREMENT_ADR_TRACEABILITY_MISSING
+    - IMPLEMENTATION_TRACEABILITY_MISSING
+    - UNIT_TEST_TRACEABILITY_MISSING
+    - INTEGRATION_TEST_TRACEABILITY_MISSING
+    - ADR_IMPLEMENTATION_MISMATCH
+    - TEST_REQUIREMENT_MISMATCH
+    - ORPHAN_ADR
+    - ORPHAN_TEST
+    - STALE_EVIDENCE
+    - TRACEABILITY_CONFLICT
+
+routing:
+  INVALID_REQUIREMENT_REFERENCE: REQUIREMENTS
+  INVALID_ADR_REFERENCE: ARCHITECTURE
+  REQUIREMENT_ADR_TRACEABILITY_MISSING: ARCHITECTURE
+  IMPLEMENTATION_TRACEABILITY_MISSING: IMPLEMENTATION
+  UNIT_TEST_TRACEABILITY_MISSING: UNIT_TEST
+  INTEGRATION_TEST_TRACEABILITY_MISSING: INTEGRATION_TEST
+  ADR_IMPLEMENTATION_MISMATCH: IMPLEMENTATION
+  TEST_REQUIREMENT_MISMATCH: UNIT_TEST
+  ORPHAN_ADR: ARCHITECTURE
+  ORPHAN_TEST: UNIT_TEST
+  STALE_EVIDENCE: IMPLEMENTATION
+  TRACEABILITY_CONFLICT: REQUIREMENTS
+
+reports:
+  directory: "reports/traceability"
+
+  required:
+    - traceability-report.json
+    - traceability-report.md

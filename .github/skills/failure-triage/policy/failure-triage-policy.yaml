@@ -1,0 +1,142 @@
+version: 1
+
+invocation:
+  retry_threshold: 3
+
+  require_same_failure: true
+
+  direct_user_gate_failures:
+    - EXTERNAL_TEST_INPUT_REQUIRED
+    - TEST_SPEC_CONFLICT
+    - AUTOMATION_BLOCKED
+
+  allow_triage_below_threshold: false
+
+failure_signature:
+  fields:
+    - source_phase
+    - classification
+    - requirement_reference
+    - artifact
+    - error_location
+    - test_case
+    - stable_error_type
+
+  ignore_dynamic_values:
+    - timestamp
+    - request_id
+    - trace_id
+    - random_id
+    - temporary_file_name
+
+history:
+  require_failure_history: true
+  require_previous_routes: true
+  require_previous_changes: true
+  require_retry_results: true
+
+analysis:
+  require_expected_behavior: true
+  require_actual_behavior: true
+  require_previous_attempt_analysis: true
+  require_root_cause_evidence: true
+
+  root_cause_priority:
+    - REQUIREMENTS
+    - ARCHITECTURE
+    - IMPLEMENTATION
+    - UNIT_TEST
+    - INTEGRATION_TEST
+    - ENVIRONMENT
+
+classification:
+  allowed:
+    - REQUIREMENT_ERROR
+    - ADR_REQUIRED
+    - IMPLEMENTATION_ERROR
+    - TEST_ERROR
+    - ENVIRONMENT_ERROR
+    - CROSS_PHASE_CONFLICT
+    - UNKNOWN_ROOT_CAUSE
+
+routing:
+  REQUIREMENT_ERROR: REQUIREMENTS
+  ADR_REQUIRED: ARCHITECTURE
+  IMPLEMENTATION_ERROR: IMPLEMENTATION
+
+  # Test ErrorはFailure発生工程に応じて決定する
+  TEST_ERROR: ROOT_CAUSE
+
+  ENVIRONMENT_ERROR: SDLC_ORCHESTRATOR
+
+  CROSS_PHASE_CONFLICT: ROOT_CAUSE
+
+  UNKNOWN_ROOT_CAUSE: BLOCKED
+
+routes:
+  allowed:
+    - REQUIREMENTS
+    - ARCHITECTURE
+    - IMPLEMENTATION
+    - UNIT_TEST
+    - INTEGRATION_TEST
+    - SDLC_ORCHESTRATOR
+    - BLOCKED
+
+invalidation:
+  REQUIREMENTS:
+    - ARCHITECTURE
+    - IMPLEMENTATION
+    - UNIT_TEST
+    - INTEGRATION_TEST
+
+  ARCHITECTURE:
+    - IMPLEMENTATION
+    - UNIT_TEST
+    - INTEGRATION_TEST
+
+  IMPLEMENTATION:
+    - UNIT_TEST
+    - INTEGRATION_TEST
+
+  UNIT_TEST:
+    - UNIT_TEST
+
+  INTEGRATION_TEST:
+    - INTEGRATION_TEST
+
+  SDLC_ORCHESTRATOR: []
+
+  BLOCKED: []
+
+modification:
+  allow_requirement_change: false
+  allow_adr_change: false
+  allow_production_code_change: false
+  allow_test_code_change: false
+  allow_environment_change: false
+  allow_external_test_case_change: false
+
+agent_invocation:
+  allow_direct_subagent_invocation: false
+
+evidence:
+  require_failure_history: true
+  require_source_artifact: true
+  require_expected_behavior: true
+  require_actual_behavior: true
+  require_previous_attempts: true
+  require_root_cause_reason: true
+
+result:
+  allowed_status:
+    - TRIAGED
+    - BLOCKED
+    - INVALID_INVOCATION
+
+reports:
+  directory: "reports/failure-triage"
+
+  required:
+    - failure-triage-report.json
+    - failure-triage-report.md

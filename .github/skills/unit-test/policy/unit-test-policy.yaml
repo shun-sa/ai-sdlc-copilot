@@ -1,0 +1,58 @@
+version: 1
+
+test_result:
+  required_pass_rate: 100
+  allowed_failures: 0
+  allowed_errors: 0
+
+skipped_tests:
+  allowed: 0
+  allowlist: []
+
+coverage:
+  enabled: true
+
+  thresholds:
+    statements: 80
+    branches: 80
+    functions: 80
+    lines: 80
+
+  fail_when_below_threshold: true
+
+requirement_coverage:
+  enabled: true
+  require_all_unit_testable_requirements: true
+
+database:
+  production_database_allowed: false
+  shared_test_database_allowed: false
+
+  service_and_domain:
+    strategy: mock
+
+  repository_and_dao:
+    strategy: container
+
+  container:
+    disposable: true
+    isolated_state: true
+
+regression:
+  required_after_defect: true
+  rerun_failed_test: true
+  rerun_related_tests: true
+  rerun_full_suite: true
+
+flaky_test:
+  allowed: false
+  repeat_count_when_suspected: 3
+
+failure_handling:
+  unresolved_error_allowed: false
+  allow_next_phase_with_failure: false
+
+criteria:
+  directory: ".github/skills/unit-test/criteria"
+  pattern: "*.criterion.md"
+  load_all: true
