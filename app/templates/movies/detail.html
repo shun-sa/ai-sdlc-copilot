@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ detail.movie.title }}{% endblock %}
+{% block content %}
+{% set movie = detail.movie %}
+<h1>{{ movie.title }}</h1>
+<p class="muted">{{ movie.genre }} / 公開日 {{ movie.release_date | jdate }}
+  {% if movie.runtime_minutes %}/ {{ movie.runtime_minutes }}分{% endif %}</p>
+<p>{{ movie.synopsis }}</p>
+
+<h2>関連商品</h2>
+{% if detail.products %}
+  {% for product in detail.products %}
+    <div class="card">
+      <a href="/products/{{ product.id }}">{{ product.name }}</a>
+      <span>{{ product.price_tax_included | yen }}</span>
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="muted">関連商品はありません。</p>
+{% endif %}
+
+<h2>上映スケジュール</h2>
+{% if detail.screenings %}
+  <table>
+    <tr><th>上映日時</th><th>劇場</th><th>スクリーン</th><th>残席</th><th></th></tr>
+    {% for sv in detail.screenings %}
+      {% set s = sv.screening %}
+      <tr>
+        <td>{{ s.starts_at | jdatetime }}</td>
+        <td>{{ s.theater_name }}</td>
+        <td>{{ s.screen_name }}</td>
+        <td>{{ s.seats_remaining }}</td>
+        <td>
+          {# FR-004制約: 上映終了回(is_saleable=False)は購入導線を表示しない #}
+          {% if not sv.is_saleable %}
+            <span class="muted">販売終了</span>
+          {% elif s.seats_remaining > 0 %}
+            {% if user %}
+              <a class="btn" href="/tickets/screenings/{{ s.id }}">購入</a>
+            {% else %}
+              <a href="/login">ログインして購入</a>
+            {% endif %}
+          {% else %}
+            <span class="muted">満席</span>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p class="muted">上映予定はありません。</p>
+{% endif %}
+{% endblock %}

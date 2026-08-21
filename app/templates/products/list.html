@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}商品一覧{% endblock %}
+{% block content %}
+<h1>商品一覧</h1>
+<form method="get" action="/products">
+  <input type="text" name="keyword" placeholder="商品名" maxlength="200" value="{{ query.keyword or '' }}">
+  <input type="text" name="category" placeholder="カテゴリ" maxlength="50" value="{{ query.category or '' }}">
+  <label><input type="checkbox" name="in_stock_only" value="true" {% if query.in_stock_only %}checked{% endif %}> 在庫ありのみ</label>
+  <button class="btn" type="submit">検索</button>
+</form>
+<p class="muted">検索結果: {{ result.total }} 件（{{ result.page }} / {{ result.total_pages }} ページ）</p>
+{% if result.items %}
+  {% for product in result.items %}
+    <div class="card">
+      <a href="/products/{{ product.id }}">{{ product.name }}</a>
+      <span>{{ product.price_tax_included | yen }}</span>
+      {% if product.stock <= 0 %}<span class="error">在庫なし</span>{% endif %}
+    </div>
+  {% endfor %}
+  <div>
+    {% if result.page > 1 %}<a href="/products?keyword={{ query.keyword or '' }}&category={{ query.category or '' }}&page={{ result.page - 1 }}">前へ</a>{% endif %}
+    {% if result.page < result.total_pages %}<a href="/products?keyword={{ query.keyword or '' }}&category={{ query.category or '' }}&page={{ result.page + 1 }}">次へ</a>{% endif %}
+  </div>
+{% else %}
+  <p>該当する商品は0件です。</p>
+{% endif %}
+{% endblock %}

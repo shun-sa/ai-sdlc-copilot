@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}トップ{% endblock %}
+{% block content %}
+<h1>映画館ECへようこそ</h1>
+<p class="muted">映画を探して、関連商品やチケットを購入できます。</p>
+<h2>公開中の映画</h2>
+{% if movies.items %}
+  <div>
+    {% for movie in movies.items %}
+      <div class="card">
+        <a href="/movies/{{ movie.id }}">{{ movie.title }}</a>
+        <div class="muted">{{ movie.genre }} / {{ movie.release_date | jdate }}</div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>表示できる映画がありません。</p>
+{% endif %}
+{% endblock %}

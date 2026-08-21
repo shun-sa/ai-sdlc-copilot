@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}映画一覧{% endblock %}
+{% block content %}
+<h1>映画一覧</h1>
+<form method="get" action="/movies">
+  <input type="text" name="keyword" placeholder="タイトル" maxlength="200" value="{{ query.keyword or '' }}">
+  <input type="text" name="genre" placeholder="ジャンル" maxlength="50" value="{{ query.genre or '' }}">
+  <select name="sort">
+    <option value="release_date_desc" {% if query.sort == 'release_date_desc' %}selected{% endif %}>公開日が新しい順</option>
+    <option value="title_asc" {% if query.sort == 'title_asc' %}selected{% endif %}>タイトル順</option>
+  </select>
+  <button class="btn" type="submit">検索</button>
+</form>
+<p class="muted">検索結果: {{ result.total }} 件（{{ result.page }} / {{ result.total_pages }} ページ）</p>
+{% if result.items %}
+  {% for movie in result.items %}
+    <div class="card">
+      <a href="/movies/{{ movie.id }}">{{ movie.title }}</a>
+      <div class="muted">{{ movie.genre }} / 公開日 {{ movie.release_date | jdate }}</div>
+    </div>
+  {% endfor %}
+  <div>
+    {% if result.page > 1 %}<a href="/movies?keyword={{ query.keyword or '' }}&genre={{ query.genre or '' }}&sort={{ query.sort }}&page={{ result.page - 1 }}">前へ</a>{% endif %}
+    {% if result.page < result.total_pages %}<a href="/movies?keyword={{ query.keyword or '' }}&genre={{ query.genre or '' }}&sort={{ query.sort }}&page={{ result.page + 1 }}">次へ</a>{% endif %}
+  </div>
+{% else %}
+  <p>該当する映画は0件です。</p>
+{% endif %}
+{% endblock %}

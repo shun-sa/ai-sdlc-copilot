@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}チケット購入{% endblock %}
+{% block content %}
+<h1>チケット購入</h1>
+{% if request.query_params.get('error') %}
+  <p class="error">{{ request.query_params.get('error') }}</p>
+{% endif %}
+<div class="card">
+  <p>映画: <strong>{{ movie.title if movie else '' }}</strong></p>
+  <p>上映日時: {{ screening.starts_at | jdatetime }}</p>
+  <p>劇場: {{ screening.theater_name }} / {{ screening.screen_name }}</p>
+  <p>残席: {{ screening.seats_remaining }}</p>
+</div>
+
+{% if not saleable %}
+  <p class="error">この上映回は現在購入できません。</p>
+{% elif screening.seats_remaining <= 0 %}
+  <p class="error">満席です。</p>
+{% else %}
+<form method="post" action="/tickets">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <input type="hidden" name="screening_id" value="{{ screening.id }}">
+  <p><label>券種<br>
+    <select name="ticket_type">
+      {% for key, price in ticket_types.items() %}
+        <option value="{{ key }}">{{ ticket_labels[key] }}（{{ price | yen }}）</option>
+      {% endfor %}
+    </select></label></p>
+  <p><label>枚数<br>
+    <input type="number" name="quantity" min="1" max="{{ screening.seats_remaining }}" value="1" required></label></p>
+  <p><label>支払方法<br>
+    <select name="payment_method">
+      {% for key, label in payment_methods.items() %}
+        <option value="{{ key }}" {% if key == default_payment %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select></label></p>
+  <p class="muted">※ 座席指定はありません。決済は模擬決済です。</p>
+  <button class="btn" type="submit">購入を確定する</button>
+</form>
+{% endif %}
+{% endblock %}

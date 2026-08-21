@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}カート{% endblock %}
+{% block content %}
+<h1>カート</h1>
+{% if message %}<p class="msg">{{ message }}</p>{% endif %}
+{% if cart.lines %}
+  <table>
+    <tr><th>商品</th><th>単価</th><th>数量</th><th>小計</th><th></th></tr>
+    {% for line in cart.lines %}
+      <tr>
+        <td>{{ line.product.name }}</td>
+        <td>{{ line.product.price_tax_included | yen }}</td>
+        <td>
+          <form method="post" action="/cart/items/{{ line.item.id }}" style="display:inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="number" name="quantity" min="0" max="{{ line.product.stock }}" value="{{ line.item.quantity }}">
+            <button class="btn" type="submit">更新</button>
+          </form>
+        </td>
+        <td>{{ line.subtotal | yen }}</td>
+        <td>
+          <form method="post" action="/cart/items/{{ line.item.id }}" style="display:inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="quantity" value="0">
+            <button class="btn" type="submit">削除</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+  <p>合計: <strong>{{ cart.total | yen }}</strong></p>
+  {% if cart.has_unorderable %}
+    <p class="error">注文できない商品が含まれています。数量や販売状況をご確認ください。</p>
+  {% else %}
+    <a class="btn" href="/orders/new">注文手続きへ</a>
+  {% endif %}
+{% else %}
+  <p>カートは空です。</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}注文完了{% endblock %}
+{% block content %}
+<h1>ご注文ありがとうございました</h1>
+<p>注文番号: <strong>{{ order.order_number }}</strong></p>
+<p>注文日時: {{ order.ordered_at | jdatetime }}</p>
+<table>
+  <tr><th>商品</th><th>単価</th><th>数量</th><th>小計</th></tr>
+  {% for item in order.items %}
+    <tr>
+      <td>{{ item.product_snapshot_name }}</td>
+      <td>{{ item.unit_price | yen }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.subtotal | yen }}</td>
+    </tr>
+  {% endfor %}
+</table>
+<p>合計: <strong>{{ order.total_amount | yen }}</strong></p>
+<p><a class="btn" href="/history">購入履歴を見る</a></p>
+{% endblock %}

@@ -1,0 +1,13 @@
+# ローカル/テスト用の使い捨てPostgreSQL (ADR-010)。
+# 本番DBではなく、破棄可能な開発・テスト用コンテナ。
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: cinema
+      POSTGRES_PASSWORD: cinema
+      POSTGRES_DB: cinema
+    ports:
+      - "5432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data

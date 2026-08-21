@@ -1,0 +1,15 @@
+# 単体テストのカバレッジ計測設定。
+#
+# ADR-003 (レイヤードアーキテクチャ) に基づき、テストは層境界で検証する。
+# Presentation層 (FastAPIルーター/アプリ配線/HTTP依存/Cookie操作) は
+# HTTPスタックを介してのみ意味を持つため結合テスト工程で層境界検証する。
+# 本設定は単体テスト対象である Application(Service)/Domain/Infrastructure(Repository)
+# /Schema/Security/表示整形ロジック に計測範囲を限定する。
+[run]
+branch = True
+source = app
+omit =
+    app/main.py
+    app/dependencies.py
+    app/cookies.py
+    app/routers/*

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<h1>{{ product.name }}</h1>
+<p>価格: {{ product.price_tax_included | yen }}</p>
+{% if request.query_params.get('error') %}
+  <p class="error">{{ request.query_params.get('error') }}</p>
+{% endif %}
+
+{% if product.stock <= 0 %}
+  <p class="error">在庫なし</p>
+{% elif not saleable %}
+  <p class="error">この商品は現在購入できません。</p>
+{% elif user %}
+  <form method="post" action="/cart/add">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    <label>数量
+      <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1" required>
+    </label>
+    <button class="btn" type="submit">カートに追加</button>
+  </form>
+{% else %}
+  <p><a href="/login">ログインするとカートに追加できます。</a></p>
+{% endif %}
+{% endblock %}

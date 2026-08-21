@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}映画館EC{% endblock %} | 映画館EC</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; color: #222; }
+    header { background: #1b1b2f; color: #fff; padding: 12px 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    header a { color: #fff; text-decoration: none; }
+    header .brand { font-weight: bold; font-size: 1.1rem; }
+    header form.search { margin-left: auto; }
+    main { max-width: 960px; margin: 20px auto; padding: 0 16px; }
+    .msg { background: #eef; padding: 8px 12px; border-radius: 4px; }
+    .error { color: #b00020; }
+    .field-error { color: #b00020; font-size: 0.85rem; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+    .card { border: 1px solid #ddd; padding: 12px; border-radius: 6px; margin-bottom: 10px; }
+    .muted { color: #777; }
+    .btn { display: inline-block; padding: 6px 12px; background: #1b1b2f; color: #fff; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">映画館EC</a>
+    <a href="/movies">映画</a>
+    <a href="/products">商品</a>
+    <a href="/cart">カート</a>
+    <a href="/history">購入履歴</a>
+    <form class="search" method="get" action="/movies">
+      <input type="text" name="keyword" placeholder="映画を検索" maxlength="200">
+      <button class="btn" type="submit">検索</button>
+    </form>
+    <span>
+      {% if user %}
+        {{ user.name }} さん
+        <form method="post" action="/logout" style="display:inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token if csrf_token is defined else '' }}">
+          <button class="btn" type="submit">ログアウト</button>
+        </form>
+      {% else %}
+        <a href="/login">ログイン</a>
+        <a href="/register">会員登録</a>
+      {% endif %}
+    </span>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

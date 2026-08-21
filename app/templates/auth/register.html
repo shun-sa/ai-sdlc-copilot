@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}会員登録{% endblock %}
+{% block content %}
+<h1>会員登録</h1>
+<form method="post" action="/register">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <p>
+    <label>氏名<br>
+      <input type="text" name="name" maxlength="50" value="{{ values.name or '' }}" required>
+    </label>
+    {% if errors.name %}<div class="field-error">{{ errors.name }}</div>{% endif %}
+  </p>
+  <p>
+    <label>メールアドレス<br>
+      <input type="email" name="email" maxlength="255" value="{{ values.email or '' }}" required>
+    </label>
+    {% if errors.email %}<div class="field-error">{{ errors.email }}</div>{% endif %}
+  </p>
+  <p>
+    <label>パスワード（8-64文字、英数）<br>
+      <input type="password" name="password" minlength="8" maxlength="64" required>
+    </label>
+    {% if errors.password %}<div class="field-error">{{ errors.password }}</div>{% endif %}
+  </p>
+  <p>
+    <label>確認用パスワード<br>
+      <input type="password" name="password_confirm" minlength="8" maxlength="64" required>
+    </label>
+    {% if errors.password_confirm %}<div class="field-error">{{ errors.password_confirm }}</div>{% endif %}
+  </p>
+  <button class="btn" type="submit">登録する</button>
+</form>
+{% endblock %}

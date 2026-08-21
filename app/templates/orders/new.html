@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}注文手続き{% endblock %}
+{% block content %}
+<h1>注文手続き</h1>
+{% if errors._general %}<p class="error">{{ errors._general }}</p>{% endif %}
+
+<h2>注文内容</h2>
+{% if cart.lines %}
+  <table>
+    <tr><th>商品</th><th>単価</th><th>数量</th><th>小計</th></tr>
+    {% for line in cart.lines %}
+      <tr>
+        <td>{{ line.product.name }}</td>
+        <td>{{ line.product.price_tax_included | yen }}</td>
+        <td>{{ line.item.quantity }}</td>
+        <td>{{ line.subtotal | yen }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <p>合計: <strong>{{ cart.total | yen }}</strong></p>
+{% else %}
+  <p>カートが空です。<a href="/products">商品を探す</a></p>
+{% endif %}
+
+{% if cart.lines and not cart.has_unorderable %}
+<h2>配送先・支払方法</h2>
+<form method="post" action="/orders">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <p><label>氏名<br><input type="text" name="name" maxlength="50" value="{{ values.name or '' }}" required></label>
+     {% if errors.name %}<div class="field-error">{{ errors.name }}</div>{% endif %}</p>
+  <p><label>郵便番号（例: 123-4567）<br><input type="text" name="postal_code" value="{{ values.postal_code or '' }}" required></label>
+     {% if errors.postal_code %}<div class="field-error">{{ errors.postal_code }}</div>{% endif %}</p>
+  <p><label>都道府県<br><input type="text" name="prefecture" maxlength="10" value="{{ values.prefecture or '' }}" required></label>
+     {% if errors.prefecture %}<div class="field-error">{{ errors.prefecture }}</div>{% endif %}</p>
+  <p><label>市区町村・番地<br><input type="text" name="address_line" maxlength="200" value="{{ values.address_line or '' }}" required></label>
+     {% if errors.address_line %}<div class="field-error">{{ errors.address_line }}</div>{% endif %}</p>
+  <p><label>電話番号<br><input type="text" name="phone" value="{{ values.phone or '' }}" required></label>
+     {% if errors.phone %}<div class="field-error">{{ errors.phone }}</div>{% endif %}</p>
+  <p><label>支払方法<br>
+    <select name="payment_method">
+      {% for key, label in payment_methods.items() %}
+        <option value="{{ key }}" {% if key == default_payment %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select></label></p>
+  <p class="muted">※ 決済は模擬決済です（実際の課金は行われません）。</p>
+  <button class="btn" type="submit">注文を確定する</button>
+</form>
+{% endif %}
+{% endblock %}

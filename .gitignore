@@ -1,3 +1,18 @@
 */__pycache__/
+**/__pycache__/
 *.pyc
 reports/
+
+# 環境設定/機密は絶対にコミットしない (ADR-004 / ADR-010)
+.env
+*.env
+!.env.example
+
+# ビルド/仮想環境
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/

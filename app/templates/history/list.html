@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}購入履歴{% endblock %}
+{% block content %}
+<h1>購入履歴</h1>
+
+<h2>商品注文履歴</h2>
+{% if orders.items %}
+  <table>
+    <tr><th>注文番号</th><th>注文日時</th><th>合計</th><th></th></tr>
+    {% for order in orders.items %}
+      <tr>
+        <td>{{ order.order_number }}</td>
+        <td>{{ order.ordered_at | jdatetime }}</td>
+        <td>{{ order.total_amount | yen }}</td>
+        <td><a href="/history/orders/{{ order.id }}">詳細</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p class="muted">商品注文履歴はありません。</p>
+{% endif %}
+
+<h2>チケット購入履歴</h2>
+{% if tickets.items %}
+  <table>
+    <tr><th>購入番号</th><th>購入日時</th><th>内容</th><th>合計</th></tr>
+    {% for purchase in tickets.items %}
+      <tr>
+        <td>{{ purchase.purchase_number }}</td>
+        <td>{{ purchase.purchased_at | jdatetime }}</td>
+        <td>
+          {% for item in purchase.items %}
+            {{ item.movie_title_snapshot }} {{ item.screening_starts_at_snapshot | jdatetime }}
+            {{ item.ticket_type }} x{{ item.quantity }}<br>
+          {% endfor %}
+        </td>
+        <td>{{ purchase.total_amount | yen }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p class="muted">チケット購入履歴はありません。</p>
+{% endif %}
+{% endblock %}
