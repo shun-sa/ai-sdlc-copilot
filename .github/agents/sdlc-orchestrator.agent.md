@@ -178,12 +178,44 @@ ADR Validatorを実行してください。
 
 `python .github/skills/architecture/scripts/validate_adr_structure.py`
 
-ValidatorおよびAssuranceがPASSした場合、
+ADR ValidatorがPASSした後、
+Architecture Phase Scope Assuranceを必ず実行してください。
+
+以下をすべて`audit_scope=ARCHITECTURE`で実行してください。
+
+1. Quality Review Agent
+2. Quality Review Validator
+3. Security Review Agent
+4. Security Review Validator
+5. Traceability Auditor
+6. Traceability Validator
+
+Traceability Auditorはこの時点のSource Artifactから、
+少なくとも以下を生成しなければなりません。
+
+`reports/traceability/ast-index.json`
+
+`reports/traceability/trace-map.json`
+
+`reports/traceability/traceability-report.json`
+
+Architecture Phase Scope AssuranceがすべてPASSした場合のみ、
 Architecture AgentへAcceptanceを指示し、
 対象ADRのStatusをAcceptedへ遷移させてください。
 
 Architecture Decisionの内容自体を
 Orchestratorが変更してはいけません。
+
+ADR StatusをProposedからAcceptedへ変更した後は、
+Source ArtifactのStatusが変化しているため、
+Traceability Auditorだけを`audit_scope=ARCHITECTURE`で再実行し、
+AST Index、Trace Map、Traceability Reportを現在のSource Artifactから再生成してください。
+
+続けてTraceability Validatorを再実行してください。
+
+Accepted化後のTraceability Auditorおよび
+Traceability ValidatorがPASSした場合のみ、
+Architecture PhaseをPASSとしてください。
 
 Accepted ADRだけを
 後続工程の設計Source of Truthとして扱ってください。
@@ -208,8 +240,35 @@ Implementation完了後は、
 Repositoryで定義されたBuild、
 Compile、Lint、Type Check等を実行してください。
 
-Validationが成功した場合のみ
-Unit Testへ進んでください。
+Build / Compile / Lint / Type Check等の
+Deterministic Validationが成功した後、
+Implementation Phase Scope Assuranceを必ず実行してください。
+
+以下をすべて`audit_scope=IMPLEMENTATION`で実行してください。
+
+1. Quality Review Agent
+2. Quality Review Validator
+3. Security Review Agent
+4. Security Review Validator
+5. Traceability Auditor
+6. Traceability Validator
+
+Traceability Auditorは現在のProduction Codeを反映して、
+AST Index、Trace Map、Traceability Reportを再生成してください。
+
+`reports/traceability/ast-index.json`
+
+`reports/traceability/trace-map.json`
+
+`reports/traceability/traceability-report.json`
+
+Deterministic Validationおよび
+Implementation Phase Scope Assuranceが
+すべてPASSした場合のみ、
+Implementation PhaseをPASSとしてUnit Testへ進んでください。
+
+Traceability AuditorまたはTraceability Validatorを
+省略したままUnit Testへ進んではいけません。
 
 
 # Phase 4: Unit Test
@@ -241,6 +300,28 @@ Architectureへ戻してください。
 
 Requirementの問題の場合は
 Requirementsへ戻してください。
+
+Unit Test ValidatorがPASSした後、
+Unit Test Phase Scope Assuranceを必ず実行してください。
+
+以下をすべて`audit_scope=UNIT_TEST`で実行してください。
+
+1. Quality Review Agent
+2. Quality Review Validator
+3. Security Review Agent
+4. Security Review Validator
+5. Traceability Auditor
+6. Traceability Validator
+
+Traceability Auditorは現在のUnit Test CodeおよびEvidenceを反映して、
+AST Index、Trace Map、Traceability Reportを再生成してください。
+
+ValidatorおよびUnit Test Phase Scope Assuranceが
+すべてPASSした場合のみ、
+Unit Test PhaseをPASSとしてIntegration Testへ進んでください。
+
+Traceability AuditorまたはTraceability Validatorを
+省略したままIntegration Testへ進んではいけません。
 
 
 # Phase 5: Integration Test
@@ -329,9 +410,23 @@ Integration Test完了後、
 を実行してください。
 
 Integration Test ValidatorがPASSした後、
-必要なAssuranceを`audit_scope=INTEGRATION_TEST`で実行してください。
+Integration Test Phase Scope Assuranceを必ず実行してください。
 
-Validatorおよび必要なAssuranceが
+以下をすべて`audit_scope=INTEGRATION_TEST`で実行してください。
+
+1. Quality Review Agent
+2. Quality Review Validator
+3. Security Review Agent
+4. Security Review Validator
+5. Traceability Auditor
+6. Traceability Validator
+
+Traceability Auditorは現在のIntegration Test Code、
+Integration Test PlanおよびEvidenceを反映して、
+AST Index、Trace Map、Traceability Reportを再生成してください。
+
+Integration Test Validatorおよび
+Integration Test Phase Scope Assuranceが
 すべてPASSした場合のみ、
 Integration Test PhaseをPASSとしてください。
 
@@ -627,6 +722,23 @@ Failure Triageを使用せず
 
 Deterministic ValidatorがPASSした後に
 Assurance Agentを実行してください。
+
+Architecture、Implementation、Unit Test、Integration Testでは、
+Phase本文に定義されたPhase Scope Assuranceを省略してはいけません。
+
+各Phaseで次工程へ遷移する前に、
+Quality Review、Security Review、Traceability Auditと
+それぞれのDeterministic ValidatorがすべてPASSしていることを
+明示的に確認してください。
+
+Architecture以降のPhase Scope Assuranceでは、
+Traceability Auditor実行後に
+`reports/traceability/trace-map.json`が存在し、
+その`audit_scope`が現在Phaseと一致していることを確認してください。
+
+Trace Mapが存在しない、または古いScopeのままの場合は、
+Phase Scope Assurance未完了として扱い、
+次工程へ進んではいけません。
 
 Quality Review Agentは、
 成果物の意味的品質を確認します。

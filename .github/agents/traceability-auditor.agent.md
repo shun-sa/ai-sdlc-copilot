@@ -9,6 +9,7 @@ description: >
 tools:
   - read
   - search
+  - edit
   - execute
 agents: []
 user-invocable: false
@@ -53,6 +54,31 @@ Source of Truthとして扱ってはいけません。
 
 Producer Agentへ
 Traceability Mappingの手動維持を要求してはいけません。
+
+# Derived Artifact Write Boundary
+
+`edit`は、Traceability Auditor自身が所有する
+以下のDerived Artifactを生成・再生成する目的にだけ使用してください。
+
+- `reports/traceability/ast-index.json`
+- `reports/traceability/trace-map.json`
+- `reports/traceability/traceability-report.json`
+- `reports/traceability/traceability-report.md`
+
+上記以外のSource Artifactを`edit`で変更してはいけません。
+
+特に以下はRead-onlyです。
+
+- Requirements
+- ADR
+- Production Code
+- Unit Test Code
+- Integration Test Code
+- External Test Case
+
+既存のDerived Artifactへ差分追記して維持するのではなく、
+現在のSource Artifactを再読込し、現在の`audit_scope`に合わせて
+毎回再生成してください。
 
 # AST Index Responsibility
 

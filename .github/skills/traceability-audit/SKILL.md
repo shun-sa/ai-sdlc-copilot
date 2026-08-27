@@ -61,6 +61,18 @@ Source of Truthではありません。
 
 `reports/traceability/traceability-report.md`
 
+これらはすべてTraceability Auditorが所有するDerived Artifactです。
+
+各Audit実行では、既存ファイルへ部分追記して状態を維持するのではなく、
+現在のSource Artifactを読み直し、現在の`audit_scope`を反映した内容へ
+上書き再生成してください。
+
+Architecture、Implementation、Unit Test、Integration Test、FULLの
+各Audit実行完了時点で、`trace-map.json`の`audit_scope`は
+今回指定されたScopeと一致していなければなりません。
+
+Source ArtifactをDerived Artifactへ合わせて変更してはいけません。
+
 # Procedure
 
 ## Step 1. Audit Scopeを確認する
@@ -443,6 +455,11 @@ AIの意味判断だけを理由に存在しないFQNを作成してはいけま
 ここまでに確認した
 現在のSource Artifactから、
 Trace Mapを生成してください。
+
+既存の`trace-map.json`が存在していても、
+その内容を正として差分更新してはいけません。
+現在のSource ArtifactからMappingを再構築し、
+今回の`audit_scope`でファイル全体を上書き再生成してください。
 
 出力:
 
