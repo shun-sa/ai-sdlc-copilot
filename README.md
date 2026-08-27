@@ -395,8 +395,7 @@ Integration Test Codeが変更された場合は、
 │   ├── copilot-instructions.md
 │   │
 │   ├── agents/
-│   │   ├── orchestrator/
-│   │   │   └── sdlc-orchestrator.agent.md
+│   │   ├── sdlc-orchestrator.agent.md 
 │   │   ├── ...
 │   │   └── assurance/
 │   │       ├── quality-review.agent.md
@@ -447,7 +446,7 @@ Integration Test Codeが変更された場合は、
 | 変更したい内容 | 主な変更先 |
 | --- | --- |
 | Project全体の不変ルール | `.github/copilot-instructions.md` |
-| SDLC順序 / Routing / Invalidation | `.github/agents/orchestrator/sdlc-orchestrator.agent.md` |
+| SDLC順序 / Routing / Invalidation | `.github/agents/sdlc-orchestrator.agent.md` |
 | Agentの責務・Input・Output | `.github/agents/**/<agent>.agent.md` |
 | Agentの具体的な作業手順 | `.github/skills/<skill>/SKILL.md` |
 | PASS / FAIL / Severity / Routing基準 | `.github/skills/<skill>/policy/` |

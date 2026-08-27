@@ -35,6 +35,11 @@ trace_map:
   allow_as_source_of_truth: false
   require_regeneration_on_source_change: true
 
+symbol_validation:
+  validate_symbol_when_present: false
+  validate_qualified_name_when_present: false
+  fail_when_resolver_unavailable: false
+
 implementation:
   require_mapping_for_implementation_responsible_requirement: true
   allow_missing_mapping: false

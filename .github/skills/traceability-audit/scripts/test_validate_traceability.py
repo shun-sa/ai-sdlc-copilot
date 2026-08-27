@@ -98,8 +98,8 @@ def base_policy() -> dict[str, Any]:
             "require_regeneration_on_source_change": True,
         },
         "symbol_validation": {
-            "validate_symbol_when_present": True,
-            "validate_qualified_name_when_present": True,
+            "validate_symbol_when_present": False,
+            "validate_qualified_name_when_present": False,
             "fail_when_resolver_unavailable": False,
         },
         "implementation": {

@@ -930,8 +930,7 @@ Unit Test Code、Integration Test Codeが変更された場合、
 │   ├── copilot-instructions.md
 │   │
 │   ├── agents/
-│   │   ├── orchestrator/
-│   │   │   └── sdlc-orchestrator.agent.md
+│   │   ├── sdlc-orchestrator.agent.md
 │   │   ├── ...
 │   │   └── assurance/
 │   │       ├── quality-review.agent.md
@@ -1018,7 +1017,7 @@ RequirementやADRの代わりとなるSource of Truthではありません。
 変更先:
 
 ```text
-.github/agents/orchestrator/sdlc-orchestrator.agent.md
+.github/agents/sdlc-orchestrator.agent.md
 ```
 
 例:

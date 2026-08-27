@@ -536,7 +536,8 @@ Traceability Auditor自身の生成物であるため、
 2. Requirement Referenceが実在する
 3. ADR Referenceが実在する
 4. 必須Traceabilityに欠落がない
-5. Accepted ADRとImplementationに重大な矛盾がない
+5. Implementationが監査対象となるScopeでは、
+   Accepted ADRとImplementationに重大な矛盾がない
 6. Unit Test対象Requirementが適切にTestされている
 7. Integration Test対象Requirementが適切にTestされている
 8. 不正な孤立Artifactがない
