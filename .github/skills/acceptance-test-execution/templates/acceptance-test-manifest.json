@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-001",
+  "sdlc_completed_at": "2026-01-01T12:00:00+09:00",
+  "evaluation_data_exposed_at": "2026-01-01T12:05:00+09:00",
+  "cases": [
+    {
+      "case_id": "AC-001",
+      "requirement_id": "FR-001",
+      "requirement_type": "FUNCTIONAL",
+      "execution_type": "COMMAND",
+      "command": [
+        "python",
+        "evaluation/acceptance/test_fr001.py"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 60,
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [],
+        "stderr_contains": [],
+        "stdout_not_contains": [],
+        "stderr_not_contains": []
+      }
+    },
+    {
+      "case_id": "AC-002",
+      "requirement_id": "NFR-001",
+      "requirement_type": "NON_FUNCTIONAL",
+      "execution_type": "COMMAND",
+      "command": [
+        "python",
+        "evaluation/acceptance/test_nfr001.py"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 60,
+      "expected": {
+        "exit_code": 0
+      }
+    }
+  ]
+}

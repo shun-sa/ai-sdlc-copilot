@@ -1,0 +1,52 @@
+version: 1
+
+isolation:
+  require_sdlc_complete_before_execution: true
+  require_evaluation_data_exposed_after_complete: true
+  forbid_development_external_test_path: true
+  forbidden_path_fragments:
+    - "external-tests/integration-test"
+
+manifest:
+  filename: acceptance-test-manifest.json
+  schema_version: 1
+  require_unique_case_id: true
+  supported_execution_types:
+    - COMMAND
+  required_case_fields:
+    - case_id
+    - requirement_id
+    - requirement_type
+    - execution_type
+    - command
+    - expected
+  require_expected_exit_code: true
+
+execution:
+  default_timeout_seconds: 300
+  maximum_timeout_seconds: 1800
+  shell: false
+  continue_after_fail: true
+  continue_after_blocked: true
+
+evidence:
+  save_stdout_text: false
+  save_stderr_text: false
+  save_stdout_sha256: true
+  save_stderr_sha256: true
+  save_command: true
+  save_expected: true
+  save_duration: true
+
+results:
+  allowed_statuses:
+    - PASS
+    - FAIL
+    - BLOCKED
+  csv_filename: acceptance-test-results.csv
+
+reports:
+  root: reports/evaluation
+  subdirectory: acceptance-test
+  evidence_filename: execution-evidence.json
+  validation_filename: validation-result.json
