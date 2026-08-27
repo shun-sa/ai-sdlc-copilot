@@ -102,7 +102,7 @@ flowchart TB
 ## Agent Roles
 
 | Agent | Role |
-|---|---|
+| --- | --- |
 | SDLC Orchestrator | Agent起動、Phase遷移、Validator、Assurance、Routing、Invalidation、Final Assuranceを制御 |
 | Requirements Agent | Requirementを定義・更新 |
 | Architecture Agent | 重要なArchitecture DecisionをADRとして定義 |
@@ -111,7 +111,7 @@ flowchart TB
 | Integration Test Agent | Integration BehaviorとExternal Test Caseを含むIntegration Testを作成・実行 |
 | Quality Review Agent | SDLC成果物の意味的品質を独立レビュー |
 | Security Review Agent | Security品質を独立監査 |
-| Traceability Auditor | RequirementからTestまでのTraceabilityを監査 |
+| Traceability Auditor | Source ArtifactからDerived Trace Mapを生成し、RequirementからTestまでのTraceabilityを監査 |
 | Failure Triage Agent | 同一Root CauseのFailureが収束しない場合に原因と戻り先を診断 |
 
 ---
@@ -121,7 +121,7 @@ flowchart TB
 本Frameworkでは、責務を以下のように分離しています。
 
 | Component | Responsibility |
-|---|---|
+| --- | --- |
 | Agent | **WHO**：誰が責務を持つか |
 | Skill | **HOW**：具体的にどう作業するか |
 | Template | **WHAT**：成果物をどの構造で作るか |
@@ -201,7 +201,35 @@ Secret値そのものをReportへ出力してはいけません。
 
 ### Traceability Audit
 
-以下のForward / Reverse Traceabilityを確認します。
+Traceability Auditorは、
+Requirements、ADR、Production Code、Unit Test、
+Integration Testを解析し、
+成果物間の関係をDerived Trace Mapとして生成します。
+
+```text
+reports/traceability/trace-map.json
+```
+
+Trace MapはSource Artifactから再生成可能なDerived Indexであり、
+RequirementsやADRのSource of Truthではありません。
+
+```mermaid
+flowchart LR
+    SRC[Requirements / ADR / Code / Test]
+    T[Traceability Auditor]
+    MAP[trace-map.json]
+    R[traceability-report.json]
+    V[Traceability Validator]
+
+    SRC --> T
+    T --> MAP
+    T --> R
+    MAP --> V
+    R --> V
+```
+
+Traceability Auditorは、
+以下のForward / Reverse Traceabilityを意味的に監査します。
 
 ```text
 Requirement
@@ -214,6 +242,17 @@ Unit Test
   ↓
 Integration Test
 ```
+
+Traceability Validatorは、
+Trace Mapの構造、Requirement / ADR参照、
+Implementation File、Test Case、
+Coverage、Report整合など、
+機械的に判定可能な内容を検証します。
+
+Trace Map自体の不整合を理由に、
+Source ArtifactをMapへ合わせて修正してはいけません。
+Derived Artifact側の問題であれば、
+現在のSource ArtifactからTrace Mapを再生成します。
 
 ---
 
@@ -256,7 +295,7 @@ Failureは発生した工程ではなく、
 Root Causeに基づいてRoutingします。
 
 | Classification | Route |
-|---|---|
+| --- | --- |
 | REQUIREMENT_ERROR | Requirements |
 | ADR_REQUIRED | Architecture |
 | IMPLEMENTATION_ERROR | Implementation |
@@ -329,7 +368,7 @@ AI自身の判断で「External Caseなし」として処理を継続せず、
 変更前の後続PASSをそのまま利用しません。
 
 | Changed Artifact | Re-validation |
-|---|---|
+| --- | --- |
 | Requirements | Architecture以降 |
 | Accepted ADR | Implementation以降 |
 | Production Code | 影響するUnit Test / Integration Test |
@@ -338,6 +377,11 @@ AI自身の判断で「External Caseなし」として処理を継続せず、
 
 Assurance対象Artifactが変更された場合は、
 Quality / Security / Traceabilityの既存PASSも再利用せず再監査します。
+
+Requirements、ADR、Production Code、Unit Test Code、
+Integration Test Codeが変更された場合は、
+変更前の`trace-map.json`も再利用せず、
+現在のSource Artifactから再生成します。
 
 ---
 
@@ -386,6 +430,10 @@ Quality / Security / Traceabilityの既存PASSも再利用せず再監査しま�
     ├── quality-review/
     ├── security-review/
     ├── traceability/
+    │   ├── trace-map.json
+    │   ├── traceability-report.json
+    │   ├── traceability-report.md
+    │   └── validation-result.json
     ├── failure-triage/
     └── sdlc/
 ```
@@ -397,7 +445,7 @@ Quality / Security / Traceabilityの既存PASSも再利用せず再監査しま�
 変更したい内容に応じて、変更先を分けます。
 
 | 変更したい内容 | 主な変更先 |
-|---|---|
+| --- | --- |
 | Project全体の不変ルール | `.github/copilot-instructions.md` |
 | SDLC順序 / Routing / Invalidation | `.github/agents/orchestrator/sdlc-orchestrator.agent.md` |
 | Agentの責務・Input・Output | `.github/agents/**/<agent>.agent.md` |

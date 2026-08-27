@@ -13,10 +13,13 @@ PyYAML is required because validate_traceability.py imports yaml.
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
+
+import yaml
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -80,10 +83,24 @@ def base_policy() -> dict[str, Any]:
             "allow_generated_id": False,
         },
         "adr": {
+            "architecture_scope_status": ["Proposed", "Accepted"],
             "downstream_status": ["Accepted"],
             "require_related_requirements": True,
             "allow_invalid_requirement_reference": False,
             "allow_superseded_as_current_decision": False,
+        },
+        "trace_map": {
+            "required": True,
+            "path": "reports/traceability/trace-map.json",
+            "version": 1,
+            "derived": True,
+            "allow_as_source_of_truth": False,
+            "require_regeneration_on_source_change": True,
+        },
+        "symbol_validation": {
+            "validate_symbol_when_present": True,
+            "validate_qualified_name_when_present": True,
+            "fail_when_resolver_unavailable": False,
         },
         "implementation": {
             "require_mapping_for_implementation_responsible_requirement": True,
@@ -119,6 +136,7 @@ def base_policy() -> dict[str, Any]:
         "reports": {
             "directory": "reports/traceability",
             "required": [
+                "trace-map.json",
                 "traceability-report.json",
                 "traceability-report.md",
             ],
@@ -126,15 +144,26 @@ def base_policy() -> dict[str, Any]:
     }
 
 
-def accepted_adrs(requirement_id: str = "FR-001") -> dict[str, dict[str, Any]]:
+def adrs_with_status(
+    status: str,
+    requirement_id: str = "FR-001",
+) -> dict[str, dict[str, Any]]:
     return {
         "ADR-001": {
             "id": "ADR-001",
             "path": "docs/adr/ADR-001-test.md",
-            "status": "Accepted",
+            "status": status,
             "related_requirements": [requirement_id],
         }
     }
+
+
+def accepted_adrs(requirement_id: str = "FR-001") -> dict[str, dict[str, Any]]:
+    return adrs_with_status("Accepted", requirement_id)
+
+
+def proposed_adrs(requirement_id: str = "FR-001") -> dict[str, dict[str, Any]]:
+    return adrs_with_status("Proposed", requirement_id)
 
 
 def unit_evidence() -> dict[str, Any]:
@@ -185,25 +214,48 @@ def base_entry() -> dict[str, Any]:
             {
                 "file": "src/user_service.py",
                 "symbol": "register_user",
+                "qualified_name": "src.user_service.register_user",
             }
         ],
         "unit_test_applicable": True,
-        "unit_tests": ["test_register_user"],
+        "unit_tests": [
+            {
+                "test_id": "test_register_user",
+                "file": "tests/test_user_service.py",
+                "symbol": "test_register_user",
+            }
+        ],
         "integration_test_applicable": True,
-        "integration_tests": ["AI-IT-001"],
+        "integration_tests": [
+            {
+                "case_id": "AI-IT-001",
+            }
+        ],
     }
 
 
-def base_report() -> dict[str, Any]:
+def base_trace_map(scope: str = "FULL") -> dict[str, Any]:
+    return {
+        "version": 1,
+        "audit_scope": scope,
+        "entries": [base_entry()],
+    }
+
+
+def base_report(scope: str = "FULL") -> dict[str, Any]:
     return {
         "status": "PASS",
-        "audit_scope": "FULL",
+        "audit_scope": scope,
+        "trace_map": {
+            "path": "reports/traceability/trace-map.json",
+            "version": 1,
+        },
         "summary": {
             "requirements": 1,
             "accepted_adrs": 1,
-            "implementation_mappings": 1,
-            "unit_test_mappings": 1,
-            "integration_test_mappings": 1,
+            "implementation_mappings": 1 if scope != "ARCHITECTURE" else 0,
+            "unit_test_mappings": 1 if scope in {"UNIT_TEST", "INTEGRATION_TEST", "FULL"} else 0,
+            "integration_test_mappings": 1 if scope in {"INTEGRATION_TEST", "FULL"} else 0,
             "issues": 0,
         },
         "coverage": {
@@ -212,7 +264,6 @@ def base_report() -> dict[str, Any]:
             "requirement_to_unit_test": 100,
             "requirement_to_integration_test": 100,
         },
-        "traceability": [base_entry()],
         "issues": [],
     }
 
@@ -230,6 +281,16 @@ class PolicyTest(unittest.TestCase):
 
         self.assertTrue(
             any("routing missing" in error and "ORPHAN_TEST" in error for error in errors)
+        )
+
+    def test_missing_trace_map_policy_fails(self) -> None:
+        policy = base_policy()
+        del policy["trace_map"]["path"]
+
+        errors = validator.validate_policy(policy)
+
+        self.assertTrue(
+            any("trace_map.path" in error for error in errors)
         )
 
 
@@ -273,6 +334,39 @@ class AdrTest(unittest.TestCase):
         )
         self.assertEqual([], errors)
 
+    def test_proposed_adr_is_valid_in_architecture_scope(self) -> None:
+        errors = validator.validate_adrs(
+            proposed_adrs(),
+            {"FR-001"},
+            base_policy(),
+            "ARCHITECTURE",
+        )
+        self.assertEqual([], errors)
+
+    def test_proposed_adr_is_not_current_in_full_scope_mapping(self) -> None:
+        trace_map = base_trace_map("FULL")
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "src").mkdir()
+            (root / "src/user_service.py").write_text("pass\n", encoding="utf-8")
+
+            errors, _ = validator.validate_traceability_entries(
+                trace_map=trace_map,
+                requirement_ids={"FR-001"},
+                adrs=proposed_adrs(),
+                repo_root=root,
+                unit_evidence=unit_evidence(),
+                integration_plan=integration_plan(),
+                integration_evidence=integration_evidence(),
+                policy=base_policy(),
+                scope="FULL",
+            )
+
+        self.assertTrue(
+            any("not valid for the current audit scope" in error for error in errors)
+        )
+
     def test_accepted_adr_invalid_requirement_fails(self) -> None:
         errors = validator.validate_adrs(
             accepted_adrs("FR-999"),
@@ -301,6 +395,97 @@ class AdrTest(unittest.TestCase):
         )
 
 
+class TraceMapHeaderTest(unittest.TestCase):
+
+    def test_valid_trace_map_header_passes(self) -> None:
+        errors = validator.validate_trace_map_header(
+            base_trace_map(),
+            "FULL",
+            base_policy(),
+        )
+        self.assertEqual([], errors)
+
+    def test_invalid_trace_map_version_fails(self) -> None:
+        trace_map = base_trace_map()
+        trace_map["version"] = 2
+
+        errors = validator.validate_trace_map_header(
+            trace_map,
+            "FULL",
+            base_policy(),
+        )
+
+        self.assertTrue(any("version" in error for error in errors))
+
+    def test_trace_map_scope_mismatch_fails(self) -> None:
+        errors = validator.validate_trace_map_header(
+            base_trace_map("ARCHITECTURE"),
+            "FULL",
+            base_policy(),
+        )
+
+        self.assertTrue(any("audit_scope" in error for error in errors))
+
+    def test_trace_map_without_entries_fails(self) -> None:
+        trace_map = base_trace_map()
+        del trace_map["entries"]
+
+        errors = validator.validate_trace_map_header(
+            trace_map,
+            "FULL",
+            base_policy(),
+        )
+
+        self.assertTrue(any("entries array" in error for error in errors))
+
+
+class TraceMapReferenceTest(unittest.TestCase):
+
+    def test_valid_reference_passes(self) -> None:
+        errors = validator.validate_trace_map_reference(
+            base_report(),
+            base_trace_map(),
+            base_policy(),
+        )
+        self.assertEqual([], errors)
+
+    def test_missing_reference_fails(self) -> None:
+        report = base_report()
+        del report["trace_map"]
+
+        errors = validator.validate_trace_map_reference(
+            report,
+            base_trace_map(),
+            base_policy(),
+        )
+
+        self.assertTrue(any("trace_map reference" in error for error in errors))
+
+    def test_version_mismatch_fails(self) -> None:
+        report = base_report()
+        report["trace_map"]["version"] = 2
+
+        errors = validator.validate_trace_map_reference(
+            report,
+            base_trace_map(),
+            base_policy(),
+        )
+
+        self.assertTrue(any("version mismatch" in error.lower() for error in errors))
+
+    def test_legacy_traceability_array_fails(self) -> None:
+        report = base_report()
+        report["traceability"] = [base_entry()]
+
+        errors = validator.validate_trace_map_reference(
+            report,
+            base_trace_map(),
+            base_policy(),
+        )
+
+        self.assertTrue(any("must not contain" in error for error in errors))
+
+
 class TraceabilityEntryTest(unittest.TestCase):
 
     def _repo_with_implementation(self) -> tempfile.TemporaryDirectory[str]:
@@ -316,7 +501,7 @@ class TraceabilityEntryTest(unittest.TestCase):
             )
 
             errors, metrics = validator.validate_traceability_entries(
-                report=base_report(),
+                trace_map=base_trace_map(),
                 requirement_ids={"FR-001"},
                 adrs=accepted_adrs(),
                 repo_root=root,
@@ -332,9 +517,10 @@ class TraceabilityEntryTest(unittest.TestCase):
         self.assertEqual(100.0, metrics["requirement_to_unit_test"]["rate"])
         self.assertEqual(100.0, metrics["requirement_to_integration_test"]["rate"])
 
-    def test_unknown_requirement_reference_fails(self) -> None:
-        report = base_report()
-        report["traceability"][0]["requirement_reference"] = "FR-999"
+    def test_string_test_mapping_is_still_supported(self) -> None:
+        trace_map = base_trace_map()
+        trace_map["entries"][0]["unit_tests"] = ["test_register_user"]
+        trace_map["entries"][0]["integration_tests"] = ["AI-IT-001"]
 
         with self._repo_with_implementation() as temp:
             root = Path(temp)
@@ -342,7 +528,30 @@ class TraceabilityEntryTest(unittest.TestCase):
             (root / "src/user_service.py").write_text("pass\n", encoding="utf-8")
 
             errors, _ = validator.validate_traceability_entries(
-                report=report,
+                trace_map=trace_map,
+                requirement_ids={"FR-001"},
+                adrs=accepted_adrs(),
+                repo_root=root,
+                unit_evidence=unit_evidence(),
+                integration_plan=integration_plan(),
+                integration_evidence=integration_evidence(),
+                policy=base_policy(),
+                scope="FULL",
+            )
+
+        self.assertEqual([], errors)
+
+    def test_unknown_requirement_reference_fails(self) -> None:
+        trace_map = base_trace_map()
+        trace_map["entries"][0]["requirement_reference"] = "FR-999"
+
+        with self._repo_with_implementation() as temp:
+            root = Path(temp)
+            (root / "src").mkdir()
+            (root / "src/user_service.py").write_text("pass\n", encoding="utf-8")
+
+            errors, _ = validator.validate_traceability_entries(
+                trace_map=trace_map,
                 requirement_ids={"FR-001"},
                 adrs=accepted_adrs(),
                 repo_root=root,
@@ -358,14 +567,14 @@ class TraceabilityEntryTest(unittest.TestCase):
         )
 
     def test_missing_implementation_mapping_fails(self) -> None:
-        report = base_report()
-        report["traceability"][0]["implementation"] = []
+        trace_map = base_trace_map()
+        trace_map["entries"][0]["implementation"] = []
 
         with self._repo_with_implementation() as temp:
             root = Path(temp)
 
             errors, metrics = validator.validate_traceability_entries(
-                report=report,
+                trace_map=trace_map,
                 requirement_ids={"FR-001"},
                 adrs=accepted_adrs(),
                 repo_root=root,
@@ -386,7 +595,7 @@ class TraceabilityEntryTest(unittest.TestCase):
             root = Path(temp)
 
             errors, _ = validator.validate_traceability_entries(
-                report=base_report(),
+                trace_map=base_trace_map(),
                 requirement_ids={"FR-001"},
                 adrs=accepted_adrs(),
                 repo_root=root,
@@ -408,7 +617,7 @@ class TraceabilityEntryTest(unittest.TestCase):
             (root / "src/user_service.py").write_text("pass\n", encoding="utf-8")
 
             errors, _ = validator.validate_traceability_entries(
-                report=base_report(),
+                trace_map=base_trace_map(),
                 requirement_ids={"FR-001"},
                 adrs=accepted_adrs(),
                 repo_root=root,
@@ -424,8 +633,10 @@ class TraceabilityEntryTest(unittest.TestCase):
         )
 
     def test_unknown_integration_case_fails(self) -> None:
-        report = base_report()
-        report["traceability"][0]["integration_tests"] = ["AI-IT-999"]
+        trace_map = base_trace_map()
+        trace_map["entries"][0]["integration_tests"] = [
+            {"case_id": "AI-IT-999"}
+        ]
 
         with self._repo_with_implementation() as temp:
             root = Path(temp)
@@ -433,7 +644,7 @@ class TraceabilityEntryTest(unittest.TestCase):
             (root / "src/user_service.py").write_text("pass\n", encoding="utf-8")
 
             errors, _ = validator.validate_traceability_entries(
-                report=report,
+                trace_map=trace_map,
                 requirement_ids={"FR-001"},
                 adrs=accepted_adrs(),
                 repo_root=root,
@@ -449,8 +660,8 @@ class TraceabilityEntryTest(unittest.TestCase):
         )
 
     def test_not_applicable_requires_reason(self) -> None:
-        report = base_report()
-        entry = report["traceability"][0]
+        trace_map = base_trace_map()
+        entry = trace_map["entries"][0]
         entry["unit_test_applicable"] = False
         entry["unit_tests"] = []
 
@@ -460,7 +671,7 @@ class TraceabilityEntryTest(unittest.TestCase):
             (root / "src/user_service.py").write_text("pass\n", encoding="utf-8")
 
             errors, _ = validator.validate_traceability_entries(
-                report=report,
+                trace_map=trace_map,
                 requirement_ids={"FR-001"},
                 adrs=accepted_adrs(),
                 repo_root=root,
@@ -571,7 +782,10 @@ class IssueTest(unittest.TestCase):
         )
 
         self.assertTrue(
-            any("recommended_route" in error and "IMPLEMENTATION" in error for error in errors)
+            any(
+                "recommended_route" in error and "IMPLEMENTATION" in error
+                for error in errors
+            )
         )
 
     def test_invalid_classification_fails(self) -> None:
@@ -645,6 +859,10 @@ class RequiredReportTest(unittest.TestCase):
                 "{}",
                 encoding="utf-8",
             )
+            (reports / "traceability-report.md").write_text(
+                "# report\n",
+                encoding="utf-8",
+            )
 
             errors = validator.validate_required_reports(
                 reports,
@@ -652,8 +870,143 @@ class RequiredReportTest(unittest.TestCase):
             )
 
         self.assertTrue(
-            any("traceability-report.md" in error for error in errors)
+            any("trace-map.json" in error for error in errors)
         )
+
+    def test_all_required_reports_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            reports = Path(temp)
+            for name in (
+                "trace-map.json",
+                "traceability-report.json",
+                "traceability-report.md",
+            ):
+                (reports / name).write_text(
+                    "{}" if name.endswith(".json") else "# report\n",
+                    encoding="utf-8",
+                )
+
+            errors = validator.validate_required_reports(
+                reports,
+                base_policy(),
+            )
+
+        self.assertEqual([], errors)
+
+
+class EndToEndValidateTest(unittest.TestCase):
+
+    def test_full_valid_repository_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+
+            requirements_dir = root / "docs/requirements"
+            features_dir = requirements_dir / "features"
+            adr_dir = root / "docs/adr"
+            src_dir = root / "src"
+            unit_report_dir = root / "reports/unit-test"
+            integration_report_dir = root / "reports/integration-test"
+            trace_report_dir = root / "reports/traceability"
+            policy_dir = root / ".github/skills/traceability-audit/policy"
+
+            for directory in (
+                requirements_dir,
+                features_dir,
+                adr_dir,
+                src_dir,
+                unit_report_dir,
+                integration_report_dir,
+                trace_report_dir,
+                policy_dir,
+            ):
+                directory.mkdir(parents=True, exist_ok=True)
+
+            (requirements_dir / "requirements.md").write_text(
+                "# Requirements\n\nFR-001\n",
+                encoding="utf-8",
+            )
+
+            (adr_dir / "ADR-001-test.md").write_text(
+                "# ADR-001\n\n"
+                "## Status\n\n"
+                "Accepted\n\n"
+                "## Related Requirements\n\n"
+                "- FR-001\n",
+                encoding="utf-8",
+            )
+
+            (src_dir / "user_service.py").write_text(
+                "def register_user():\n    pass\n",
+                encoding="utf-8",
+            )
+
+            (unit_report_dir / "unit-test-evidence.json").write_text(
+                json.dumps(unit_evidence()),
+                encoding="utf-8",
+            )
+            (unit_report_dir / "validation-result.json").write_text(
+                json.dumps({"status": "PASS"}),
+                encoding="utf-8",
+            )
+
+            (integration_report_dir / "integration-test-plan.json").write_text(
+                json.dumps(integration_plan()),
+                encoding="utf-8",
+            )
+            (integration_report_dir / "integration-test-evidence.json").write_text(
+                json.dumps(integration_evidence()),
+                encoding="utf-8",
+            )
+            (integration_report_dir / "validation-result.json").write_text(
+                json.dumps({"status": "PASS"}),
+                encoding="utf-8",
+            )
+
+            trace_map = base_trace_map()
+            report = base_report()
+
+            (trace_report_dir / "trace-map.json").write_text(
+                json.dumps(trace_map),
+                encoding="utf-8",
+            )
+            (trace_report_dir / "traceability-report.json").write_text(
+                json.dumps(report),
+                encoding="utf-8",
+            )
+            (trace_report_dir / "traceability-report.md").write_text(
+                "# Traceability Report\n",
+                encoding="utf-8",
+            )
+
+            policy_path = policy_dir / "traceability-policy.yaml"
+            policy_path.write_text(
+                yaml.safe_dump(
+                    base_policy(),
+                    allow_unicode=True,
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+
+            errors, result = validator.validate(
+                repo_root=root,
+                policy_path=policy_path,
+                requirements_file=requirements_dir / "requirements.md",
+                features_dir=features_dir,
+                adr_dir=adr_dir,
+                trace_map_path=trace_report_dir / "trace-map.json",
+                report_path=trace_report_dir / "traceability-report.json",
+                reports_dir=trace_report_dir,
+                unit_evidence_path=unit_report_dir / "unit-test-evidence.json",
+                unit_validation_path=unit_report_dir / "validation-result.json",
+                integration_plan_path=integration_report_dir / "integration-test-plan.json",
+                integration_evidence_path=integration_report_dir / "integration-test-evidence.json",
+                integration_validation_path=integration_report_dir / "validation-result.json",
+            )
+
+        self.assertEqual([], errors)
+        self.assertEqual("PASS", result["status"])
+        self.assertEqual(1, result["discovered"]["current_scope_adrs"])
 
 
 if __name__ == "__main__":

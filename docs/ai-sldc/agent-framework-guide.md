@@ -565,7 +565,39 @@ Deterministic Check:
 
 #### 目的（Traceability Auditor）
 
-以下の追跡可能性を監査します。
+Traceability Auditorは、
+現在のSource Artifactを解析し、
+成果物間の関係をDerived Trace Mapとして生成した上で、
+Traceabilityを意味的に監査します。
+
+```text
+Requirements / ADR / Code / Test
+              ↓
+      Traceability Auditor
+              ↓
+         trace-map.json
+         [Derived Index]
+          ↓          ↓
+ Semantic Audit   Validator
+          ↓          ↓
+   traceability-report.json
+```
+
+生成するTrace Map:
+
+```text
+reports/traceability/trace-map.json
+```
+
+Trace Mapは、
+Requirements、ADR、Production Code、
+Unit Test、Integration Testから再生成可能な
+Derived Indexです。
+
+Trace MapをRequirementsやAccepted ADRに代わる
+Source of Truthとして扱ってはいけません。
+
+基本Traceability:
 
 ```text
 Requirement
@@ -589,6 +621,65 @@ Integration Test
 - Coverage Evidence
 - Stale Evidence
 - Cross Phase Conflict
+
+#### Trace MapとReportの役割
+
+```text
+trace-map.json
+= 成果物間のMappingそのもの
+
+traceability-report.json
+= MappingおよびSource Artifactを監査した結果
+
+validation-result.json
+= Deterministic Validatorの実行結果
+```
+
+Trace Mapには、
+Requirement Reference、ADR、
+Implementation Mapping、
+Unit Test Mapping、
+Integration Test Mappingを保持します。
+
+Implementation Mappingでは、
+可能な範囲で以下を保持します。
+
+- file
+- symbol
+- qualified_name
+
+`file`は必須です。
+
+`symbol`および`qualified_name`は、
+対象Language / Frameworkで取得可能な場合に使用します。
+
+現行の共通Validatorでは、
+Implementation Fileの存在確認など
+Repository非依存で機械判定できる内容を検証します。
+
+Symbol / FQNのAST実在検証は、
+Language-specific Resolverを追加することで
+拡張可能な位置づけです。
+
+#### Derived Artifact Failureの扱い
+
+Trace Mapの構造不正、
+存在しないFileへのMapping、
+Trace MapとTraceability Reportの不整合など、
+Derived Artifact自体のValidation Failureだけを理由に、
+Requirements、ADR、Production Code、Test Codeを
+Trace Mapへ合わせて修正してはいけません。
+
+この場合は、
+Traceability Auditorを再実行し、
+現在のSource Artifactから
+Trace MapおよびTraceability Reportを再生成します。
+
+一方、
+Traceability ReportのSemantic Auditによって
+Source Artifact側の問題が特定された場合は、
+recommended_routeに従って
+Root Causeとなる工程へ差し戻します。
 
 #### Requirement IDを持たない項目
 
@@ -621,6 +712,12 @@ Deterministic Validation:
 
 ```text
 .github/skills/traceability-audit/scripts/validate_traceability.py
+```
+
+Validator Unit Test:
+
+```text
+.github/skills/traceability-audit/scripts/test_validate_traceability.py
 ```
 
 ---
@@ -816,6 +913,11 @@ flowchart TD
 Assurance対象Artifactが変更された場合は、
 Quality / Security / Traceabilityの古いPASSも再利用しません。
 
+Requirements、ADR、Production Code、
+Unit Test Code、Integration Test Codeが変更された場合、
+変更前のTrace Mapも再利用せず、
+現在のSource Artifactから再生成します。
+
 ---
 
 ## 11. Repository内の役割分担
@@ -877,6 +979,10 @@ Quality / Security / Traceabilityの古いPASSも再利用しません。
     ├── quality-review/
     ├── security-review/
     ├── traceability/
+    │   ├── trace-map.json
+    │   ├── traceability-report.json
+    │   ├── traceability-report.md
+    │   └── validation-result.json
     ├── failure-triage/
     └── sdlc/
 ```

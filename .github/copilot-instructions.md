@@ -229,6 +229,43 @@ Requirement
 → Unit Test
 → Integration Test
 
+Traceability Auditorは、
+現在のSource Artifactから
+以下のDerived Trace Mapを生成できます。
+
+`reports/traceability/trace-map.json`
+
+Trace Mapは、
+Requirements、ADR、Production Code、
+Unit Test、Integration Test間の関係を表す
+Derived Indexです。
+
+Trace Mapを
+RequirementsやAccepted ADRに代わる
+Source of Truthとして扱ってはいけません。
+
+Requirements、ADR、Production Code、
+Unit Test、Integration Testが変更された場合、
+変更前のTrace Mapを
+変更後Artifactに対する正しいMapとして
+そのまま再利用してはいけません。
+
+Traceability Auditorによる再監査時に、
+現在のSource Artifactから
+Trace Mapを再生成してください。
+
+Producer Agentへ
+Trace Mapの手動維持を要求してはいけません。
+
+Trace MapまたはTraceability Reportの
+構造・参照実在性に関するValidator Failureだけを理由に、
+Requirements、ADR、Production Code、Test Codeを
+Trace Mapへ合わせる目的で修正してはいけません。
+
+Derived Artifact側の不整合である場合は、
+現在のSource Artifactから
+Trace MapおよびTraceability Reportを再生成してください。
+
 既存IDを変更して
 Traceability Failureを隠してはいけない。
 

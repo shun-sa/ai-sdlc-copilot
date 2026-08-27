@@ -2,19 +2,19 @@
 """
 Traceability Validator
 
-Traceability Auditor が生成した監査Reportを、Repository内の実Artifactと
-Test Evidenceに照合して決定論的にQuality Gate判定する。
+Traceability Auditorが生成したTrace Mapおよび監査Reportを、
+Repository内の実ArtifactとTest Evidenceに照合し、
+決定論的にQuality Gate判定する。
 
 Exit Code:
     0: PASS
     1: FAIL
 
-Dependency:
-    PyYAML
-
 Notes:
-- 「対応内容が意味的に正しいか」は Traceability Auditor が監査する。
-- 本Validatorは参照実在性、構造、Coverage、Policy整合を機械的に検証する。
+- 対応内容が意味的に正しいかはTraceability Auditorが監査する。
+- 本ValidatorはTrace Map構造、参照実在性、Coverage、
+  Report整合、Policy整合を機械的に検証する。
+- Trace MapはDerived IndexでありSource of Truthではない。
 """
 
 from __future__ import annotations
@@ -114,6 +114,23 @@ def nearly_equal(a: Any, b: Any, tolerance: float = 0.01) -> bool:
 def scope_includes(scope: str, target: str) -> bool:
     return SCOPE_LEVEL[scope] >= SCOPE_LEVEL[target]
 
+def current_adr_statuses(
+    policy: dict[str, Any],
+    scope: str,
+) -> set[str]:
+
+    key = (
+        "architecture_scope_status"
+        if scope == "ARCHITECTURE"
+        else "downstream_status"
+    )
+
+    return {
+        value.lower()
+        for value in as_string_list(
+            nested_get(policy, ["adr", key], [])
+        )
+    }
 
 def write_result(path: Path, result: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -139,6 +156,7 @@ def validate_policy(policy: dict[str, Any]) -> list[str]:
         ["requirements", "require_existing_reference"],
         ["global_requirements", "allow_source_reference_without_id"],
         ["global_requirements", "allow_generated_id"],
+        ["adr", "architecture_scope_status"],
         ["adr", "downstream_status"],
         ["adr", "require_related_requirements"],
         ["adr", "allow_invalid_requirement_reference"],
@@ -161,6 +179,15 @@ def validate_policy(policy: dict[str, Any]) -> list[str]:
         ["routing"],
         ["reports", "directory"],
         ["reports", "required"],
+        ["trace_map", "required"],
+        ["trace_map", "path"],
+        ["trace_map", "version"],
+        ["trace_map", "derived"],
+        ["trace_map", "allow_as_source_of_truth"],
+        ["trace_map", "require_regeneration_on_source_change"],
+        ["symbol_validation", "validate_symbol_when_present"],
+        ["symbol_validation", "validate_qualified_name_when_present"],
+        ["symbol_validation", "fail_when_resolver_unavailable"],
     ]
 
     for keys in required_paths:
@@ -362,6 +389,49 @@ def collect_case_ids(node: Any) -> set[str]:
         {"case_id", "test_id", "test_name", "test"},
     )
 
+def collect_unit_test_mapping_ids(
+    mappings: Any,
+) -> list[str]:
+    result: list[str] = []
+
+    for mapping in as_list(mappings):
+        if isinstance(mapping, str):
+            value = mapping.strip()
+            if value:
+                result.append(value)
+
+        elif isinstance(mapping, dict):
+            value = str(
+                mapping.get("test_id", "")
+            ).strip()
+
+            if value:
+                result.append(value)
+
+    return result
+
+
+def collect_integration_test_mapping_ids(
+    mappings: Any,
+) -> list[str]:
+    result: list[str] = []
+
+    for mapping in as_list(mappings):
+        if isinstance(mapping, str):
+            value = mapping.strip()
+            if value:
+                result.append(value)
+
+        elif isinstance(mapping, dict):
+            value = str(
+                mapping.get("case_id", "")
+            ).strip()
+
+            if value:
+                result.append(value)
+
+    return result
+
 
 # ============================================================
 # ADR Validation
@@ -379,12 +449,7 @@ def validate_adrs(
     if not scope_includes(scope, "ARCHITECTURE"):
         return errors
 
-    current_statuses = {
-        value.lower()
-        for value in as_string_list(
-            nested_get(policy, ["adr", "downstream_status"], ["Accepted"])
-        )
-    }
+    current_statuses = current_adr_statuses(policy, scope)
 
     require_related = bool(
         nested_get(policy, ["adr", "require_related_requirements"], True)
@@ -400,7 +465,7 @@ def validate_adrs(
 
         related = set(adr.get("related_requirements", []))
         if require_related and not related:
-            errors.append(f"{adr_id}: Accepted ADR has no Related Requirements.")
+            errors.append(f"{adr_id}: Current-scope ADR has no Related Requirements.")
 
         if not allow_invalid:
             for requirement_id in sorted(related):
@@ -430,9 +495,86 @@ def validate_report_header(report: dict[str, Any]) -> tuple[list[str], str]:
 
     return errors, scope
 
+def validate_trace_map_header(
+    trace_map: dict[str, Any],
+    report_scope: str,
+    policy: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+
+    expected_version = nested_get(
+        policy,
+        ["trace_map", "version"],
+        1,
+    )
+
+    if trace_map.get("version") != expected_version:
+        errors.append(
+            "trace-map.json version does not match policy."
+        )
+
+    map_scope = str(
+        trace_map.get("audit_scope", "")
+    ).upper()
+
+    if map_scope != report_scope:
+        errors.append(
+            "trace-map.json audit_scope does not match "
+            "traceability-report.json."
+        )
+
+    entries = trace_map.get("entries")
+    if not isinstance(entries, list):
+        errors.append(
+            "trace-map.json must contain entries array."
+        )
+
+    return errors
+
+def validate_trace_map_reference(
+    report: dict[str, Any],
+    trace_map: dict[str, Any],
+    policy: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+
+    reference = report.get("trace_map")
+
+    if not isinstance(reference, dict):
+        return [
+            "traceability-report.json must contain trace_map reference."
+        ]
+
+    expected_path = str(
+        nested_get(
+            policy,
+            ["trace_map", "path"],
+            "reports/traceability/trace-map.json",
+        )
+    )
+
+    if str(reference.get("path", "")).strip() != expected_path:
+        errors.append(
+            "traceability-report.json trace_map.path "
+            "does not match policy."
+        )
+
+    if reference.get("version") != trace_map.get("version"):
+        errors.append(
+            "Trace Map version mismatch between "
+            "traceability-report.json and trace-map.json."
+        )
+
+    if "traceability" in report:
+        errors.append(
+            "traceability-report.json must not contain "
+            "traceability mappings. Use trace-map.json instead."
+        )
+
+    return errors
 
 def validate_traceability_entries(
-    report: dict[str, Any],
+    trace_map: dict[str, Any],
     requirement_ids: set[str],
     adrs: dict[str, dict[str, Any]],
     repo_root: Path,
@@ -442,22 +584,23 @@ def validate_traceability_entries(
     policy: dict[str, Any],
     scope: str,
 ) -> tuple[list[str], dict[str, Any]]:
+    
     errors: list[str] = []
 
-    entries = report.get("traceability")
+    entries = trace_map.get("entries")
     if not isinstance(entries, list):
-        return ["traceability-report.json must contain traceability array."], {}
+        return ["trace-map.json must contain entries array."], {}
 
-    current_statuses = {
-        value.lower()
-        for value in as_string_list(
-            nested_get(policy, ["adr", "downstream_status"], ["Accepted"])
-        )
-    }
-    accepted_adrs = {
+    current_statuses = current_adr_statuses(
+        policy,
+        scope,
+    )
+
+    current_adrs = {
         adr_id
         for adr_id, adr in adrs.items()
-        if str(adr.get("status", "")).lower() in current_statuses
+        if str(adr.get("status", "")).lower()
+        in current_statuses
     }
 
     unit_requirement_refs = (
@@ -533,9 +676,10 @@ def validate_traceability_entries(
                     f"{requirement_ref}: Referenced ADR does not exist: {adr_id}"
                 )
                 continue
-            if adr_id not in accepted_adrs:
+            if adr_id not in current_adrs:
                 errors.append(
-                    f"{requirement_ref}: ADR is not an Accepted/current ADR: {adr_id}"
+                    f"{requirement_ref}: "
+                    f"ADR is not valid for the current audit scope: {adr_id}"
                 )
             if (
                 is_existing_id
@@ -605,7 +749,9 @@ def validate_traceability_entries(
 
         # Unit Test mapping
         unit_applicable = bool(entry.get("unit_test_applicable", True))
-        unit_tests = as_string_list(entry.get("unit_tests"))
+        unit_tests = collect_unit_test_mapping_ids(
+            entry.get("unit_tests")
+        )
 
         if scope_includes(scope, "UNIT_TEST") and unit_applicable:
             unit_total += 1
@@ -642,7 +788,9 @@ def validate_traceability_entries(
         integration_applicable = bool(
             entry.get("integration_test_applicable", True)
         )
-        integration_tests = as_string_list(entry.get("integration_tests"))
+        integration_tests = collect_integration_test_mapping_ids(
+            entry.get("integration_tests")
+        )
 
         if scope_includes(scope, "INTEGRATION_TEST") and integration_applicable:
             integration_total += 1
@@ -984,6 +1132,7 @@ def validate(
     requirements_file: Path,
     features_dir: Path,
     adr_dir: Path,
+    trace_map_path: Path,
     report_path: Path,
     reports_dir: Path,
     unit_evidence_path: Path,
@@ -1004,11 +1153,33 @@ def validate(
     errors.extend(validate_required_reports(reports_dir, policy))
 
     report = read_json(report_path)
+
     header_errors, scope = validate_report_header(report)
     errors.extend(header_errors)
 
     if scope not in AUDIT_SCOPES:
-        return errors, {"status": "FAIL", "errors": errors}
+        return errors, {
+            "status": "FAIL",
+            "errors": errors,
+        }
+
+    trace_map = read_json(trace_map_path)
+
+    errors.extend(
+        validate_trace_map_header(
+            trace_map,
+            scope,
+            policy,
+        )
+    )
+
+    errors.extend(
+        validate_trace_map_reference(
+            report,
+            trace_map,
+            policy,
+        )
+    )
 
     requirement_ids, _ = discover_requirement_ids(
         requirements_file,
@@ -1074,7 +1245,7 @@ def validate(
             )
 
     entry_errors, metrics = validate_traceability_entries(
-        report=report,
+        trace_map=trace_map,
         requirement_ids=requirement_ids,
         adrs=adrs,
         repo_root=repo_root,
@@ -1085,7 +1256,14 @@ def validate(
         scope=scope,
     )
     errors.extend(entry_errors)
-    errors.extend(validate_coverage(report, metrics, policy, scope))
+    errors.extend(
+        validate_coverage(
+            report,
+            metrics,
+            policy,
+            scope,
+        )
+    )
 
     issue_errors, blocking_issue_count = validate_issues(
         report,
@@ -1113,20 +1291,14 @@ def validate(
         "audit_scope": scope,
         "discovered": {
             "requirements": len(requirement_ids),
-            "accepted_or_current_adrs": sum(
+            "current_scope_adrs": sum(
                 1
                 for adr in adrs.values()
                 if str(adr.get("status", "")).lower()
-                in {
-                    item.lower()
-                    for item in as_string_list(
-                        nested_get(
-                            policy,
-                            ["adr", "downstream_status"],
-                            ["Accepted"],
-                        )
-                    )
-                }
+                in current_adr_statuses(
+                    policy,
+                    scope,
+                )
             ),
         },
         "coverage": metrics,
@@ -1167,6 +1339,10 @@ def parse_args() -> argparse.Namespace:
         default="docs/requirements/features",
     )
     parser.add_argument("--adr-dir", default="docs/adr")
+    parser.add_argument(
+        "--trace-map",
+        default="reports/traceability/trace-map.json",
+    )
     parser.add_argument(
         "--report",
         default="reports/traceability/traceability-report.json",
@@ -1220,6 +1396,7 @@ def main() -> int:
             requirements_file=resolve(args.requirements),
             features_dir=resolve(args.features_dir),
             adr_dir=resolve(args.adr_dir),
+            trace_map_path=resolve(args.trace_map),
             report_path=resolve(args.report),
             reports_dir=resolve(args.reports_dir),
             unit_evidence_path=resolve(args.unit_evidence),

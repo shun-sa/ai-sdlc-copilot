@@ -1,8 +1,10 @@
 ---
 name: traceability-audit
 description: >
-  Requirements、Accepted ADR、Production Code、
-  Unit Test、Integration Test間のTraceabilityを監査するSkill。
+  Requirements、Architecture Decision、Production Code、
+  Unit Test、Integration Testを解析し、
+  Derived Trace Mapを生成するとともに、
+  成果物間のTraceabilityを監査するSkill。
   前方向・逆方向のTraceability、参照切れ、孤立Artifact、
   Test Coverage Evidence、Stale Evidenceを確認し、
   問題の原因工程を特定する。
@@ -24,6 +26,21 @@ Requirement
 
 が意味的にも成立していることを確認することです。
 
+また、
+現在のSource Artifactから成果物間の関係を抽出し、
+
+`reports/traceability/trace-map.json`
+
+として生成します。
+
+Trace Mapは、
+Source Artifactから再生成可能なDerived Indexであり、
+Source of Truthではありません。
+
+既存Trace Mapを
+現在も正しいMappingであるという前提で
+再利用してはいけません。
+
 
 # Policy
 
@@ -36,10 +53,11 @@ Requirement
 
 以下へ出力してください。
 
+`reports/traceability/trace-map.json`
+
 `reports/traceability/traceability-report.json`
 
 `reports/traceability/traceability-report.md`
-
 
 # Procedure
 
@@ -146,9 +164,48 @@ ADRを強制してはいけません。
 
 Production Codeを調査してください。
 
-RequirementおよびAccepted ADRが
-どのFile、Class、Function、Module等へ
-実装されているか確認します。
+Requirementおよび
+現在のScopeで有効なADRが
+どのProduction Artifactへ実装されているか確認します。
+
+Implementation Mappingには、
+可能な範囲で以下を保持してください。
+
+- file
+- symbol
+- qualified_name
+
+`file`は必須です。
+
+`symbol`は、
+Class、Method、Function、Component等を
+識別できる場合に記録してください。
+
+`qualified_name`は、
+対象Language / Frameworkで
+安定したQualified Nameを取得可能な場合に記録してください。
+
+例:
+
+Java:
+
+`com.example.user.UserService.registerUser`
+
+TypeScript:
+
+file:
+
+`src/features/user/useCreateUser.ts`
+
+symbol:
+
+`useCreateUser`
+
+qualified_nameを取得できないことだけを理由に
+Traceability Failureとしてはいけません。
+
+存在しないsymbolやqualified_nameを
+推測で生成してはいけません。
 
 
 ## Step 9. Requirement → Implementationを確認する
@@ -181,6 +238,16 @@ Production Codeへ反映されているか確認してください。
 
 Unit Test Codeも必要に応じて確認してください。
 
+Unit Test CodeとのMappingを特定できる場合は、
+以下を取得してください。
+
+- test_id
+- file
+- symbol
+- qualified_name
+
+qualified_nameは取得可能な場合のみ使用してください。
+存在しない値を推測してはいけません。
 
 ## Step 12. Requirement → Unit Testを確認する
 
@@ -264,19 +331,71 @@ Requirementへ戻れることを確認してください。
 
 として扱います。
 
+## Step 19. Trace Mapを生成する
 
-## Step 19. Coverage整合性を確認する
+ここまでに確認した
+現在のSource Artifactから、
+Trace Mapを生成してください。
+
+出力:
+
+`reports/traceability/trace-map.json`
+
+最低限以下を保持してください。
+
+- version
+- audit_scope
+- requirement_reference
+- ADR
+- Implementation Mapping
+- Unit Test Mapping
+- Integration Test Mapping
+
+Implementation Mappingでは、
+可能な場合、
+
+- file
+- symbol
+- qualified_name
+
+を保持してください。
+
+Unit Test Mappingでは、
+可能な場合、
+
+- test_id
+- file
+- symbol
+- qualified_name
+
+を保持してください。
+
+Integration Test Mappingでは、
+Test Case IDを保持してください。
+
+既存Trace Mapが存在していても、
+そのMappingを現在も正しいものとして
+そのまま継承してはいけません。
+
+現在のSource Artifactを基準として
+Trace Mapを再生成してください。
+
+既存Trace Mapは、
+Stale Mappingを調査するための
+参考情報として使用できます。
+
+## Step 20. Coverage整合性を確認する
 
 Unit Test Evidence、
 Integration Test Evidence、
-Coverage Gap Report等のCoverage情報と
-実際のMappingを比較してください。
+Coverage Gap Report等のCoverage情報と、
+生成したTrace MapのMappingを比較してください。
 
 自己申告されたCoverage率だけで
 PASS判定してはいけません。
 
 
-## Step 20. Stale Evidenceを確認する
+## Step 21. Stale Evidenceを確認する
 
 Requirements、
 Accepted ADR、
@@ -288,7 +407,7 @@ Production Codeが変更された後に
 `STALE_EVIDENCE`
 
 
-## Step 21. Orphan ADRを確認する
+## Step 22. Orphan ADRを確認する
 
 Accepted ADRが、
 RequirementにもImplementationにも
@@ -299,7 +418,7 @@ RequirementにもImplementationにも
 `ORPHAN_ADR`
 
 
-## Step 22. Conflictを確認する
+## Step 23. Conflictを確認する
 
 同一Requirementについて、
 
@@ -315,7 +434,7 @@ Integration Test
 `TRACEABILITY_CONFLICT`
 
 
-## Step 23. Issueを集約する
+## Step 24. Issueを集約する
 
 同じRoot CauseによるIssueは、
 必要に応じて1つのIssueへ集約してください。
@@ -323,7 +442,7 @@ Integration Test
 ただし影響Artifactを失わないようにしてください。
 
 
-## Step 24. Recommended Routeを決定する
+## Step 25. Recommended Routeを決定する
 
 IssueのRoot Causeが存在する
 最上流工程を選択してください。
@@ -335,7 +454,7 @@ UNIT_TEST
 INTEGRATION_TEST
 
 
-## Step 25. Coverageを算出する
+## Step 26. Coverageを算出する
 
 最低限以下を算出してください。
 
@@ -350,14 +469,25 @@ Integration Test対象外の場合は
 妥当なN/Aを除外して計算してください。
 
 
-## Step 26. JSON Reportを生成する
+## Step 27. JSON Reportを生成する
 
 以下へ生成してください。
 
 `reports/traceability/traceability-report.json`
 
+Traceability Mapping本体は
+`trace-map.json`を正としてください。
 
-## Step 27. Markdown Reportを生成する
+`traceability-report.json`には、
+Trace Mapそのものを重複保持せず、
+最低限以下の参照を保持してください。
+
+trace_map:
+  path: reports/traceability/trace-map.json
+  version: 1
+
+
+## Step 28. Markdown Reportを生成する
 
 以下へ生成してください。
 
@@ -377,7 +507,7 @@ Integration Test対象外の場合は
 - Recommended Route
 
 
-## Step 28. Final判定
+## Step 29. Final判定
 
 Policyを確認してください。
 
@@ -392,14 +522,21 @@ PASSとしてください。
 基本Traceability:
 
 Requirements
-→ Accepted ADR
+→ Scope上有効なADR
 → Implementation
 → Unit Test
 → Integration Test
 
+`audit_scope=ARCHITECTURE`では、
+Acceptance候補となるProposed ADRを
+Traceability監査対象として扱います。
+
+Implementation以降では、
+Accepted ADRのみを
+現在有効なArchitecture Decisionとして扱います。
+
 ただしADRは
 すべてのRequirementへ必須ではありません。
-
 
 # Forward Traceability
 
@@ -448,15 +585,23 @@ FileとHeadingを使用してください。
 Audit Failureを
 Traceability Auditor自身で修正してはいけません。
 
+ただし、
+
+`reports/traceability/trace-map.json`
+
+およびTraceability Reportは
+このSkill自身の生成物であるため、
+生成・再生成して構いません。
+
 Issueごとにrecommended_routeを設定し、
 SDLC Orchestratorへ返してください。
-
 
 # Completion
 
 以下を満たすまで完了してはいけません。
 
 - 必要なArtifactをすべて監査
+- Trace Map生成
 - Forward Traceability確認
 - Reverse Traceability確認
 - Invalid Reference確認
