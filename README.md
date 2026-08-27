@@ -102,7 +102,7 @@ flowchart TB
 ## Agent Roles
 
 | Agent | Role |
-|---|---|
+| --- | --- |
 | SDLC Orchestrator | Agent起動、Phase遷移、Validator、Assurance、Routing、Invalidation、Final Assuranceを制御 |
 | Requirements Agent | Requirementを定義・更新 |
 | Architecture Agent | 重要なArchitecture DecisionをADRとして定義 |
@@ -111,7 +111,7 @@ flowchart TB
 | Integration Test Agent | Integration BehaviorとExternal Test Caseを含むIntegration Testを作成・実行 |
 | Quality Review Agent | SDLC成果物の意味的品質を独立レビュー |
 | Security Review Agent | Security品質を独立監査 |
-| Traceability Auditor | RequirementからTestまでのTraceabilityを監査 |
+| Traceability Auditor | Source ArtifactからDerived Trace Mapを生成し、RequirementからTestまでのTraceabilityを監査 |
 | Failure Triage Agent | 同一Root CauseのFailureが収束しない場合に原因と戻り先を診断 |
 
 ---
@@ -121,7 +121,7 @@ flowchart TB
 本Frameworkでは、責務を以下のように分離しています。
 
 | Component | Responsibility |
-|---|---|
+| --- | --- |
 | Agent | **WHO**：誰が責務を持つか |
 | Skill | **HOW**：具体的にどう作業するか |
 | Template | **WHAT**：成果物をどの構造で作るか |
@@ -201,19 +201,73 @@ Secret値そのものをReportへ出力してはいけません。
 
 ### Traceability Audit
 
-以下のForward / Reverse Traceabilityを確認します。
+Traceability Auditorは、
+Requirements、ADR、Production Code、Unit Test、Integration Testを解析し、
+Semantic AuditとAST解析を組み合わせてTraceabilityを監査します。
+
+まずSource Code / Test Codeから決定論的なAST Evidenceを生成します。
 
 ```text
-Requirement
-  ↓
-ADR
-  ↓
-Implementation
-  ↓
-Unit Test
-  ↓
-Integration Test
+reports/traceability/ast-index.json
 ```
+
+そのEvidenceとRequirements / ADRを統合し、Derived Trace Mapを生成します。
+
+```text
+reports/traceability/trace-map.json
+```
+
+AST IndexとTrace MapはいずれもSource Artifactから再生成可能なDerived Artifactであり、
+RequirementsやADRのSource of Truthではありません。
+
+```mermaid
+flowchart LR
+    SRC[Requirements / ADR / Code / Test]
+    AST[AST Analyzers]
+    IDX[ast-index.json]
+    T[Traceability Auditor]
+    MAP[trace-map.json]
+    R[traceability-report.json]
+    V[Traceability Validator]
+
+    SRC --> AST --> IDX
+    SRC --> T
+    IDX --> T
+    T --> MAP
+    T --> R
+    IDX --> V
+    MAP --> V
+    R --> V
+```
+
+AST Analyzerは以下を標準対応します。
+
+- Python: Python標準`ast`
+- Java: JDK Compiler Tree API
+- TypeScript / JavaScript: TypeScript Compiler API
+
+Traceability Validatorは、意味判断ではなく以下を決定論的に確認します。
+
+- Requirement / ADR Referenceの実在
+- Implementation File / Symbol / qualified_nameの実在
+- AST IndexのSource Fingerprint整合
+- Trace Mapに紐付かないPublic Production Symbol
+- Unit Test → Production CodeのCall Trace
+- Unit Test Assertionの存在
+- Unit Test Mappingの`implementation_targets` / `assertion_count`
+- Integration Test Caseの実在
+- Coverage / Report整合
+
+Trace Map v2では、AST対応SourceについてImplementation Mappingに
+`file / symbol / qualified_name`を保持します。
+Unit Test Mappingには加えて
+`implementation_targets / assertion_count`を保持します。
+
+Traceability維持だけを目的にProduction/Test CodeへRequirement IDやADR IDコメントを埋め込みません。
+実装構造の識別情報はDerived Trace Mapで管理します。
+
+Derived Artifact自体の不整合を理由に、Source ArtifactをMapへ合わせて修正してはいけません。
+この場合は現在のSource ArtifactからAST Index / Trace Map / Reportを再生成します。
 
 ---
 
@@ -256,7 +310,7 @@ Failureは発生した工程ではなく、
 Root Causeに基づいてRoutingします。
 
 | Classification | Route |
-|---|---|
+| --- | --- |
 | REQUIREMENT_ERROR | Requirements |
 | ADR_REQUIRED | Architecture |
 | IMPLEMENTATION_ERROR | Implementation |
@@ -329,7 +383,7 @@ AI自身の判断で「External Caseなし」として処理を継続せず、
 変更前の後続PASSをそのまま利用しません。
 
 | Changed Artifact | Re-validation |
-|---|---|
+| --- | --- |
 | Requirements | Architecture以降 |
 | Accepted ADR | Implementation以降 |
 | Production Code | 影響するUnit Test / Integration Test |
@@ -338,6 +392,11 @@ AI自身の判断で「External Caseなし」として処理を継続せず、
 
 Assurance対象Artifactが変更された場合は、
 Quality / Security / Traceabilityの既存PASSも再利用せず再監査します。
+
+Requirements、ADR、Production Code、Unit Test Code、
+Integration Test Codeが変更された場合は、
+変更前の`trace-map.json`も再利用せず、
+現在のSource Artifactから再生成します。
 
 ---
 
@@ -386,6 +445,11 @@ Quality / Security / Traceabilityの既存PASSも再利用せず再監査しま�
     ├── quality-review/
     ├── security-review/
     ├── traceability/
+    │   ├── ast-index.json
+    │   ├── trace-map.json
+    │   ├── traceability-report.json
+    │   ├── traceability-report.md
+    │   └── validation-result.json
     ├── failure-triage/
     └── sdlc/
 ```
@@ -397,9 +461,9 @@ Quality / Security / Traceabilityの既存PASSも再利用せず再監査しま�
 変更したい内容に応じて、変更先を分けます。
 
 | 変更したい内容 | 主な変更先 |
-|---|---|
+| --- | --- |
 | Project全体の不変ルール | `.github/copilot-instructions.md` |
-| SDLC順序 / Routing / Invalidation | `.github/agents/orchestrator/sdlc-orchestrator.agent.md` |
+| SDLC順序 / Routing / Invalidation | `.github/agents/sdlc-orchestrator.agent.md` |
 | Agentの責務・Input・Output | `.github/agents/**/<agent>.agent.md` |
 | Agentの具体的な作業手順 | `.github/skills/<skill>/SKILL.md` |
 | PASS / FAIL / Severity / Routing基準 | `.github/skills/<skill>/policy/` |

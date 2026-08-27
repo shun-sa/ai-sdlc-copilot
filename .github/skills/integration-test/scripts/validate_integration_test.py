@@ -3390,80 +3390,6 @@ def validate_error_report(
 
     return errors
 
-def validate_external_input(
-    evidence: dict[str, Any],
-    policy: dict[str, Any],
-) -> list[str]:
-
-    errors: list[str] = []
-
-    external_input = evidence.get(
-        "external_input",
-        {},
-    )
-
-    provided = bool(
-        external_input.get(
-            "provided",
-            False,
-        )
-    )
-
-    confirmed_without_external = bool(
-        external_input.get(
-            "user_confirmed_without_external_cases",
-            False,
-        )
-    )
-
-    require_user_decision = bool(
-        nested_get(
-            policy,
-            [
-                "external_cases",
-                "missing_input",
-                "require_user_decision",
-            ],
-            True,
-        )
-    )
-
-    allow_implicit = bool(
-        nested_get(
-            policy,
-            [
-                "external_cases",
-                "missing_input",
-                "allow_implicit_no_external_cases",
-            ],
-            False,
-        )
-    )
-
-    if (
-        not provided
-        and require_user_decision
-        and not confirmed_without_external
-        and not allow_implicit
-    ):
-        errors.append(
-            "External test cases were not provided "
-            "and the user did not explicitly confirm "
-            "continuation without external cases."
-        )
-
-    if (
-        provided
-        and confirmed_without_external
-    ):
-        errors.append(
-            "external_input is inconsistent: "
-            "provided=true and "
-            "user_confirmed_without_external_cases=true."
-        )
-
-    return errors
-
 # ============================================================
 # Environment / Database
 # ============================================================
@@ -3977,6 +3903,7 @@ def validate(
     errors.extend(
     validate_external_input(
         evidence,
+        case_map,
         policy,
     )
 )

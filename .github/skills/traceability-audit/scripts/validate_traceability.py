@@ -2,19 +2,19 @@
 """
 Traceability Validator
 
-Traceability Auditor が生成した監査Reportを、Repository内の実Artifactと
-Test Evidenceに照合して決定論的にQuality Gate判定する。
+Traceability Auditorが生成したTrace Mapおよび監査Reportを、
+Repository内の実ArtifactとTest Evidenceに照合し、
+決定論的にQuality Gate判定する。
 
 Exit Code:
     0: PASS
     1: FAIL
 
-Dependency:
-    PyYAML
-
 Notes:
-- 「対応内容が意味的に正しいか」は Traceability Auditor が監査する。
-- 本Validatorは参照実在性、構造、Coverage、Policy整合を機械的に検証する。
+- 対応内容が意味的に正しいかはTraceability Auditorが監査する。
+- 本ValidatorはTrace Map構造、参照実在性、Coverage、
+  Report整合、Policy整合を機械的に検証する。
+- Trace MapはDerived IndexでありSource of Truthではない。
 """
 
 from __future__ import annotations
@@ -27,6 +27,24 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+
+from traceability_ast import (
+    AST_INDEX_VERSION,
+    analyze_repository,
+    analyzer_language_for_file,
+    canonical_index,
+    find_symbol,
+    find_test_record_for_mapping,
+    mapped_production_targets,
+    orphan_production_symbols,
+    production_call_graph,
+    reachable_targets,
+    resolve_known_targets,
+    resolved_call_targets,
+    symbol_index_by_qn,
+    symbols_for_file,
+    test_file_record,
+)
 
 AUDIT_SCOPES = {
     "ARCHITECTURE",
@@ -114,6 +132,23 @@ def nearly_equal(a: Any, b: Any, tolerance: float = 0.01) -> bool:
 def scope_includes(scope: str, target: str) -> bool:
     return SCOPE_LEVEL[scope] >= SCOPE_LEVEL[target]
 
+def current_adr_statuses(
+    policy: dict[str, Any],
+    scope: str,
+) -> set[str]:
+
+    key = (
+        "architecture_scope_status"
+        if scope == "ARCHITECTURE"
+        else "downstream_status"
+    )
+
+    return {
+        value.lower()
+        for value in as_string_list(
+            nested_get(policy, ["adr", key], [])
+        )
+    }
 
 def write_result(path: Path, result: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -139,6 +174,7 @@ def validate_policy(policy: dict[str, Any]) -> list[str]:
         ["requirements", "require_existing_reference"],
         ["global_requirements", "allow_source_reference_without_id"],
         ["global_requirements", "allow_generated_id"],
+        ["adr", "architecture_scope_status"],
         ["adr", "downstream_status"],
         ["adr", "require_related_requirements"],
         ["adr", "allow_invalid_requirement_reference"],
@@ -161,6 +197,41 @@ def validate_policy(policy: dict[str, Any]) -> list[str]:
         ["routing"],
         ["reports", "directory"],
         ["reports", "required"],
+        ["trace_map", "required"],
+        ["trace_map", "path"],
+        ["trace_map", "version"],
+        ["trace_map", "derived"],
+        ["trace_map", "allow_as_source_of_truth"],
+        ["trace_map", "require_regeneration_on_source_change"],
+        ["symbol_validation", "validate_symbol_when_present"],
+        ["symbol_validation", "validate_qualified_name_when_present"],
+        ["symbol_validation", "require_symbol_for_supported_source"],
+        ["symbol_validation", "require_qualified_name_for_supported_source"],
+        ["symbol_validation", "fail_when_resolver_unavailable"],
+        ["ast_index", "required"],
+        ["ast_index", "path"],
+        ["ast_index", "version"],
+        ["ast_index", "derived"],
+        ["ast_index", "allow_as_source_of_truth"],
+        ["source_analysis", "enabled"],
+        ["source_analysis", "production_roots"],
+        ["source_analysis", "test_roots"],
+        ["source_analysis", "test_file_patterns"],
+        ["source_analysis", "include_extensions"],
+        ["source_analysis", "exclude_globs"],
+        ["implementation_analysis", "detect_orphan_symbols"],
+        ["implementation_analysis", "candidate_kinds"],
+        ["implementation_analysis", "ignore_private_symbols"],
+        ["code_test_traceability", "enabled"],
+        ["code_test_traceability", "require_test_file_mapping"],
+        ["code_test_traceability", "require_test_symbol_mapping"],
+        ["code_test_traceability", "require_call_to_mapped_implementation"],
+        ["code_test_traceability", "allow_transitive_calls"],
+        ["code_test_traceability", "max_call_depth"],
+        ["code_test_traceability", "require_assertion"],
+        ["code_test_traceability", "require_trace_map_targets"],
+        ["code_test_traceability", "require_trace_map_assertion_count"],
+        ["orphan_artifacts", "allow_orphan_implementation"],
     ]
 
     for keys in required_paths:
@@ -181,6 +252,17 @@ def validate_policy(policy: dict[str, Any]) -> list[str]:
                 errors.append(".".join(keys) + " must be between 0 and 100.")
         except (TypeError, ValueError):
             errors.append(".".join(keys) + " must be numeric.")
+
+    try:
+        max_depth = int(
+            nested_get(policy, ["code_test_traceability", "max_call_depth"], 5)
+        )
+        if max_depth < 0 or max_depth > 50:
+            errors.append(
+                "code_test_traceability.max_call_depth must be between 0 and 50."
+            )
+    except (TypeError, ValueError):
+        errors.append("code_test_traceability.max_call_depth must be an integer.")
 
     allowed = set(
         as_string_list(nested_get(policy, ["issue_classification", "allowed"], []))
@@ -362,6 +444,49 @@ def collect_case_ids(node: Any) -> set[str]:
         {"case_id", "test_id", "test_name", "test"},
     )
 
+def collect_unit_test_mapping_ids(
+    mappings: Any,
+) -> list[str]:
+    result: list[str] = []
+
+    for mapping in as_list(mappings):
+        if isinstance(mapping, str):
+            value = mapping.strip()
+            if value:
+                result.append(value)
+
+        elif isinstance(mapping, dict):
+            value = str(
+                mapping.get("test_id", "")
+            ).strip()
+
+            if value:
+                result.append(value)
+
+    return result
+
+
+def collect_integration_test_mapping_ids(
+    mappings: Any,
+) -> list[str]:
+    result: list[str] = []
+
+    for mapping in as_list(mappings):
+        if isinstance(mapping, str):
+            value = mapping.strip()
+            if value:
+                result.append(value)
+
+        elif isinstance(mapping, dict):
+            value = str(
+                mapping.get("case_id", "")
+            ).strip()
+
+            if value:
+                result.append(value)
+
+    return result
+
 
 # ============================================================
 # ADR Validation
@@ -379,12 +504,7 @@ def validate_adrs(
     if not scope_includes(scope, "ARCHITECTURE"):
         return errors
 
-    current_statuses = {
-        value.lower()
-        for value in as_string_list(
-            nested_get(policy, ["adr", "downstream_status"], ["Accepted"])
-        )
-    }
+    current_statuses = current_adr_statuses(policy, scope)
 
     require_related = bool(
         nested_get(policy, ["adr", "require_related_requirements"], True)
@@ -400,7 +520,7 @@ def validate_adrs(
 
         related = set(adr.get("related_requirements", []))
         if require_related and not related:
-            errors.append(f"{adr_id}: Accepted ADR has no Related Requirements.")
+            errors.append(f"{adr_id}: Current-scope ADR has no Related Requirements.")
 
         if not allow_invalid:
             for requirement_id in sorted(related):
@@ -430,9 +550,474 @@ def validate_report_header(report: dict[str, Any]) -> tuple[list[str], str]:
 
     return errors, scope
 
+def validate_trace_map_header(
+    trace_map: dict[str, Any],
+    report_scope: str,
+    policy: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+
+    expected_version = nested_get(
+        policy,
+        ["trace_map", "version"],
+        1,
+    )
+
+    if trace_map.get("version") != expected_version:
+        errors.append(
+            "trace-map.json version does not match policy."
+        )
+
+    map_scope = str(
+        trace_map.get("audit_scope", "")
+    ).upper()
+
+    if map_scope != report_scope:
+        errors.append(
+            "trace-map.json audit_scope does not match "
+            "traceability-report.json."
+        )
+
+    entries = trace_map.get("entries")
+    if not isinstance(entries, list):
+        errors.append(
+            "trace-map.json must contain entries array."
+        )
+
+    return errors
+
+def validate_trace_map_reference(
+    report: dict[str, Any],
+    trace_map: dict[str, Any],
+    policy: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+
+    reference = report.get("trace_map")
+
+    if not isinstance(reference, dict):
+        return [
+            "traceability-report.json must contain trace_map reference."
+        ]
+
+    expected_path = str(
+        nested_get(
+            policy,
+            ["trace_map", "path"],
+            "reports/traceability/trace-map.json",
+        )
+    )
+
+    if str(reference.get("path", "")).strip() != expected_path:
+        errors.append(
+            "traceability-report.json trace_map.path "
+            "does not match policy."
+        )
+
+    if reference.get("version") != trace_map.get("version"):
+        errors.append(
+            "Trace Map version mismatch between "
+            "traceability-report.json and trace-map.json."
+        )
+
+    if "traceability" in report:
+        errors.append(
+            "traceability-report.json must not contain "
+            "traceability mappings. Use trace-map.json instead."
+        )
+
+    return errors
+
+
+def validate_ast_index_reference(
+    trace_map: dict[str, Any],
+    ast_index: dict[str, Any],
+    policy: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    reference = trace_map.get("ast_index")
+    if not isinstance(reference, dict):
+        return ["trace-map.json must contain ast_index reference."]
+
+    expected_path = str(
+        nested_get(
+            policy,
+            ["ast_index", "path"],
+            "reports/traceability/ast-index.json",
+        )
+    )
+    if str(reference.get("path", "")).strip() != expected_path:
+        errors.append("trace-map.json ast_index.path does not match policy.")
+
+    expected_version = nested_get(policy, ["ast_index", "version"], AST_INDEX_VERSION)
+    if reference.get("version") != expected_version:
+        errors.append("trace-map.json ast_index.version does not match policy.")
+    if ast_index.get("version") != expected_version:
+        errors.append("ast-index.json version does not match policy.")
+
+    fingerprint = str(ast_index.get("source_fingerprint", "")).strip()
+    if not fingerprint:
+        errors.append("ast-index.json source_fingerprint is required.")
+    elif str(reference.get("source_fingerprint", "")).strip() != fingerprint:
+        errors.append(
+            "Trace Map AST fingerprint does not match ast-index.json."
+        )
+    return errors
+
+
+def validate_ast_index_freshness(
+    ast_index: dict[str, Any],
+    fresh_index: dict[str, Any],
+    policy: dict[str, Any],
+    scope: str,
+) -> list[str]:
+    errors: list[str] = []
+    if canonical_index(ast_index) != canonical_index(fresh_index):
+        errors.append(
+            "ast-index.json is stale or does not match the current repository AST. "
+            "Regenerate it with build_traceability_ast_index.py."
+        )
+
+    if not bool(nested_get(policy, ["source_analysis", "enabled"], True)):
+        return errors
+    if not scope_includes(scope, "IMPLEMENTATION"):
+        return errors
+
+    fail_unavailable = bool(
+        nested_get(
+            policy,
+            ["symbol_validation", "fail_when_resolver_unavailable"],
+            False,
+        )
+    )
+    if not fail_unavailable:
+        return errors
+
+    analyzers = fresh_index.get("analyzers", {})
+    if isinstance(analyzers, dict):
+        for language, state in sorted(analyzers.items()):
+            if not isinstance(state, dict):
+                continue
+            files = int(state.get("files", 0) or 0)
+            status = str(state.get("status", "")).upper()
+            if files > 0 and status != "AVAILABLE":
+                detail = str(state.get("error", "")).strip()
+                message = (
+                    f"AST analyzer for {language} is unavailable for {files} source file(s)."
+                )
+                if detail:
+                    message += f" {detail}"
+                errors.append(message)
+    return errors
+
+
+def _mapping_parts(mapping: Any) -> tuple[str, str | None, str | None]:
+    if isinstance(mapping, str):
+        return mapping.strip(), None, None
+    if isinstance(mapping, dict):
+        return (
+            str(mapping.get("file", "")).strip(),
+            str(mapping.get("symbol", "")).strip() or None,
+            str(mapping.get("qualified_name", "")).strip() or None,
+        )
+    return "", None, None
+
+
+def validate_symbol_mapping(
+    mapping: Any,
+    ast_index: dict[str, Any],
+    policy: dict[str, Any],
+    requirement_ref: str,
+    *,
+    tests: bool,
+) -> list[str]:
+    errors: list[str] = []
+    file_value, symbol, qualified_name = _mapping_parts(mapping)
+    if not file_value:
+        return errors
+
+    language = analyzer_language_for_file(file_value)
+    if language is None:
+        return errors
+
+    analyzers = ast_index.get("analyzers", {})
+    state = analyzers.get(language, {}) if isinstance(analyzers, dict) else {}
+    status = str(state.get("status", "")).upper() if isinstance(state, dict) else ""
+    if status != "AVAILABLE":
+        # Availability itself is checked centrally. Avoid duplicate errors here.
+        return errors
+
+    file_symbols = symbols_for_file(ast_index, file_value, tests=tests)
+    if not file_symbols:
+        label = "Unit Test" if tests else "Implementation"
+        errors.append(
+            f"{requirement_ref}: {label} AST contains no traceable symbol in file: {file_value}"
+        )
+        return errors
+
+    require_symbol = bool(
+        nested_get(
+            policy,
+            ["symbol_validation", "require_symbol_for_supported_source"],
+            False,
+        )
+    )
+    require_qn = bool(
+        nested_get(
+            policy,
+            ["symbol_validation", "require_qualified_name_for_supported_source"],
+            False,
+        )
+    )
+    if tests:
+        require_symbol = bool(
+            nested_get(
+                policy,
+                ["code_test_traceability", "require_test_symbol_mapping"],
+                require_symbol,
+            )
+        )
+
+    if require_symbol and not symbol:
+        errors.append(
+            f"{requirement_ref}: AST-supported mapping requires symbol: {file_value}"
+        )
+    if require_qn and not qualified_name:
+        errors.append(
+            f"{requirement_ref}: AST-supported mapping requires qualified_name: {file_value}"
+        )
+
+    validate_symbol = bool(
+        nested_get(policy, ["symbol_validation", "validate_symbol_when_present"], True)
+    )
+    validate_qn = bool(
+        nested_get(
+            policy,
+            ["symbol_validation", "validate_qualified_name_when_present"],
+            True,
+        )
+    )
+
+    if symbol and validate_symbol:
+        if find_symbol(
+            ast_index,
+            file_value,
+            symbol,
+            None,
+            tests=tests,
+        ) is None:
+            errors.append(
+                f"{requirement_ref}: Symbol does not exist in AST: {file_value}#{symbol}"
+            )
+    if qualified_name and validate_qn:
+        if find_symbol(
+            ast_index,
+            file_value,
+            None,
+            qualified_name,
+            tests=tests,
+        ) is None:
+            errors.append(
+                f"{requirement_ref}: qualified_name does not exist in AST: {qualified_name}"
+            )
+    if symbol and qualified_name and validate_symbol and validate_qn:
+        record = find_symbol(
+            ast_index,
+            file_value,
+            None,
+            qualified_name,
+            tests=tests,
+        )
+        if record is None or str(record.get("symbol", "")) != symbol:
+            errors.append(
+                f"{requirement_ref}: symbol and qualified_name do not identify the same AST symbol: "
+                f"{file_value}#{symbol} -> {qualified_name}"
+            )
+    return errors
+
+
+def validate_orphan_implementations(
+    trace_map: dict[str, Any],
+    ast_index: dict[str, Any],
+    policy: dict[str, Any],
+    scope: str,
+) -> tuple[list[str], list[dict[str, Any]]]:
+    if not scope_includes(scope, "IMPLEMENTATION"):
+        return [], []
+    orphans = orphan_production_symbols(trace_map, ast_index, policy)
+    if bool(
+        nested_get(
+            policy,
+            ["orphan_artifacts", "allow_orphan_implementation"],
+            False,
+        )
+    ):
+        return [], orphans
+    errors = [
+        "Orphan implementation symbol is not mapped to any Requirement/ADR: "
+        f"{item.get('qualified_name')} ({item.get('file')})"
+        for item in orphans
+    ]
+    return errors, orphans
+
+
+def _unit_test_mapping_objects(entry: dict[str, Any]) -> list[dict[str, Any]]:
+    result: list[dict[str, Any]] = []
+    for mapping in as_list(entry.get("unit_tests")):
+        if isinstance(mapping, dict):
+            result.append(mapping)
+        elif isinstance(mapping, str) and mapping.strip():
+            result.append({"test_id": mapping.strip()})
+    return result
+
+
+def validate_code_test_traceability(
+    trace_map: dict[str, Any],
+    ast_index: dict[str, Any],
+    policy: dict[str, Any],
+    scope: str,
+) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    metrics = {
+        "tests_checked": 0,
+        "tests_with_implementation_call": 0,
+        "tests_with_assertion": 0,
+    }
+    if not scope_includes(scope, "UNIT_TEST"):
+        return errors, metrics
+    if not bool(nested_get(policy, ["code_test_traceability", "enabled"], True)):
+        return errors, metrics
+
+    require_file = bool(
+        nested_get(policy, ["code_test_traceability", "require_test_file_mapping"], True)
+    )
+    require_call = bool(
+        nested_get(
+            policy,
+            ["code_test_traceability", "require_call_to_mapped_implementation"],
+            True,
+        )
+    )
+    require_assertion = bool(
+        nested_get(policy, ["code_test_traceability", "require_assertion"], True)
+    )
+    require_targets = bool(
+        nested_get(
+            policy,
+            ["code_test_traceability", "require_trace_map_targets"],
+            True,
+        )
+    )
+    require_assertion_count = bool(
+        nested_get(
+            policy,
+            ["code_test_traceability", "require_trace_map_assertion_count"],
+            True,
+        )
+    )
+    allow_transitive = bool(
+        nested_get(policy, ["code_test_traceability", "allow_transitive_calls"], True)
+    )
+    max_depth = int(
+        nested_get(policy, ["code_test_traceability", "max_call_depth"], 5)
+    )
+
+    known_production = set(symbol_index_by_qn(ast_index).keys())
+    graph = production_call_graph(ast_index)
+    requirement_targets = mapped_production_targets(trace_map, ast_index)
+
+    for entry in trace_map.get("entries", []):
+        if not isinstance(entry, dict):
+            continue
+        requirement_ref = str(entry.get("requirement_reference", "")).strip()
+        if not bool(entry.get("unit_test_applicable", True)):
+            continue
+        mapped_targets = requirement_targets.get(requirement_ref, set())
+
+        for mapping in _unit_test_mapping_objects(entry):
+            test_id = str(mapping.get("test_id", "")).strip() or "<unknown-test>"
+            file_value = str(mapping.get("file", "")).strip()
+            if require_file and not file_value:
+                errors.append(
+                    f"{requirement_ref}: Unit Test mapping requires file for AST validation: {test_id}"
+                )
+                continue
+
+            record = find_test_record_for_mapping(ast_index, mapping)
+            aggregate = None if record else test_file_record(ast_index, file_value)
+            if record is None and aggregate is None:
+                errors.append(
+                    f"{requirement_ref}: Unit Test AST symbol/file could not be resolved: {test_id}"
+                )
+                continue
+
+            metrics["tests_checked"] += 1
+            source = record if record is not None else aggregate
+            raw_targets = resolved_call_targets(source or {})
+            direct_targets = resolve_known_targets(raw_targets, known_production)
+            reachable = (
+                reachable_targets(direct_targets, graph, max_depth)
+                if allow_transitive
+                else direct_targets
+            )
+            actual_targets = reachable & mapped_targets
+
+            if actual_targets:
+                metrics["tests_with_implementation_call"] += 1
+            elif require_call:
+                errors.append(
+                    f"{requirement_ref}: Unit Test does not call mapped Implementation "
+                    f"according to AST: {test_id}"
+                )
+
+            assertion_count = int((source or {}).get("assertion_count", 0) or 0)
+            if assertion_count > 0:
+                metrics["tests_with_assertion"] += 1
+            elif require_assertion:
+                errors.append(
+                    f"{requirement_ref}: Unit Test has no AST-detected assertion: {test_id}"
+                )
+
+            map_targets = {
+                str(value).strip()
+                for value in as_list(mapping.get("implementation_targets"))
+                if str(value).strip()
+            }
+            if require_targets:
+                if not map_targets:
+                    errors.append(
+                        f"{requirement_ref}: Unit Test mapping must record implementation_targets: {test_id}"
+                    )
+                elif map_targets != actual_targets:
+                    errors.append(
+                        f"{requirement_ref}: Unit Test implementation_targets do not match AST. "
+                        f"test={test_id}, map={sorted(map_targets)}, ast={sorted(actual_targets)}"
+                    )
+
+            if require_assertion_count:
+                raw_count = mapping.get("assertion_count")
+                if raw_count is None:
+                    errors.append(
+                        f"{requirement_ref}: Unit Test mapping must record assertion_count: {test_id}"
+                    )
+                else:
+                    try:
+                        mapped_count = int(raw_count)
+                    except (TypeError, ValueError):
+                        errors.append(
+                            f"{requirement_ref}: Unit Test assertion_count must be an integer: {test_id}"
+                        )
+                    else:
+                        if mapped_count != assertion_count:
+                            errors.append(
+                                f"{requirement_ref}: Unit Test assertion_count does not match AST. "
+                                f"test={test_id}, map={mapped_count}, ast={assertion_count}"
+                            )
+    return errors, metrics
+
 
 def validate_traceability_entries(
-    report: dict[str, Any],
+    trace_map: dict[str, Any],
     requirement_ids: set[str],
     adrs: dict[str, dict[str, Any]],
     repo_root: Path,
@@ -441,20 +1026,16 @@ def validate_traceability_entries(
     integration_evidence: dict[str, Any] | None,
     policy: dict[str, Any],
     scope: str,
+    ast_index: dict[str, Any] | None = None,
 ) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
 
-    entries = report.get("traceability")
+    entries = trace_map.get("entries")
     if not isinstance(entries, list):
-        return ["traceability-report.json must contain traceability array."], {}
+        return ["trace-map.json must contain entries array."], {}
 
-    current_statuses = {
-        value.lower()
-        for value in as_string_list(
-            nested_get(policy, ["adr", "downstream_status"], ["Accepted"])
-        )
-    }
-    accepted_adrs = {
+    current_statuses = current_adr_statuses(policy, scope)
+    current_adrs = {
         adr_id
         for adr_id, adr in adrs.items()
         if str(adr.get("status", "")).lower() in current_statuses
@@ -463,10 +1044,8 @@ def validate_traceability_entries(
     unit_requirement_refs = (
         collect_requirement_refs(unit_evidence) if unit_evidence else set()
     )
-
     integration_requirement_refs: set[str] = set()
     integration_case_ids: set[str] = set()
-
     if integration_plan:
         integration_requirement_refs |= collect_requirement_refs(integration_plan)
         integration_case_ids |= collect_case_ids(integration_plan)
@@ -475,7 +1054,6 @@ def validate_traceability_entries(
         integration_case_ids |= collect_case_ids(integration_evidence)
 
     seen_refs: set[str] = set()
-
     implementation_total = implementation_covered = 0
     unit_total = unit_covered = 0
     integration_total = integration_covered = 0
@@ -533,9 +1111,9 @@ def validate_traceability_entries(
                     f"{requirement_ref}: Referenced ADR does not exist: {adr_id}"
                 )
                 continue
-            if adr_id not in accepted_adrs:
+            if adr_id not in current_adrs:
                 errors.append(
-                    f"{requirement_ref}: ADR is not an Accepted/current ADR: {adr_id}"
+                    f"{requirement_ref}: ADR is not valid for the current audit scope: {adr_id}"
                 )
             if (
                 is_existing_id
@@ -557,14 +1135,10 @@ def validate_traceability_entries(
                 )
 
         # Implementation mapping
-        implementation_applicable = bool(
-            entry.get("implementation_applicable", True)
-        )
+        implementation_applicable = bool(entry.get("implementation_applicable", True))
         implementations = entry.get("implementation", [])
         if not isinstance(implementations, list):
-            errors.append(
-                f"{requirement_ref}: implementation must be an array."
-            )
+            errors.append(f"{requirement_ref}: implementation must be an array.")
             implementations = []
 
         if scope_includes(scope, "IMPLEMENTATION") and implementation_applicable:
@@ -574,27 +1148,13 @@ def validate_traceability_entries(
             elif not bool(
                 nested_get(policy, ["implementation", "allow_missing_mapping"], False)
             ):
-                errors.append(
-                    f"{requirement_ref}: Implementation mapping is missing."
-                )
+                errors.append(f"{requirement_ref}: Implementation mapping is missing.")
 
         for mapping in implementations:
-            if isinstance(mapping, str):
-                file_value = mapping.strip()
-            elif isinstance(mapping, dict):
-                file_value = str(mapping.get("file", "")).strip()
-            else:
-                errors.append(
-                    f"{requirement_ref}: Invalid implementation mapping."
-                )
-                continue
-
+            file_value, _, _ = _mapping_parts(mapping)
             if not file_value:
-                errors.append(
-                    f"{requirement_ref}: Implementation mapping has no file."
-                )
+                errors.append(f"{requirement_ref}: Implementation mapping has no file.")
                 continue
-
             file_path = Path(file_value)
             if not file_path.is_absolute():
                 file_path = repo_root / file_path
@@ -602,11 +1162,20 @@ def validate_traceability_entries(
                 errors.append(
                     f"{requirement_ref}: Implementation file does not exist: {file_value}"
                 )
+            elif ast_index is not None and scope_includes(scope, "IMPLEMENTATION"):
+                errors.extend(
+                    validate_symbol_mapping(
+                        mapping,
+                        ast_index,
+                        policy,
+                        requirement_ref,
+                        tests=False,
+                    )
+                )
 
         # Unit Test mapping
         unit_applicable = bool(entry.get("unit_test_applicable", True))
-        unit_tests = as_string_list(entry.get("unit_tests"))
-
+        unit_tests = collect_unit_test_mapping_ids(entry.get("unit_tests"))
         if scope_includes(scope, "UNIT_TEST") and unit_applicable:
             unit_total += 1
             if unit_tests:
@@ -625,12 +1194,30 @@ def validate_traceability_entries(
                     f"{requirement_ref}: Unit Test evidence does not reference this Requirement."
                 )
 
+            if ast_index is not None:
+                for mapping in _unit_test_mapping_objects(entry):
+                    file_value = str(mapping.get("file", "")).strip()
+                    if file_value:
+                        file_path = Path(file_value)
+                        if not file_path.is_absolute():
+                            file_path = repo_root / file_path
+                        if not file_path.exists():
+                            errors.append(
+                                f"{requirement_ref}: Unit Test file does not exist: {file_value}"
+                            )
+                        else:
+                            errors.extend(
+                                validate_symbol_mapping(
+                                    mapping,
+                                    ast_index,
+                                    policy,
+                                    requirement_ref,
+                                    tests=True,
+                                )
+                            )
+
         if not unit_applicable and bool(
-            nested_get(
-                policy,
-                ["unit_test", "require_reason_when_not_applicable"],
-                True,
-            )
+            nested_get(policy, ["unit_test", "require_reason_when_not_applicable"], True)
         ):
             reason = nested_get(entry, ["not_applicable_reason", "unit_test"], None)
             if not non_empty(reason):
@@ -639,21 +1226,16 @@ def validate_traceability_entries(
                 )
 
         # Integration Test mapping
-        integration_applicable = bool(
-            entry.get("integration_test_applicable", True)
+        integration_applicable = bool(entry.get("integration_test_applicable", True))
+        integration_tests = collect_integration_test_mapping_ids(
+            entry.get("integration_tests")
         )
-        integration_tests = as_string_list(entry.get("integration_tests"))
-
         if scope_includes(scope, "INTEGRATION_TEST") and integration_applicable:
             integration_total += 1
             if integration_tests:
                 integration_covered += 1
             elif not bool(
-                nested_get(
-                    policy,
-                    ["integration_test", "allow_missing_mapping"],
-                    False,
-                )
+                nested_get(policy, ["integration_test", "allow_missing_mapping"], False)
             ):
                 errors.append(
                     f"{requirement_ref}: Integration Test mapping is missing."
@@ -667,7 +1249,6 @@ def validate_traceability_entries(
                 errors.append(
                     f"{requirement_ref}: Integration Test evidence/plan does not reference this Requirement."
                 )
-
             for case_id in integration_tests:
                 if integration_case_ids and case_id not in integration_case_ids:
                     errors.append(
@@ -681,11 +1262,7 @@ def validate_traceability_entries(
                 True,
             )
         ):
-            reason = nested_get(
-                entry,
-                ["not_applicable_reason", "integration_test"],
-                None,
-            )
+            reason = nested_get(entry, ["not_applicable_reason", "integration_test"], None)
             if not non_empty(reason):
                 errors.append(
                     f"{requirement_ref}: Integration Test NOT_APPLICABLE requires reason."
@@ -713,7 +1290,6 @@ def validate_traceability_entries(
             "rate": pct(integration_covered, integration_total),
         },
     }
-
     return errors, metrics
 
 
@@ -840,6 +1416,14 @@ def issue_is_policy_failure(issue: dict[str, Any], policy: dict[str, Any]) -> bo
     if classification == "ORPHAN_TEST":
         return not bool(
             nested_get(policy, ["orphan_artifacts", "allow_orphan_test"], False)
+        )
+    if classification == "ORPHAN_IMPLEMENTATION":
+        return not bool(
+            nested_get(
+                policy,
+                ["orphan_artifacts", "allow_orphan_implementation"],
+                False,
+            )
         )
     if classification == "STALE_EVIDENCE":
         return not bool(nested_get(policy, ["stale_evidence", "allowed"], False))
@@ -984,6 +1568,8 @@ def validate(
     requirements_file: Path,
     features_dir: Path,
     adr_dir: Path,
+    ast_index_path: Path,
+    trace_map_path: Path,
     report_path: Path,
     reports_dir: Path,
     unit_evidence_path: Path,
@@ -1004,11 +1590,55 @@ def validate(
     errors.extend(validate_required_reports(reports_dir, policy))
 
     report = read_json(report_path)
+
     header_errors, scope = validate_report_header(report)
     errors.extend(header_errors)
 
     if scope not in AUDIT_SCOPES:
-        return errors, {"status": "FAIL", "errors": errors}
+        return errors, {
+            "status": "FAIL",
+            "errors": errors,
+        }
+
+    ast_index = read_json(ast_index_path)
+    fresh_ast_index = analyze_repository(
+        repo_root,
+        policy,
+        Path(__file__).resolve().parent,
+    )
+
+    trace_map = read_json(trace_map_path)
+
+    errors.extend(
+        validate_trace_map_header(
+            trace_map,
+            scope,
+            policy,
+        )
+    )
+
+    errors.extend(
+        validate_trace_map_reference(
+            report,
+            trace_map,
+            policy,
+        )
+    )
+    errors.extend(
+        validate_ast_index_reference(
+            trace_map,
+            ast_index,
+            policy,
+        )
+    )
+    errors.extend(
+        validate_ast_index_freshness(
+            ast_index,
+            fresh_ast_index,
+            policy,
+            scope,
+        )
+    )
 
     requirement_ids, _ = discover_requirement_ids(
         requirements_file,
@@ -1074,7 +1704,7 @@ def validate(
             )
 
     entry_errors, metrics = validate_traceability_entries(
-        report=report,
+        trace_map=trace_map,
         requirement_ids=requirement_ids,
         adrs=adrs,
         repo_root=repo_root,
@@ -1083,9 +1713,34 @@ def validate(
         integration_evidence=integration_evidence,
         policy=policy,
         scope=scope,
+        ast_index=ast_index,
     )
     errors.extend(entry_errors)
-    errors.extend(validate_coverage(report, metrics, policy, scope))
+
+    orphan_errors, orphan_implementations = validate_orphan_implementations(
+        trace_map,
+        ast_index,
+        policy,
+        scope,
+    )
+    errors.extend(orphan_errors)
+
+    code_test_errors, code_test_metrics = validate_code_test_traceability(
+        trace_map,
+        ast_index,
+        policy,
+        scope,
+    )
+    errors.extend(code_test_errors)
+
+    errors.extend(
+        validate_coverage(
+            report,
+            metrics,
+            policy,
+            scope,
+        )
+    )
 
     issue_errors, blocking_issue_count = validate_issues(
         report,
@@ -1113,23 +1768,25 @@ def validate(
         "audit_scope": scope,
         "discovered": {
             "requirements": len(requirement_ids),
-            "accepted_or_current_adrs": sum(
+            "current_scope_adrs": sum(
                 1
                 for adr in adrs.values()
                 if str(adr.get("status", "")).lower()
-                in {
-                    item.lower()
-                    for item in as_string_list(
-                        nested_get(
-                            policy,
-                            ["adr", "downstream_status"],
-                            ["Accepted"],
-                        )
-                    )
-                }
+                in current_adr_statuses(
+                    policy,
+                    scope,
+                )
             ),
         },
         "coverage": metrics,
+        "ast": {
+            "source_fingerprint": ast_index.get("source_fingerprint"),
+            "production_symbols": len(ast_index.get("production_symbols", [])),
+            "test_symbols": len(ast_index.get("test_symbols", [])),
+            "analyzers": ast_index.get("analyzers", {}),
+            "orphan_implementations": len(orphan_implementations),
+            "code_test_traceability": code_test_metrics,
+        },
         "blocking_issues": blocking_issue_count,
         "errors": errors,
     }
@@ -1167,6 +1824,14 @@ def parse_args() -> argparse.Namespace:
         default="docs/requirements/features",
     )
     parser.add_argument("--adr-dir", default="docs/adr")
+    parser.add_argument(
+        "--ast-index",
+        default="reports/traceability/ast-index.json",
+    )
+    parser.add_argument(
+        "--trace-map",
+        default="reports/traceability/trace-map.json",
+    )
     parser.add_argument(
         "--report",
         default="reports/traceability/traceability-report.json",
@@ -1220,6 +1885,8 @@ def main() -> int:
             requirements_file=resolve(args.requirements),
             features_dir=resolve(args.features_dir),
             adr_dir=resolve(args.adr_dir),
+            ast_index_path=resolve(args.ast_index),
+            trace_map_path=resolve(args.trace_map),
             report_path=resolve(args.report),
             reports_dir=resolve(args.reports_dir),
             unit_evidence_path=resolve(args.unit_evidence),

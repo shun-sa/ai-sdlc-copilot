@@ -434,6 +434,17 @@ Assurance対象Artifactが変更された場合、
 対象ScopeについてAssurance Agentおよび
 対応するValidatorを再実行してください。
 
+Requirements、ADR、Production Code、
+Unit Test Code、Integration Test Codeの
+いずれかが変更された場合、
+変更前のAST IndexおよびTrace Mapを
+変更後Artifactに対する有効なDerived Artifactとして
+再利用してはいけません。
+
+Traceability Auditor再実行時に、
+現在のSource Artifactから
+AST IndexおよびTrace Mapを再生成してください。
+
 ## Requirements Changed
 
 Requirementsが変更された場合:
@@ -637,7 +648,23 @@ Unit Test
   ↓
 Integration Test
 
-の追跡可能性を確認します。
+の関係を現在のSource Artifactから抽出し、
+AST EvidenceとSemantic Auditを組み合わせて
+Derived Trace Mapを生成した上で、
+Forward / Reverse Traceabilityを監査します。
+
+AST Index:
+
+`reports/traceability/ast-index.json`
+
+Trace Map:
+
+`reports/traceability/trace-map.json`
+
+AST IndexおよびTrace MapはDerived Artifactです。
+
+RequirementsやAccepted ADRに代わる
+Source of Truthとして扱ってはいけません。
 
 Assurance AgentがFAILを返した場合は、
 問題を作成したPhaseへ戻してください。
@@ -665,22 +692,56 @@ SDLC最終確認:
 
 `FULL`
 
-Traceability AuditorがReportを生成した後、
+Traceability Auditorが、
+
+`reports/traceability/ast-index.json`
+
+`reports/traceability/trace-map.json`
+
+`reports/traceability/traceability-report.json`
+
+`reports/traceability/traceability-report.md`
+
+を生成した後、
 以下のValidatorを実行してください。
 
 `python .github/skills/traceability-audit/scripts/validate_traceability.py`
 
 Traceability AuditorがPASSを返していても、
-Traceability Validatorがexit code 0を返さない場合は
+AST Index、Trace MapまたはTraceability Reportの
+Deterministic ValidationがPASSしない場合は、
 Traceability AssuranceをPASSとしてはいけません。
 
 Traceability ValidatorがFAILした場合は、
+
+`reports/traceability/ast-index.json`
+
+`reports/traceability/trace-map.json`
+
 `reports/traceability/traceability-report.json`
-および
+
 `reports/traceability/validation-result.json`
-を確認し、
-Issueのrecommended_routeに従って
-最上流の原因工程へ差し戻してください。
+
+を確認してください。
+
+Traceability Reportに
+Source Artifact側のBlocking Issueが存在し、
+recommended_routeが設定されている場合は、
+最上流のRoot Cause工程へ差し戻してください。
+
+一方、
+AST IndexのSource Fingerprint不一致、
+Trace Mapの構造不正、
+存在しないFile / Symbol / qualified_nameへのMapping、
+Code → Test Call / Assertion不整合、
+Trace MapとTraceability Reportの不整合等、
+Derived Artifact自体のValidation Failureの場合は、
+Requirements、ADR、Production Code、Test Codeを
+Trace Mapへ合わせる目的で修正してはいけません。
+
+Traceability Auditorを再実行し、
+現在のSource Artifactから
+AST Index、Trace MapおよびTraceability Reportを再生成してください。
 
 Traceability AuditorがFAILを返した場合、
 次工程へ進んではいけません。
@@ -688,8 +749,26 @@ Traceability AuditorがFAILを返した場合、
 各Issueのrecommended_routeを確認し、
 最上流の原因工程へ差し戻してください。
 
-Traceability Auditor自身に
-成果物を修正させてはいけません。
+Traceability Auditor自身に、
+
+- Requirements
+- ADR
+- Production Code
+- Unit Test Code
+- Integration Test Code
+- External Test Case
+
+を修正させてはいけません。
+
+ただし、
+Traceability Auditor自身が生成する
+
+`reports/traceability/ast-index.json`
+
+`reports/traceability/trace-map.json`
+
+およびTraceability Reportの
+生成・再生成は許可します。
 
 Quality Review Agentを起動する場合、
 現在の工程に応じてaudit_scopeを指定してください。
@@ -945,6 +1024,8 @@ Final Quality Review Validator PASS
 Final Security Assurance (`audit_scope=FULL`) PASS
 Final Security Review Validator PASS
 
+Final AST Index生成済み
+Final Trace Map (`audit_scope=FULL`) 生成済み
 Final Traceability Audit (`audit_scope=FULL`) PASS
 Final Traceability Validator PASS
 
@@ -1006,6 +1087,8 @@ reports:
   integration_test:
   quality_review:
   security_review:
+  ast_index:
+  trace_map:
   traceability:
   failure_triage:
 

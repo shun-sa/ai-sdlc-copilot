@@ -229,6 +229,57 @@ Requirement
 → Unit Test
 → Integration Test
 
+Traceability Auditorは、
+現在のSource Artifactから
+以下のDerived Artifactを生成できます。
+
+`reports/traceability/ast-index.json`
+
+`reports/traceability/trace-map.json`
+
+AST Indexは、
+Production CodeおよびTest Codeの
+Symbol / qualified_name / Call / Assertionを
+決定論的に抽出したDerived Evidenceです。
+
+Trace Mapは、
+Requirements、ADR、Production Code、
+Unit Test、Integration Test間の関係を表すDerived Indexです。
+
+Trace Mapを
+RequirementsやAccepted ADRに代わる
+Source of Truthとして扱ってはいけません。
+
+Requirements、ADR、Production Code、
+Unit Test、Integration Testが変更された場合、
+変更前のTrace Mapを
+変更後Artifactに対する正しいMapとして
+そのまま再利用してはいけません。
+
+Traceability Auditorによる再監査時に、
+現在のSource Artifactから
+AST IndexおよびTrace Mapを再生成してください。
+
+Producer Agentへ
+Trace Mapの手動維持を要求してはいけません。
+
+Production CodeまたはTest Codeへ、
+Traceability維持だけを目的とした
+Requirement ID / ADR IDコメントを埋め込んではいけません。
+
+AST対応Sourceのfile / symbol / qualified_nameは
+AST Indexで実在確認し、
+存在しない値を推測してはいけません。
+
+Trace MapまたはTraceability Reportの
+構造・参照実在性に関するValidator Failureだけを理由に、
+Requirements、ADR、Production Code、Test Codeを
+Trace Mapへ合わせる目的で修正してはいけません。
+
+Derived Artifact側の不整合である場合は、
+現在のSource Artifactから
+AST Index、Trace Map、Traceability Reportを再生成してください。
+
 既存IDを変更して
 Traceability Failureを隠してはいけない。
 
