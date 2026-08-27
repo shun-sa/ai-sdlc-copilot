@@ -1,0 +1,103 @@
+version: 1
+
+isolation:
+  require_sdlc_complete_before_evaluation: true
+  require_evaluation_data_exposed_after_complete: true
+  forbid_development_external_cases_as_hidden_acceptance: true
+  forbidden_acceptance_path_fragments:
+    - "external-tests/integration-test"
+  evaluation_is_post_process_only: true
+
+inputs:
+  required_keys:
+    - acceptance_results
+    - human_traceability_matrix
+    - human_interaction_log
+    - ai_usage_log
+    - rework_events
+
+requirement_satisfaction:
+  pass_results:
+    - PASS
+  functional_types:
+    - FUNCTIONAL
+    - FR
+  non_functional_types:
+    - NON_FUNCTIONAL
+    - NFR
+
+unit_test_coverage:
+  enabled: true
+  metric: branches
+  source: reports/unit-test/coverage-summary.json
+
+integration_generated_test_coverage:
+  enabled: true
+  ai_case_source: reports/integration-test/ai-initial-cases.json
+  required_origin: AI_GENERATED
+  required_generation_stage: INITIAL
+  allow_gap_fill_in_numerator: false
+  allow_external_in_numerator: false
+  trace_key_field: coverage_key
+
+human_effort:
+  input_event_types:
+    - PROMPT
+    - CORRECTION
+    - OTHER_INPUT
+  review_event_type: REVIEW
+  correction_event_type: CORRECTION
+  require_active_work_seconds: true
+  allow_elapsed_as_active_work: false
+
+rework:
+  target_phase: IMPLEMENTATION
+  count_from_phases:
+    - UNIT_TEST
+    - INTEGRATION_TEST
+    - FINAL_ASSURANCE
+    - QUALITY_REVIEW
+    - SECURITY_REVIEW
+    - TRACEABILITY
+  excluded_classifications:
+    - REFACTOR
+    - FORMAT_ONLY
+  exclude_minor_refactoring: true
+
+ai_usage:
+  require_input_tokens: true
+  require_output_tokens: true
+  require_design_context_tokens: false
+  allow_total_from_input_plus_output: true
+  exclude_evaluation_agent_usage: true
+
+aggregation:
+  recommended_repetitions: 5
+  minimum_repetitions_for_stddev: 2
+  use_sample_standard_deviation: true
+  numeric_metrics:
+    - quality.requirement_satisfaction.overall.rate
+    - quality.requirement_satisfaction.functional.rate
+    - quality.requirement_satisfaction.non_functional.rate
+    - quality.unit_test_coverage.rate
+    - quality.integration_generated_test_coverage.requirement_rate
+    - quality.integration_generated_test_coverage.trace_item_rate
+    - cost_efficiency.human_effort.input_count
+    - cost_efficiency.human_effort.input_characters
+    - cost_efficiency.human_effort.review_count
+    - cost_efficiency.human_effort.correction_count
+    - cost_efficiency.human_effort.active_work_minutes
+    - cost_efficiency.human_effort.elapsed_minutes
+    - cost_efficiency.rework.count
+    - cost_efficiency.ai_usage.input_tokens
+    - cost_efficiency.ai_usage.output_tokens
+    - cost_efficiency.ai_usage.total_tokens
+    - cost_efficiency.ai_usage.design_context_tokens
+
+reports:
+  root: reports/evaluation
+  required_run_files:
+    - metrics.json
+    - evaluation-report.json
+    - evaluation-report.md
+    - validation-result.json

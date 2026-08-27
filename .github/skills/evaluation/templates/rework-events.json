@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "events": [
+    {
+      "timestamp": "2026-01-01T11:00:00+09:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "UNIT_TEST",
+      "to_phase": "IMPLEMENTATION",
+      "classification": "IMPLEMENTATION_ERROR",
+      "minor_refactoring": false,
+      "reason": "Unit Test failure revealed an implementation defect."
+    }
+  ]
+}

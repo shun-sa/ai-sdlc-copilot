@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-001",
+  "condition_id": "COND-001",
+  "task_id": "TASK-001",
+  "task_category": "CRUD",
+  "model": "MODEL_NAME",
+  "model_version": "MODEL_VERSION",
+  "prompt_profile_id": "PROMPT-001",
+  "requirements_snapshot": "requirements snapshot identifier or hash",
+  "framework_revision": "git revision used for the SDLC run",
+  "sdlc_completed_at": "2026-01-01T12:00:00+09:00",
+  "evaluation_data_exposed_at": "2026-01-01T12:05:00+09:00",
+  "inputs": {
+    "acceptance_results": "acceptance-test-results.csv",
+    "human_traceability_matrix": "human-traceability-matrix.csv",
+    "human_interaction_log": "human-interaction-log.json",
+    "ai_usage_log": "ai-usage-log.json",
+    "rework_events": "rework-events.json"
+  },
+  "notes": ""
+}
