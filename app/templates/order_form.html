@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}注文手続き{% endblock %}
+{% block content %}
+  <h1>注文手続き</h1>
+  <h2>ご注文内容</h2>
+  <ul>
+    {% for line in cart.lines %}
+      <li>{{ line.name }} × {{ line.quantity }} = {{ line.subtotal | yen }}</li>
+    {% endfor %}
+  </ul>
+  <p>合計: {{ cart.total | yen }}</p>
+
+  <h2>配送先・お支払い</h2>
+  <form action="/orders" method="post">
+    <div><label>氏名 <input type="text" name="recipient_name" value="{{ form.recipient_name if form else '' }}"></label>
+      {% if field_errors.get('recipient_name') %}<span class="error">{{ field_errors['recipient_name'] }}</span>{% endif %}</div>
+    <div><label>郵便番号 <input type="text" name="postal_code" placeholder="123-4567" value="{{ form.postal_code if form else '' }}"></label>
+      {% if field_errors.get('postal_code') %}<span class="error">{{ field_errors['postal_code'] }}</span>{% endif %}</div>
+    <div><label>都道府県 <input type="text" name="prefecture" value="{{ form.prefecture if form else '' }}"></label>
+      {% if field_errors.get('prefecture') %}<span class="error">{{ field_errors['prefecture'] }}</span>{% endif %}</div>
+    <div><label>市区町村・番地 <input type="text" name="city_address" value="{{ form.city_address if form else '' }}"></label>
+      {% if field_errors.get('city_address') %}<span class="error">{{ field_errors['city_address'] }}</span>{% endif %}</div>
+    <div><label>電話番号 <input type="text" name="phone" value="{{ form.phone if form else '' }}"></label>
+      {% if field_errors.get('phone') %}<span class="error">{{ field_errors['phone'] }}</span>{% endif %}</div>
+    <div>
+      <label>支払方法
+        <select name="payment_method">
+          {% for pm in payment_methods %}
+            <option value="{{ pm.value }}">{{ payment_labels[pm] }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <button type="submit">注文を確定する</button>
+  </form>
+{% endblock %}

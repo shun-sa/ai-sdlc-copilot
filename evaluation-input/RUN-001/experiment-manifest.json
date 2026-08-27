@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-001",
+  "condition_id": "COND-DESIGNLESS-01",
+  "task_id": "movie-ec-web",
+  "task_category": "BUSINESS_LOGIC",
+  "model": "UNKNOWN",
+  "model_version": "UNKNOWN",
+  "prompt_profile_id": "UNKNOWN",
+  "requirements_snapshot": "docs/requirements + docs/adr (ADR-001..013)",
+  "framework_revision": "UNKNOWN",
+  "sdlc_completed_at": "2026-08-28T12:00:00+09:00",
+  "evaluation_data_exposed_at": "2026-08-28T12:05:00+09:00",
+  "inputs": {
+    "acceptance_results": "acceptance-test-results.csv",
+    "human_traceability_matrix": "human-traceability-matrix.csv",
+    "human_interaction_log": "human-interaction-log.json",
+    "ai_usage_log": "ai-usage-log.json",
+    "rework_events": "rework-events.json"
+  },
+  "notes": "model/model_version/prompt_profile_id/framework_revision は本Run未記録のため UNKNOWN。実験実施者が記入すること。測定ログ(human-interaction-log/ai-usage-log/rework-events)および Hidden human-traceability-matrix は本Runで未取得。"
+}

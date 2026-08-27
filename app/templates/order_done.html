@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}注文完了{% endblock %}
+{% block content %}
+  <h1>ご注文が完了しました</h1>
+  <p>注文番号: {{ order.order_number }}</p>
+  <p>合計金額: {{ order.total_amount | yen }}</p>
+  <a href="/history">購入履歴を見る</a>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}購入完了{% endblock %}
+{% block content %}
+  <h1>チケット購入が完了しました</h1>
+  <p>購入番号: {{ purchase.purchase_number }}</p>
+  <p>合計金額: {{ purchase.total_amount | yen }}</p>
+  <a href="/history">購入履歴を見る</a>
+{% endblock %}

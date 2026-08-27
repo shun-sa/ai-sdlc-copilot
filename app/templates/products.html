@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}商品検索{% endblock %}
+{% block content %}
+  <h1>商品検索</h1>
+  <form action="/products" method="get">
+    <input type="text" name="keyword" value="{{ params.keyword or '' }}" placeholder="商品名">
+    <label><input type="checkbox" name="in_stock_only" value="true" {% if params.in_stock_only %}checked{% endif %}> 在庫ありのみ</label>
+    <button type="submit">検索</button>
+  </form>
+  <p>検索結果: {{ result.total }}件</p>
+  {% if result.items %}
+    <ul>
+      {% for product in result.items %}
+        <li>
+          <a href="/products/{{ product.id }}">{{ product.name }}</a>
+          {{ product.price_tax_included | yen }}
+          {% if not product.is_in_stock() %}<span>在庫なし</span>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    {% include "_pagination.html" with context %}
+  {% else %}
+    <p>該当する商品は0件です。</p>
+  {% endif %}
+{% endblock %}

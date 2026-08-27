@@ -1,0 +1,8 @@
+{% set total_pages = ((result.total + result.page_size - 1) // result.page_size) if result.page_size else 0 %}
+{% if total_pages > 1 %}
+  <nav class="pagination">
+    {% if result.page > 1 %}<a href="?{{ query_prefix }}page={{ result.page - 1 }}">前へ</a>{% endif %}
+    <span>{{ result.page }} / {{ total_pages }}</span>
+    {% if result.page < total_pages %}<a href="?{{ query_prefix }}page={{ result.page + 1 }}">次へ</a>{% endif %}
+  </nav>
+{% endif %}

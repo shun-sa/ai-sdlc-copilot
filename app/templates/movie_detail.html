@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ detail.movie.title }}{% endblock %}
+{% block content %}
+  <h1>{{ detail.movie.title }}</h1>
+  <p>ジャンル: {{ detail.movie.genre }}</p>
+  {% if detail.movie.release_date %}<p>公開日: {{ detail.movie.release_date }}</p>{% endif %}
+  {% if detail.movie.runtime_minutes %}<p>上映時間: {{ detail.movie.runtime_minutes }}分</p>{% endif %}
+  <p>{{ detail.movie.synopsis }}</p>
+
+  <h2>関連商品</h2>
+  {% if detail.products %}
+    <ul>
+      {% for product in detail.products %}
+        <li><a href="/products/{{ product.id }}">{{ product.name }}</a> {{ product.price_tax_included | yen }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>関連商品はありません。</p>
+  {% endif %}
+
+  <h2>上映スケジュール</h2>
+  {% if detail.screenings %}
+    <ul>
+      {% for s in detail.screenings %}
+        <li>
+          {{ s.starts_at | dt }} {{ s.theater_name }} {{ s.screen_name }}（残席 {{ s.seats_remaining }}）
+          {% if current_user and s.is_on_sale() %}
+            <a href="/tickets/new?screening_id={{ s.id }}">チケット購入</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>上映予定はありません。</p>
+  {% endif %}
+{% endblock %}

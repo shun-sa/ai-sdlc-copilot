@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}会員登録{% endblock %}
+{% block content %}
+  <h1>会員登録</h1>
+  <form action="/register" method="post">
+    <div>
+      <label>氏名 <input type="text" name="name" value="{{ form.name if form else '' }}"></label>
+      {% if field_errors.get('name') %}<span class="error">{{ field_errors['name'] }}</span>{% endif %}
+    </div>
+    <div>
+      <label>メールアドレス <input type="email" name="email" value="{{ form.email if form else '' }}"></label>
+      {% if field_errors.get('email') %}<span class="error">{{ field_errors['email'] }}</span>{% endif %}
+    </div>
+    <div>
+      <label>パスワード <input type="password" name="password"></label>
+      {% if field_errors.get('password') %}<span class="error">{{ field_errors['password'] }}</span>{% endif %}
+    </div>
+    <div>
+      <label>確認用パスワード <input type="password" name="password_confirm"></label>
+      {% if field_errors.get('password_confirm') %}<span class="error">{{ field_errors['password_confirm'] }}</span>{% endif %}
+    </div>
+    <button type="submit">登録</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+  <h1>{{ product.name }}</h1>
+  <p>価格: {{ product.price_tax_included | yen }}</p>
+  {% if product.is_in_stock() %}
+    {% if product.is_on_sale() %}
+      {% if current_user %}
+        <form action="/cart/add" method="post">
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <label>数量 <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"></label>
+          <button type="submit">カートに追加</button>
+        </form>
+      {% else %}
+        <a href="/login?next=/products/{{ product.id }}">ログインして購入</a>
+      {% endif %}
+    {% else %}
+      <p>販売期間外です。</p>
+    {% endif %}
+  {% else %}
+    <p>在庫なし</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}チケット購入{% endblock %}
+{% block content %}
+  <h1>チケット購入</h1>
+  <h2>{{ screening.movie_title }}</h2>
+  <p>上映日時: {{ screening.starts_at | dt }}</p>
+  <p>劇場: {{ screening.theater_name }} {{ screening.screen_name }}</p>
+  <p>残席: {{ screening.seats_remaining }}</p>
+  <form action="/tickets" method="post">
+    <input type="hidden" name="screening_id" value="{{ screening.id }}">
+    <div>
+      <label>券種
+        <select name="ticket_type">
+          {% for tt in ticket_types %}
+            {% if prices.get(tt) is not none %}
+              <option value="{{ tt.value }}">{{ ticket_labels[tt] }}（{{ prices[tt] | yen }}）</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <div><label>枚数 <input type="number" name="quantity" value="1" min="1" max="{{ screening.seats_remaining }}"></label></div>
+    <div>
+      <label>支払方法
+        <select name="payment_method">
+          {% for pm in payment_methods %}
+            <option value="{{ pm.value }}">{{ payment_labels[pm] }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <button type="submit">購入を確定する</button>
+  </form>
+{% endblock %}

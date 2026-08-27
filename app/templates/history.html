@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}購入履歴{% endblock %}
+{% block content %}
+  <h1>購入履歴</h1>
+
+  <h2>商品注文履歴</h2>
+  {% if history.orders %}
+    <ul>
+      {% for order in history.orders %}
+        <li>
+          注文番号 {{ order.order_number }} / {{ order.ordered_at | dt }} / 合計 {{ order.total_amount | yen }}
+          <ul>
+            {% for item in order.items %}
+              <li>{{ item.product_snapshot_name }} × {{ item.quantity }} = {{ item.subtotal | yen }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>商品注文履歴はありません。</p>
+  {% endif %}
+
+  <h2>チケット購入履歴</h2>
+  {% if history.tickets %}
+    <ul>
+      {% for purchase in history.tickets %}
+        <li>
+          購入番号 {{ purchase.purchase_number }} / {{ purchase.purchased_at | dt }} / 合計 {{ purchase.total_amount | yen }}
+          <ul>
+            {% for item in purchase.items %}
+              <li>{{ item.movie_title_snapshot }} {{ item.screening_starts_at_snapshot | dt }} {{ item.ticket_type | ticket_label }} × {{ item.quantity }} = {{ item.subtotal | yen }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>チケット購入履歴はありません。</p>
+  {% endif %}
+{% endblock %}

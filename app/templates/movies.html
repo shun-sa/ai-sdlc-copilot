@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}映画検索{% endblock %}
+{% block content %}
+  <h1>映画検索</h1>
+  <form action="/movies" method="get">
+    <input type="text" name="keyword" value="{{ params.keyword or '' }}" placeholder="タイトル">
+    <input type="text" name="genre" value="{{ params.genre or '' }}" placeholder="ジャンル">
+    <select name="sort">
+      <option value="">タイトル順</option>
+      <option value="release_desc" {% if params.sort == 'release_desc' %}selected{% endif %}>公開日(新しい順)</option>
+      <option value="release_asc" {% if params.sort == 'release_asc' %}selected{% endif %}>公開日(古い順)</option>
+    </select>
+    <button type="submit">検索</button>
+  </form>
+  <p>検索結果: {{ result.total }}件</p>
+  {% if result.items %}
+    <ul>
+      {% for movie in result.items %}
+        <li><a href="/movies/{{ movie.id }}">{{ movie.title }}</a>（{{ movie.genre }}）</li>
+      {% endfor %}
+    </ul>
+    {% include "_pagination.html" with context %}
+  {% else %}
+    <p>該当する映画は0件です。</p>
+  {% endif %}
+{% endblock %}

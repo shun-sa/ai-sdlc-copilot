@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}カート{% endblock %}
+{% block content %}
+  <h1>カート</h1>
+  {% if cart.lines %}
+    <table>
+      <thead><tr><th>商品</th><th>単価</th><th>数量</th><th>小計</th><th></th></tr></thead>
+      <tbody>
+        {% for line in cart.lines %}
+          <tr>
+            <td>{{ line.name }}</td>
+            <td>{{ line.unit_price | yen }}</td>
+            <td>
+              <form action="/cart/items/{{ line.item_id }}" method="post" style="display:inline">
+                <input type="number" name="quantity" value="{{ line.quantity }}" min="0">
+                <button type="submit">変更</button>
+              </form>
+            </td>
+            <td>{{ line.subtotal | yen }}</td>
+            <td>
+              <form action="/cart/items/{{ line.item_id }}" method="post" style="display:inline">
+                <input type="hidden" name="quantity" value="0">
+                <button type="submit">削除</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>合計: {{ cart.total | yen }}</p>
+    <a href="/orders/new">注文手続きへ</a>
+  {% else %}
+    <p>カートは空です。</p>
+  {% endif %}
+{% endblock %}
