@@ -54,6 +54,25 @@ Source of Truthとして扱ってはいけません。
 Producer Agentへ
 Traceability Mappingの手動維持を要求してはいけません。
 
+# AST Index Responsibility
+
+Traceability監査では、
+現在のRepositoryから決定論的なAST Evidenceを生成してください。
+
+`reports/traceability/ast-index.json`
+
+AST Indexは、
+Production / TestのSymbol、qualified_name、Call、Assertionを保持する
+Derived Indexです。
+
+以下のScriptを使用してください。
+
+`python .github/skills/traceability-audit/scripts/build_traceability_ast_index.py`
+
+AST IndexもSource of Truthではありません。
+Source Artifact変更後に古いAST Indexを再利用してはいけません。
+
+
 # Parent
 
 Parent Agent:
@@ -208,8 +227,13 @@ Requirement CoverageおよびTraceability情報がある場合は
 16. Superseded ADRへの不正依存
 17. Production Code変更後の古いTest Evidence使用
 18. Requirement変更後の古い後続Evidence使用
-19. Trace Map生成
-20. Traceability Report生成
+19. AST Index生成とSource Fingerprint確認
+20. Implementation Symbol / qualified_nameの実在確認
+21. Requirement / ADRに紐付かないProduction Symbolの検出
+22. Unit TestからProduction CodeへのCall Trace確認
+23. Unit Test Assertion確認
+24. Trace Map生成
+25. Traceability Report生成
 
 
 # Requirement Traceability
@@ -309,17 +333,34 @@ Requirementに対して
 としてください。
 
 Trace MapへImplementationを記録する場合は、
-可能な範囲で以下の識別情報を保持してください。
+以下の識別情報を保持してください。
 
 - file
 - symbol
 - qualified_name
 
 `file`は必須です。
+AST対応Sourceでは`symbol`および`qualified_name`も必須です。
 
 `symbol`および`qualified_name`の
 具体的な抽出方法は
 Traceability Audit Skillに従ってください。
+
+
+# Orphan Implementation Traceability
+
+AST IndexのProduction Symbol一覧とTrace Mapを比較してください。
+
+どのRequirement / ADRにも紐付かないPublic Production Symbolが存在し、
+Policy上の除外にも該当しない場合は、
+
+`ORPHAN_IMPLEMENTATION`
+
+として扱ってください。
+
+Trace Mapへ合わせるためにProduction Codeを変更してはいけません。
+Mapping生成誤りの場合はTrace Mapを再生成し、
+実際に不要なImplementationである場合のみIMPLEMENTATIONへRouteしてください。
 
 
 # Unit Test Traceability
@@ -339,6 +380,21 @@ NOT_APPLICABLEとなっている場合は、
 
 Unit TestからRequirementへの参照が
 存在しない場合もIssueとしてください。
+
+AST対応Unit Testでは、
+Trace Mapに以下を保持してください。
+
+- test_id
+- file
+- symbol
+- qualified_name
+- implementation_targets
+- assertion_count
+
+AST Indexを使って、
+TestからRequirementに紐づくProduction SymbolへCallが到達すること、
+およびAssertionが存在することを確認してください。
+
 
 
 # Integration Test Traceability
@@ -376,11 +432,16 @@ Integration Test
 ADR
 → Requirement
 
-Requirementに紐付かないTestやADRが存在する場合は、
+Requirementに紐付かないTest、ADR、Public Production Symbolが存在する場合は、
 意図的なものかを確認してください。
 
-正当な理由がない場合は
-ORPHAN_ARTIFACTとして報告してください。
+正当な理由がない場合はArtifact種別に応じて、
+
+- `ORPHAN_ADR`
+- `ORPHAN_TEST`
+- `ORPHAN_IMPLEMENTATION`
+
+として報告してください。
 
 
 # Evidence Integrity
@@ -396,6 +457,9 @@ Traceability成立と判断してはいけません。
 - IDが実在する
 - 対象Artifactが実在する
 - 対応内容が意味的に妥当
+- AST対応Sourceではsymbol / qualified_nameが実在する
+- Unit TestからProduction SymbolへのCallがAST上成立する
+- Unit TestにAssertionが存在する
 
 ことを確認してください。
 
@@ -431,6 +495,7 @@ Issueは以下から分類してください。
 - TEST_REQUIREMENT_MISMATCH
 - ORPHAN_ADR
 - ORPHAN_TEST
+- ORPHAN_IMPLEMENTATION
 - STALE_EVIDENCE
 - TRACEABILITY_CONFLICT
 
@@ -484,15 +549,21 @@ Severityに関係なくFAILとしてください。
 
 以下を生成してください。
 
+`reports/traceability/ast-index.json`
+
 `reports/traceability/trace-map.json`
 
 `reports/traceability/traceability-report.json`
 
 `reports/traceability/traceability-report.md`
 
+`ast-index.json`は、
+現在のSource ArtifactからAST解析で生成した
+物理構造Evidenceです。
+
 `trace-map.json`は、
-現在のSource Artifact間の関係を表す
-Derived Indexです。
+AST EvidenceとSemantic Auditを統合した
+現在のSource Artifact間の関係を表すDerived Indexです。
 
 `traceability-report.json`および
 `traceability-report.md`は、
@@ -519,8 +590,13 @@ RequirementsやADRのSource of Truthとして
 - 存在しない対応関係を推測でPASSにする
 - 他Agentを直接起動する
 - Trace MapをSource of Truthとして扱う
+- AST IndexをSource of Truthとして扱う
+- ASTに存在しないFQNを推測で生成する
+- Traceability維持だけを目的にProduction/Test CodeへRequirement IDコメントを埋め込む
 
 なお、
+
+`reports/traceability/ast-index.json`
 
 `reports/traceability/trace-map.json`
 
@@ -536,15 +612,19 @@ Traceability Auditor自身の生成物であるため、
 2. Requirement Referenceが実在する
 3. ADR Referenceが実在する
 4. 必須Traceabilityに欠落がない
-5. Implementationが監査対象となるScopeでは、
-   Accepted ADRとImplementationに重大な矛盾がない
+5. Implementationが監査対象となるScopeではAccepted ADRとImplementationに重大な矛盾がない
 6. Unit Test対象Requirementが適切にTestされている
 7. Integration Test対象Requirementが適切にTestされている
 8. 不正な孤立Artifactがない
 9. Stale Evidenceがない
 10. 未解決のBlocking Issueがない
-11. Trace Mapを生成している
-12. Traceability Reportを生成している
+11. AST Indexを生成している
+12. AST Indexが現在のSource Fingerprintと一致している
+13. AST対応SourceのSymbol / qualified_name実在性を確認している
+14. Orphan Implementationを確認している
+15. Unit TestのCode Call / Assertionを確認している
+16. Trace Mapを生成している
+17. Traceability Reportを生成している
 
 
 # Result Contract
@@ -582,6 +662,7 @@ coverage:
   requirement_to_integration_test:
 
 reports:
+  ast_index: reports/traceability/ast-index.json
   trace_map: reports/traceability/trace-map.json
   json: reports/traceability/traceability-report.json
   markdown: reports/traceability/traceability-report.md

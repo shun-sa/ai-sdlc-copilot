@@ -53,6 +53,8 @@ Source of Truthではありません。
 
 以下へ出力してください。
 
+`reports/traceability/ast-index.json`
+
 `reports/traceability/trace-map.json`
 
 `reports/traceability/traceability-report.json`
@@ -160,7 +162,72 @@ Accepted ADRとのTraceabilityを確認してください。
 ADRを強制してはいけません。
 
 
-## Step 8. Implementationを調査する
+## Step 8. AST Indexを生成する
+
+現在のRepositoryから、決定論的なSource構造Evidenceを生成してください。
+
+実行:
+
+`python .github/skills/traceability-audit/scripts/build_traceability_ast_index.py`
+
+出力:
+
+`reports/traceability/ast-index.json`
+
+AST IndexはDerived Indexであり、Source of Truthではありません。
+
+最低限以下を保持します。
+
+- Source Fingerprint
+- Analyzer Status
+- Production Symbol / FQN
+- Test Symbol / FQN
+- Symbol間Call
+- Test Assertion Count
+
+対応Analyzer:
+
+- Python: Python標準`ast`
+- Java: JDK Compiler Tree API
+- TypeScript / JavaScript: TypeScript Compiler API
+
+対象LanguageのSourceが存在するのにResolverが利用できない場合の扱いはPolicyに従ってください。
+
+既存AST Indexを現在も正しいEvidenceとして再利用してはいけません。
+Source Artifactから毎回再生成してください。
+
+
+## Step 9. Implementation Symbol / FQNを検証する
+
+Implementation Mappingの対象がAST対応Sourceの場合、
+AST Indexを使って以下の実在を確認してください。
+
+- file
+- symbol
+- qualified_name
+
+AST対応Sourceでは、Policyが要求する場合、
+`symbol`および`qualified_name`をTrace Mapへ必ず記録してください。
+
+存在しないSymbol / FQNを推測してはいけません。
+
+
+## Step 10. Repository全Production Symbolを確認する
+
+AST IndexのProduction Symbol一覧と、
+Requirement / ADRから導出したImplementation Mappingを比較してください。
+
+正当な除外理由がなく、どのRequirement / ADRにも紐付かないPublic Implementationが存在する場合:
+
+`ORPHAN_IMPLEMENTATION`
+
+file-only Mappingは当該File内のSymbolをCoverage済みとして扱えます。
+Class Mappingは当該Class配下MethodをCoverage済みとして扱えます。
+
+Private / Generated / Migration等の除外条件はPolicyに従ってください。
+
+
+## Step 11. Implementationを調査する
 
 Production Codeを調査してください。
 
@@ -169,13 +236,14 @@ Requirementおよび
 どのProduction Artifactへ実装されているか確認します。
 
 Implementation Mappingには、
-可能な範囲で以下を保持してください。
+以下を保持してください。
 
 - file
 - symbol
 - qualified_name
 
 `file`は必須です。
+AST対応Sourceでは`symbol`および`qualified_name`も必須です。
 
 `symbol`は、
 Class、Method、Function、Component等を
@@ -201,14 +269,18 @@ symbol:
 
 `useCreateUser`
 
-qualified_nameを取得できないことだけを理由に
-Traceability Failureとしてはいけません。
+AST対応Sourceでは、Policyに従い
+`symbol`および`qualified_name`を必須としてください。
+
+AST Resolverが対象Languageをサポートしていない場合のみ、
+`fail_when_resolver_unavailable=false`のPolicyで明示的に許可されているときに限り、
+`qualified_name`未取得だけを理由としたFailureを回避できます。
 
 存在しないsymbolやqualified_nameを
 推測で生成してはいけません。
 
 
-## Step 9. Requirement → Implementationを確認する
+## Step 12. Requirement → Implementationを確認する
 
 Implementation-responsible Requirementについて、
 対応するProduction Artifactを確認してください。
@@ -218,7 +290,7 @@ Implementation-responsible Requirementについて、
 `IMPLEMENTATION_TRACEABILITY_MISSING`
 
 
-## Step 10. ADR → Implementationを確認する
+## Step 13. ADR → Implementationを確認する
 
 Accepted ADRのDecisionおよびAI Guardrailsが
 Production Codeへ反映されているか確認してください。
@@ -228,7 +300,7 @@ Production Codeへ反映されているか確認してください。
 `ADR_IMPLEMENTATION_MISMATCH`
 
 
-## Step 11. Unit Test Evidenceを読み込む
+## Step 14. Unit Test Evidenceを読み込む
 
 以下を確認してください。
 
@@ -238,18 +310,20 @@ Production Codeへ反映されているか確認してください。
 
 Unit Test Codeも必要に応じて確認してください。
 
-Unit Test CodeとのMappingを特定できる場合は、
-以下を取得してください。
+Unit Test Mappingでは以下を取得してください。
 
 - test_id
 - file
 - symbol
 - qualified_name
+- implementation_targets
+- assertion_count
 
-qualified_nameは取得可能な場合のみ使用してください。
+AST対応Test Codeでは`file`、`symbol`、`qualified_name`を使用し、
+`implementation_targets`と`assertion_count`はAST Indexから取得してください。
 存在しない値を推測してはいけません。
 
-## Step 12. Requirement → Unit Testを確認する
+## Step 15. Requirement → Unit Testを確認する
 
 Unit Test対象Requirementについて、
 
@@ -264,7 +338,7 @@ Requirement
 `UNIT_TEST_TRACEABILITY_MISSING`
 
 
-## Step 13. Unit Testの逆方向を確認する
+## Step 16. Unit Testの逆方向を確認する
 
 Unit Testから、
 実在するRequirementへTraceできるか確認してください。
@@ -274,7 +348,7 @@ Unit Testから、
 `ORPHAN_TEST`
 
 
-## Step 14. Integration Test Evidenceを読み込む
+## Step 17. Integration Test Evidenceを読み込む
 
 以下を確認してください。
 
@@ -287,7 +361,7 @@ Unit Testから、
 `reports/integration-test/validation-result.json`
 
 
-## Step 15. Requirement → Integration Testを確認する
+## Step 18. Requirement → Integration Testを確認する
 
 Integration Test対象Requirementについて、
 
@@ -298,7 +372,7 @@ Requirement
 の対応を確認してください。
 
 
-## Step 16. AI Caseを確認する
+## Step 19. AI Caseを確認する
 
 以下を区別してください。
 
@@ -308,7 +382,7 @@ Requirement
 どちらもRequirementへのTraceabilityを確認します。
 
 
-## Step 17. External Caseを確認する
+## Step 20. External Caseを確認する
 
 origin=EXTERNALのCaseについて、
 Requirement IDが実在することを確認してください。
@@ -316,7 +390,7 @@ Requirement IDが実在することを確認してください。
 External Caseの内容を修正してはいけません。
 
 
-## Step 18. Integration Testの逆方向を確認する
+## Step 21. Integration Testの逆方向を確認する
 
 Integration Test Caseから
 Requirementへ戻れることを確認してください。
@@ -331,7 +405,40 @@ Requirementへ戻れることを確認してください。
 
 として扱います。
 
-## Step 19. Trace Mapを生成する
+## Step 22. Code → Test AST Traceabilityを確認する
+
+Unit Test Mappingについて、AST Indexから以下を決定論的に確認してください。
+
+1. Test File / Symbol / qualified_nameが実在する
+2. TestからRequirementに紐づくProduction SymbolへCallが到達する
+3. Test内にAssertionが存在する
+
+Production内のCall Graphについて、Policyで許可される場合は
+`max_call_depth`までTransitive Callを辿って構いません。
+
+Trace MapのUnit Test Mappingには、ASTから確認した以下を記録してください。
+
+- implementation_targets
+- assertion_count
+
+AIが意味的に関係があると判断しただけで、
+AST上Callが存在しないRelationを物理Edgeとして記録してはいけません。
+
+Integration TestについてもTest CodeのFile / Symbolを特定できる場合は
+同じAST Evidenceを補助情報として使用できます。
+ただしExternal Test Caseの意味・Steps・Expected Resultは変更してはいけません。
+
+
+## Step 23. AST EvidenceとSemantic Mappingを統合する
+
+ASTは「物理的に存在する・Callされる」ことを保証し、
+Traceability Auditorは「Requirement / ADRと意味的に対応する」ことを監査してください。
+
+ASTだけを理由にRequirementとの意味的対応を作成してはいけません。
+AIの意味判断だけを理由に存在しないFQNを作成してはいけません。
+
+
+## Step 24. Trace Mapを生成する
 
 ここまでに確認した
 現在のSource Artifactから、
@@ -341,18 +448,22 @@ Trace Mapを生成してください。
 
 `reports/traceability/trace-map.json`
 
+Trace Map Schema Versionは`2`としてください。
+
 最低限以下を保持してください。
 
 - version
 - audit_scope
+- ast_index.path
+- ast_index.version
+- ast_index.source_fingerprint
 - requirement_reference
 - ADR
 - Implementation Mapping
 - Unit Test Mapping
 - Integration Test Mapping
 
-Implementation Mappingでは、
-可能な場合、
+Implementation Mappingでは、AST対応Sourceについて、
 
 - file
 - symbol
@@ -361,12 +472,13 @@ Implementation Mappingでは、
 を保持してください。
 
 Unit Test Mappingでは、
-可能な場合、
 
 - test_id
 - file
 - symbol
 - qualified_name
+- implementation_targets
+- assertion_count
 
 を保持してください。
 
@@ -384,7 +496,7 @@ Trace Mapを再生成してください。
 Stale Mappingを調査するための
 参考情報として使用できます。
 
-## Step 20. Coverage整合性を確認する
+## Step 25. Coverage整合性を確認する
 
 Unit Test Evidence、
 Integration Test Evidence、
@@ -395,7 +507,7 @@ Coverage Gap Report等のCoverage情報と、
 PASS判定してはいけません。
 
 
-## Step 21. Stale Evidenceを確認する
+## Step 26. Stale Evidenceを確認する
 
 Requirements、
 Accepted ADR、
@@ -407,7 +519,7 @@ Production Codeが変更された後に
 `STALE_EVIDENCE`
 
 
-## Step 22. Orphan ADRを確認する
+## Step 27. Orphan ADRを確認する
 
 Accepted ADRが、
 RequirementにもImplementationにも
@@ -418,7 +530,7 @@ RequirementにもImplementationにも
 `ORPHAN_ADR`
 
 
-## Step 23. Conflictを確認する
+## Step 28. Conflictを確認する
 
 同一Requirementについて、
 
@@ -434,7 +546,7 @@ Integration Test
 `TRACEABILITY_CONFLICT`
 
 
-## Step 24. Issueを集約する
+## Step 29. Issueを集約する
 
 同じRoot CauseによるIssueは、
 必要に応じて1つのIssueへ集約してください。
@@ -442,7 +554,7 @@ Integration Test
 ただし影響Artifactを失わないようにしてください。
 
 
-## Step 25. Recommended Routeを決定する
+## Step 30. Recommended Routeを決定する
 
 IssueのRoot Causeが存在する
 最上流工程を選択してください。
@@ -454,7 +566,7 @@ UNIT_TEST
 INTEGRATION_TEST
 
 
-## Step 26. Coverageを算出する
+## Step 31. Coverageを算出する
 
 最低限以下を算出してください。
 
@@ -469,7 +581,7 @@ Integration Test対象外の場合は
 妥当なN/Aを除外して計算してください。
 
 
-## Step 27. JSON Reportを生成する
+## Step 32. JSON Reportを生成する
 
 以下へ生成してください。
 
@@ -484,10 +596,10 @@ Trace Mapそのものを重複保持せず、
 
 trace_map:
   path: reports/traceability/trace-map.json
-  version: 1
+  version: 2
 
 
-## Step 28. Markdown Reportを生成する
+## Step 33. Markdown Reportを生成する
 
 以下へ生成してください。
 
@@ -507,7 +619,7 @@ trace_map:
 - Recommended Route
 
 
-## Step 29. Final判定
+## Step 34. Final判定
 
 Policyを確認してください。
 
@@ -587,6 +699,8 @@ Traceability Auditor自身で修正してはいけません。
 
 ただし、
 
+`reports/traceability/ast-index.json`
+
 `reports/traceability/trace-map.json`
 
 およびTraceability Reportは
@@ -601,6 +715,11 @@ SDLC Orchestratorへ返してください。
 以下を満たすまで完了してはいけません。
 
 - 必要なArtifactをすべて監査
+- AST Index生成
+- Source Fingerprint整合確認
+- Symbol / qualified_name実在確認
+- Orphan Implementation確認
+- Code → Test Call / Assertion確認
 - Trace Map生成
 - Forward Traceability確認
 - Reverse Traceability確認

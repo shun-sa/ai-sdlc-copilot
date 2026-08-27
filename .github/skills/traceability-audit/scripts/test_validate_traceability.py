@@ -49,6 +49,7 @@ def base_policy() -> dict[str, Any]:
         "TEST_REQUIREMENT_MISMATCH",
         "ORPHAN_ADR",
         "ORPHAN_TEST",
+        "ORPHAN_IMPLEMENTATION",
         "STALE_EVIDENCE",
         "TRACEABILITY_CONFLICT",
     ]
@@ -64,6 +65,7 @@ def base_policy() -> dict[str, Any]:
         "TEST_REQUIREMENT_MISMATCH": "UNIT_TEST",
         "ORPHAN_ADR": "ARCHITECTURE",
         "ORPHAN_TEST": "UNIT_TEST",
+        "ORPHAN_IMPLEMENTATION": "IMPLEMENTATION",
         "STALE_EVIDENCE": "IMPLEMENTATION",
         "TRACEABILITY_CONFLICT": "REQUIREMENTS",
     }
@@ -92,25 +94,72 @@ def base_policy() -> dict[str, Any]:
         "trace_map": {
             "required": True,
             "path": "reports/traceability/trace-map.json",
-            "version": 1,
+            "version": 2,
             "derived": True,
             "allow_as_source_of_truth": False,
             "require_regeneration_on_source_change": True,
         },
+        "ast_index": {
+            "required": True,
+            "path": "reports/traceability/ast-index.json",
+            "version": 1,
+            "derived": True,
+            "allow_as_source_of_truth": False,
+        },
+        "source_analysis": {
+            "enabled": True,
+            "production_roots": ["src", "app"],
+            "test_roots": ["tests", "test", "src/test"],
+            "test_file_patterns": [
+                "**/test_*.py",
+                "**/*_test.py",
+                "**/*.test.ts",
+                "**/*.test.tsx",
+                "**/*.spec.ts",
+                "**/*.spec.tsx",
+                "**/*.test.js",
+                "**/*.test.jsx",
+                "**/*.spec.js",
+                "**/*.spec.jsx",
+                "**/__tests__/**",
+            ],
+            "include_extensions": [".py", ".java", ".ts", ".tsx", ".js", ".jsx"],
+            "exclude_globs": ["**/__pycache__/**", "**/node_modules/**"],
+        },
         "symbol_validation": {
-            "validate_symbol_when_present": False,
-            "validate_qualified_name_when_present": False,
+            "validate_symbol_when_present": True,
+            "validate_qualified_name_when_present": True,
+            "require_symbol_for_supported_source": True,
+            "require_qualified_name_for_supported_source": True,
             "fail_when_resolver_unavailable": False,
         },
         "implementation": {
             "require_mapping_for_implementation_responsible_requirement": True,
             "allow_missing_mapping": False,
         },
+        "implementation_analysis": {
+            "detect_orphan_symbols": True,
+            "candidate_kinds": ["class", "function", "method"],
+            "ignore_private_symbols": True,
+            "ignore_file_patterns": [],
+            "ignore_symbol_patterns": [],
+        },
         "unit_test": {
             "require_mapping_for_unit_testable_requirement": True,
             "allow_missing_mapping": False,
             "allow_not_applicable": True,
             "require_reason_when_not_applicable": True,
+        },
+        "code_test_traceability": {
+            "enabled": True,
+            "require_test_file_mapping": True,
+            "require_test_symbol_mapping": True,
+            "require_call_to_mapped_implementation": True,
+            "allow_transitive_calls": True,
+            "max_call_depth": 5,
+            "require_assertion": True,
+            "require_trace_map_targets": True,
+            "require_trace_map_assertion_count": True,
         },
         "integration_test": {
             "require_mapping_for_integration_testable_requirement": True,
@@ -127,6 +176,7 @@ def base_policy() -> dict[str, Any]:
         "orphan_artifacts": {
             "allow_orphan_test": False,
             "allow_orphan_accepted_adr": False,
+            "allow_orphan_implementation": False,
         },
         "stale_evidence": {"allowed": False},
         "conflicts": {"allowed": False},
@@ -136,6 +186,7 @@ def base_policy() -> dict[str, Any]:
         "reports": {
             "directory": "reports/traceability",
             "required": [
+                "ast-index.json",
                 "trace-map.json",
                 "traceability-report.json",
                 "traceability-report.md",
@@ -223,6 +274,9 @@ def base_entry() -> dict[str, Any]:
                 "test_id": "test_register_user",
                 "file": "tests/test_user_service.py",
                 "symbol": "test_register_user",
+                "qualified_name": "tests.test_user_service.test_register_user",
+                "implementation_targets": ["src.user_service.register_user"],
+                "assertion_count": 1,
             }
         ],
         "integration_test_applicable": True,
@@ -236,8 +290,13 @@ def base_entry() -> dict[str, Any]:
 
 def base_trace_map(scope: str = "FULL") -> dict[str, Any]:
     return {
-        "version": 1,
+        "version": 2,
         "audit_scope": scope,
+        "ast_index": {
+            "path": "reports/traceability/ast-index.json",
+            "version": 1,
+            "source_fingerprint": "TEST-FINGERPRINT",
+        },
         "entries": [base_entry()],
     }
 
@@ -248,7 +307,7 @@ def base_report(scope: str = "FULL") -> dict[str, Any]:
         "audit_scope": scope,
         "trace_map": {
             "path": "reports/traceability/trace-map.json",
-            "version": 1,
+            "version": 2,
         },
         "summary": {
             "requirements": 1,
@@ -407,7 +466,7 @@ class TraceMapHeaderTest(unittest.TestCase):
 
     def test_invalid_trace_map_version_fails(self) -> None:
         trace_map = base_trace_map()
-        trace_map["version"] = 2
+        trace_map["version"] = 999
 
         errors = validator.validate_trace_map_header(
             trace_map,
@@ -463,7 +522,7 @@ class TraceMapReferenceTest(unittest.TestCase):
 
     def test_version_mismatch_fails(self) -> None:
         report = base_report()
-        report["trace_map"]["version"] = 2
+        report["trace_map"]["version"] = 1
 
         errors = validator.validate_trace_map_reference(
             report,
@@ -826,6 +885,19 @@ class IssueTest(unittest.TestCase):
             )
         )
 
+    def test_orphan_implementation_is_policy_failure(self) -> None:
+        issue = {
+            "classification": "ORPHAN_IMPLEMENTATION",
+            "severity": "LOW",
+            "resolved": False,
+        }
+        self.assertTrue(
+            validator.issue_is_policy_failure(
+                issue,
+                base_policy(),
+            )
+        )
+
 
 class ReportHeaderTest(unittest.TestCase):
 
@@ -877,6 +949,7 @@ class RequiredReportTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             reports = Path(temp)
             for name in (
+                "ast-index.json",
                 "trace-map.json",
                 "traceability-report.json",
                 "traceability-report.md",
@@ -904,6 +977,7 @@ class EndToEndValidateTest(unittest.TestCase):
             features_dir = requirements_dir / "features"
             adr_dir = root / "docs/adr"
             src_dir = root / "src"
+            tests_dir = root / "tests"
             unit_report_dir = root / "reports/unit-test"
             integration_report_dir = root / "reports/integration-test"
             trace_report_dir = root / "reports/traceability"
@@ -914,6 +988,7 @@ class EndToEndValidateTest(unittest.TestCase):
                 features_dir,
                 adr_dir,
                 src_dir,
+                tests_dir,
                 unit_report_dir,
                 integration_report_dir,
                 trace_report_dir,
@@ -936,7 +1011,14 @@ class EndToEndValidateTest(unittest.TestCase):
             )
 
             (src_dir / "user_service.py").write_text(
-                "def register_user():\n    pass\n",
+                "def register_user():\n    return True\n",
+                encoding="utf-8",
+            )
+            (tests_dir / "test_user_service.py").write_text(
+                "from src.user_service import register_user\n\n"
+                "def test_register_user():\n"
+                "    result = register_user()\n"
+                "    assert result is True\n",
                 encoding="utf-8",
             )
 
@@ -962,7 +1044,18 @@ class EndToEndValidateTest(unittest.TestCase):
                 encoding="utf-8",
             )
 
+            ast_index = validator.analyze_repository(
+                root,
+                base_policy(),
+                SCRIPT_DIR,
+            )
+            (trace_report_dir / "ast-index.json").write_text(
+                json.dumps(ast_index),
+                encoding="utf-8",
+            )
+
             trace_map = base_trace_map()
+            trace_map["ast_index"]["source_fingerprint"] = ast_index["source_fingerprint"]
             report = base_report()
 
             (trace_report_dir / "trace-map.json").write_text(
@@ -994,6 +1087,7 @@ class EndToEndValidateTest(unittest.TestCase):
                 requirements_file=requirements_dir / "requirements.md",
                 features_dir=features_dir,
                 adr_dir=adr_dir,
+                ast_index_path=trace_report_dir / "ast-index.json",
                 trace_map_path=trace_report_dir / "trace-map.json",
                 report_path=trace_report_dir / "traceability-report.json",
                 reports_dir=trace_report_dir,
@@ -1007,6 +1101,261 @@ class EndToEndValidateTest(unittest.TestCase):
         self.assertEqual([], errors)
         self.assertEqual("PASS", result["status"])
         self.assertEqual(1, result["discovered"]["current_scope_adrs"])
+
+
+class AstIndexValidationTest(unittest.TestCase):
+
+    def test_ast_index_reference_passes(self) -> None:
+        trace_map = base_trace_map()
+        ast_index = {
+            "version": 1,
+            "source_fingerprint": "TEST-FINGERPRINT",
+        }
+        self.assertEqual(
+            [],
+            validator.validate_ast_index_reference(
+                trace_map,
+                ast_index,
+                base_policy(),
+            ),
+        )
+
+    def test_ast_index_fingerprint_mismatch_fails(self) -> None:
+        trace_map = base_trace_map()
+        ast_index = {
+            "version": 1,
+            "source_fingerprint": "DIFFERENT",
+        }
+        errors = validator.validate_ast_index_reference(
+            trace_map,
+            ast_index,
+            base_policy(),
+        )
+        self.assertTrue(any("fingerprint" in error.lower() for error in errors))
+
+    def test_stale_ast_index_fails(self) -> None:
+        policy = base_policy()
+        current = {
+            "version": 1,
+            "source_fingerprint": "CURRENT",
+            "source_files": [],
+            "production_roots": ["src", "app"],
+            "test_roots": ["tests", "test", "src/test"],
+            "test_file_patterns": [],
+            "analyzers": {},
+            "production_symbols": [],
+            "test_symbols": [],
+            "test_files": [],
+        }
+        stale = dict(current)
+        stale["source_fingerprint"] = "OLD"
+        errors = validator.validate_ast_index_freshness(
+            stale,
+            current,
+            policy,
+            "FULL",
+        )
+        self.assertTrue(any("stale" in error.lower() for error in errors))
+
+
+class AstTraceabilityPhaseTest(unittest.TestCase):
+
+    def _repo(self, *, call_impl: bool = True, assertion: bool = True) -> tuple[tempfile.TemporaryDirectory[str], Path, dict[str, Any]]:
+        temp = tempfile.TemporaryDirectory()
+        root = Path(temp.name)
+        (root / "src").mkdir()
+        (root / "tests").mkdir()
+        (root / "src/user_service.py").write_text(
+            "def helper():\n"
+            "    return True\n\n"
+            "def register_user():\n"
+            "    return helper()\n\n"
+            "def orphan_public():\n"
+            "    return False\n",
+            encoding="utf-8",
+        )
+        body = "    result = register_user()\n" if call_impl else "    result = True\n"
+        if assertion:
+            body += "    assert result is True\n"
+        (root / "tests/test_user_service.py").write_text(
+            "from src.user_service import register_user\n\n"
+            "def test_register_user():\n" + body,
+            encoding="utf-8",
+        )
+        index = validator.analyze_repository(root, base_policy(), SCRIPT_DIR)
+        return temp, root, index
+
+    def _trace_map(self, index: dict[str, Any], *, include_orphan: bool = True) -> dict[str, Any]:
+        trace_map = base_trace_map()
+        trace_map["ast_index"]["source_fingerprint"] = index["source_fingerprint"]
+        implementation = [
+            {
+                "file": "src/user_service.py",
+                "symbol": "register_user",
+                "qualified_name": "src.user_service.register_user",
+            },
+            {
+                "file": "src/user_service.py",
+                "symbol": "helper",
+                "qualified_name": "src.user_service.helper",
+            },
+        ]
+        if include_orphan:
+            implementation.append(
+                {
+                    "file": "src/user_service.py",
+                    "symbol": "orphan_public",
+                    "qualified_name": "src.user_service.orphan_public",
+                }
+            )
+        trace_map["entries"][0]["implementation"] = implementation
+        trace_map["entries"][0]["unit_tests"] = [
+            {
+                "test_id": "test_register_user",
+                "file": "tests/test_user_service.py",
+                "symbol": "test_register_user",
+                "qualified_name": "tests.test_user_service.test_register_user",
+                "implementation_targets": [
+                    "src.user_service.helper",
+                    "src.user_service.register_user",
+                ],
+                "assertion_count": 1,
+            }
+        ]
+        return trace_map
+
+    def test_phase2_valid_symbol_and_qualified_name_pass(self) -> None:
+        temp, root, index = self._repo()
+        try:
+            mapping = {
+                "file": "src/user_service.py",
+                "symbol": "register_user",
+                "qualified_name": "src.user_service.register_user",
+            }
+            errors = validator.validate_symbol_mapping(
+                mapping,
+                index,
+                base_policy(),
+                "FR-001",
+                tests=False,
+            )
+        finally:
+            temp.cleanup()
+        self.assertEqual([], errors)
+
+    def test_phase2_missing_symbol_fails(self) -> None:
+        temp, root, index = self._repo()
+        try:
+            mapping = {
+                "file": "src/user_service.py",
+                "qualified_name": "src.user_service.register_user",
+            }
+            errors = validator.validate_symbol_mapping(
+                mapping,
+                index,
+                base_policy(),
+                "FR-001",
+                tests=False,
+            )
+        finally:
+            temp.cleanup()
+        self.assertTrue(any("requires symbol" in error for error in errors))
+
+    def test_phase2_nonexistent_qualified_name_fails(self) -> None:
+        temp, root, index = self._repo()
+        try:
+            mapping = {
+                "file": "src/user_service.py",
+                "symbol": "register_user",
+                "qualified_name": "src.user_service.missing",
+            }
+            errors = validator.validate_symbol_mapping(
+                mapping,
+                index,
+                base_policy(),
+                "FR-001",
+                tests=False,
+            )
+        finally:
+            temp.cleanup()
+        self.assertTrue(any("qualified_name does not exist" in error for error in errors))
+
+    def test_phase3_orphan_implementation_fails(self) -> None:
+        temp, root, index = self._repo()
+        try:
+            trace_map = self._trace_map(index, include_orphan=False)
+            errors, orphans = validator.validate_orphan_implementations(
+                trace_map,
+                index,
+                base_policy(),
+                "FULL",
+            )
+        finally:
+            temp.cleanup()
+        self.assertEqual(["src.user_service.orphan_public"], [item["qualified_name"] for item in orphans])
+        self.assertTrue(any("Orphan implementation symbol" in error for error in errors))
+
+    def test_phase4_direct_code_test_edge_passes(self) -> None:
+        temp, root, index = self._repo()
+        try:
+            trace_map = self._trace_map(index)
+            errors, metrics = validator.validate_code_test_traceability(
+                trace_map,
+                index,
+                base_policy(),
+                "FULL",
+            )
+        finally:
+            temp.cleanup()
+        self.assertEqual([], errors)
+        self.assertEqual(1, metrics["tests_with_implementation_call"])
+        self.assertEqual(1, metrics["tests_with_assertion"])
+
+    def test_phase4_missing_implementation_call_fails(self) -> None:
+        temp, root, index = self._repo(call_impl=False)
+        try:
+            trace_map = self._trace_map(index)
+            errors, _ = validator.validate_code_test_traceability(
+                trace_map,
+                index,
+                base_policy(),
+                "FULL",
+            )
+        finally:
+            temp.cleanup()
+        self.assertTrue(any("does not call mapped Implementation" in error for error in errors))
+
+    def test_phase4_missing_assertion_fails(self) -> None:
+        temp, root, index = self._repo(assertion=False)
+        try:
+            trace_map = self._trace_map(index)
+            trace_map["entries"][0]["unit_tests"][0]["assertion_count"] = 0
+            errors, _ = validator.validate_code_test_traceability(
+                trace_map,
+                index,
+                base_policy(),
+                "FULL",
+            )
+        finally:
+            temp.cleanup()
+        self.assertTrue(any("no AST-detected assertion" in error for error in errors))
+
+    def test_phase4_trace_map_target_mismatch_fails(self) -> None:
+        temp, root, index = self._repo()
+        try:
+            trace_map = self._trace_map(index)
+            trace_map["entries"][0]["unit_tests"][0]["implementation_targets"] = [
+                "src.user_service.helper"
+            ]
+            errors, _ = validator.validate_code_test_traceability(
+                trace_map,
+                index,
+                base_policy(),
+                "FULL",
+            )
+        finally:
+            temp.cleanup()
+        self.assertTrue(any("implementation_targets do not match AST" in error for error in errors))
 
 
 if __name__ == "__main__":

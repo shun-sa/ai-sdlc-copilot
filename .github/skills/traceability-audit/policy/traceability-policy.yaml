@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 audit:
   require_forward_traceability: true
@@ -14,74 +14,147 @@ global_requirements:
   allow_generated_id: false
 
 adr:
+  # Architecture PhaseではAcceptance候補のProposed ADRも監査対象。
   architecture_scope_status:
     - Proposed
     - Accepted
 
+  # Implementation以降はAccepted ADRのみを現在Decisionとして扱う。
   downstream_status:
     - Accepted
 
   require_related_requirements: true
   allow_invalid_requirement_reference: false
   allow_superseded_as_current_decision: false
-
   orphan_accepted_adr_allowed: false
 
 trace_map:
   required: true
   path: "reports/traceability/trace-map.json"
-  version: 1
+  version: 2
   derived: true
   allow_as_source_of_truth: false
   require_regeneration_on_source_change: true
 
+ast_index:
+  required: true
+  path: "reports/traceability/ast-index.json"
+  version: 1
+  derived: true
+  allow_as_source_of_truth: false
+
+# AST解析対象。Framework共通実装はPython / Java / TypeScript(JavaScript含む)を扱う。
+# JavaはJDK Compiler Tree API、TypeScript/JavaScriptはTypeScript Compiler APIを使用する。
+source_analysis:
+  enabled: true
+  production_roots:
+    - src
+    - app
+  test_roots:
+    - tests
+    - test
+    - src/test
+  # React/TypeScript等でsrc配下へTestを共置するケースもTestとして扱う。
+  test_file_patterns:
+    - "**/test_*.py"
+    - "**/*_test.py"
+    - "**/*.test.ts"
+    - "**/*.test.tsx"
+    - "**/*.spec.ts"
+    - "**/*.spec.tsx"
+    - "**/*.test.js"
+    - "**/*.test.jsx"
+    - "**/*.spec.js"
+    - "**/*.spec.jsx"
+    - "**/__tests__/**"
+  include_extensions:
+    - .py
+    - .java
+    - .ts
+    - .tsx
+    - .js
+    - .jsx
+  exclude_globs:
+    - "**/.venv/**"
+    - "**/venv/**"
+    - "**/node_modules/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - "**/generated/**"
+    - "**/__pycache__/**"
+
 symbol_validation:
-  validate_symbol_when_present: false
-  validate_qualified_name_when_present: false
-  fail_when_resolver_unavailable: false
+  validate_symbol_when_present: true
+  validate_qualified_name_when_present: true
+  require_symbol_for_supported_source: true
+  require_qualified_name_for_supported_source: true
+  # 対象LanguageのSourceが存在するのにAST Resolverが利用できない場合はFAIL。
+  # Project事情でToolchainを用意できない場合のみfalseへ変更する。
+  fail_when_resolver_unavailable: true
 
 implementation:
   require_mapping_for_implementation_responsible_requirement: true
   allow_missing_mapping: false
 
+# Repository内のProduction SymbolをASTで列挙し、Trace Mapに未紐付けの
+# Public Implementationを検出する。file-only Mappingは当該File全体をCoverage済み、
+# Class Mappingは配下MethodをCoverage済みとして扱う。
+implementation_analysis:
+  detect_orphan_symbols: true
+  candidate_kinds:
+    - class
+    - function
+    - method
+  ignore_private_symbols: true
+  ignore_file_patterns:
+    - "**/migrations/**"
+    - "**/generated/**"
+  ignore_symbol_patterns: []
+
 unit_test:
   require_mapping_for_unit_testable_requirement: true
   allow_missing_mapping: false
-
   allow_not_applicable: true
   require_reason_when_not_applicable: true
+
+# Unit Test ASTからProduction CallとAssertionを検証する。
+# direct callだけでなくProduction内Call Graphをmax_call_depthまで辿れる。
+code_test_traceability:
+  enabled: true
+  require_test_file_mapping: true
+  require_test_symbol_mapping: true
+  require_call_to_mapped_implementation: true
+  allow_transitive_calls: true
+  max_call_depth: 5
+  require_assertion: true
+  require_trace_map_targets: true
+  require_trace_map_assertion_count: true
 
 integration_test:
   require_mapping_for_integration_testable_requirement: true
   allow_missing_mapping: false
-
   allow_not_applicable: true
   require_reason_when_not_applicable: true
-
   origins:
     - AI_GENERATED
     - EXTERNAL
-
   require_valid_requirement_reference_for_all_cases: true
 
 coverage:
   requirement_to_implementation:
     required_rate: 100
-
   requirement_to_unit_test:
     required_rate: 100
-
   requirement_to_integration_test:
     required_rate: 100
-
-  # ADRはすべてのRequirementに必要ではないため
-  # 一律100%を要求しない
   requirement_to_adr:
+    # ADRはすべてのRequirementに必要ではないため一律100%を要求しない。
     enforce_rate: false
 
 orphan_artifacts:
   allow_orphan_test: false
   allow_orphan_accepted_adr: false
+  allow_orphan_implementation: false
 
 stale_evidence:
   allowed: false
@@ -106,6 +179,7 @@ issue_classification:
     - TEST_REQUIREMENT_MISMATCH
     - ORPHAN_ADR
     - ORPHAN_TEST
+    - ORPHAN_IMPLEMENTATION
     - STALE_EVIDENCE
     - TRACEABILITY_CONFLICT
 
@@ -120,13 +194,14 @@ routing:
   TEST_REQUIREMENT_MISMATCH: UNIT_TEST
   ORPHAN_ADR: ARCHITECTURE
   ORPHAN_TEST: UNIT_TEST
+  ORPHAN_IMPLEMENTATION: IMPLEMENTATION
   STALE_EVIDENCE: IMPLEMENTATION
   TRACEABILITY_CONFLICT: REQUIREMENTS
 
 reports:
   directory: "reports/traceability"
-  
   required:
+    - ast-index.json
     - trace-map.json
     - traceability-report.json
     - traceability-report.md

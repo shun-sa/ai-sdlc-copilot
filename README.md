@@ -202,57 +202,72 @@ Secret値そのものをReportへ出力してはいけません。
 ### Traceability Audit
 
 Traceability Auditorは、
-Requirements、ADR、Production Code、Unit Test、
-Integration Testを解析し、
-成果物間の関係をDerived Trace Mapとして生成します。
+Requirements、ADR、Production Code、Unit Test、Integration Testを解析し、
+Semantic AuditとAST解析を組み合わせてTraceabilityを監査します。
+
+まずSource Code / Test Codeから決定論的なAST Evidenceを生成します。
+
+```text
+reports/traceability/ast-index.json
+```
+
+そのEvidenceとRequirements / ADRを統合し、Derived Trace Mapを生成します。
 
 ```text
 reports/traceability/trace-map.json
 ```
 
-Trace MapはSource Artifactから再生成可能なDerived Indexであり、
+AST IndexとTrace MapはいずれもSource Artifactから再生成可能なDerived Artifactであり、
 RequirementsやADRのSource of Truthではありません。
 
 ```mermaid
 flowchart LR
     SRC[Requirements / ADR / Code / Test]
+    AST[AST Analyzers]
+    IDX[ast-index.json]
     T[Traceability Auditor]
     MAP[trace-map.json]
     R[traceability-report.json]
     V[Traceability Validator]
 
+    SRC --> AST --> IDX
     SRC --> T
+    IDX --> T
     T --> MAP
     T --> R
+    IDX --> V
     MAP --> V
     R --> V
 ```
 
-Traceability Auditorは、
-以下のForward / Reverse Traceabilityを意味的に監査します。
+AST Analyzerは以下を標準対応します。
 
-```text
-Requirement
-  ↓
-ADR
-  ↓
-Implementation
-  ↓
-Unit Test
-  ↓
-Integration Test
-```
+- Python: Python標準`ast`
+- Java: JDK Compiler Tree API
+- TypeScript / JavaScript: TypeScript Compiler API
 
-Traceability Validatorは、
-Trace Mapの構造、Requirement / ADR参照、
-Implementation File、Test Case、
-Coverage、Report整合など、
-機械的に判定可能な内容を検証します。
+Traceability Validatorは、意味判断ではなく以下を決定論的に確認します。
 
-Trace Map自体の不整合を理由に、
-Source ArtifactをMapへ合わせて修正してはいけません。
-Derived Artifact側の問題であれば、
-現在のSource ArtifactからTrace Mapを再生成します。
+- Requirement / ADR Referenceの実在
+- Implementation File / Symbol / qualified_nameの実在
+- AST IndexのSource Fingerprint整合
+- Trace Mapに紐付かないPublic Production Symbol
+- Unit Test → Production CodeのCall Trace
+- Unit Test Assertionの存在
+- Unit Test Mappingの`implementation_targets` / `assertion_count`
+- Integration Test Caseの実在
+- Coverage / Report整合
+
+Trace Map v2では、AST対応SourceについてImplementation Mappingに
+`file / symbol / qualified_name`を保持します。
+Unit Test Mappingには加えて
+`implementation_targets / assertion_count`を保持します。
+
+Traceability維持だけを目的にProduction/Test CodeへRequirement IDやADR IDコメントを埋め込みません。
+実装構造の識別情報はDerived Trace Mapで管理します。
+
+Derived Artifact自体の不整合を理由に、Source ArtifactをMapへ合わせて修正してはいけません。
+この場合は現在のSource ArtifactからAST Index / Trace Map / Reportを再生成します。
 
 ---
 
@@ -395,7 +410,8 @@ Integration Test Codeが変更された場合は、
 │   ├── copilot-instructions.md
 │   │
 │   ├── agents/
-│   │   ├── sdlc-orchestrator.agent.md 
+│   │   ├── orchestrator/
+│   │   │   └── sdlc-orchestrator.agent.md
 │   │   ├── ...
 │   │   └── assurance/
 │   │       ├── quality-review.agent.md
@@ -429,6 +445,7 @@ Integration Test Codeが変更された場合は、
     ├── quality-review/
     ├── security-review/
     ├── traceability/
+    │   ├── ast-index.json
     │   ├── trace-map.json
     │   ├── traceability-report.json
     │   ├── traceability-report.md
