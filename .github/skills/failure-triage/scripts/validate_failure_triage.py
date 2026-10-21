@@ -51,6 +51,7 @@ import yaml
 VALID_PHASES = {
     "REQUIREMENTS",
     "ARCHITECTURE",
+    "ADDR",
     "IMPLEMENTATION",
     "UNIT_TEST",
     "INTEGRATION_TEST",
@@ -390,6 +391,7 @@ def validate_header(
     if source_phase not in {
         "REQUIREMENTS",
         "ARCHITECTURE",
+        "ADDR",
         "IMPLEMENTATION",
         "UNIT_TEST",
         "INTEGRATION_TEST",
@@ -893,6 +895,7 @@ def validate_classification_and_route(
             if recommended_route not in {
                 "REQUIREMENTS",
                 "ARCHITECTURE",
+                "ADDR",
                 "IMPLEMENTATION",
                 "UNIT_TEST",
                 "INTEGRATION_TEST",
@@ -1207,6 +1210,7 @@ def validate_invalidated_phases(
         set(invalidated_normalized)
         - {
             "ARCHITECTURE",
+            "ADDR",
             "IMPLEMENTATION",
             "UNIT_TEST",
             "INTEGRATION_TEST",

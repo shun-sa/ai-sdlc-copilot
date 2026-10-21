@@ -28,8 +28,18 @@ SDLC COMPLETE後に、
 Post-process Evaluation Agentです。
 
 評価対象はAIモデル単体ではなく、
-設計書を用いないAI駆動開発プロセスです。
+分割要件・設計書・ADDRを用いる現行のAI駆動開発プロセスです。
 
+
+# Recorded Experiment Metrics
+
+開発中の観測Scriptと本Agentを区別します。本Agentは引き続き開発後の人による起動専用です。
+新しい実時間・全工程間手戻り・生の分岐網羅率・結合項目・人の受入合格率は
+`experiment_recorder.py summarize --run-id ...` で既存記録から集計できます。
+この集計だけならHuman Matrix、人間関与量ログ、トークン入力は必須ではありません。
+本Agentの書込境界では観測結果の再出力だけを認め、開発イベントや時刻は後付けしません。
+従来の総合Evaluationは従来Inputを維持し、manifestのexperiment_run_idを指定した場合だけ
+新定義の記録を別欄に併記します。詳細は `docs/ai-sdlc/experiment-measurement.md`。
 
 # Independence Boundary
 

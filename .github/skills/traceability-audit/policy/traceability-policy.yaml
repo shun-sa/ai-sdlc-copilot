@@ -1,207 +1,155 @@
-version: 2
+# Traceability Policy（注釈方式）
+#
+# 正本は各成果物の中のID参照だけ。
+#   - 文書: 要件・ADDR・実装タスク一覧などに書かれたID
+#   - コード: Production Code / Test Code の `trace:` 注釈
+# 表（Trace Map・要件トレーサビリティ表・確認結果・ADDR別一覧）はすべて
+# trace_check.py が毎回作り直す派生成果物。AST解析は使わない。
+#
 
-audit:
-  require_forward_traceability: true
-  require_reverse_traceability: true
-  allow_unresolved_blocking_issue: false
+version: 3
 
-requirements:
-  allow_invented_requirement_id: false
-  require_existing_reference: true
+# ------------------------------------------------------------
+# IDの接頭辞（種類ごと）
+#   「接頭辞-区分-連番」も読める（例: NFR-SEC-001）。
+#   連番は min_digits 桁以上。
+# ------------------------------------------------------------
+ids:
+  requirement: [FR, NFR, SEC, CON, DR, IFR, UIR, UC]
+  acceptance: [AC]
+  addr: [ADDR, ADR]          # 移行期間中は旧ADRも読む
+  entity: [DBD]              # DB論理設計書のエンティティ
+  file_definition: [FILE]    # ファイル定義書
+  task: [TASK]               # 実装タスク一覧
+  change: [CR]               # 変更管理記録（保守）
+  min_digits: 2
 
-global_requirements:
-  allow_source_reference_without_id: true
-  allow_generated_id: false
+# ------------------------------------------------------------
+# IDを定義する文書（glob）
+#   見出し・表の1列目・箇条書き（「- FR-001: 名称」）の先頭にあるIDを定義として読む。
+#   ADDRは1ファイル＝1件（front matterの addr_id、見出し、ファイル名の順で読む）。
+# ------------------------------------------------------------
+sources:
+  requirement: ["docs/requirements/**/*.md"]
+  acceptance: ["docs/requirements/**/*.md"]
+  addr: ["docs/addr/**/*.md", "docs/adr/**/*.md"]
+  entity: ["docs/architecture/db-logical-design*.md", "docs/architecture/db-logical-design/**/*.md"]
+  file_definition: ["docs/architecture/files/*.md"]
+  task: ["docs/architecture/implementation-task-list.md"]
+  change: ["docs/changes/**/*.md"]
 
-adr:
-  # Architecture PhaseではAcceptance候補のProposed ADRも監査対象。
-  architecture_scope_status:
-    - Proposed
-    - Accepted
+document_exclude:
+  - "docs/requirements/requirements.md"
+  - "docs/requirements/features/**"
+  - "**/business_requirements.md"
+  - "**/glossary.md"
+  - "**/requirements_quality_checklist.md"
 
-  # Implementation以降はAccepted ADRのみを現在Decisionとして扱う。
-  downstream_status:
-    - Accepted
+definition_fields:
+  file_definition: ["File Interface ID"]
 
-  require_related_requirements: true
-  allow_invalid_requirement_reference: false
-  allow_superseded_as_current_decision: false
-  orphan_accepted_adr_allowed: false
+integration:
+  preserve_architecture_gate: true
+  allow_requirement_when_addr_not_needed: true
 
-trace_map:
-  required: true
-  path: "reports/traceability/trace-map.json"
-  version: 2
-  derived: true
-  allow_as_source_of_truth: false
-  require_regeneration_on_source_change: true
+common_exclude:
+  - ".git/**"
+  - ".github/**"
+  - "reports/**"
+  - ".venv/**"
+  - "venv/**"
+  - "node_modules/**"
+  - "__pycache__/**"
+  - "dist/**"
+  - "build/**"
+  - "**/.venv/**"
+  - "**/venv/**"
+  - "**/node_modules/**"
+  - "**/__pycache__/**"
+  - "**/dist/**"
+  - "**/build/**"
 
-ast_index:
-  required: true
-  path: "reports/traceability/ast-index.json"
-  version: 1
-  derived: true
-  allow_as_source_of_truth: false
+# ------------------------------------------------------------
+# ADDR
+# ------------------------------------------------------------
+addr:
+  # 要件へのリンクを読む節（見出しに含まれていればよい）
+  related_sections: ["関連要件", "Related Requirements"]
+  current_status: [ACTIVE, Accepted]
+  proposed_status: [Proposed, DRAFT]     # ARCHITECTURE scopeでだけ有効として扱う
+  retired_status: [SUPERSEDED, Superseded, Deprecated, Rejected]
 
-# AST解析対象。Framework共通実装はPython / Java / TypeScript(JavaScript含む)を扱う。
-# JavaはJDK Compiler Tree API、TypeScript/JavaScriptはTypeScript Compiler APIを使用する。
-source_analysis:
-  enabled: true
-  production_roots:
-    - src
-    - app
-  test_roots:
-    - tests
-    - test
-    - src/test
-  # React/TypeScript等でsrc配下へTestを共置するケースもTestとして扱う。
-  test_file_patterns:
-    - "**/test_*.py"
-    - "**/*_test.py"
-    - "**/*.test.ts"
-    - "**/*.test.tsx"
-    - "**/*.spec.ts"
-    - "**/*.spec.tsx"
-    - "**/*.test.js"
-    - "**/*.test.jsx"
-    - "**/*.spec.js"
-    - "**/*.spec.jsx"
-    - "**/__tests__/**"
-  include_extensions:
-    - .py
-    - .java
-    - .ts
-    - .tsx
-    - .js
-    - .jsx
-  exclude_globs:
-    - "**/.venv/**"
-    - "**/venv/**"
-    - "**/node_modules/**"
-    - "**/dist/**"
-    - "**/build/**"
-    - "**/generated/**"
-    - "**/__pycache__/**"
-
-symbol_validation:
-  validate_symbol_when_present: true
-  validate_qualified_name_when_present: true
-  require_symbol_for_supported_source: true
-  require_qualified_name_for_supported_source: true
-  # 対象LanguageのSourceが存在するのにAST Resolverが利用できない場合はFAIL。
-  # Project事情でToolchainを用意できない場合のみfalseへ変更する。
-  fail_when_resolver_unavailable: true
-
-implementation:
-  require_mapping_for_implementation_responsible_requirement: true
-  allow_missing_mapping: false
-
-# Repository内のProduction SymbolをASTで列挙し、Trace Mapに未紐付けの
-# Public Implementationを検出する。file-only Mappingは当該File全体をCoverage済み、
-# Class Mappingは配下MethodをCoverage済みとして扱う。
-implementation_analysis:
-  detect_orphan_symbols: true
-  candidate_kinds:
-    - class
-    - function
-    - method
-  ignore_private_symbols: true
-  ignore_file_patterns:
+# ------------------------------------------------------------
+# 注釈を読むファイルと、書いてよいIDの種類
+#   allowed は ids の種類名で書く。
+# ------------------------------------------------------------
+code:
+  include:
+    - "src/**/*.py"
+    - "app/**/*.py"
+    - "**/templates/**/*.html"
+  exclude:
     - "**/migrations/**"
-    - "**/generated/**"
-  ignore_symbol_patterns: []
+  allowed: [addr, entity, file_definition]
 
 unit_test:
-  require_mapping_for_unit_testable_requirement: true
-  allow_missing_mapping: false
-  allow_not_applicable: true
-  require_reason_when_not_applicable: true
-
-# Unit Test ASTからProduction CallとAssertionを検証する。
-# direct callだけでなくProduction内Call Graphをmax_call_depthまで辿れる。
-code_test_traceability:
-  enabled: true
-  require_test_file_mapping: true
-  require_test_symbol_mapping: true
-  require_call_to_mapped_implementation: true
-  allow_transitive_calls: true
-  max_call_depth: 5
-  require_assertion: true
-  require_trace_map_targets: true
-  require_trace_map_assertion_count: true
+  include:
+    - "tests/unit/**/*.py"
+    - "**/tests/unit/**/*.py"
+  exclude: ["**/conftest.py", "**/__init__.py", "**/_helpers.py"]
+  allowed: [requirement, acceptance, addr, entity, file_definition]
+  junit: ["reports/unit-test/junit.xml"]
+  execution: "reports/unit-test/trace-execution.json"
 
 integration_test:
-  require_mapping_for_integration_testable_requirement: true
-  allow_missing_mapping: false
-  allow_not_applicable: true
-  require_reason_when_not_applicable: true
-  origins:
-    - AI_GENERATED
-    - EXTERNAL
-  require_valid_requirement_reference_for_all_cases: true
+  include:
+    - "tests/integration/**/*.py"
+  exclude: ["**/conftest.py", "**/__init__.py", "**/_helpers.py"]
+  allowed: [requirement, acceptance, addr, entity, file_definition]
+  junit: ["reports/integration-test/junit.xml"]
+  execution: "reports/integration-test/trace-execution.json"
+  plan: "reports/integration-test/integration-test-plan.json"
 
-coverage:
-  requirement_to_implementation:
-    required_rate: 100
-  requirement_to_unit_test:
-    required_rate: 100
-  requirement_to_integration_test:
-    required_rate: 100
-  requirement_to_adr:
-    # ADRはすべてのRequirementに必要ではないため一律100%を要求しない。
-    enforce_rate: false
+# ------------------------------------------------------------
+# 検査
+#   C01 IDの実在（重複定義を含む）
+#   C02 廃止ADDRを指していない
+#   C03 ADDRの関連要件がある
+#   C04 実装タスクに根拠IDがある
+#   C05 対象ファイルに先頭注釈があり、書いてよい種類のIDだけを使っている
+#   C06 定義ごとの注釈（複数IDのファイル）と、先頭注釈との整合
+#   C07 テストに要件IDがある
+#   C08 コミットメッセージに [TASK-nnn]／[CR-nnn] がある（--commits 指定時）
+#   C09 実装されていないADDRがない
+#   C10 テストされていない要件がない
+#   C11 表が正本から作り直した結果と一致する（--no-write 指定時だけ実行。Validatorとしての実行で使う）
+# ------------------------------------------------------------
+checks:
+  require_test_for: [FR, NFR, SEC]
+  commit_prefixes: [TASK, CR]
+  addr_without_code: []        # コードを持たないADDR（例: 運用だけの判断）
+  scopes:
+    REQUIREMENTS:
+      fail: [C01, C11]
+      warn: []
+    ARCHITECTURE:
+      fail: [C01, C03, C04, C11]
+      warn: []
+    ADDR:
+      fail: [C01, C02, C03, C04, C11]
+      warn: []
+    IMPLEMENTATION:
+      fail: [C01, C02, C03, C04, C05, C06, C11]
+      warn: [C08, C09]
+    UNIT_TEST:
+      fail: [C01, C02, C03, C04, C05, C06, C07, C11]
+      warn: [C08, C09, C10]
+    INTEGRATION_TEST:
+      fail: [C01, C02, C03, C04, C05, C06, C07, C11]
+      warn: [C08, C09, C10]
+    FULL:
+      fail: [C01, C02, C03, C04, C05, C06, C07, C09, C10, C11]
+      warn: [C08]
 
-orphan_artifacts:
-  allow_orphan_test: false
-  allow_orphan_accepted_adr: false
-  allow_orphan_implementation: false
-
-stale_evidence:
-  allowed: false
-
-conflicts:
-  allowed: false
-
-severity:
-  blocking:
-    - CRITICAL
-    - HIGH
-
-issue_classification:
-  allowed:
-    - INVALID_REQUIREMENT_REFERENCE
-    - INVALID_ADR_REFERENCE
-    - REQUIREMENT_ADR_TRACEABILITY_MISSING
-    - IMPLEMENTATION_TRACEABILITY_MISSING
-    - UNIT_TEST_TRACEABILITY_MISSING
-    - INTEGRATION_TEST_TRACEABILITY_MISSING
-    - ADR_IMPLEMENTATION_MISMATCH
-    - TEST_REQUIREMENT_MISMATCH
-    - ORPHAN_ADR
-    - ORPHAN_TEST
-    - ORPHAN_IMPLEMENTATION
-    - STALE_EVIDENCE
-    - TRACEABILITY_CONFLICT
-
-routing:
-  INVALID_REQUIREMENT_REFERENCE: REQUIREMENTS
-  INVALID_ADR_REFERENCE: ARCHITECTURE
-  REQUIREMENT_ADR_TRACEABILITY_MISSING: ARCHITECTURE
-  IMPLEMENTATION_TRACEABILITY_MISSING: IMPLEMENTATION
-  UNIT_TEST_TRACEABILITY_MISSING: UNIT_TEST
-  INTEGRATION_TEST_TRACEABILITY_MISSING: INTEGRATION_TEST
-  ADR_IMPLEMENTATION_MISMATCH: IMPLEMENTATION
-  TEST_REQUIREMENT_MISMATCH: UNIT_TEST
-  ORPHAN_ADR: ARCHITECTURE
-  ORPHAN_TEST: UNIT_TEST
-  ORPHAN_IMPLEMENTATION: IMPLEMENTATION
-  STALE_EVIDENCE: IMPLEMENTATION
-  TRACEABILITY_CONFLICT: REQUIREMENTS
-
-reports:
-  directory: "reports/traceability"
-  required:
-    - ast-index.json
-    - trace-map.json
-    - traceability-report.json
-    - traceability-report.md
+outputs:
+  dir: "reports/traceability"

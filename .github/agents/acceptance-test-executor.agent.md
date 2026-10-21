@@ -25,6 +25,13 @@ Post-process Agentです。
 Acceptance Testを設計・生成するAgentではありません。
 
 
+# Experiment Measurement
+
+計測Runの受入試験は開発の終端COMPLETEまたはCOMPLETE_WITH_UNRESOLVED後に人が起動します。
+未解決継続を品質合格とみなしてはいけません。run-context.jsonの実際のSDLC完了時刻と同じrun_idを使い、
+人の全ケースを分母にします。Skillの計測連携に従い、FAIL/BLOCKEDを除外・改変しません。
+記録器への結果追記は決定論的Scriptが行い、開発成果物・工程状態は変更しません。
+
 # Invocation Boundary
 
 本Agentは、

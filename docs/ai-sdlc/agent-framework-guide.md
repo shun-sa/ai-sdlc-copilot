@@ -1,5 +1,15 @@
 # AI SDLC Agent Framework Guide
 
+現行の独立工程は [ArchitectureとADDRの独立工程](independent-architecture-addr.md) を正とします。
+Requirements→Architecture→ADDR→Implementationの順で、ADDRをArchitecture内の子活動にしません。
+旧版のPREPARE/FINALIZEの記述は新規Runには適用せず、本文修正時だけ実際に差し戻します。
+
+実験の記録担当・指標の定義・出力・開始方法は [実験計測ガイド](experiment-measurement.md) を参照してください。
+観測用Scriptと、開発後に人が起動するEvaluation/AcceptanceTestExecutorを区別します。
+
+設計工程の現行仕様は [設計書とADDRの分離](design-addr-workflow.md) を参照してください。
+Architectureは設計書、ADDRは重要判断・差分を担当し、既存ADRの記述には共通の互換契約を適用します。
+
 ## 1. このドキュメントの目的
 
 本ドキュメントは、本Repositoryで利用するAI SDLC Agent Frameworkについて、
@@ -66,6 +76,7 @@ flowchart TB
     subgraph Producer["Producer Agents"]
         R[Requirements Agent]
         A[Architecture Agent]
+        AD[ADDR Agent]
         I[Implementation Agent]
         U[Unit Test Agent]
         IT[Integration Test Agent]
@@ -81,6 +92,7 @@ flowchart TB
 
     O --> R
     O --> A
+    O --> AD
     O --> I
     O --> U
     O --> IT
@@ -93,6 +105,7 @@ flowchart TB
 
     R -. result .-> O
     A -. result .-> O
+    AD -. result .-> O
     I -. result .-> O
     U -. result .-> O
     IT -. result .-> O
@@ -127,6 +140,7 @@ flowchart TB
 
     R[Requirements Agent]
     A[Architecture Agent]
+    AD[ADDR Agent]
     I[Implementation Agent]
     U[Unit Test Agent]
     IT[Integration Test Agent]
@@ -139,6 +153,7 @@ flowchart TB
 
     O --> R
     O --> A
+    O --> AD
     O --> I
     O --> U
     O --> IT
@@ -150,7 +165,7 @@ flowchart TB
     classDef parent fill:#eef6ff,stroke:#3566a8,stroke-width:1px;
     classDef child fill:#f8fbff,stroke:#7f9fcf,stroke-width:1px;
     class O parent;
-    class R,A,I,U,IT,Q,S,T,F child;
+    class R,A,AD,I,U,IT,Q,S,T,F child;
 ```
 
 ### 3.2 Agent呼び出し順序（標準フロー）
@@ -162,6 +177,7 @@ sequenceDiagram
     participant O as SDLC Orchestrator
     participant R as Requirements
     participant A as Architecture
+    participant AD as ADDR
     participant I as Implementation
     participant U as Unit Test
     participant IT as Integration Test
@@ -173,18 +189,20 @@ sequenceDiagram
     R-->>O: Result
     O->>A: 2. 起動
     A-->>O: Result
-    O->>I: 3. 起動
+    O->>AD: 3. 重要判断を依頼（設計資料・manifestを引渡し）
+    AD-->>O: ADDR・明示参照・必要時の設計変更要求
+    O->>I: 4. 設計資料とADDRを渡して起動
     I-->>O: Result
-    O->>U: 4. 起動
+    O->>U: 5. 起動
     U-->>O: Result
-    O->>IT: 5. 起動
+    O->>IT: 6. 起動
     IT-->>O: Result
 
-    O->>Q: 6. Final Assurance
+    O->>Q: 7. Final Assurance
     Q-->>O: Report / Route
-    O->>S: 7. Final Assurance
+    O->>S: 8. Final Assurance
     S-->>O: Report / Route
-    O->>T: 8. Final Assurance
+    O->>T: 9. Final Assurance
     T-->>O: Report / Route
 ```
 
@@ -198,13 +216,14 @@ sequenceDiagram
 flowchart LR
     R[Phase 1<br/>Requirements]
     A[Phase 2<br/>Architecture]
-    I[Phase 3<br/>Implementation]
-    U[Phase 4<br/>Unit Test]
-    IT[Phase 5<br/>Integration Test]
-    FA[Phase 6<br/>Final Assurance]
+    AD[Phase 3<br/>ADDR]
+    I[Phase 4<br/>Implementation]
+    U[Phase 5<br/>Unit Test]
+    IT[Phase 6<br/>Integration Test]
+    FA[Phase 7<br/>Final Assurance]
     C([COMPLETE])
 
-    R --> A --> I --> U --> IT --> FA --> C
+    R --> A --> AD --> I --> U --> IT --> FA --> C
 ```
 
 各Phaseは原則として以下のGateを通過します。
@@ -303,33 +322,48 @@ Requirements Phaseへ正式に差し戻して修正します。
 
 #### 役割（Architecture Agent）
 
-Requirementを満たすために必要な重要Architecture DecisionをADRとして定義します。
+要件・UC/AC・Steering・準備済み仕様を、既存テンプレートに沿った設計資料へ再構成します。
 
-#### ADR Lifecycle
+- ファイル連携がある場合のfile-definition
+- 現在の入力を対象にしたcross-artifact-consistency-analysis
+- 根拠のある実装作業・依存・Wave・検証方法を示すimplementation-task-list
+- 出典・成果物・対象・未確定判断の所在をまとめるversion=2のFINAL design-manifest
 
-Architecture Phaseでは新規ADRをまず`Proposed`として作成します。
+重要方式の比較・採否は先回りして行わず、必要な場所と根拠だけを次のADDRへ渡します。
+FINALはArchitecture資料の公開版であって、全判断完了や実装開始許可を意味しません。
+設計Gateと独立ARCHITECTURE Scope検査は、ADDRへ渡す資料を固定するものです。
 
-```mermaid
-flowchart LR
-    P[Proposed ADR]
-    V[ADR Validator]
-    A[Architecture Scope Assurance]
-    AC[Accepted ADR]
-    D[Downstream Source of Truth]
+### 5.3.1 ADDR Agent
 
-    P --> V --> A --> AC --> D
+#### 役割（ADDR Agent）
+
+Architectureとは対等な独立Producerで、親は同じSDLC Orchestratorです。
+Architectureの設計資料・manifest・設計Gateと要件を受け取り、重要判断の要否を確認します。
+必要な対象だけ、選択肢・採否理由・判断による設計差分・不変条件・実装拘束を正本ADDRへ記録します。
+
+ADDRはFILEの項目表、全体整合性分析、Task一覧を再作成・直接編集しません。
+実在FILE/TASKへの参照はADDRの正本2章へ明示し、機械可読結果と派生handoffで接続します。
+親がADDR Scopeの独立検査と実装引渡しGateを実施し、Implementationへ両方の資料を渡します。
+
+```text
+Architectureの設計資料・manifest・設計Gate
+  → 親がADDRへ引き渡す
+ADDRの重要判断・明示参照
+  → 親がhandoff・独立検査・実装引渡しGateを確認
+Implementationが設計資料とADDRの両方を読む
 ```
 
-Architecture PhaseのAssuranceでは、
-Acceptance候補となるProposed ADRを監査対象とします。
+#### 必要な場合だけの差し戻し
 
-Architecture PhaseをPASSした後の後続工程では、
-Accepted ADRのみを現在有効なArchitecture Decisionとして扱います。
+通常のArchitecture FINALIZE再呼出しはありません。
+判断の不足・誤りはADDR内で修正します。資料本文/Taskを変える必要があるときだけ、
+ADDRが具体的なdesign_change_requestsを返し、親がArchitectureへ実際に戻します。
+参照追加だけなら資料を書き戻さず、handoffで結び付けます。
 
-#### ポイント（Architecture Agent）
-
-重要な設計判断が不足している場合、
-Implementation側で独自判断せず`ADR_REQUIRED`としてArchitectureへ戻します。
+新しい判断の状態はACTIVE / SUPERSEDEDで、ACTIVEだけでは実装開始許可になりません。
+旧Accepted ADRは互換入力として残し、新規判断を旧ADRのProposed→Acceptedへ二重生成しません。
+詳しくは [独立工程の実行契約](independent-architecture-addr.md) と
+[READMEの引渡し図](../../README.md#設計agentとaddr-agentのつながり) を参照してください。
 
 ---
 
@@ -337,7 +371,7 @@ Implementation側で独自判断せず`ADR_REQUIRED`としてArchitectureへ戻�
 
 #### 役割（Implementation Agent）
 
-RequirementsとAccepted ADRに従ってProduction Codeを実装します。
+要件、Architectureの設計資料・Task、ADDRの重要判断に従ってProduction Codeを実装します。
 
 #### 主な責務
 
@@ -353,7 +387,7 @@ RequirementsとAccepted ADRに従ってProduction Codeを実装します。
 
 ```text
 ADR_REQUIRED
-→ Architecture
+→ ADDR
 ```
 
 Requirement自体に問題:
@@ -563,210 +597,15 @@ Deterministic Check:
 
 ### 6.3 Traceability Auditor
 
-#### 目的（Traceability Auditor）
+成果物内ID・trace注釈を正本としてC01〜C11を機械検査します。
+作成Agentが参照を記入し、Auditorは元成果物を編集せず表とTrace Map v3を再生成します。
+意味的レビューは助言として分離し、独立Quality/Security/Test Gateは維持します。
+正本構造を維持し、現行はArchitecture→ADDRの独立工程と設計/実装引渡しの2つのGateを使います。
 
-Traceability Auditorは、
-現在のSource Artifactを意味的に監査すると同時に、
-AST Analyzerから得た決定論的Evidenceを利用してTraceabilityを生成・検証します。
-
-```text
-Requirements / ADR / Code / Test
-              │
-              ├───────────────┐
-              ↓               ↓
-       Semantic Audit      AST Analysis
-              │               ↓
-              │          ast-index.json
-              │               │
-              └───────┬───────┘
-                      ↓
-               trace-map.json
-               [Derived Index]
-                      ↓
-            Traceability Validator
-```
-
-生成するDerived Artifact:
-
-```text
-reports/traceability/ast-index.json
-reports/traceability/trace-map.json
-```
-
-`ast-index.json`はSource Code / Test Codeの物理構造Evidenceです。
-最低限、以下を保持します。
-
-- Source Fingerprint
-- Analyzer Status
-- Production Symbol / qualified_name
-- Test Symbol / qualified_name
-- Symbol間Call
-- Assertion Count
-
-標準Analyzer:
-
-| Language | Analyzer |
-|---|---|
-| Python | Python標準`ast` |
-| Java | JDK Compiler Tree API |
-| TypeScript / JavaScript | TypeScript Compiler API |
-
-AST IndexもTrace MapもSource of Truthではありません。
-Source Artifact変更後は再生成します。
-
-#### Phase 2: Symbol / FQN実在確認
-
-Trace Map v2では、AST対応Production SourceについてImplementation Mappingに
-以下を保持します。
-
-```text
-file
-symbol
-qualified_name
-```
-
-ValidatorはAST Indexを使い、`symbol`と`qualified_name`が実在し、
-同一Symbolを指していることを決定論的に確認します。
-
-これにより、AIが存在しないFQNを生成した場合や、
-リファクタリング後に古いFQNが残った場合を検出できます。
-
-#### Phase 3: Orphan Implementation検出
-
-ASTでRepository内のProduction Symbolを列挙し、
-Trace MapのImplementation Mappingと比較します。
-
-```text
-Repository Production Symbols
-          -
-Trace Map Covered Symbols
-          =
-Orphan Implementation Candidates
-```
-
-正当な除外理由がないPublic SymbolがどのRequirement / ADRにも紐付かない場合、
-`ORPHAN_IMPLEMENTATION`として扱います。
-
-誤検知を抑えるため、Mapping粒度は以下のように扱います。
-
-- file-only Mapping: File内のSymbolをCoverage済み
-- Class Mapping: Classおよび配下MethodをCoverage済み
-- Function / Method Mapping: 対象SymbolのみCoverage済み
-
-Private Symbol、Generated Code、Migration等はPolicyで除外できます。
-
-#### Phase 4: Code → Test AST Traceability
-
-Unit Test Mappingについて、Test ASTから以下を確認します。
-
-```text
-Unit Test Symbol
-      ↓ Call
-Production Symbol
-      ↓ optional transitive call
-Mapped Implementation
-```
-
-さらにTestにAssertionが存在することを確認します。
-
-Trace Map v2のUnit Test Mapping:
-
-```yaml
-test_id:
-file:
-symbol:
-qualified_name:
-implementation_targets:
-  - <Production qualified_name>
-assertion_count:
-```
-
-`implementation_targets`は、Testから到達可能で、かつ同じRequirementにMappingされた
-Production Symbolを記録します。Policyで許可される場合はProduction Call Graphを
-`max_call_depth`まで辿ります。
-
-ASTは「物理的に存在しCallされている」ことを判断し、
-Traceability Auditorは「Requirement / ADRとの意味的な関係」を判断します。
-どちらか一方だけでTraceabilityを成立させません。
-
-#### Trace Map / AST Index / Reportの役割
-
-```text
-ast-index.json
-= Source/Test ASTから生成した物理構造Evidence
-
-trace-map.json
-= Requirement / ADRとAST Evidenceを統合したMapping
-
-traceability-report.json
-= Semantic Audit結果
-
-validation-result.json
-= Deterministic Validator結果
-```
-
-Production CodeやTest CodeへTraceability維持だけを目的とした
-Requirement ID / ADR IDコメントを埋め込みません。
-実装構造の変化はDerived Artifactの再生成で追従します。
-
-#### Derived Artifact Failureの扱い
-
-AST Index / Trace Mapの構造不正、Source Fingerprint不一致、
-存在しないSymbol / qualified_name、MapとASTの不整合など、
-Derived Artifact側のFailureだけを理由にSource ArtifactをMapへ合わせて修正してはいけません。
-
-この場合はTraceability Auditorを再実行し、
-現在のSource ArtifactからAST Index / Trace Map / Reportを再生成します。
-
-一方、Semantic Auditによって実際のSource Artifact側の問題が特定された場合は、
-`recommended_route`に従ってRoot Cause工程へ差し戻します。
-
-#### Requirement IDを持たない項目
-
-Project-wide Requirementなど、IDがないRequirementへ新しいIDを勝手に付与してはいけません。
-必要な場合は、
-
-```text
-docs/requirements/requirements.md#heading
-```
-
-のようなSource Referenceを使用します。
-
-#### カスタマイズポイント（Traceability Auditor）
-
-Traceability Rule:
-
-```text
-.github/skills/traceability-audit/policy/
-```
-
-監査手順:
-
-```text
-.github/skills/traceability-audit/SKILL.md
-```
-
-AST / FQN解析:
-
-```text
-.github/skills/traceability-audit/scripts/traceability_ast.py
-.github/skills/traceability-audit/scripts/JavaAstAnalyzer.java
-.github/skills/traceability-audit/scripts/typescript_ast_analyzer.cjs
-.github/skills/traceability-audit/scripts/build_traceability_ast_index.py
-```
-
-Deterministic Validation:
-
-```text
-.github/skills/traceability-audit/scripts/validate_traceability.py
-```
-
-Validator / AST Unit Test:
-
-```text
-.github/skills/traceability-audit/scripts/test_validate_traceability.py
-.github/skills/traceability-audit/scripts/test_traceability_ast.py
-```
+詳細・対象・移行・実行版記録は [注釈方式トレーサビリティ](inline-traceability.md) を参照してください。
+手順は `.github/skills/traceability-audit/SKILL.md`、
+設定は `policy/traceability-policy.yaml`、
+生成・検証は `scripts/trace_check.py`、テストは `scripts/test_trace_check.py` です。
 
 ---
 
@@ -785,6 +624,9 @@ Assuranceには2種類あります。
 Architecture完了
 → audit_scope=ARCHITECTURE
 
+ADDR完了
+→ audit_scope=ADDR
+
 Implementation完了
 → audit_scope=IMPLEMENTATION
 
@@ -795,10 +637,9 @@ Integration Test完了
 → audit_scope=INTEGRATION_TEST
 ```
 
-Architecture Scopeだけは、
-Acceptance候補のProposed ADRを監査対象として扱います。
-
-Implementation以降ではAccepted ADRのみを有効なDecisionとして扱います。
+ARCHITECTURE Scopeは設計資料とADDR引渡しの準備、ADDR Scopeは重要判断と設計全体の整合を検査します。
+ADDRのACTIVEは実装引渡しGate前の候補。Implementation以降は有効な実装引渡しGateを確認します。
+設計分析資料はProducerが作成し、独立Qualityはそれとは別の検査結果を生成します。
 
 ### Final Assurance
 
@@ -835,7 +676,7 @@ Failureを検出した場合、
 | Classification | 基本Route |
 | --- | --- |
 | REQUIREMENT_ERROR | Requirements |
-| ADR_REQUIRED | Architecture |
+| ADR_REQUIRED | ADDR |
 | IMPLEMENTATION_ERROR | Implementation |
 | TEST_ERROR | Unit Test / Integration Test |
 | ENVIRONMENT_ERROR | Environment / Orchestrator |
@@ -934,17 +775,18 @@ INVALID_INVOCATION
 ```mermaid
 flowchart TD
     R[Requirements Changed]
-    A[Accepted ADR Changed]
+    A[ADDR / Existing Decision Changed]
     I[Production Code Changed]
 
     RA[Architecture再実行]
+    DA[ADDR検証・handoff・実装引渡しGate]
     AI[Implementation再実行]
     UT[Unit Test再実行]
     IT[Integration Test再実行]
     AS[Assurance再実行]
 
-    R --> RA --> AI --> UT --> IT --> AS
-    A --> AI
+    R --> RA --> DA --> AI --> UT --> IT --> AS
+    A --> DA
     I --> UT
 ```
 
@@ -953,7 +795,8 @@ flowchart TD
 | Changed Artifact | 再検証対象 |
 | --- | --- |
 | Requirements | Architecture以降 |
-| Accepted ADR | Implementation以降 |
+| 設計資料 / Task | 設計Gate、ADDRと影響する下流 |
+| ADDR / 参照中の旧Accepted ADR | ADDR検証・handoff・実装引渡しGateと影響する下流 |
 | Production Code | 影響するUnit / Integration Test |
 | Unit Test Codeのみ | Unit Test |
 | Integration Test Codeのみ | Integration Test |
@@ -970,70 +813,26 @@ Unit Test Code、Integration Test Codeが変更された場合、
 
 ## 11. Repository内の役割分担
 
-推奨構造は以下です。
+実際の配置は次のとおりです。生成予定の成果物Directoryを含みます。
 
 ```text
-.
-├── .github/
-│   ├── copilot-instructions.md
-│   │
-│   ├── agents/
-│   │   ├── orchestrator/
-│   │   │   └── sdlc-orchestrator.agent.md
-│   │   ├── ...
-│   │   └── assurance/
-│   │       ├── quality-review.agent.md
-│   │       ├── security-review.agent.md
-│   │       ├── traceability-auditor.agent.md
-│   │       └── failure-triage.agent.md
-│   │
-│   └── skills/
-│       ├── requirements/
-│       ├── architecture/
-│       ├── implementation/
-│       ├── unit-test/
-│       ├── integration-test/
-│       ├── quality-review/
-│       │   ├── SKILL.md
-│       │   ├── policy/
-│       │   ├── criteria/
-│       │   └── scripts/
-│       ├── security-review/
-│       │   ├── SKILL.md
-│       │   ├── policy/
-│       │   ├── criteria/
-│       │   └── scripts/
-│       ├── traceability-audit/
-│       │   ├── SKILL.md
-│       │   ├── policy/
-│       │   └── scripts/
-│       └── failure-triage/
-│           ├── SKILL.md
-│           ├── policy/
-│           └── scripts/
-│
-├── docs/
-│   ├── requirements/
-│   ├── adr/
-│   └── ai-sdlc/
-│       └── agent-framework-guide.md
-│
-├── external-tests/
-│   └── integration-test/
-│
-└── reports/
-    ├── unit-test/
-    ├── integration-test/
-    ├── quality-review/
-    ├── security-review/
-    ├── traceability/
-    │   ├── ast-index.json
-    │   ├── trace-map.json
-    │   ├── traceability-report.json
-    │   ├── traceability-report.md
-    │   └── validation-result.json
-    ├── failure-triage/
-    └── sdlc/
+.github/agents/                         Agent定義は直下の*.agent.md
+  sdlc-orchestrator.agent.md
+  architecture.agent.md
+  addr.agent.md
+  ...
+.github/skills/architecture/            設計資料の手順・正本・検証
+.github/skills/addr/                    重要判断の手順・正本・検証
+.github/skills/failure-triage/           3回ループと原因別Routing
+.github/skills/evaluation/              実験記録器・開発後評価
+docs/requirements/                     要件本文・UC/AC
+docs/architecture/                     設計資料とTask
+docs/addr/                             新規重要判断
+docs/adr/                              既存ADR（互換入力）
+reports/architecture/                  設計Gateと互換名のADDR契約・実装引渡しGate
+reports/addr/                          設計と判断を結ぶ派生handoff
+reports/experiments/<run-id>/           工程時間・手戻り・試験証跡
+reports/loop-control/                  修正履歴・未解決結果・継続判定
 ```
 
 `reports/`はRuntime Resultです。
@@ -1362,10 +1161,11 @@ Invalidation Ruleに従って再実行してください。
 
 確認:
 
-- Proposed ADRが存在するか
-- ADR Validator PASSか
-- Architecture Scope Assurance PASSか
-- Acceptance処理後にADRがAcceptedになっているか
+- version=2のFINAL design-manifestと設計資料が現在版か
+- 設計Validator・ARCHITECTURE Scopeの独立検査・設計Gateが揃っているか
+- ADDRへ設計資料と予約ID契約が渡され、判断の要否が記録されたか
+- ADDRの検証・handoff・独立ADDR Scope検査・実装引渡しGateが揃っているか
+- 3回後の未解決継続の場合は、ARCHITECTUREとADDRの継続判定と未実行範囲が明示されているか
 
 ### Integration Testで止まる
 
@@ -1400,7 +1200,7 @@ Frameworkを変更した場合は以下を確認してください。
 - [ ] 新StatusのRoutingがOrchestratorに存在する
 - [ ] 新Routeに必要なInvalidationが定義されている
 - [ ] Validator変更に対応するUnit Testがある
-- [ ] Architecture ScopeのProposed ADR例外が壊れていない
+- [ ] ArchitectureとADDRのScope・入力版が分離され、ACTIVEだけで実装開始していない
 - [ ] Implementation以降はAccepted ADRだけを利用している
 - [ ] External Case Independenceが維持されている
 - [ ] Final Assuranceが`FULL`で実行される
@@ -1469,3 +1269,10 @@ Failure
 すべての工程、Validator、Final AssuranceがPASSし、
 未解決Blocking Issueが存在しない場合のみ
 SDLC全体をCOMPLETEとします。
+
+## 工程継続の基本方針（2026-10-21更新）
+
+全工程は、初回失敗とは別に修正・再検査を最大3回行い、残れば未解決を記録して次へ進めます。
+旧来の停止条件は品質PASSの判定として維持し、工程継続では共通3回方針を優先します。
+検査FAILは変更しません。最終結果もCOMPLETE_WITH_UNRESOLVEDとして正常完了と区別します。
+詳細は [共通3回ループ](bounded-repair-loop.md) を参照してください。

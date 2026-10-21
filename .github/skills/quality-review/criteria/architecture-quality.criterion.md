@@ -8,12 +8,20 @@ Architecture DecisionがRequirementに対して
 ## Applies To
 
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST
 - FULL
 
 ## Required Review
+
+設計書・実装タスク・ADDRの3種を対象とする。ADDRの判断基準、選択肢、決定理由、
+DD/INV/ASM、設計種別、旧Accepted ADRとの整合と、Taskの依存・網羅性を確認する。
+ADDRが不要な対象であることと、設計書が不要であることを混同しない。
+Architectureが作成したcross-artifact-consistency分析を読取り、独立した所見をQuality Reportへ記録する。
+ARCHITECTUREはADDR引渡し品質、ADDRは判断と設計資料/Taskの最終整合を検査する。
+本文修正が必要な不整合はArchitecture、判断の不備はADDRへ戻す。未解決を品質PASSにしない。
 
 以下を確認する。
 
@@ -44,6 +52,10 @@ NOT_APPLICABLE可。
 Architectureの問題:
 
 `ARCHITECTURE_QUALITY_ISSUE`
+
+重要判断/ADDRの問題:
+
+`ADDR_QUALITY_ISSUE`（Route: ADDR）
 
 不必要な複雑性:
 

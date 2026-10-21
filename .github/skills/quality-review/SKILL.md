@@ -54,6 +54,7 @@ Review観点を変更できる構造とします。
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST
@@ -93,28 +94,22 @@ Requirements Criterionを評価してください。
 
 ## Step 6. ADRを読み込む
 
-`docs/adr/`
+新ワークフローではFINAL設計manifest、設計書、実装タスク、`docs/addr/` のACTIVE ADDRも読む。
+共通Instructionsの設計判断契約に従い、旧ADRのみという読み方をしない。
+ARCHITECTUREでは現在の設計資料とADDRへの引渡し品質を、ADDRでは新しい重要判断と全体整合を検査する。
+ADDRではACTIVEは実装引渡しGate前の監査候補。IMPLEMENTATION以降では有効な実装引渡しGateを要求する。
+ADDRの4章を判断根拠、5〜6章を差分、7章をGuardrailとして確認する。
+Architectureの整合性分析資料は読取り専用とし、独立検査結果を既存quality-review-reportへ記録する。
+Producerの分析を独立PASSの代替にせず、同じ分析文書を上書き・複製しない。
+ARCHITECTUREのJSON Reportへsource_baseline_sha256としてFINAL manifestのSHA-256を記録する。
+ADDRのJSON Reportはreports/addr/implementation-handoff.jsonのSHA-256へ結び付ける。
+重要判断不備はADDR_QUALITY_ISSUE→ADDR、設計資料不備はARCHITECTURE_QUALITY_ISSUE→ARCHITECTUREへ戻す。
 
-からScopeに応じてADRを取得してください。
-
-`audit_scope=ARCHITECTURE`の場合は、
-Acceptance候補となるProposed ADRを
-Architecture Qualityの監査対象として扱ってください。
-
-既存のAccepted ADRが存在する場合は、
-Acceptance候補のProposed ADRとの
-矛盾・重複・整合性も確認してください。
-
-`audit_scope=IMPLEMENTATION`、
-`UNIT_TEST`、
-`INTEGRATION_TEST`、
-`FULL`
-の場合は、
-Accepted ADRのみを
-現在有効なArchitecture Decisionとして扱ってください。
-
-Superseded ADRを
-現在有効なDecisionとして扱ってはいけません。
+新規判断はdocs/addrの正本ADDRから読み、既存設計資料と組み合わせて検査する。
+ARCHITECTUREは設計資料とADDRへの引渡し準備、ADDRは重要判断と全体整合の検査である。
+ADDR ScopeのACTIVEはGate前候補。実装以降では実装引渡しGate済みの判断だけを有効とする。
+旧docs/adrのAccepted ADRは互換入力として読む。新規ADRのProposed→Accepted操作は要求しない。
+SUPERSEDEDや旧Supersededを現在有効な判断として扱わない。
 
 
 ## Step 7. Architecture Qualityを評価する
@@ -237,6 +232,7 @@ Root Causeに応じて、
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

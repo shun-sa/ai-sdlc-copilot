@@ -8,6 +8,7 @@ Security Controlが弱体化していないことを確認する。
 ## Applies To
 
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

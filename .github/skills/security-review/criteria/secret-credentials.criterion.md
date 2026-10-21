@@ -8,6 +8,7 @@ SecretおよびCredentialが
 ## Applies To
 
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

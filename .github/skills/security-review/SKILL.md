@@ -52,6 +52,7 @@ Policyで指定されたCriterionをすべて読み込んでください。
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST
@@ -105,28 +106,20 @@ Requirement自体のSecurity問題を検出した場合は、
 
 ## Step 6. ADRを読み込む
 
-`docs/adr/`
+新ワークフローではFINAL設計・実装計画・`docs/addr/` のACTIVE ADDRも対象とする。
+共通の設計判断契約に従い、ADDRの判断基準・決定・差分・INV・ASMを確認する。
+ARCHITECTUREは設計資料の検査、ADDRは重要判断と設計全体の整合の独立検査とする。
+ADDRではACTIVEは実装引渡しGate前の候補、IMPLEMENTATION以降ではGate済みのみを有効判断とする。
+重要度や受入条件を変える安全でない仮定をPASSにしない。
+ARCHITECTUREのJSON Reportへsource_baseline_sha256としてFINAL manifestのSHA-256を記録する。
+ADDRのJSON Reportはreports/addr/implementation-handoff.jsonのSHA-256へ結び付ける。
+判断の不備はADDR、設計資料の不備はARCHITECTUREへROOT_CAUSEで戻す。
 
-からScopeに応じてADRを取得してください。
-
-`audit_scope=ARCHITECTURE`の場合は、
-Acceptance候補となるProposed ADRを
-Architecture Securityの監査対象として扱ってください。
-
-既存のAccepted ADRが存在する場合は、
-Acceptance候補のProposed ADRとの
-Security上の矛盾・重複・Guardrail不整合も確認してください。
-
-`audit_scope=IMPLEMENTATION`、
-`UNIT_TEST`、
-`INTEGRATION_TEST`、
-`FULL`
-の場合は、
-Accepted ADRのみを
-現在有効なArchitecture Decisionとして扱ってください。
-
-Superseded ADRを
-現在有効なDecisionとして扱ってはいけません。
+新規判断はdocs/addrの正本ADDRから読み、既存設計資料と組み合わせて検査する。
+ARCHITECTUREは設計資料とADDRへの引渡し準備、ADDRは重要判断と全体整合の検査である。
+ADDR ScopeのACTIVEはGate前候補。実装以降では実装引渡しGate済みの判断だけを有効とする。
+旧docs/adrのAccepted ADRは互換入力として読む。新規ADRのProposed→Accepted操作は要求しない。
+SUPERSEDEDや旧Supersededを現在有効な判断として扱わない。
 
 
 ## Step 7. Architecture Securityを確認する
@@ -288,6 +281,7 @@ Security Impactに基づいて、
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

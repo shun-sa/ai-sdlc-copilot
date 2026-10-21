@@ -346,6 +346,35 @@ class ReportValidatorTest(unittest.TestCase):
         self.assertTrue(any("expected 50.0" in e for e in errors))
 
 
+class RuntimeMeasurementTest(unittest.TestCase):
+    def test_finalized_runtime_is_read_without_mutating_development_journal(self):
+        import experiment_recorder as recorder
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            recorder.append(root, "RUN-001", "start", "RUN_STARTED", {})
+            recorder.append(root, "RUN-001", "integration", "PHASE_ENTERED", {"phase": "INTEGRATION_TEST", "previous_result": "PASS"})
+            recorder.append(root, "RUN-001", "integration-end", "PHASE_ENDED", {"phase": "INTEGRATION_TEST", "result": "CONTINUE_WITH_UNRESOLVED"})
+            recorder.append(root, "RUN-001", "end", "RUN_ENDED", {"status": "COMPLETE_WITH_UNRESOLVED", "source_fingerprint": recorder.source_fingerprint(root)})
+            journal = recorder.directory(root, "RUN-001") / "events.sqlite3"
+            before = journal.read_bytes()
+            result, errors = evaluate_run.evaluate_runtime(root, {"experiment_run_id": "RUN-001"})
+            self.assertFalse(errors)
+            self.assertTrue(result["time_window"]["finalized"])
+            self.assertIsNone(result["time_window"]["quality_pass_elapsed_seconds"])
+            self.assertEqual(journal.read_bytes(), before)
+
+    def test_legacy_manifest_does_not_require_runtime_recording(self):
+        result, errors = evaluate_run.evaluate_runtime(Path("."), {"run_id": "LEGACY"})
+        self.assertIsNone(result)
+        self.assertFalse(errors)
+
+    def test_explicit_runtime_reference_with_missing_journal_is_reported(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            result, errors = evaluate_run.evaluate_runtime(Path(temporary), {"experiment_run_id": "RUN-MISSING"})
+            self.assertEqual(result["status"], "MISSING_OR_INVALID")
+            self.assertTrue(errors)
+
+
 class AggregateTest(unittest.TestCase):
     def report(self, condition: str, category: str, rate: float):
         return {

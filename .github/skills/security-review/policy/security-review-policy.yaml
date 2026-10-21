@@ -4,6 +4,7 @@ audit:
   allowed_scopes:
     - REQUIREMENTS
     - ARCHITECTURE
+    - ADDR
     - IMPLEMENTATION
     - UNIT_TEST
     - INTEGRATION_TEST

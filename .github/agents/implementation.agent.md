@@ -90,7 +90,7 @@ SDLC Orchestratorから渡された情報を入力として使用してくださ
 - プロジェクト共通Instructions
 - 今回の実装対象
 - Requirements工程で記録されたASSUMPTION
-- Architecture工程で記録されたASSUMPTION
+- ADDR工程で根拠付きで記録されたASSUMPTION
 - その他Implementation工程に必要な情報
 
 必要な情報がリポジトリ内に存在する場合は、
@@ -98,6 +98,10 @@ SDLC Orchestratorから渡された情報を入力として使用してくださ
 
 
 # Source of Truth
+
+新規Runではdocs/architectureの設計資料・Taskとdocs/addrの重要判断を両方読み、
+FINAL design-manifestとreports/addr/implementation-handoff.jsonで入力版と参照を確認します。
+以下のAccepted ADRは共通Instructionsの互換名であり、実装引渡しGate済みACTIVE ADDRも含みます。
 
 Implementation工程では、
 原則として以下の優先順位で情報を確認してください。
@@ -201,9 +205,10 @@ ADR_REQUIREDとしてSDLC Orchestratorへ返却してください。
 Implementation Agent自身で
 新しいADRを作成またはAcceptedにしてはいけません。
 
-SDLC Orchestratorを経由してArchitecture工程へ戻し、
-必要なADRが作成・更新され、
-Acceptedとなった後に実装を再開してください。
+SDLC Orchestratorを経由してADDR工程へ戻し、
+重要判断をADDR Agentが記録・検証し、実装引渡しGateを再確認してから実装を再開してください。
+設計本文やTaskの修正が必要な場合だけ、親がArchitectureへ差し戻します。
+Architectureに新規判断の作成を依頼せず、ADDRに設計資料の再作成を依頼しません。
 
 
 # Existing ADR Change Policy
@@ -254,28 +259,16 @@ Implementation Agentにあります。
 Regression確認として必要に応じて実行してください。
 
 
-# Traceability
+# Inline Traceability
 
-Implementation工程では、
-Requirementと実装箇所の対応を記録してください。
-
-最低限以下を特定します。
-
-- Requirement ID
-- 実装ファイル
-- 主要Symbolまたは責務
-- Related ADR
-
-Requirement IDおよびADR IDを
-Implementation Agent自身で変更してはいけません。
-
-Implementation Agentは
-Unit Test IDまたはIntegration Test IDを
-先回りして生成してはいけません。
-
-後続のTraceability Auditorが利用できる状態で
-SDLC Orchestratorへ返却してください。
-
+成果物作成と同時に先頭へ `# trace: ADDR-001, FILE-001`（実在IDのみ）を付けます。
+Djangoは `{# trace: ADDR-001 #}`。通常のProduction注釈はADDR/DBD/FILEのみで、TASKを根拠にしません。
+先頭ID>=2かつトップレベル定義>=2ならprivate/helperも含め、各定義直前・decoratorより前へ
+先頭の部分集合のtraceを付けます。詳細はTraceability Audit SkillとPolicyに従います。
+要件への直接参照は、現在のArchitecture GateがADDR不要として承認した対象のbasis_idsに限ります。
+監査表・Trace Mapは手編集せず、仕様根拠を変える修正は設計/ADDR工程へ戻します。
+既存IDを変更せず、Test IDを先回りして作りません。
+依頼された場合だけコミットし、件名先頭に既存[TASK-nnn]/[CR-nnn]を使います。
 
 # Out of Scope
 

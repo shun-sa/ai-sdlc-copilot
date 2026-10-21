@@ -8,6 +8,7 @@ Security BehaviorがSDLC工程を進む過程で
 ## Applies To
 
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

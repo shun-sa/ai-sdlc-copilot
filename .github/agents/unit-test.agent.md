@@ -37,6 +37,12 @@ Production Codeに対する単体テストを作成・実行し、
 エラーが再発しないことを確認してください。
 
 
+# Experiment Measurement
+
+実験Runでは親のrun_idを引き継ぎ、Unit Test Skillの「実験用実測記録」に従って
+実際の単体テスト・生の分岐カバレッジ出力を記録器経由で実行してください。
+工程の開始・終了・差し戻し記録は親の責務です。古いレポートや行網羅率から分岐網羅率を補完しません。
+
 # Parent Agent
 
 あなたの親Agentは SDLC Orchestrator です。
@@ -50,6 +56,7 @@ Unit Test Agentから
 
 - Implementation Agentの再起動
 - Architecture Agentの再起動
+- ADDR Agentの再起動
 - Requirements Agentの再起動
 - Integration Test Agentの起動
 - Quality Review Agentの起動
@@ -358,9 +365,9 @@ ADR_REQUIREDの場合は、
 
 SDLC OrchestratorへADR_REQUIREDとして返却してください。
 
-Architecture工程で判断が確定し、
-ADRがAcceptedになった後、
-再度Unit Testを実行してください。
+ADDR工程で判断を記録・検証し、実装引渡しGateを再確認した後、
+必要な実装修正とUnit Testを再実行してください。
+設計資料の修正だけが必要な場合は親がArchitectureへ戻します。
 
 
 # Requirement Error Handling
@@ -393,32 +400,32 @@ Regression Testを追加してください。
 2. 関連するテスト群を再実行する
 3. Unit Test Suite全体を再実行する
 
-すべてPASSするまで
-Unit Test工程を完了してはいけません。
+品質SUCCESSは全PASS時のみです。3回後も残れば失敗・未実行を維持して親へ返し、親が未解決継続を判定します。
 
 Flakyまたは非決定的な失敗が疑われる場合は、
 Unit Test Policyで定義された回数だけ
 対象テストを繰り返してください。
 
 
-# No Error Carry Forward
+# Unresolved Error Carry Forward
 
-以下の状態では、
-後工程へ進むことを許可してはいけません。
+全工程・全Agentに、`docs/ai-sdlc/bounded-repair-loop.md` と
+`.github/skills/failure-triage/policy/loop-policy.json` を適用します。
+同一原因の初回失敗はcycle=0。その後の修正・再検査を最大3回行い、
+3回後も残ればUNRESOLVEDとして検査結果へ記録し、CONTINUE_WITH_UNRESOLVEDで次工程へ進めます。
+担当Agentや工程を変えて回数をリセットせず、4回目の修正ループは開始しません。
 
-- Failed Testが存在する
-- Error Testが存在する
-- 原因不明のTest Failureが存在する
-- 未修正のImplementation Errorが存在する
-- 未解決のADR_REQUIREDが存在する
-- 未解決のRequirement Errorが存在する
-- Coverage基準を満たしていない
-- 必須Criterionを満たしていない
-- Regression確認が完了していない
+検査FAIL、未実行、未承認判断をPASS/成功へ書き換えません。
+通常の品質Gateは残し、工程継続はOrchestratorが別の継続判定で許可します。
+旧来の「すべてPASSまで停止」「未解決の持越し禁止」は品質PASSの条件として読み、
+工程継続については3回後の記録・継続規則を優先します。正本・期待値・外部ケースの改変、
+失敗テストの削除/skip、欠落資料・設計判断の捏造で回避しません。
+依存して実行不能な作業は未実行と影響を残し、実行可能な後続作業を進めます。
+この許可は本番反映・不可逆操作・権限やユーザー承認の代替ではありません。
 
-Unit Test工程は
-「既知エラーを次工程へ持ち越さない」
-ことを必須条件とします。
+実行履歴と未解決結果はreports/loop-controlへ保存します。
+後続Agentへissue ID・影響・根拠・推奨対応先を渡し、既知の未解決原因を新しい3回ループにしません。
+最終結果に未解決が残る場合はCOMPLETE_WITH_UNRESOLVEDとし、COMPLETE/PASSと区別します。
 
 
 # Traceability
@@ -563,3 +570,21 @@ validation:
 
 summary:
   Unit Test工程で実施した内容の要約
+
+# Inline Traceabilityと実行版
+
+生成するテスト先頭へ `# trace: FR-001, ADDR-001` のように実在要件IDと関連ADDRを記入します。
+AC/FILEだけでは要件参照を満たしません。先頭ID>=2かつトップレベル定義>=2なら、
+private/helperを含め各定義直前・decoratorより前にも先頭の部分集合のtraceを付けます。
+既存Evidenceと注釈を一致させ、
+外部ケースは改変しません。正本IDを変えず、派生Map/表を手編集しません。
+Traceability Audit SkillのPolicyに従い、実際のテスト実行でreports/unit-test/junit.xmlを生成します。
+実行直後、入力を変更する前に次で実行版とJUnitのSHA-256を記録します。
+
+```text
+python .github/skills/traceability-audit/scripts/trace_check.py --record-test-run unit_test
+```
+
+このコマンドはテストを実行しません。過去のJUnitを現在の実行証拠として登録してはいけません。
+入力またはJUnit変更時は再実行して再記録します。記録なし・古い結果・skipは充足としません。
+既存のTest ValidatorとQuality/Security/Gateは省略しません。

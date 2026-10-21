@@ -34,8 +34,14 @@ AI生成ケースとは明確に区別して取り込み、
 両方のケースを自動実行してください。
 
 結合試験で発生したErrorを
-未解決のまま後工程へ持ち越してはいけません。
+未解決事項は共通3回ループで処理し、結果と影響を記録して親へ返します。
 
+
+# Experiment Measurement
+
+実験Runでは親のrun_idを引き継ぎ、Skillの「実験用証跡の固定」に従って
+AI INITIAL、最終計画、実行結果を取得時点でsnapshotしてください。
+初期ケースを外部入力の閲覧後に作り直しません。主工程の時間・実際の差し戻しは親が記録します。
 
 # Parent Agent
 
@@ -50,6 +56,7 @@ Integration Test Agentから
 
 - Implementation Agentの再起動
 - Architecture Agentの再起動
+- ADDR Agentの再起動
 - Requirements Agentの再起動
 - Quality Review Agentの起動
 - Security Review Agentの起動
@@ -404,6 +411,8 @@ Architecture Decisionを確定してはいけません。
 ADR_REQUIREDとして
 SDLC Orchestratorへ返却してください。
 
+親の戻り先はADDRです。設計本文/Taskの修正が必要な場合だけ、具体的変更要求でArchitectureへ戻します。
+
 
 # Requirement Error Handling
 
@@ -454,25 +463,28 @@ DefectまたはError修正後は、
 2. 関連するTest Case
 3. Integration Test Suite全体
 
-すべてPASSするまで
-Integration Test工程を完了してはいけません。
+品質SUCCESSは全PASS時のみです。3回後も残れば失敗・未実行を維持して親へ返し、親が未解決継続を判定します。
 
 
-# No Error Carry Forward
+# Unresolved Error Carry Forward
 
-以下が1件でも残っている場合、
-SUCCESSとしてはいけません。
+全工程・全Agentに、`docs/ai-sdlc/bounded-repair-loop.md` と
+`.github/skills/failure-triage/policy/loop-policy.json` を適用します。
+同一原因の初回失敗はcycle=0。その後の修正・再検査を最大3回行い、
+3回後も残ればUNRESOLVEDとして検査結果へ記録し、CONTINUE_WITH_UNRESOLVEDで次工程へ進めます。
+担当Agentや工程を変えて回数をリセットせず、4回目の修正ループは開始しません。
 
-- Failed Case
-- Error Case
-- 未解決IMPLEMENTATION_ERROR
-- 未解決ADR_REQUIRED
-- 未解決REQUIREMENT_ERROR
-- 未解決TEST_SPEC_CONFLICT
-- 未解決AUTOMATION_BLOCKED
-- 未解決ENVIRONMENT_ERROR
-- 原因不明Error
-- 必須Coverageの未実行Case
+検査FAIL、未実行、未承認判断をPASS/成功へ書き換えません。
+通常の品質Gateは残し、工程継続はOrchestratorが別の継続判定で許可します。
+旧来の「すべてPASSまで停止」「未解決の持越し禁止」は品質PASSの条件として読み、
+工程継続については3回後の記録・継続規則を優先します。正本・期待値・外部ケースの改変、
+失敗テストの削除/skip、欠落資料・設計判断の捏造で回避しません。
+依存して実行不能な作業は未実行と影響を残し、実行可能な後続作業を進めます。
+この許可は本番反映・不可逆操作・権限やユーザー承認の代替ではありません。
+
+実行履歴と未解決結果はreports/loop-controlへ保存します。
+後続Agentへissue ID・影響・根拠・推奨対応先を渡し、既知の未解決原因を新しい3回ループにしません。
+最終結果に未解決が残る場合はCOMPLETE_WITH_UNRESOLVEDとし、COMPLETE/PASSと区別します。
 
 
 # Reports
@@ -554,7 +566,7 @@ External Caseでのみ検出。
 - Production Codeを直接修正する
 - Requirementを直接修正する
 - Accepted ADRを直接修正する
-- 未解決Errorを後工程へ持ち越す
+- 未解決Errorを台帳・検査結果へ記録せず持ち越す
 - 他Agentを直接起動する
 - 次工程へ直接遷移する
 - Integration Test工程全体の最終PASS判定を行う
@@ -658,3 +670,21 @@ validation:
 
 summary:
   Integration Test工程で実施した内容の要約
+
+# Inline Traceabilityと実行版
+
+生成するテスト先頭へ `# trace: FR-001, ADDR-001` のように実在要件IDと関連ADDRを記入します。
+AC/FILEだけでは要件参照を満たしません。先頭ID>=2かつトップレベル定義>=2なら、
+private/helperを含め各定義直前・decoratorより前にも先頭の部分集合のtraceを付けます。
+既存Evidence/Planのrequirement_id・related_adrと注釈を一致させ、
+外部ケースは改変しません。正本IDを変えず、派生Map/表を手編集しません。
+Traceability Audit SkillのPolicyに従い、実際のテスト実行でreports/integration-test/junit.xmlを生成します。
+実行直後、入力を変更する前に次で実行版とJUnitのSHA-256を記録します。
+
+```text
+python .github/skills/traceability-audit/scripts/trace_check.py --record-test-run integration_test
+```
+
+このコマンドはテストを実行しません。過去のJUnitを現在の実行証拠として登録してはいけません。
+入力またはJUnit変更時は再実行して再記録します。記録なし・古い結果・skipは充足としません。
+既存のTest ValidatorとQuality/Security/Gateは省略しません。

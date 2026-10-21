@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import sqlite3
 from pathlib import Path
 from typing import Any
 
@@ -429,6 +430,19 @@ def evaluate_ai_usage(
     return totals, errors
 
 
+def evaluate_runtime(repo_root: Path, manifest: dict) -> tuple[dict | None, list[str]]:
+    run_id = manifest.get("experiment_run_id")
+    if not run_id:
+        return None, []
+    from experiment_recorder import summary
+    try:
+        result = summary(repo_root.resolve(), run_id)
+        errors = [] if result["time_window"]["finalized"] else ["Requested experiment recording has not been finalized"]
+        return result, errors
+    except (OSError, ValueError, TypeError, KeyError, sqlite3.Error) as error:
+        return {"run_id": run_id, "status": "MISSING_OR_INVALID"}, [f"Runtime measurement unavailable: {error}"]
+
+
 def render_markdown(report: dict[str, Any]) -> str:
     m = report["metrics"]
     req = m["quality"]["requirement_satisfaction"]
@@ -476,6 +490,9 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
     ]
 
+    measured = m.get("process", {}).get("experiment_measurement")
+    if measured and "time_window" in measured:
+        lines += ["## Recorded experiment metrics (current definitions)", "", f"- Design to final integration end: {measured['time_window']['elapsed_seconds']} seconds", f"- Actual backward dispatches (all phases): {measured['rework']['total']}", f"- Raw branch coverage: {measured['unit_branch_coverage'].get('rate')} / {measured['unit_branch_coverage']['status']}", f"- Human acceptance pass rate: {measured['acceptance'].get('rate')} / {measured['acceptance']['status']}", "- Earlier legacy elapsed/rework fields retain their original definitions; do not mix them with these metrics.", ""]
     if report.get("errors"):
         lines.extend(["## Errors", ""])
         lines.extend(f"- {e}" for e in report["errors"])
@@ -601,6 +618,11 @@ def evaluate(
             "generality": "AGGREGATE_REQUIRED",
         },
     }
+
+    runtime, runtime_errors = evaluate_runtime(repo_root, manifest)
+    if runtime is not None:
+        metrics["process"]["experiment_measurement"] = runtime
+        errors.extend(runtime_errors)
 
     report = {
         "schema_version": 1,

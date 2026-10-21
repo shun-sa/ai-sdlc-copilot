@@ -5,14 +5,32 @@
 SDLC COMPLETE後のRunを、
 開発プロセスへ介入せず外部から評価します。
 
-本Skillは、
-Evaluation Agent専用です。
+本Skillの総合評価手順はEvaluation Agent専用です。
 
 SDLC Producer Agent、
 Assurance Agent、
 SDLC Orchestratorから
 自動実行してはいけません。
 
+
+# 実験用観測記録と新定義
+
+`scripts/experiment_recorder.py` だけは開発中の観測専用ScriptとしてOrchestratorと
+UnitTest/IntegrationTestから実行する。本Evaluation Skill/AgentやHidden Acceptanceを
+開発中に起動・入力する許可ではない。
+
+今回の依頼項目は `experiment_recorder.py summarize --run-id <run-id>` で独立集計できる。
+成果物は `reports/experiments/<run-id>/metrics.json` とmeasurement-report.md。
+この集計には従来総合評価用のHuman Matrix、人間関与量、トークン入力は不要。
+時間・手戻りは開発中のjournal、生の分岐網羅率は実テスト、結合項目は固定計画、
+受入合格率は開発後に入力した人の全ケースと実行証跡から計算する。欠測値はnullとする。
+
+既存 `evaluate_run.py` へ統合する場合はexperiment-manifestに任意のexperiment_run_idを追加する。
+新指標は `metrics.process.experiment_measurement` に併記する。既存のhumanログ由来elapsed、
+IMPLEMENTATIONへの戻りだけを数えるrework等は旧定義のままなので、新指標と混ぜない。
+`experiment_logger.py` は人間作業・外部トークンの手動入力用として残す。
+自動rework-eventsと手動routeを二重記録せず、手動ログは別Directoryで管理する。
+定義・手順・人の確認事項は `docs/ai-sdlc/experiment-measurement.md` を参照する。
 
 # Measurement Model
 

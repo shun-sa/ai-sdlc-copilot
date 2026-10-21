@@ -7,7 +7,7 @@ description: >
   RequirementとTestのトレーサビリティを維持しながら、
   Coverage計測、DBテスト、エラー原因分類、Regression Test、
   修正後の再実行までを行う。
-  単体テストで発生したエラーを未解決のまま後工程へ持ち越さない。
+  単体テストのエラーを3回修正しても残る場合は、未解決として親へ返し記録して引き継ぐ。
 user-invocable: false
 disable-model-invocation: false
 ---
@@ -32,8 +32,26 @@ Production Codeの単体テストを設計・作成・実行し、
 - テストで発見された不具合が修正されている
 - 同一不具合を再検出できるRegression Testが存在する
 - 修正後に対象テスト、関連テスト、全Unit Testを再実行している
-- 未解決エラーが後工程へ持ち越されていない
+- 未解決エラーが共通ループ台帳と検査結果へ正確に記録されている
 
+
+# 実験用実測記録
+
+実験Runでは、親からのrun_idを使い、Step 15/16と最終Suite再実行/再計測を
+`.github/skills/evaluation/scripts/experiment_recorder.py run-unit` 経由で行う。
+手順とコマンド仕様は `docs/ai-sdlc/experiment-measurement.md` を正とする。
+
+- Steeringの実テストコマンド、同じ実行の分岐レポート出力コマンド、coverage/JUnitパスを
+  `reports/experiments/<run-id>/unit-command.json` に保存する。Shell文字列ではなくargv配列を使う。
+- 計測対象・除外・分岐計測有効化を実験前に固定し、各試行の計測データをクリアする。
+  生のcoverage.py JSONまたはIstanbul JSON summaryの分岐covered/totalを保持する。
+  既存coverage-summary.jsonの派生percent、行網羅率、coverage.pyの合算percentを代用しない。
+- 実際の再実行には新しいevent-idを使う。失敗しても実際に生成されたcoverage/JUnitを保存する。
+  レポート未生成・使い回し・ソース変更は未確認/陳腐化であり、0%や100%にしない。
+- 既存のJUnit、coverage-summary、unit-test-evidenceとValidator契約はそのまま生成・検証する。
+  実テスト後のtrace_check実行版記録も維持する。記録器の終了値は品質Gateの代替ではない。
+
+主工程を閉じたり次工程へ移る記録は親だけが行う。受入入力を開発中に参照しない。
 
 # Policy
 
@@ -681,8 +699,8 @@ IMPLEMENTATION_ERROR:
 Implementation工程でProduction Codeを修正する必要がある。
 
 ADR_REQUIRED:
-Architecture工程でArchitecture Decisionを
-ADRへ反映する必要がある。
+ADDR工程で重要判断をADDRへ記録・検証する必要がある。
+設計資料を修正する場合だけ親がArchitectureへ差し戻す。
 
 REQUIREMENT_ERROR:
 Requirements工程でRequirementを
@@ -941,3 +959,28 @@ validation:
 
 summary:
   Unit Test工程で実施した内容の要約
+
+# Inline Traceabilityと実行版
+
+生成するテスト先頭へ `# trace: FR-001, ADDR-001` のように実在要件IDと関連ADDRを記入します。
+AC/FILEだけでは要件参照を満たしません。先頭ID>=2かつトップレベル定義>=2なら、
+private/helperを含め各定義直前・decoratorより前にも先頭の部分集合のtraceを付けます。
+既存Evidenceと注釈を一致させ、
+外部ケースは改変しません。正本IDを変えず、派生Map/表を手編集しません。
+Traceability Audit SkillのPolicyに従い、実際のテスト実行でreports/unit-test/junit.xmlを生成します。
+実行直後、入力を変更する前に次で実行版とJUnitのSHA-256を記録します。
+
+```text
+python .github/skills/traceability-audit/scripts/trace_check.py --record-test-run unit_test
+```
+
+このコマンドはテストを実行しません。過去のJUnitを現在の実行証拠として登録してはいけません。
+入力またはJUnit変更時は再実行して再記録します。記録なし・古い結果・skipは充足としません。
+既存のTest ValidatorとQuality/Security/Gateは省略しません。
+
+## 共通3回ループ
+
+修正・再検査は `docs/ai-sdlc/bounded-repair-loop.md` に集約します。
+初回失敗0＋実修正1〜3の後も残る場合、FAIL/BLOCKEDを維持して親へ未解決として返し、
+親が履歴・影響を記録して次工程への継続を許可します。4回目を自己開始しません。
+未解決継続を品質SUCCESS/PASSへ変換せず、原因を隠す修正・捏造・削除・skipをしません。

@@ -9,6 +9,23 @@ Evaluation Agentへ渡す測定結果を生成します。
 本SkillはAcceptance Testを生成しません。
 
 
+# 実験計測との連携
+
+開発終端COMPLETE/COMPLETE_WITH_UNRESOLVED後に人が本Agentへ入力する。
+`reports/experiments/<run-id>/run-context.json` の実際の完了時刻をmanifestの
+sdlc_completed_atへ反映し、同じrun_idと実際のevaluation_data_exposed_atを使う。
+人の試験項目・期待値は開発中に公開せず、変更も補完もしない。
+
+既存ExecutorはCOMMAND manifestのみ対応する。表計算・手動UI操作の項目は、
+人が期待値を確定した実行可能manifest/テストへ対応付けてから入力する。
+Agentが未対応操作を実施済みとしたり、期待値を都合よく作ってはいけない。
+
+既存Scriptを実行すると、同run_idの観測journalがある場合はCSVとexecution-evidenceを自動で保存・集計する。
+合格率は `PASS / 人が与えた全ケース * 100`。FAIL/BLOCKEDを分母から除外しない。
+ケース欠落・別Run・実装変更・証跡不整合時は未確定とし、警告を確認する。
+自動連携の失敗は本来の受入結果を書き換えない。修復後の手動import方法は
+`docs/ai-sdlc/experiment-measurement.md` を参照する。
+
 # Principle
 
 ```text

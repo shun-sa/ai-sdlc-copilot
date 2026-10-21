@@ -46,6 +46,7 @@ import yaml
 AUDIT_SCOPES = {
     "REQUIREMENTS",
     "ARCHITECTURE",
+    "ADDR",
     "IMPLEMENTATION",
     "UNIT_TEST",
     "INTEGRATION_TEST",
@@ -55,6 +56,7 @@ AUDIT_SCOPES = {
 SCOPE_LEVEL = {
     "REQUIREMENTS": 1,
     "ARCHITECTURE": 2,
+    "ADDR": 2,
     "IMPLEMENTATION": 3,
     "UNIT_TEST": 4,
     "INTEGRATION_TEST": 5,
@@ -64,6 +66,7 @@ SCOPE_LEVEL = {
 VALID_ROUTES = {
     "REQUIREMENTS",
     "ARCHITECTURE",
+    "ADDR",
     "IMPLEMENTATION",
     "UNIT_TEST",
     "INTEGRATION_TEST",
@@ -873,6 +876,7 @@ def validate(
     result = {
         "status": "PASS" if not errors else "FAIL",
         "audit_scope": scope,
+        "source_baseline_sha256": report.get("source_baseline_sha256"),
         "criteria": {
             "discovered": sorted(criteria),
             "total": criteria_counts["total"],

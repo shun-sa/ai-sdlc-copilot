@@ -124,10 +124,13 @@ SDLC Orchestratorから最低限以下を受け取ってください。
 
 ## Architecture
 
-`docs/adr/`
+設計資料・Taskはdocs/architectureとFINAL design-manifestを読みます。
 
-後続工程に有効なArchitecture Decisionは
-Accepted ADRです。
+## ADDR
+
+重要判断はdocs/addr、入力版・関連付けはreports/addr/implementation-handoff.jsonを読みます。
+旧docs/adrのAccepted ADRも互換入力として参照します。
+判断の不備はADDR、設計本文/Taskの不備はArchitectureへ戻し、同じ原因の修正回数を維持します。
 
 
 ## Unit Test
@@ -309,7 +312,7 @@ Recommended Route:
 
 Recommended Route:
 
-`ARCHITECTURE`
+`ADDR`
 
 
 # IMPLEMENTATION_ERROR
@@ -563,3 +566,10 @@ reports:
   markdown:
 
 summary_message:
+
+## 共通3回ループ
+
+修正・再検査は `docs/ai-sdlc/bounded-repair-loop.md` に集約します。
+初回失敗0＋実修正1〜3の後も残る場合、FAIL/BLOCKEDを維持して親へ未解決として返し、
+親が履歴・影響を記録して次工程への継続を許可します。4回目を自己開始しません。
+未解決継続を品質SUCCESS/PASSへ変換せず、原因を隠す修正・捏造・削除・skipをしません。
