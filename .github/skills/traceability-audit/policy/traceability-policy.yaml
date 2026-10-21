@@ -22,7 +22,7 @@ ids:
   file_definition: [FILE]    # ファイル定義書
   task: [TASK]               # 実装タスク一覧
   change: [CR]               # 変更管理記録（保守）
-  min_digits: 3
+  min_digits: 2
 
 # ------------------------------------------------------------
 # IDを定義する文書（glob）

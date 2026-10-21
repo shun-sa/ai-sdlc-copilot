@@ -29,7 +29,7 @@ REQ_INDEX = "docs/requirements/requirements.md"
 STEERING = ".github/project-context/project-ai-steering.md"
 TEMPLATES = ".github/skills/architecture/templates"
 KINDS = {"画面": "A.", "帳票": "B.", "外部インターフェース": "C.", "バッチ": "D.", "権限・認証": "E.", "非機能": "F."}
-ID_PATTERN = re.compile(r"\b[A-Z][A-Z0-9_]*-\d+\b")
+ID_PATTERN = re.compile(r"(?<![A-Za-z0-9_-])[A-Z][A-Z0-9_]*(?:-[A-Z0-9_]+)*-\d+(?![A-Za-z0-9_-])")
 
 
 def digest(path: Path) -> str:

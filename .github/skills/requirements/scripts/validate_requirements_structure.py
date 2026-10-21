@@ -29,7 +29,7 @@ STEERING_OUTPUT = Path(".github/project-context/project-ai-steering.md")
 INDEX = Path("docs/requirements/requirements.md")
 PLACEHOLDER = re.compile(r"\{\{[^{}]+\}\}|<\w[^<>\n]*>")
 HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
-IDENTIFIER = re.compile(r"\b[A-Z][A-Z0-9_]*-\d+\b")
+IDENTIFIER = re.compile(r"(?<![A-Za-z0-9_-])[A-Z][A-Z0-9_]*(?:-[A-Z0-9_]+)*-\d+(?![A-Za-z0-9_-])")
 LINK = re.compile(r"\[[^\]]+\]\(([^\s)]+)\)")
 NOT_APPLICABLE = {"該当なし", "N/A", "None", "なし", "－", "-"}
 
@@ -232,6 +232,12 @@ def definitions(records, column: str, source: Path, errors: list[str]) -> list[s
     return values
 
 
+def non_functional_rows(document: Section) -> list[dict[str, str]]:
+    performance = list(row_records(document, {"ID", "要件項目", "目標値（単位付き）", "検証方法"}))
+    compliance = list(row_records(document, {"ID", "法令・規約名", "求められる事項", "確認方法"}, "11."))
+    return performance + [{**row, "要件項目": row["法令・規約名"]} for row in compliance]
+
+
 def resolve_link(source: Path, link: str, root: Path) -> Path | None:
     target = unquote(link.split("#", 1)[0])
     if not target or re.match(r"[a-zA-Z][a-zA-Z0-9+.-]*:", target):
@@ -310,7 +316,7 @@ def validate(root: Path) -> list[str]:
     functional = documents["functional_requirements.md"]
     non_functional = documents["non_functional_requirements.md"]
     fr_ids = definitions(row_records(functional, {"ID", "機能名"}, "4."), "ID", root / ARTIFACTS["functional_requirements.md"], errors)
-    nfr_rows = list(row_records(non_functional, {"ID", "要件項目", "目標値（単位付き）", "検証方法"}))
+    nfr_rows = non_functional_rows(non_functional)
     nfr_ids = definitions(nfr_rows, "ID", root / ARTIFACTS["non_functional_requirements.md"], errors)
     for identifier in set(fr_ids) & set(nfr_ids):
         errors.append(f"Requirement ID defined as both functional and non-functional: {identifier}")
@@ -327,7 +333,7 @@ def validate(root: Path) -> list[str]:
         errors.append("Functional list and permission IDs differ")
     template_nfr = parse_document(templates["non_functional_requirements.md"])
     required_items = [(row["区分"], row["要件項目"]) for row in row_records(template_nfr, {"ID", "区分", "要件項目", "目標値（単位付き）"})]
-    actual_items = {(row["区分"], row["要件項目"]) for row in nfr_rows}
+    actual_items = {(row["区分"], row["要件項目"]) for row in nfr_rows if "区分" in row}
     for item in required_items:
         if item not in actual_items:
             errors.append(f"Non-functional representative item removed: {item}")

@@ -254,8 +254,8 @@ class IdRules:
         if type(digits) is not int or digits < 1:
             raise PolicyError("ids.min_digits must be a positive integer")
         alternation = "|".join(sorted(map(re.escape, self.prefix_kind), key=len, reverse=True))
-        core = rf"(?:{alternation})(?:-[A-Z][A-Z0-9]*)*-\d{{{digits},}}"
-        self.pattern = re.compile(rf"(?<![A-Za-z0-9_\-]){core}(?![A-Za-z0-9_])")
+        core = rf"(?:{alternation})(?:-[A-Z0-9]+)*-\d{{{digits},}}"
+        self.pattern = re.compile(rf"(?<![A-Za-z0-9_\-]){core}(?![A-Za-z0-9_\-])")
         self.full = re.compile(core)
 
     def kind_of(self, value: str) -> str | None:

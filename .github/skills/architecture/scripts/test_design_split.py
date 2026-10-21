@@ -100,6 +100,13 @@ def create(root: Path, needed: bool = False) -> None:
 
 
 class DesignSplitTests(unittest.TestCase):
+    def test_existing_compound_requirement_references_are_not_truncated(self) -> None:
+        from design_common import ID_PATTERN, requirement_ids
+        text = "NFR-SC-01, AC-UC-001-001, FR-001"
+        self.assertEqual(["NFR-SC-01", "AC-UC-001-001", "FR-001"], ID_PATTERN.findall(text))
+        save(self.root, "docs/requirements/requirements.md", "# Requirements Index\n\n## 非機能要件\n- NFR-SC-01: セキュリティ\n")
+        self.assertEqual({"NFR-SC-01"}, requirement_ids(self.root))
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)

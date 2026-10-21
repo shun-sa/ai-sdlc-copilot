@@ -163,6 +163,15 @@ def run_checker(root: Path, *args: str) -> tuple[int, dict[str, Any]]:
 
 
 class TraceCheckTest(unittest.TestCase):
+    def test_compound_acceptance_ids_and_two_digit_requirement_ids(self) -> None:
+        policy = checker.load_policy(POLICY_PATH)
+        rules = checker.IdRules(policy)
+        self.assertEqual(["NFR-SC-01", "AC-UC-001-001", "AC-UC-001-002"], rules.find("NFR-SC-01 AC-UC-001-001 AC-UC-001-002"))
+        elements, _ = checker.parse_document("docs/requirements/use-cases/UC-001.md", "### 9.1 AC-UC-001-001：境界\n- NFR-SC-01\n### 9.2 AC-UC-001-002：失敗\n- FR-001\n", "acceptance", rules)
+        self.assertEqual(["AC-UC-001-001", "AC-UC-001-002"], [element.id for element in elements])
+        self.assertIn("NFR-SC-01", elements[0].refs)
+        self.assertEqual([], rules.find("AC-UC-001-001-invalid"))
+
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)

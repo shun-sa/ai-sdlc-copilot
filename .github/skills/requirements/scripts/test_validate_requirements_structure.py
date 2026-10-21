@@ -14,7 +14,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 from validate_requirements_structure import (
     ARTIFACTS, INDEX, STEERING_OUTPUT, STEERING_TEMPLATE, TEMPLATE_DIR,
-    parse_document, row_records, validate, validate_document, visible_text,
+    non_functional_rows, parse_document, row_records, validate, validate_document, visible_text,
 )
 
 
@@ -29,8 +29,8 @@ def filled(template: str, name: str) -> str:
         label = match.group(1)
         if label == "ID" and name == "non_functional_requirements.md":
             counter += 1
-            headers = re.findall(r"(?m)^\| ID \|[^\n]+\n\|[-|]+\|", match.string[:match.start()])
-            prefix = "NFR" if headers and "要件項目" in headers[-1] and "目標値（単位付き）" in headers[-1] else "AUX"
+            headers = re.findall(r"(?m)^\| [^\n]+\n\|[-|]+\|", match.string[:match.start()])
+            prefix = "NFR" if headers and (("要件項目" in headers[-1] and "目標値（単位付き）" in headers[-1]) or "法令・規約名" in headers[-1]) else "AUX"
             return f"{prefix}-{counter:03d}"
         if label == "ID" and name == "functional_requirements.md":
             return "FR-001"
@@ -77,12 +77,32 @@ def write_index(root: Path) -> None:
         lines.append(f"- [文書]({relative})")
     lines.extend(["", "## 機能要件", "- FR-001: [機能](functional_requirements.md)", "", "## 非機能要件"])
     document = parse_document((root / ARTIFACTS["non_functional_requirements.md"]).read_text(encoding="utf-8"))
-    for row in row_records(document, {"ID", "要件項目", "目標値（単位付き）"}):
+    for row in non_functional_rows(document):
         lines.append(f"- {row['ID']}: [要件](non_functional_requirements.md)")
     (root / INDEX).write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 class RequirementsTests(unittest.TestCase):
+    def test_compliance_requirements_are_part_of_the_requirement_catalog(self) -> None:
+        document = parse_document((self.root / ARTIFACTS["non_functional_requirements.md"]).read_text(encoding="utf-8"))
+        legal = next(row for row in non_functional_rows(document) if "法令・規約名" in row)
+        self.change("docs/requirements/use-cases/UC-001.md", "| 関連Requirement ID | FR-001 |", f"| 関連Requirement ID | {legal['ID']} |")
+        self.assertEqual([], validate(self.root))
+        self.change(INDEX, f"- {legal['ID']}: [要件](non_functional_requirements.md)", "")
+        self.assert_error("IDs differ")
+
+    def test_existing_compound_requirement_ids_are_preserved(self) -> None:
+        for path in self.root.rglob("*.md"):
+            if ".github/skills" in path.as_posix() or "templates" in path.parts:
+                continue
+            text = path.read_text(encoding="utf-8")
+            path.write_text(text.replace("NFR-002", "NFR-SC-02").replace("NFR-001", "NFR-PF-01"), encoding="utf-8")
+        self.assertEqual([], validate(self.root))
+
+    def test_compound_identifiers_are_not_truncated(self) -> None:
+        from validate_requirements_structure import IDENTIFIER
+        self.assertEqual(["NFR-SC-01", "AC-UC-001-001", "FR-001"], IDENTIFIER.findall("NFR-SC-01, AC-UC-001-001, FR-001"))
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
@@ -287,7 +307,7 @@ class RequirementsTests(unittest.TestCase):
         audit.check_all(None)
         identifiers = {identifier for identifier, element in audit.elements.items() if element.kind == "requirement"}
         document = parse_document((self.root / ARTIFACTS["non_functional_requirements.md"]).read_text(encoding="utf-8"))
-        expected = {"FR-001", "UC-001"} | {row["ID"] for row in row_records(document, {"ID", "要件項目", "目標値（単位付き）"})}
+        expected = {"FR-001", "UC-001"} | {row["ID"] for row in non_functional_rows(document)}
         self.assertEqual(expected, identifiers)
         self.assertFalse(audit.duplicates)
         self.assertFalse(audit.issues, audit.issues)
