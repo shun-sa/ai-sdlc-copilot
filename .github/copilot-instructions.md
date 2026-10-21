@@ -61,6 +61,9 @@ Hidden Acceptance入力の早期公開は認めない。取得できなかった
 AcceptanceTestPrepareも開発中には起動しない。開発完了後のAcceptanceTestExecutor専用準備担当とし、
 外部表の条件を変えず外部テストへ翻訳する。人の明示承認・凍結前の評価実行は認めない。
 計測結果は品質Gateや共通3回ループを変更せず、未解決継続と品質PASSを区別する。
+実験結果はreportsを含め実験ブランチでGit管理し、実験後のデータをmainへマージしない。
+開発Agentは他Runや過去の評価ブランチのreports・Hidden Acceptance入力を参照しない。
+Gitのブランチはアクセス権の隔離ではない。厳密な非公開評価では実験ごとに過去評価履歴のない実行環境を使う。
 
 # Source of Truth
 
