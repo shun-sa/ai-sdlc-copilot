@@ -37,7 +37,7 @@ from typing import Any
 
 import yaml
 
-SCOPES = ("REQUIREMENTS", "ARCHITECTURE", "IMPLEMENTATION", "UNIT_TEST", "INTEGRATION_TEST", "FULL")
+SCOPES = ("REQUIREMENTS", "ARCHITECTURE", "ADDR", "IMPLEMENTATION", "UNIT_TEST", "INTEGRATION_TEST", "FULL")
 DOC_KINDS = (
     "requirement",
     "acceptance",
@@ -54,7 +54,7 @@ DEFAULT_POLICY = ".github/skills/traceability-audit/policy/traceability-policy.y
 ROUTE_BY_ORIGIN = {
     "requirement": "REQUIREMENTS",
     "acceptance": "REQUIREMENTS",
-    "addr": "ARCHITECTURE",
+    "addr": "ADDR",
     "entity": "ARCHITECTURE",
     "file_definition": "ARCHITECTURE",
     "task": "ARCHITECTURE",
@@ -802,7 +802,7 @@ def test_input_fingerprint(root: Path, policy: dict[str, Any], role: str) -> str
         paths.update(collect_files(root, patterns, common + policy.get("document_exclude", [])))
     for key in ("code", role):
         paths.update(collect_files(root, policy[key].get("include", []), common + policy[key].get("exclude", [])))
-    for relative in (policy[role].get("plan"), "reports/architecture/design-manifest.json", "reports/architecture/design-input.json", "reports/architecture/addr-result.json"):
+    for relative in (policy[role].get("plan"), "reports/architecture/design-manifest.json", "reports/architecture/design-input.json", "reports/architecture/addr-result.json", "reports/architecture/design-gate.json", "reports/addr/implementation-handoff.json"):
         if relative and (root / relative).is_file():
             paths.add(relative)
     payload = {"files": file_hashes(root, sorted(paths)), "policy": policy}
@@ -895,7 +895,8 @@ class Auditor:
                         read_addr_requirements(element, text, self.rules, section_names)
                     self.add_element(element)
 
-        roles = [] if self.scope in ("REQUIREMENTS", "ARCHITECTURE") else [("code", self.policy["code"])]
+        self.load_addr_bindings()
+        roles = [] if self.scope in ("REQUIREMENTS", "ARCHITECTURE", "ADDR") else [("code", self.policy["code"])]
         if self.scope in ("UNIT_TEST", "INTEGRATION_TEST", "FULL"):
             roles.append(("unit_test", self.policy["unit_test"]))
         if self.scope in ("INTEGRATION_TEST", "FULL"):
@@ -923,7 +924,7 @@ class Auditor:
             except (ValueError, TypeError):
                 self.plan_error = "Integration plan is malformed"
         for role in ("unit_test", "integration_test"):
-            if role == "unit_test" and self.scope in ("REQUIREMENTS", "ARCHITECTURE", "IMPLEMENTATION"):
+            if role == "unit_test" and self.scope in ("REQUIREMENTS", "ARCHITECTURE", "ADDR", "IMPLEMENTATION"):
                 continue
             if role == "integration_test" and self.scope not in ("INTEGRATION_TEST", "FULL"):
                 continue
@@ -939,6 +940,36 @@ class Auditor:
                     self.execution[role] = value if isinstance(value, dict) else {}
                 except ValueError:
                     self.execution[role] = {}
+
+    def load_addr_bindings(self) -> None:
+        final = self.root / "reports/architecture/design-manifest.json"
+        if self.scope in ("REQUIREMENTS", "ARCHITECTURE") or not final.is_file():
+            return
+        try:
+            manifest = json.loads(read_text(final))
+            if manifest.get("version") != 2:
+                return
+            sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "addr/scripts"))
+            from design_common import HANDOFF, RESULT, validate_design_gate, validate_handoff
+            from validate_addr import validate_addr
+            errors = validate_design_gate(self.root) + validate_handoff(self.root) + validate_addr(self.root, final=True)
+            self.input_paths.update({"reports/architecture/design-manifest.json", "reports/architecture/design-gate.json", RESULT, HANDOFF})
+            if errors:
+                for error in errors:
+                    self.report("C01", "ADDR_HANDOFF_INVALID", HANDOFF, error, "ADDR")
+                return
+            artifacts = {item["artifact_id"]: item for item in manifest["artifacts"]}
+            handoff = json.loads(read_text(self.root / HANDOFF))
+            for binding in handoff["artifact_links"]:
+                path = artifacts[binding["artifact_id"]]["path"]
+                for identifier in binding["element_ids"]:
+                    element = self.elements.get(identifier)
+                    if element is None or element.file != path or element.kind not in ("task", "file_definition"):
+                        self.report("C01", "ADDR_BINDING_INVALID", HANDOFF, f"Binding has no matching source definition: {identifier}", "ADDR")
+                    else:
+                        element.refs.add(binding["related_addr_id"])
+        except (OSError, ValueError, TypeError, KeyError) as error:
+            self.report("C01", "ADDR_HANDOFF_INVALID", str(final), str(error), "ADDR")
 
     def add_element(self, element: Element) -> None:
         existing = self.elements.get(element.id)
@@ -1011,7 +1042,7 @@ class Auditor:
         config = self.policy.get("integration", {})
         final = self.root / "reports/architecture/design-manifest.json"
         new_design = final.is_file() or any(element.id.startswith("ADDR-") for element in self.elements.values() if element.kind == "addr")
-        if self.scope in ("REQUIREMENTS", "ARCHITECTURE") or not new_design or not config.get("preserve_architecture_gate", True):
+        if self.scope in ("REQUIREMENTS", "ARCHITECTURE", "ADDR") or not new_design or not config.get("preserve_architecture_gate", True):
             return
         sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "addr/scripts"))
         from design_common import validate_gate
@@ -1021,8 +1052,8 @@ class Auditor:
         if errors or not config.get("allow_requirement_when_addr_not_needed", False):
             return
         result_path = self.root / "reports/architecture/addr-result.json"
-        draft_path = self.root / "reports/architecture/design-input.json"
         try:
+            draft_path = final if final.is_file() and json.loads(read_text(final)).get("version") == 2 else self.root / "reports/architecture/design-input.json"
             result = json.loads(read_text(result_path))
             draft = json.loads(read_text(draft_path))
             rejected = {choice["target_id"] for choice in result.get("addr_creation_results", []) if choice.get("needed") is True}
@@ -1111,13 +1142,13 @@ class Auditor:
     def c03_addr_requirements(self) -> None:
         for element in self.elements.values():
             if element.kind == "addr" and (self.addr_state(element) == "unknown" or (element.id.startswith("ADDR-") and element.status.upper() not in ("ACTIVE", "SUPERSEDED"))):
-                self.report("C03", "ADR_STATUS_UNKNOWN", element.file, f"Invalid decision status: {element.status}", "ARCHITECTURE")
+                self.report("C03", "ADR_STATUS_UNKNOWN", element.file, f"Invalid decision status: {element.status}", "ADDR")
         for element in sorted(self.live_addrs(), key=lambda item: item.id):
             if not element.req_refs:
                 where = "関連要件の欄はありますが要件IDがありません" if element.req_section_found else "関連要件の欄がありません"
                 self.report(
                     "C03", "ADR_REQUIREMENT_MISSING", element.file,
-                    f"{element.id}: {where}。", "ARCHITECTURE",
+                    f"{element.id}: {where}。", "ADDR",
                 )
 
     def c04_task_sources(self) -> None:
@@ -1219,7 +1250,7 @@ class Auditor:
                     )
 
     def c09_addr_implemented(self) -> None:
-        if self.scope in ("REQUIREMENTS", "ARCHITECTURE"):
+        if self.scope in ("REQUIREMENTS", "ARCHITECTURE", "ADDR"):
             return
         exempt = set(self.policy["checks"].get("addr_without_code", []))
         used = set()
@@ -1236,7 +1267,7 @@ class Auditor:
                 )
 
     def c10_requirements_tested(self) -> None:
-        if self.scope in ("REQUIREMENTS", "ARCHITECTURE", "IMPLEMENTATION"):
+        if self.scope in ("REQUIREMENTS", "ARCHITECTURE", "ADDR", "IMPLEMENTATION"):
             return
         prefixes = set(self.policy["checks"].get("require_test_for", []))
         tested = self.tested_requirements()
@@ -1421,7 +1452,7 @@ class Auditor:
 
     def source_snapshot(self) -> dict[str, Any]:
         paths = set(self.input_paths)
-        for relative in ("reports/architecture/design-manifest.json", "reports/architecture/design-input.json", "reports/architecture/addr-result.json"):
+        for relative in ("reports/architecture/design-manifest.json", "reports/architecture/design-input.json", "reports/architecture/addr-result.json", "reports/architecture/design-gate.json", "reports/addr/implementation-handoff.json"):
             if (self.root / relative).is_file():
                 paths.add(relative)
         return {"files": file_hashes(self.root, sorted(paths)), "policy_sha256": text_hash(json.dumps(self.policy, sort_keys=True)), "workflow_unresolved": self.workflow_unresolved}
@@ -1600,7 +1631,7 @@ def generated_outputs(auditor: Auditor, output_dir: str) -> dict[str, str]:
     status = "FAIL" if any(issue.level == "FAIL" for issue in auditor.issues) else "PASS"
     coverage = auditor.coverage(rows)
     stats = auditor.annotation_stats()
-    baseline = auditor.root / "reports/architecture/design-manifest.json"
+    baseline = auditor.root / ("reports/addr/implementation-handoff.json" if auditor.scope == "ADDR" else "reports/architecture/design-manifest.json")
     baseline_hash = hashlib.sha256(baseline.read_bytes()).hexdigest() if baseline.is_file() else None
     report = {
         "version": 3, "status": status, "audit_scope": auditor.scope,
@@ -1647,7 +1678,7 @@ def run(args: argparse.Namespace) -> int:
                 write(out_dir / name, text, bom=name.endswith(".csv"))
         failures = [issue for issue in auditor.issues if issue.level == "FAIL"]
         warnings = [issue for issue in auditor.issues if issue.level == "WARN"]
-        baseline = root / "reports/architecture/design-manifest.json"
+        baseline = root / ("reports/addr/implementation-handoff.json" if args.scope == "ADDR" else "reports/architecture/design-manifest.json")
         result = {
             "status": "FAIL" if failures else "PASS", "audit_scope": args.scope,
             "method": "inline-annotation",

@@ -54,6 +54,7 @@ Review観点を変更できる構造とします。
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST
@@ -95,10 +96,14 @@ Requirements Criterionを評価してください。
 
 新ワークフローではFINAL設計manifest、設計書、実装タスク、`docs/addr/` のACTIVE ADDRも読む。
 共通Instructionsの設計判断契約に従い、旧ADRのみという読み方をしない。
-ARCHITECTUREではACTIVEをGate前の監査候補として評価し、後続Scopeでは有効なGateを要求する。
+ARCHITECTUREでは現在の設計資料とADDRへの引渡し品質を、ADDRでは新しい重要判断と全体整合を検査する。
+ADDRではACTIVEは実装引渡しGate前の監査候補。IMPLEMENTATION以降では有効な実装引渡しGateを要求する。
 ADDRの4章を判断根拠、5〜6章を差分、7章をGuardrailとして確認する。
-設計・Taskとの意味的整合を既存の整合性分析テンプレートで別Reportに記録する。
+Architectureの整合性分析資料は読取り専用とし、独立検査結果を既存quality-review-reportへ記録する。
+Producerの分析を独立PASSの代替にせず、同じ分析文書を上書き・複製しない。
 ARCHITECTUREのJSON Reportへsource_baseline_sha256としてFINAL manifestのSHA-256を記録する。
+ADDRのJSON Reportはreports/addr/implementation-handoff.jsonのSHA-256へ結び付ける。
+重要判断不備はADDR_QUALITY_ISSUE→ADDR、設計資料不備はARCHITECTURE_QUALITY_ISSUE→ARCHITECTUREへ戻す。
 
 `docs/adr/`
 
@@ -244,6 +249,7 @@ Root Causeに応じて、
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

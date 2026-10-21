@@ -52,6 +52,7 @@ Policyで指定されたCriterionをすべて読み込んでください。
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST
@@ -107,9 +108,12 @@ Requirement自体のSecurity問題を検出した場合は、
 
 新ワークフローではFINAL設計・実装計画・`docs/addr/` のACTIVE ADDRも対象とする。
 共通の設計判断契約に従い、ADDRの判断基準・決定・差分・INV・ASMを確認する。
-ARCHITECTUREではGate候補、後続ScopeではGate済みのみを有効判断とする。
+ARCHITECTUREは設計資料の検査、ADDRは重要判断と設計全体の整合の独立検査とする。
+ADDRではACTIVEは実装引渡しGate前の候補、IMPLEMENTATION以降ではGate済みのみを有効判断とする。
 重要度や受入条件を変える安全でない仮定をPASSにしない。
 ARCHITECTUREのJSON Reportへsource_baseline_sha256としてFINAL manifestのSHA-256を記録する。
+ADDRのJSON Reportはreports/addr/implementation-handoff.jsonのSHA-256へ結び付ける。
+判断の不備はADDR、設計資料の不備はARCHITECTUREへROOT_CAUSEで戻す。
 
 `docs/adr/`
 
@@ -294,6 +298,7 @@ Security Impactに基づいて、
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-PHASES = ("REQUIREMENTS", "ARCHITECTURE", "IMPLEMENTATION", "UNIT_TEST", "INTEGRATION_TEST", "FULL")
+PHASES = ("REQUIREMENTS", "ARCHITECTURE", "ADDR", "IMPLEMENTATION", "UNIT_TEST", "INTEGRATION_TEST", "FULL")
 RESULTS = {"PASS", "FAIL", "BLOCKED", "CONTINUE_WITH_UNRESOLVED"}
 EXCLUDE = {".git", ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache", ".ruff_cache", "reports", "htmlcov", "evaluation-input", "dist", "build"}
 

@@ -32,14 +32,17 @@ SDLC Orchestratorのみが担当する。
 
 # Phase Order
 
-Architectureは設計書作成→ADDR判断→設計反映・実装計画の順に実施する。
-設計書はArchitecture Agent、重要判断・差分はADDR Agentが担当する。
-両AgentのSUCCESSと検証・Assuranceを経てArchitecture Gateを固定する。
+ArchitectureとADDRは独立した対等な工程とする。
+Architectureはファイル定義・成果物間整合性分析・実装タスク等の設計資料作成に限定する。
+ADDRは重要判断・選択理由・判断から生じる差分/拘束だけを担当し、設計資料を再作成しない。
+通常経路にArchitectureのFINALIZE再呼出しを置かない。本文修正が必要なときだけ差し戻す。
+現行契約は docs/ai-sdlc/independent-architecture-addr.md を正とする。
 
 標準工程順序は以下とする。
 
 Requirements
 → Architecture
+→ ADDR
 → Implementation
 → Unit Test
 → Integration Test
@@ -95,12 +98,13 @@ Requirement IDを
 
 現在の設計判断契約は `.github/skills/addr/SKILL.md` とする。
 以下および既存Agent/Skillの「Accepted ADR」は、旧Accepted ADRに加え、
-Architecture Gate通過済みのACTIVE ADDRを含む有効判断として読む。
+独立ADDR工程の実装引渡しGate通過済みACTIVE ADDRを含む有効判断として読む。
 ADRのみという旧来の成果物制限は適用しない。構造の正本は既存設計テンプレートとADDRテンプレートとする。
 ADDRは `docs/addr/`、設計・実装計画は `docs/architecture/` に配置する。
 ADR欄・adrs・adr_id等の既存の互換フィールドへADDR IDを記録できる。
 正本を二重化する旧ADR投影ファイルは作らず、ACTIVEだけでGate済みとみなさない。
-Implementation/Test/AssuranceはFINAL manifestの設計・計画を読み、開始前にArchitecture Gateを確認する。
+Implementation/Test/AssuranceはFINAL manifestと派生handoffの設計・計画・ADDRを読み、
+実装開始前に実装引渡しGateを確認する。互換ファイル名はarchitecture-gate.json、phaseはADDR。
 旧ADRのみのプロジェクトは従来どおり読めるが、新ワークフロー開始後はGateを必須とする。
 
 重要なArchitecture Decisionは
@@ -191,8 +195,8 @@ Implementation Agentで修正する。
 Test CodeのErrorは
 対象Test Agentで修正する。
 
-重要な設計判断不足は
-Architecture工程へ戻す。
+重要な設計判断不足はADDR工程へ戻す。
+設計資料・実装タスクの不備はArchitecture工程へ戻す。
 
 Requirementの問題は
 Requirements工程へ戻す。

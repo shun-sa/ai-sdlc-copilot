@@ -1,7 +1,7 @@
 ---
 name: SDLCOrchestrator
 description: >
-  要件定義からArchitecture、Implementation、Unit Test、
+  要件定義からArchitecture、独立ADDR、Implementation、Unit Test、
   Integration TestまでのSDLC全体を制御するOrchestrator。
   各専門Agentと検査を起動し、通常PASSまたは3回修正後の未解決継続許可で
   次工程へ進める。後工程でRequirement、ADR、Implementationの修正が
@@ -82,36 +82,22 @@ Unit Test、Integration Testを実施してはいけません。
 
 # Experiment Measurement
 
-実験Runでは `docs/ai-sdlc/experiment-measurement.md` に従い、観測専用の
-`.github/skills/evaluation/scripts/experiment_recorder.py` を工程境界で実行します。
-これはEvaluation Agentの起動ではありません。品質判定・共通3回ループは変更しません。
+実験Runでは docs/ai-sdlc/experiment-measurement.md と独立工程ガイドに従います。
+観測専用experiment_recorder.pyの主工程はREQUIREMENTS / ARCHITECTURE / ADDR /
+IMPLEMENTATION / UNIT_TEST / INTEGRATION_TEST / FULLです。ADDRを子活動として二重記録しません。
+要件開始または最初のArchitecture委譲直前にstartし、同じrun_idを全専門Agentへ渡します。
+最初のARCHITECTUREから最後の有効な結合試験終了までを主区間にし、ADDR時間も含めます。
 
-1. 新しい実験の最初の委譲直前に `start --phase REQUIREMENTS` を実行します。
-   要件定義済みで設計から開始する場合は `start --phase ARCHITECTURE` をPREPARE直前に実行します。
-   指定済みrun_idがなければScriptに生成させ、表示されたIDを全子Agentへ渡します。
-   設計開始時刻は最初のARCHITECTURE進入から自動計算します。開始前の時間は復元しません。
-2. 主工程が変わる実際の委譲直前に `enter --phase <次工程> --result <直前の実結果>` を記録します。
-   REQUIREMENTS / ARCHITECTURE / IMPLEMENTATION / UNIT_TEST / INTEGRATION_TEST / FULLを使います。
-   後戻りにはclassification、reason、trigger-agentを必ず渡します。提案だけでは記録しません。
-   同一工程の修正・再検査は `checkpoint` とし、工程手戻り数に加算しません。
-3. 全変更イベントに委譲・試行ごとの安定したevent-idを与えます。同じ記録操作の再送には同じID、
-   実際の再実行には新しいIDを使います。複数指摘を一度に差し戻す場合は手戻り1回です。
-4. ArchitectureのPREPARE / ADDR / FINALIZEはそれぞれ、委譲直前の `activity-start` と
-   返却直後の `activity-end` で記録します。検証・各Assuranceも名前付き子活動として記録します。
-   主工程終了はその工程の検証・Assurance・待機・修正を含みます。子活動の時間を二重加算しません。
-   子活動は親が閉じてから工程を遷移します。AgentのSUCCESSを品質PASSへ読み替えません。
-5. UnitTestへrun_idと実測実行の指示、IntegrationTestへINITIAL固定・最終計画・実行結果の
-   snapshot指示を渡します。専門Agentは主工程のstart/enter/endを行いません。
-6. 結合試験の検証・Assuranceが完了した実際の時点で `phase-end --phase INTEGRATION_TEST`
-   を記録し、その後にFULLへ入ります。FULLから戻った場合は必要な後続工程を再実行し、
-   新しい結合試験終了を記録します。古い終了時刻は最終所要時間に流用しません。
-7. 全必須処理と継続判定を終えたら、開いている主工程を実結果で閉じ、
-   `end --status COMPLETE|COMPLETE_WITH_UNRESOLVED`、`summarize` を実行します。
-   中止時はABORTEDを使います。受入試験とEvaluationは従来どおり、人が開発完了後に起動します。
-
-計測失敗は警告と欠測として残し、開発のGate判定を代替しません。終了時刻や合格率を推測で補いません。
-中断を発見した場合は `interrupt --reason ...` で未完の区間を保持し、実際の再開時点でenterします。
-計測をやり直すために3回ループのissue ID・修正回数をリセットしてはいけません。
+実際の工程委譲直前にenterを実行し、直前の実結果を渡します。前工程への委譲には理由・分類・
+検出Agentを指定します。ADDR→ARCHITECTURE、Implementation→ADDRも独立した手戻りです。
+各委譲に一意で安定したevent-idを使い、同じ記録の再送だけ同じIDを使います。
+同一工程の修正はcheckpoint、Validator/Assuranceは親内の子活動として記録します。
+QualityのFAILやProducerのSUCCESSを工程品質PASSに読み替えません。
+子活動を閉じてから主工程を移り、結合試験の検証・Assurance終了時にphase-endを記録します。
+FULLから戻ったら必要な工程と結合試験を再実行し、古い結合試験終了を最終値へ流用しません。
+実際の開発終端でend、summarizeを実行します。中断はinterruptで未知の終了時刻を保持します。
+計測エラーは警告・欠測とし、3回ループや品質判定を変更しません。
+受入試験/Evaluationは開発後に人が起動し、途中でHidden入力を公開しません。
 
 # Agent Responsibility
 
@@ -123,7 +109,7 @@ Requirements Agent
 Architecture:
 Architecture Agent
 
-Architecture内の重要判断:
+ADDR（独立工程）:
 ADDR Agent
 
 Implementation:
@@ -152,7 +138,7 @@ FailureTriage Agent
 
 # Agent Invocation Boundary
 
-Requirements、Architecture、Implementation、
+Requirements、Architecture、ADDR、Implementation、
 Unit Test、Integration Test Agentは
 他Agentを直接呼び出しません。
 
@@ -166,11 +152,12 @@ Agent間の遷移は
 
 1. Requirements
 2. Architecture
-3. Implementation
-4. Unit Test
-5. Integration Test
-6. Final Assurance
-7. COMPLETE
+3. ADDR
+4. Implementation
+5. Unit Test
+6. Integration Test
+7. Final Assurance
+8. COMPLETE
 
 工程を飛ばしてはいけません。
 
@@ -207,56 +194,61 @@ Requirementsの品質PASS、または3回後の未解決継続判定を保存し
 
 # Phase 2: Architecture
 
-Architecture工程は設計書とADDRの2専門Agentで実施します。外部工程名・RoutingはARCHITECTUREを維持します。
-順序はPREPARE → ADDR → FINALIZE → Validation → Assurance → Gateです。
+Architectureは設計資料作成だけを担当します。ADDRは次の独立工程であり、子工程ではありません。
+docs/ai-sdlc/independent-architecture-addr.md を責務・引渡し・旧版互換の正とします。
 
-1. Architecture Agentをoperation=PREPAREで起動し、分割要件・UC/AC・Steering・既存設計・既存判断を渡します。
-2. DRAFT設計入力を検証します。
-   `python .github/skills/architecture/scripts/validate_design.py --stage draft`
-3. `python .github/skills/addr/scripts/validate_addr.py --prepare-request` で予約プールと入力契約を作ります。
-   既存requestが同一入力なら再利用します。入力変更・ID追加予約時は旧結果を無効化し、
-   必要数を --reserve-count で指定し --renew-request を明示します。過去の予約IDは再利用しません。
-4. ADDR Agentへrequestを渡し、要否判断・ADDR作成・LINK_ADDR要求・未使用IDを受け取ります。
-   `python .github/skills/addr/scripts/validate_addr.py` の検査結果を記録し、不合格時は共通3回ループで処理します。
-   ADDR不要は正常終了です。空のADDRやADRを強制作成しません。不合格の継続は共通3回ループへ集約します。
-5. Architecture Agentをoperation=FINALIZEで起動し、LINK_ADDRの反映、設計差分の具体化、実装タスクを依頼します。
-   新たな重要判断が発生すればADDR工程へ戻し、入力版・予約・成果物を更新します。
-6. 次を両方実行します。
-   `python .github/skills/architecture/scripts/validate_design.py --stage final`
-   `python .github/skills/addr/scripts/validate_addr.py --final`
-7. Quality Review / Security Review / Traceability Auditorと各Validatorをaudit_scope=ARCHITECTUREで実行します。
-   全設計・ADDR・旧Accepted ADR・Task・入力出典を渡します。Quality Reviewは既存の整合性分析テンプレートで
-   reports/architecture/cross-artifact-consistency.mdも生成し、設計と判断・Taskの意味的整合を確認します。
-   各AgentのJSON Reportへsource_baseline_sha256としてFINAL manifestのSHA-256を設定させます。
-   Validatorはその値をvalidation-resultへ引き継ぎます。古い版・FULL ScopeのPASSを再利用しません。
-   Traceability Auditorは現在の正本内ID・注釈からTrace Map v3・3種の表・機械Reportを生成し、同一Scopeで独立再検証します。
-8. 全Assurance ValidatorがPASSしたら次を実行します。
-   `python .github/skills/addr/scripts/validate_addr.py --write-gate`
-   このコマンドがPASSした場合のみ品質PASSにします。3回修正後も不合格なら失敗を記録し、
-   loop_control.pyのARCHITECTURE継続判定で実装へ進みます。品質GateをPASSに偽装しません。
-   Gateは設計・出典・ADDR・結果のハッシュと、ARCHITECTURE検証結果の固定コピーを保持します。
+1. Architecture Agentへ分割要件・UC/AC・Steering・準備済み仕様・既存判断を渡します。
+   ファイル定義（該当時）・成果物間整合性分析・実装タスク一覧を既存テンプレートで依頼します。
+   方式の比較・採否は依頼せず、判断が必要な所在と根拠だけを後続ADDRへ渡します。
+2. version=2 / stage=FINALのreports/architecture/design-manifest.jsonを受け取り、
+   validate_design.py --stage final を実行します。DRAFT/PREPARE/FINALIZEは新規Runでは使いません。
+3. Quality/Security/Traceabilityをaudit_scope=ARCHITECTUREで独立実行します。
+   このScopeは資料の品質とADDRへの引渡し準備を検査し、未実施ADDRの承認や実装Readyを先取りしません。
+   3検査のJSONにsource_baseline_sha256としてFINAL manifestのSHA-256を持たせます。
+   cross-artifact-consistency.mdはArchitecture作成の分析資料で、Quality Reviewに上書きさせません。
+4. validate_design.py --write-design-gate でreports/architecture/design-gate.jsonを固定します。
+   これはADDRへの設計引渡しGateです。実装開始許可ではありません。
+5. loop-policyのARCHITECTURE必須Checkを全件保存し、通常PASSまたは3回後の継続判定でADDRへ進みます。
+   互換Check名architecture_gateは今回の設計Gate検査を指し、ADDR検査を混ぜません。
 
-ADDRのテンプレート状態はACTIVE / SUPERSEDEDです。ACTIVE出力だけでは実装可能としません。
-既存の設計欄adr_id / adrs等は互換名としてADDR IDも扱い、旧Accepted ADRはそのまま読みます。Trace Map v3はelements/sourcesを使います。
-新しい判断を旧ADR形式へ二重生成したり、ADDRをProposed/Acceptedへ改変したりしません。
-設計書・ADDR・計画の変更はGateと後続工程のPASSを無効化し、設計反映から再検証します。
+# Phase 3: ADDR
 
-復旧は親が制御します。BLOCKED / FAILED / PARTIAL_SUCCESSも3回後は未解決として継続判定へ渡します。
-入力不備はPREPARE、判断不備はADDR、リンク・Task不備はFINALIZEへ戻します。
-同一failure_signatureを親の台帳で管理し、新requestのmax_attempts=3と共通修正回数を一致させます。
-MANDATORY対象を隔離せず、要件・受入条件を変更する自動縮退を行いません。
-3回後は必要な情報・影響・実施済み復旧を未解決結果へ記録し、実行可能な後続工程へ進みます。
-人への質問・承認待ちを設計工程の標準動作にしません。
+ADDR AgentはArchitectureと対等な独立Producerです。直接呼出しはせず、親が委譲します。
 
+1. validate_design.py --check-design-gate とvalidate_addr.py --prepare-requestを実行し、
+   FINAL manifest・設計資料・要件・UC/AC・予約ID契約をADDR Agentへ渡します。
+2. ADDR Agentは重要判断だけを正本ADDRへ記録し、全対象の要否、明示的FILE/TASK参照、
+   artifact_link_updates、必要時のdesign_change_requestsを返します。
+   ファイル項目表・全体分析・実装タスク・設計manifestを再作成/直接編集させません。
+3. validate_addr.py --finalを実行します。ADDR不要は正常終了であり、空文書を強制作成しません。
+   参照追加だけならArchitectureへ戻しません。本文/Taskの変更が必要な場合だけ、
+   根拠付き要求でARCHITECTUREへ実際に差し戻し、設計・Assurance・Gateを更新してADDRへ戻します。
+   重要判断そのものの不備はADDR内で修正し、毎回のFINALIZEは行いません。
+4. validate_addr.py --write-handoffを実行し、reports/addr/implementation-handoff.jsonを派生生成します。
+   これは凍結設計とADDRのハッシュ・明示参照を束ねるだけで、Agentによる設計書の再生成ではありません。
+5. Quality/Security/Traceabilityをaudit_scope=ADDRで独立実行し、全設計・ADDR・Task・handoffを渡します。
+   JSONのsource_baseline_sha256はhandoffのSHA-256。ARCHITECTURE/FULLのPASSを流用しません。
+   設計と判断の内容上の整合・重複・残存不足を独立検査します。Producerの分析をPASS根拠へ代用しません。
+6. validate_addr.py --write-gateで実装引渡しGateを固定します。
+   互換パスreports/architecture/architecture-gate.jsonのphase=ADDRを確認します。
+   ACTIVE出力だけで実装開始せず、Gateまたは有効な未解決継続判定を確認します。
+7. loop-policyのADDR必須Checkを全件保存し、通常PASSまたは3回後の未解決継続判定でImplementationへ進みます。
 
-# Phase 3: Implementation
+不足/FAIL/BLOCKEDが3回後も残る場合は元結果を保持し、共通ループへ渡します。
+品質不合格の設計Gateや欠落入力を捏造してprepare-request/handoff/Gateを成功させません。
+実行不能な後続検査も理由付きで記録し、実行可能な範囲を進めます。過去の修正回数をリセットしません。
+設計変更ならADDR/実装/テスト、判断だけの変更なら実装/テストとADDR検査・Gateを無効化します。
+旧Accepted ADRは維持し、新規判断を旧ADRへ二重出力しません。
+
+# Phase 4: Implementation
 
 Implementation Agentを起動してください。
 
 開始前に `python .github/skills/architecture/scripts/validate_design.py --check-gate` を実行し、
 FINAL設計・実装タスク・Gate通過済みACTIVE ADDR・旧Accepted ADRを渡してください。
-Gateが欠落・変更済みなら原則Architectureへ戻します。ただし保存済みのARCHITECTURE継続許可を
-loop_control.py --check-phase ARCHITECTUREで検証できる場合は、未承認範囲を明示して実行可能な部分を進めます。
+Gateが欠落・変更済みなら、設計資料の問題はArchitecture、判断/引渡しの問題はADDRへ戻します。
+未解決継続の場合はARCHITECTUREとADDR両方の保存済み継続判定を各--check-phaseで検証し、
+未承認範囲を明示して実行可能な部分だけを進めます。Architectureの許可だけでADDRを省略しません。
 継続許可を有効ADDR・設計承認やADDR不要承認に読み替えてはいけません。
 
 Implementation Agentは、
@@ -303,7 +295,7 @@ Traceability AuditorまたはTraceability Validatorを
 省略したままUnit Testへ進んではいけません。
 
 
-# Phase 4: Unit Test
+# Phase 5: Unit Test
 
 Unit Test Agentを起動してください。
 
@@ -356,7 +348,7 @@ Traceability AuditorまたはTraceability Validatorを
 省略したままIntegration Testへ進んではいけません。
 
 
-# Phase 5: Integration Test
+# Phase 6: Integration Test
 
 Integration Test Agentを起動してください。
 
@@ -466,9 +458,9 @@ Integration Test Phase Scope Assuranceが
 Integration Test Phaseの実際の品質結果と継続状態を記録してください。
 
 Integration Test PhaseがPASSした場合、
-Phase 6: Final Assuranceへ進んでください。
+Phase 7: Final Assuranceへ進んでください。
 
-# Phase 6: Final Assurance
+# Phase 7: Final Assurance
 
 Integration Test PhaseがPASSした後、
 SDLC全体の最終Assuranceを実行してください。
@@ -506,14 +498,14 @@ IMPLEMENTATION_FIX_REQUIRED:
 Implementation Agentへ戻す。
 
 ADR_REQUIRED:
-Architecture Agentへ戻す。
+ADDR Agentへ戻す。
 
 EXTERNAL_TEST_INPUT_REQUIRED:
 ユーザー入力を要求する。
 
 BLOCKED:
 原因を確認し、
-Requirements / Architecture / EnvironmentへRoutingする。
+Requirements / Architecture / ADDR / EnvironmentへRoutingする。
 
 FAILED:
 同一原因によるRetry回数を確認し、
@@ -529,7 +521,7 @@ IMPLEMENTATION_ERROR:
 Implementation Agentで修正する。
 
 ADR_REQUIRED:
-Architecture Agentへ戻す。
+ADDR Agentへ戻す。
 
 REQUIREMENT_ERROR:
 Requirements Agentへ戻す。
@@ -580,6 +572,7 @@ Trace Mapおよび3種の表を再生成してください。
 Requirementsが変更された場合:
 
 Architecture
+ADDR
 Implementation
 Unit Test
 Integration Test
@@ -669,7 +662,7 @@ External Test未配置、TEST_SPEC_CONFLICT、AUTOMATION_BLOCKEDも、解決不�
 Deterministic Validatorの結果を保存した後にAssurance Agentを実行してください。
 3回後も不合格の場合は未解決として引き継ぎ、可能な範囲を監査し、実行不能な検査も理由付きで記録します。
 
-Architecture、Implementation、Unit Test、Integration Testでは、
+Architecture、ADDR、Implementation、Unit Test、Integration Testでは、
 Phase本文に定義されたPhase Scope Assuranceを省略してはいけません。
 
 各Phaseで次工程へ遷移する前に、
@@ -696,7 +689,7 @@ Security観点を確認します。
 
 Traceability Auditorは成果物内ID参照・trace注釈を正本に、推測せずC01〜C11を機械検査します。
 `.github/skills/traceability-audit/SKILL.md` のPolicyと工程Scopeに従います。
-ARCHITECTURE / IMPLEMENTATION / UNIT_TEST / INTEGRATION_TEST / FULLを現在工程に合わせ、
+ARCHITECTURE / ADDR / IMPLEMENTATION / UNIT_TEST / INTEGRATION_TEST / FULLを現在工程に合わせ、
 必要に応じREQUIREMENTSの一次定義検査も実施します。
 
 ```text
@@ -709,7 +702,7 @@ python .github/skills/traceability-audit/scripts/trace_check.py --scope <現在�
 Trace Map/機械Report・3種の表はDerived Artifactです。正本を表へ合わせて修正しません。
 C11不整合はTRACEABILITY_REGENERATEへ戻して再生成します。
 それ以外はissues[].route/classification/locationを用い最上流の原因工程へ戻します。
-ARCHITECTUREでは入力不備をPREPARE、判断不備をADDR、リンク/TASK不備をFINALIZEへ振り分けます。
+要件不備はREQUIREMENTS、設計資料/TASK不備はARCHITECTURE、重要判断/ADDR参照不備はADDRへ戻します。
 変更後は既存無効化規則に従い設計・ADDR・Assurance・Gateを再実行します。
 
 Auditorは元要件・正本テンプレート・設計・判断・Production/Test Code・JUnit・外部ケースを修正しません。
@@ -729,6 +722,10 @@ Requirements完了時:
 Architecture完了時:
 
 `ARCHITECTURE`
+
+ADDR完了時:
+
+`ADDR`
 
 Implementation完了時:
 
@@ -788,6 +785,10 @@ Requirements完了時:
 Architecture完了時:
 
 `ARCHITECTURE`
+
+ADDR完了時:
+
+`ADDR`
 
 Implementation完了時:
 

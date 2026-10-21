@@ -11,7 +11,8 @@ from pathlib import Path
 import yaml
 
 from design_common import (
-    FINAL, GATE, INPUT, KINDS, REQUEST, RESULT, addr_records, digest, duplicates,
+    FINAL, GATE, INPUT, KINDS, REQUEST, RESULT, HANDOFF, addr_records, digest, duplicates,
+    design_input_path, handoff_content, validate_design_gate, ID_PATTERN,
     gate_paths, load_json, local_path, objects, parse_document, requirement_ids,
     row_records, snapshots, strings, validate_design, validate_document, validate_gate, walk,
 )
@@ -21,10 +22,12 @@ from loop_control import REPAIR_CYCLES
 
 
 def prepare_request(root: Path, reserve_count: int = 0, renew: bool = False) -> list[str]:
-    errors = validate_design(root, "draft")
+    input_path = design_input_path(root)
+    sequential = input_path == FINAL
+    errors = validate_design_gate(root) if sequential else validate_design(root, "draft")
     if errors:
         return errors
-    draft = load_json(root / INPUT, errors)
+    draft = load_json(root / input_path, errors)
     records, discovery_errors = addr_records(root / "docs/addr")
     errors.extend(discovery_errors)
     if errors:
@@ -32,7 +35,7 @@ def prepare_request(root: Path, reserve_count: int = 0, renew: bool = False) -> 
     path = root / REQUEST
     if path.exists():
         previous = load_json(path, errors)
-        if previous.get("design_input_sha256") == digest(root / INPUT) and not renew:
+        if previous.get("design_input_sha256") == digest(root / input_path) and not renew:
             return errors
         if not renew:
             return ["ADDR request baseline changed; invalidate prior result and use --renew-request"]
@@ -61,11 +64,14 @@ def prepare_request(root: Path, reserve_count: int = 0, renew: bool = False) -> 
         return ["Historical ADDR pool contains invalid IDs"]
     highest = max([int(identifier.split("-")[1]) for identifier in reserved] + [0])
     request = {
-        "source_revision": draft["source_revision"], "design_input_sha256": digest(root / INPUT),
+        "source_revision": draft["source_revision"], "design_input_sha256": digest(root / input_path),
         "addr_id_pool": [f"ADDR-{highest + offset:03d}" for offset in range(1, count + 1)],
         "existing_addr_ids": sorted(records), "target_criticality": draft["targets"],
         "recovery_policy": {"max_attempts": REPAIR_CYCLES}, "attempt": 0,
     }
+    if sequential:
+        request["design_input_path"] = FINAL
+        request["workflow_version"] = 2
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(request, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return []
@@ -74,11 +80,19 @@ def prepare_request(root: Path, reserve_count: int = 0, renew: bool = False) -> 
 def validate_addr(root: Path, final: bool = False) -> list[str]:
     root = root.resolve()
     errors = []
-    draft = load_json(root / INPUT, errors)
+    input_path = design_input_path(root)
+    sequential = input_path == FINAL
+    draft = load_json(root / input_path, errors)
     request = load_json(root / REQUEST, errors)
     result = load_json(root / RESULT, errors)
     if errors:
         return errors
+    if sequential:
+        errors.extend(validate_design(root, "final"))
+        if request.get("workflow_version") != 2 or request.get("design_input_path") != FINAL:
+            errors.append("ADDR request must identify the frozen sequential Architecture input")
+        if errors:
+            return errors
     targets = objects(draft.get("targets"), "input targets", errors)
     strings([item.get("target_id") for item in targets], "input target IDs", errors)
     objects(draft.get("unresolved_design_decisions"), "input decisions", errors)
@@ -86,8 +100,10 @@ def validate_addr(root: Path, final: bool = False) -> list[str]:
         return errors
     snapshots(root, draft.get("sources"), "ADDR input sources", errors)
     for record in (request, result):
-        if record.get("design_input_sha256") != digest(root / INPUT) or record.get("source_revision") != draft.get("source_revision"):
+        if record.get("design_input_sha256") != digest(root / input_path) or record.get("source_revision") != draft.get("source_revision"):
             errors.append("ADDR input revision/hash differs from design input")
+    if sequential:
+        snapshots(root, draft.get("artifacts"), "Frozen Architecture artifacts", errors)
     if request.get("target_criticality") != draft.get("targets"):
         errors.append("ADDR target criticality changed")
     pool = strings(request.get("addr_id_pool"), "ADDR pool", errors)
@@ -211,7 +227,39 @@ def validate_addr(root: Path, final: bool = False) -> list[str]:
         local_ids = [row["ID"] for row in row_records(document, {"ID"}) if re.fullmatch(r"(?:DC|DD|INV|ASM)-\d+", row["ID"])]
         duplicates(local_ids, f"{identifier} local IDs", errors)
     links = objects(result.get("artifact_link_updates"), "ADDR link updates", errors)
-    if final:
+    if sequential:
+        artifacts = {item.get("artifact_id"): item for item in draft.get("artifacts", []) if isinstance(item, dict) and isinstance(item.get("artifact_id"), str)}
+        linked = set()
+        link_keys = []
+        for link in links:
+            artifact = artifacts.get(link.get("artifact_id"), {}) if isinstance(link.get("artifact_id"), str) else {}
+            identifier = link.get("related_addr_id")
+            if link.get("requested_action") != "LINK_ADDR" or not artifact or identifier not in assigned or link.get("target_id") != artifact.get("target_id"):
+                errors.append("ADDR binding requires a real frozen artifact, matching target and newly assigned ADDR")
+                continue
+            record = records[identifier]
+            if record["metadata"].get("target_id") != artifact.get("target_id"):
+                errors.append("ADDR binding target differs from decision target")
+            text = Path(record["path"]).read_text(encoding="utf-8-sig")
+            related_sections = [section for section in walk(parse_document(text)) if section.title.startswith("2.")]
+            references = "\n".join(line for section in related_sections for line in section.body)
+            reference_ids = set(ID_PATTERN.findall(references))
+            if artifact["artifact_id"] not in reference_ids and artifact["path"] not in references:
+                errors.append("ADDR binding is not stated in its canonical related-artifacts section")
+            element_ids = strings(link.get("element_ids"), "ADDR binding element IDs", errors)
+            document = parse_document((root / artifact["path"]).read_text(encoding="utf-8-sig"))
+            defined = {row["Task ID"] for row in row_records(document, {"Task ID"}, "4.")} if artifact.get("template") == "implementation-task-list" else {row["内容"].strip("` ") for row in row_records(document, {"項目", "内容"}) if row["項目"] == "File Interface ID"}
+            if not element_ids or not set(element_ids).issubset(defined) or not set(element_ids).issubset(reference_ids):
+                errors.append("ADDR binding must name real task/file IDs explicitly in its related-artifacts section")
+            linked.add(identifier)
+            link_keys.append((artifact["artifact_id"], identifier))
+        duplicates(link_keys, "ADDR artifact binding", errors)
+        if linked != set(assigned):
+            errors.append("Every created ADDR requires an explicit Architecture artifact binding")
+        change_requests = objects(result.get("design_change_requests", []), "design change requests", errors)
+        if final and change_requests:
+            errors.append("Design changes require an explicit backwards route to Architecture, not automatic FINALIZE")
+    elif final:
         manifest = load_json(root / FINAL, errors)
         artifacts = {item.get("artifact_id"): item for item in objects(manifest.get("artifacts"), "FINAL artifacts", errors) if isinstance(item.get("artifact_id"), str)}
         for link in links:
@@ -226,8 +274,24 @@ def validate_addr(root: Path, final: bool = False) -> list[str]:
     return errors
 
 
+def write_handoff(root: Path) -> list[str]:
+    if design_input_path(root) != FINAL:
+        return ["Independent ADDR handoff requires a version 2 Architecture manifest"]
+    errors = validate_design_gate(root) + validate_addr(root, final=True)
+    if not errors:
+        path = root / HANDOFF
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(handoff_content(root, errors), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return errors
+
+
 def write_gate(root: Path) -> list[str]:
     errors = validate_design(root, "final") + validate_addr(root, final=True)
+    sequential = design_input_path(root) == FINAL
+    if sequential:
+        from design_common import validate_handoff
+        errors.extend(validate_design_gate(root))
+        errors.extend(validate_handoff(root))
     if errors:
         return errors
     paths = gate_paths(root)
@@ -242,10 +306,12 @@ def write_gate(root: Path) -> list[str]:
     if errors:
         return errors
     gate = {"status": "PASS", "snapshots": [{"path": path, "sha256": digest(root / path)} for path in sorted(paths)], "assurance": []}
+    if sequential:
+        gate["phase"] = "ADDR"
     for kind, directory in (("quality-review", "quality-review"), ("security-review", "security-review"), ("traceability", "traceability")):
         path = f"reports/{directory}/validation-result.json"
         report = load_json(root / path, errors)
-        if report.get("source_baseline_sha256") != digest(root / FINAL):
+        if report.get("source_baseline_sha256") != digest(root / (HANDOFF if sequential else FINAL)):
             errors.append(f"Assurance result is not bound to current FINAL manifest: {kind}")
         archived = f"reports/architecture/assurance/{kind}-validation-result.json"
         if (root / path).is_file():
@@ -266,9 +332,10 @@ def main() -> int:
     parser.add_argument("--reserve-count", type=int, default=0)
     parser.add_argument("--final", action="store_true")
     parser.add_argument("--write-gate", action="store_true")
+    parser.add_argument("--write-handoff", action="store_true")
     args = parser.parse_args()
     root = args.root.resolve()
-    errors = prepare_request(root, args.reserve_count, args.renew_request) if args.prepare_request else write_gate(root) if args.write_gate else validate_addr(root, args.final)
+    errors = prepare_request(root, args.reserve_count, args.renew_request) if args.prepare_request else write_handoff(root) if args.write_handoff else write_gate(root) if args.write_gate else validate_addr(root, args.final)
     for error in errors:
         print(f"- {error}")
     print("[FAIL] ADDR validation" if errors else "[PASS] ADDR validation")

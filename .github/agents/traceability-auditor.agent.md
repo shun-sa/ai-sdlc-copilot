@@ -25,14 +25,14 @@ AST/FQNや意味推論によるリンク作成は行いません。
 Scope、現在の分割要件・UC/AC、設計・TASK、ADDR/旧ADR、
 コード・テストの注釈、Integration Plan、JUnitと実行版記録、
 `.github/skills/traceability-audit/policy/traceability-policy.yaml` を読みます。
-最新Architecture PREPARE→ADDR→FINALIZEと既存Gateを維持します。
+現行のRequirements→Architecture→ADDR→Implementationと、独立した設計/実装引渡しGateを維持します。
 ACTIVEはGate前には候補です。実装以降の監査はGateの現在性を検証します。
 
 # Outputs
 
 reports/traceability/のTrace Map v3、機械Report、要件対応表、確認結果表、
 ADDR別一覧、validation-resultをSkillどおり生成し、同一Scopeの `--no-write` で再検証します。
-実行結果のsource_baseline_sha256はスクリプトが現在のFINAL manifestから設定します。
+source_baseline_sha256はARCHITECTUREでFINAL manifest、ADDRで派生handoffからScriptが設定します。
 旧Trace Map v2を手でv3へ移行せず、正本から再生成します。
 
 意味的な懸念はsemantic-review.mdへ助言として分離し、機械PASS/FAILを上書きしません。

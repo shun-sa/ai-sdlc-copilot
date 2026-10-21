@@ -55,6 +55,8 @@ Implementation工程では以下を重視します。
 # Inputs
 
 新ワークフローではFINAL設計manifest、設計書、実装タスク、Gate通過後のACTIVE ADDRも入力とする。
+version=2では独立ADDR工程のimplementation-handoff.jsonも読み、凍結した設計とADDRを組み合わせる。
+重要判断はADDR参照、項目表/TaskはArchitecture参照とし、同じ仕様を再定義しない。
 着手前に `python .github/skills/architecture/scripts/validate_design.py --check-gate` を実行する。
 失敗時はArchitectureへ返す。Taskの実行順・依存・完了条件を守り、判断不足は既存ADR_REQUIRED経路で親へ返す。
 設計未決はADDRへ、設計書・計画不足はArchitectureへ親が振り分ける。

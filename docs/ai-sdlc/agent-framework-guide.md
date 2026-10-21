@@ -1,5 +1,9 @@
 # AI SDLC Agent Framework Guide
 
+現行の独立工程は [ArchitectureとADDRの独立工程](independent-architecture-addr.md) を正とします。
+Requirements→Architecture→ADDR→Implementationの順で、ADDRをArchitecture内の子活動にしません。
+旧版のPREPARE/FINALIZEの記述は新規Runには適用せず、本文修正時だけ実際に差し戻します。
+
 実験の記録担当・指標の定義・出力・開始方法は [実験計測ガイド](experiment-measurement.md) を参照してください。
 観測用Scriptと、開発後に人が起動するEvaluation/AcceptanceTestExecutorを区別します。
 
@@ -572,7 +576,7 @@ Deterministic Check:
 成果物内ID・trace注釈を正本としてC01〜C11を機械検査します。
 作成Agentが参照を記入し、Auditorは元成果物を編集せず表とTrace Map v3を再生成します。
 意味的レビューは助言として分離し、独立Quality/Security/Test Gateは維持します。
-正本テンプレートとArchitecture PREPARE→ADDR→FINALIZE→Gateは変更しません。
+正本構造を維持し、現行はArchitecture→ADDRの独立工程と設計/実装引渡しの2つのGateを使います。
 
 詳細・対象・移行・実行版記録は [注釈方式トレーサビリティ](inline-traceability.md) を参照してください。
 手順は `.github/skills/traceability-audit/SKILL.md`、

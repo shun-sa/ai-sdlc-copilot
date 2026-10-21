@@ -5,7 +5,8 @@
   "initial_failure_counts_as_repair": false,
   "required_checks": {
     "REQUIREMENTS": ["producer", "requirements", "quality", "security", "traceability"],
-    "ARCHITECTURE": ["prepare", "design_draft", "addr", "addr_validation", "finalize", "design_final", "addr_final", "quality", "security", "traceability", "architecture_gate"],
+    "ARCHITECTURE": ["producer", "design_final", "quality", "security", "traceability", "architecture_gate"],
+    "ADDR": ["producer", "addr_validation", "handoff", "quality", "security", "traceability", "addr_gate"],
     "IMPLEMENTATION": ["producer", "build", "quality", "security", "traceability"],
     "UNIT_TEST": ["producer", "unit_test", "quality", "security", "traceability"],
     "INTEGRATION_TEST": ["producer", "integration_test", "quality", "security", "traceability"],

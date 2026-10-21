@@ -1,5 +1,8 @@
 # 実験計測ガイド
 
+現行の工程分離は [ArchitectureとADDRの独立工程](independent-architecture-addr.md) を参照する。
+ADDRは独立主工程であり、旧版のPREPARE→ADDR→FINALIZEやADDR子活動計測は新規Runでは使わない。
+
 ## 目的と役割分担
 
 現行の分割要件・設計書・ADDRとトレーサビリティを維持したまま、実験の事実を記録する。
@@ -9,7 +12,7 @@
 | 欲しい値 | 開発中/実行時にAgentが残すもの | 人が準備・後から確認するもの |
 | --- | --- | --- |
 | 設計開始→結合試験終了の実時間 | 最初の設計進入と最後の有効な結合試験終了の実時刻 | 待機・中断を含めて比較する条件、未解決継続か品質合格か |
-| 各工程の時間 | 全工程の進入/終了、再訪、PREPARE/ADDR/FINALIZE・検証/Assuranceの子活動 | 記録漏れ、開始前の工程が未計測であること、親子時間の二重加算防止 |
+| 各工程の時間 | 全工程の進入/終了、再訪、独立ADDR工程・検証/Assuranceの子活動 | 記録漏れ、開始前の工程が未計測であること、親子時間の二重加算防止 |
 | 前工程への手戻り回数 | 実際の委譲の出発工程・戻り先・理由・分類・検出Agent | 戻り先別集計と元イベント。同一工程内の修正回数とは別物 |
 | 単体テスト分岐網羅率 | 実コマンド、同実行の生coverage/JUnit、対象版と固定証跡 | 実験前の対象/除外/分岐設定の固定、計測対象ファイルの妥当性 |
 | 結合試験項目 | 外部入力を見る前のAI INITIAL、最終計画、実行結果のsnapshot | 項目・手順・期待値・出自・不足の確認。AI INITIALとGAP_FILL/EXTERNALを分ける |
@@ -24,7 +27,7 @@
 
 ### 時間
 
-- 主区間は最初のARCHITECTURE（PREPARE委譲直前）から、最後の有効なINTEGRATION_TEST終了まで。
+- 主区間は最初のARCHITECTURE（設計資料作成の委譲直前）から、最後の有効なINTEGRATION_TEST終了まで。
   テストコマンドだけのdurationではなく、設計、ADDR、実装、テスト作成、検証、Assurance、
   修正、ユーザー応答待ち、外部ケース待ち、環境待ち、計測処理の実時間を含む。
 - 要件定義から始めるRunはREQUIREMENTSも記録するが、初回要件定義時間は主区間に含めない。
@@ -32,7 +35,7 @@
 - `phase_times` はRun全体の各工程の全訪問を合算する。最後のFULLも記録する。
   `measurement_window_phase_times` は主区間内だけの内訳。両者を混同しない。
   最終FULLは主区間外だが、そこから手戻りし結合試験を再実行した場合、途中のFULLは主区間に含む。
-- 主工程は相互排他的。PREPARE/ADDR/FINALIZE/検証/各Assuranceは親内の子活動であり、
+- 主工程は相互排他的。検証/各Assuranceは親内の子活動であり、
   `activity_times` を親工程の時間に加算しない。並行した子活動同士の合計も実時間とは限らない。
 - 主工程は検証とAssuranceまで終えてから閉じる。次のenterで直前工程を閉じるか、
   実際の終了時にphase-endを実行する。明示的な工程間の空白はunallocated_secondsへ分離する。
@@ -46,11 +49,11 @@
 
 ### 手戻り
 
-REQUIREMENTS → ARCHITECTURE → IMPLEMENTATION → UNIT_TEST → INTEGRATION_TEST → FULLの
+REQUIREMENTS → ARCHITECTURE → ADDR → IMPLEMENTATION → UNIT_TEST → INTEGRATION_TEST → FULLの
 順序に対し、実際に前の主工程へ委譲したPHASE_ENTEREDを1回とする。
 出発工程別、戻り先別、出発→戻り先の組合せ別に集計する。
 指摘件数・FailureTriageの提案数ではない。複数指摘をまとめて1回委譲したら1回。
-同一工程の再試行、Architecture内のPREPARE↔ADDR↔FINALIZEは主工程手戻りに含めず、
+同一工程の再試行は主工程手戻りに含めず、
 checkpoint/子活動と既存loop-controlの履歴で確認する。計測回数と3回修正ループの回数は別管理。
 
 ### テスト関連
@@ -80,18 +83,18 @@ python .github/skills/evaluation/scripts/experiment_recorder.py start --run-id R
 python .github/skills/evaluation/scripts/experiment_recorder.py enter --run-id RUN-001 --event-id dispatch-arch-1 --phase ARCHITECTURE --result PASS
 ```
 
-要件定義済みなら1行目を `--phase ARCHITECTURE` で実行し、そのままPREPAREへ委譲する。
+要件定義済みなら1行目を `--phase ARCHITECTURE` で実行し、そのままArchitectureへ委譲する。
 同じ工程へのenterは実行しない。startで時計を動かしてから作業を開始し、run_idを全子Agentへ渡す。
 
-Architecture子活動の例（親が委譲直前/返却直後に記録する）：
+独立ADDRへの委譲例（親が実際の委譲直前に記録する）：
 
 ```text
-python .github/skills/evaluation/scripts/experiment_recorder.py activity-start --run-id RUN-001 --event-id addr-1-start --activity-id addr-1 --name ADDR
-python .github/skills/evaluation/scripts/experiment_recorder.py activity-end --run-id RUN-001 --event-id addr-1-end --activity-id addr-1 --result PASS
+python .github/skills/evaluation/scripts/experiment_recorder.py enter --run-id RUN-001 --event-id dispatch-addr-1 --phase ADDR --result PASS
 python .github/skills/evaluation/scripts/experiment_recorder.py enter --run-id RUN-001 --event-id dispatch-impl-1 --phase IMPLEMENTATION --result PASS
 ```
 
-PREPARE、FINALIZE、Validator、QualityReview、SecurityReview、TraceabilityAuditorも同様に記録する。
+ADDRは独立したphase_timesの対象で、子活動へ二重記録しない。
+Validator、QualityReview、SecurityReview、TraceabilityAuditorだけをactivity-start/endで親内に記録する。
 resultは実際の工程/活動結果。Agent処理SUCCESSだけで品質PASSを指定しない。
 検査FAILのまま継続許可された主工程はCONTINUE_WITH_UNRESOLVEDとし、検査原本を保持する。
 

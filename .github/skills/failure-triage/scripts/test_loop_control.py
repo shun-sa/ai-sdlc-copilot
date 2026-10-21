@@ -50,6 +50,29 @@ class LoopControlTests(unittest.TestCase):
         self.assertEqual(issue["cycle"], 0)
         self.assertEqual(issue["state"], "OPEN")
 
+    def test_addr_has_independent_checks_and_three_repair_continuation(self):
+        checks = {}
+        for key in control.policy(self.root)["required_checks"]["ADDR"]:
+            path = f"reports/checks/addr-{key}.json"
+            self.write(path, {"status": "PASS", "audit_scope": "ADDR", "errors": []})
+            checks[key] = path
+        self.write(checks["addr_validation"], {"status": "FAIL", "audit_scope": "ADDR", "errors": ["Decision unresolved"]})
+        for cycle in range(4):
+            event = self.event(cycle, validation_result=checks["addr_validation"])
+            event["signature"] = {**self.signature, "origin_phase": "ADDR"}
+            control.record(self.root, event)
+        decision = control.phase_decision(self.root, "ADDR", checks)
+        self.assertEqual(decision["status"], "CONTINUE_WITH_UNRESOLVED")
+        self.assertEqual(control.verify_transition(self.root, "ADDR"), decision)
+        self.assertEqual(control.read(self.root / checks["addr_validation"])["status"], "FAIL")
+
+    def test_architecture_continuation_does_not_own_future_addr_outputs(self):
+        self.exhaust()
+        control.phase_decision(self.root, "ARCHITECTURE", self.checks)
+        self.write("docs/addr/ADDR-001.md", {"new": "later phase output"})
+        self.write("reports/architecture/addr-result.json", {"status": "SUCCESS"})
+        self.assertEqual(control.verify_transition(self.root, "ARCHITECTURE")["status"], "CONTINUE_WITH_UNRESOLVED")
+
     def test_one_or_two_repairs_cannot_advance(self):
         for cycle in range(3):
             control.record(self.root, self.event(cycle))
@@ -99,7 +122,7 @@ class LoopControlTests(unittest.TestCase):
 
     def test_pass_cannot_be_registered_as_failure(self):
         with self.assertRaises(ValueError):
-            control.record(self.root, self.event(validation_result=self.checks["design_draft"]))
+            control.record(self.root, self.event(validation_result=self.checks["design_final"]))
 
     def test_only_errors_in_actual_result_can_be_registered(self):
         with self.assertRaises(ValueError):

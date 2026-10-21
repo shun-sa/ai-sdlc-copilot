@@ -23,6 +23,8 @@ FINAL = "reports/architecture/design-manifest.json"
 REQUEST = "reports/architecture/addr-request.json"
 RESULT = "reports/architecture/addr-result.json"
 GATE = "reports/architecture/architecture-gate.json"
+DESIGN_GATE = "reports/architecture/design-gate.json"
+HANDOFF = "reports/addr/implementation-handoff.json"
 REQ_INDEX = "docs/requirements/requirements.md"
 STEERING = ".github/project-context/project-ai-steering.md"
 TEMPLATES = ".github/skills/architecture/templates"
@@ -222,8 +224,11 @@ def validate_design(root: Path, stage: str) -> list[str]:
     manifest = load_json(root / (INPUT if stage == "draft" else FINAL), errors)
     if not manifest:
         return errors
-    if manifest.get("version") != 1 or manifest.get("stage") != stage.upper() or not manifest.get("source_revision"):
+    sequential = manifest.get("version") == 2
+    if manifest.get("version") not in (1, 2) or manifest.get("stage") != stage.upper() or not manifest.get("source_revision"):
         errors.append("Invalid design manifest version, stage or source_revision")
+    if sequential and stage != "final":
+        errors.append("Sequential design is published once as FINAL before ADDR")
     sources = snapshots(root, manifest.get("sources"), "design sources", errors)
     missing = baseline_paths(root) - sources
     if missing:
@@ -244,7 +249,7 @@ def validate_design(root: Path, stage: str) -> list[str]:
         related = strings(candidate.get("related_requirement_ids"), "candidate requirements", errors)
         if candidate.get("target_id") not in identifiers or not related or not set(related).issubset(known):
             errors.append("Invalid unresolved decision target or requirement")
-    if stage == "final" and candidates:
+    if stage == "final" and candidates and not sequential:
         errors.append("FINAL design contains unresolved decisions")
     artifacts = objects(manifest.get("artifacts"), "design artifacts", errors)
     snapshots(root, artifacts, "design artifacts", errors)
@@ -256,6 +261,8 @@ def validate_design(root: Path, stage: str) -> list[str]:
         if path is None or not path.is_file():
             continue
         related = strings(artifact.get("related_requirement_ids"), "design requirements", errors)
+        if sequential and artifact.get("target_id") not in identifiers:
+            errors.append("Architecture artifact must identify a declared target")
         strings(artifact.get("related_addr_ids"), "design ADDRs", errors)
         if not related or not set(related).issubset(known):
             errors.append(f"Unknown design requirement: {path}")
@@ -264,10 +271,13 @@ def validate_design(root: Path, stage: str) -> list[str]:
             if path.relative_to(root).as_posix() not in sources:
                 errors.append(f"Provided design is not a source: {path}")
             continue
-        if kind not in ("file-definition", "implementation-task-list"):
+        if kind not in ("file-definition", "implementation-task-list", "cross-artifact-consistency-analysis") or (kind == "cross-artifact-consistency-analysis" and not sequential):
             errors.append(f"Unknown design template: {kind}")
             continue
-        if not path.is_relative_to(root / "docs/architecture"):
+        if kind == "cross-artifact-consistency-analysis":
+            if path != root / "reports/architecture/cross-artifact-consistency.md":
+                errors.append("Architecture consistency analysis must use its canonical report path")
+        elif not path.is_relative_to(root / "docs/architecture"):
             errors.append(f"Design output outside docs/architecture: {path}")
         template_path = root / TEMPLATES / f"{kind}.template.md"
         if not template_path.is_file():
@@ -281,15 +291,82 @@ def validate_design(root: Path, stage: str) -> list[str]:
         else:
             errors.extend(validate_document(template, text, path))
     if stage == "final":
-        draft = load_json(root / INPUT, errors)
-        if not (root / INPUT).is_file() or manifest.get("design_input_sha256") != digest(root / INPUT):
-            errors.append("FINAL design has stale DRAFT baseline")
-        if manifest.get("source_revision") != draft.get("source_revision"):
-            errors.append("FINAL design source revision differs")
-        if manifest.get("sources") != draft.get("sources") or manifest.get("targets") != draft.get("targets"):
-            errors.append("FINAL design changed sources or target criticality")
+        if sequential:
+            if "design_input_sha256" in manifest:
+                errors.append("Sequential design must not depend on a DRAFT/FINALIZE cycle")
+            if sum(item.get("template") == "cross-artifact-consistency-analysis" for item in artifacts) != 1:
+                errors.append("Sequential design requires exactly one Architecture consistency analysis")
+        else:
+            draft = load_json(root / INPUT, errors)
+            if not (root / INPUT).is_file() or manifest.get("design_input_sha256") != digest(root / INPUT):
+                errors.append("FINAL design has stale DRAFT baseline")
+            if manifest.get("source_revision") != draft.get("source_revision"):
+                errors.append("FINAL design source revision differs")
+            if manifest.get("sources") != draft.get("sources") or manifest.get("targets") != draft.get("targets"):
+                errors.append("FINAL design changed sources or target criticality")
         if task_count != 1:
             errors.append("FINAL design requires exactly one implementation task list")
+    return errors
+
+
+def design_input_path(root: Path) -> str:
+    manifest = load_json(root / FINAL, []) if (root / FINAL).is_file() else {}
+    return FINAL if manifest.get("version") == 2 else INPUT
+
+
+def design_paths(root: Path) -> set[str]:
+    manifest = load_json(root / FINAL, [])
+    paths = {FINAL} | baseline_paths(root)
+    paths.update(path.relative_to(root).as_posix() for path in (root / TEMPLATES).glob("*.md"))
+    for key in ("sources", "artifacts"):
+        paths.update(item["path"] for item in manifest.get(key, []) if isinstance(item, dict) and isinstance(item.get("path"), str))
+    return paths
+
+
+def validate_design_gate(root: Path, candidate: dict | None = None) -> list[str]:
+    errors = validate_design(root, "final")
+    gate = load_json(root / DESIGN_GATE, errors) if candidate is None else candidate
+    if gate.get("status") != "PASS" or gate.get("phase") != "ARCHITECTURE":
+        errors.append("Design Gate requires ARCHITECTURE PASS")
+    if snapshots(root, gate.get("snapshots"), "Design Gate", errors) != design_paths(root):
+        errors.append("Design Gate snapshot coverage differs")
+    validate_assurance(root, gate.get("assurance"), "ARCHITECTURE", root / FINAL, errors)
+    return errors
+
+
+def validate_assurance(root: Path, records, scope: str, baseline: Path, errors: list[str]) -> None:
+    evidence = objects(records, "Gate assurance", errors)
+    kinds = strings([item.get("kind") for item in evidence], "Gate Assurance kinds", errors)
+    if set(kinds) != {"quality-review", "security-review", "traceability"} or len(evidence) != 3:
+        errors.append("Gate requires three independent Assurance results")
+    snapshots(root, evidence, "Gate assurance", errors)
+    for item in evidence:
+        path = local_path(root, item.get("path"), errors)
+        report = load_json(path, errors) if path is not None else {}
+        if report.get("status") != "PASS" or report.get("audit_scope") != scope:
+            errors.append(f"Gate requires {scope} PASS evidence")
+        if not baseline.is_file() or report.get("source_baseline_sha256") != digest(baseline):
+            errors.append("Gate Assurance baseline changed")
+
+
+def write_design_gate(root: Path) -> list[str]:
+    errors = validate_design(root, "final")
+    if errors:
+        return errors
+    gate = {"status": "PASS", "phase": "ARCHITECTURE", "snapshots": [{"path": path, "sha256": digest(root / path)} for path in sorted(design_paths(root))], "assurance": []}
+    for kind in ("quality-review", "security-review", "traceability"):
+        path = f"reports/{kind}/validation-result.json"
+        report = load_json(root / path, errors)
+        if report.get("status") != "PASS" or report.get("audit_scope") != "ARCHITECTURE" or report.get("source_baseline_sha256") != digest(root / FINAL):
+            errors.append(f"Design Assurance is not bound to current ARCHITECTURE: {kind}")
+        archived = f"reports/architecture/design-assurance/{kind}-validation-result.json"
+        if (root / path).is_file():
+            (root / archived).parent.mkdir(parents=True, exist_ok=True)
+            (root / archived).write_bytes((root / path).read_bytes())
+        gate["assurance"].append({"kind": kind, "path": archived, "sha256": digest(root / archived) if (root / archived).is_file() else ""})
+    errors.extend(validate_design_gate(root, gate))
+    if not errors:
+        (root / DESIGN_GATE).write_text(json.dumps(gate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return errors
 
 
@@ -304,6 +381,11 @@ def gate_paths(root: Path) -> set[str]:
         if isinstance(entries, list):
             paths.update(item["path"] for item in entries if isinstance(item, dict) and isinstance(item.get("path"), str))
     paths.update(path.relative_to(root).as_posix() for directory in ("docs/addr", "docs/adr") for path in (root / directory).glob("*.md"))
+    if manifest.get("version") == 2:
+        paths.discard(INPUT)
+        paths.update({DESIGN_GATE, HANDOFF})
+        design_gate = load_json(root / DESIGN_GATE, errors)
+        paths.update(item["path"] for item in design_gate.get("assurance", []) if isinstance(item, dict) and isinstance(item.get("path"), str))
     return paths
 
 
@@ -312,6 +394,12 @@ def validate_gate(root: Path, candidate: dict | None = None) -> list[str]:
     gate = load_json(root / GATE, errors) if candidate is None else candidate
     if gate.get("status") != "PASS":
         errors.append("Architecture Gate is not PASS")
+    sequential = load_json(root / FINAL, []).get("version") == 2
+    if sequential:
+        errors.extend(validate_design_gate(root))
+        errors.extend(validate_handoff(root))
+        if gate.get("phase") != "ADDR":
+            errors.append("Implementation release requires an independent ADDR Gate")
     actual = snapshots(root, gate.get("snapshots"), "Architecture Gate", errors)
     if actual != gate_paths(root):
         errors.append("Architecture Gate snapshot coverage differs")
@@ -324,8 +412,26 @@ def validate_gate(root: Path, candidate: dict | None = None) -> list[str]:
     for item in evidence:
         path = local_path(root, item.get("path"), errors)
         report = load_json(path, errors) if path is not None else {}
-        if report.get("status") != "PASS" or report.get("audit_scope") != "ARCHITECTURE":
-            errors.append("Architecture Gate requires ARCHITECTURE PASS evidence")
-        if (root / FINAL).is_file() and report.get("source_baseline_sha256") != digest(root / FINAL):
+        scope = "ADDR" if sequential else "ARCHITECTURE"
+        if report.get("status") != "PASS" or report.get("audit_scope") != scope:
+            errors.append(f"Architecture Gate requires {scope} PASS evidence")
+        baseline = root / (HANDOFF if sequential else FINAL)
+        if baseline.is_file() and report.get("source_baseline_sha256") != digest(baseline):
             errors.append("Architecture Gate Assurance baseline changed")
+    return errors
+
+
+def handoff_content(root: Path, errors: list[str]) -> dict:
+    manifest = load_json(root / FINAL, errors)
+    result = load_json(root / RESULT, errors)
+    return {"version": 2, "design_manifest_sha256": digest(root / FINAL), "design_gate_sha256": digest(root / DESIGN_GATE) if (root / DESIGN_GATE).is_file() else None, "addr_result_sha256": digest(root / RESULT), "source_revision": manifest.get("source_revision"), "artifact_links": result.get("artifact_link_updates", []), "addr_artifacts": result.get("output_artifacts", [])}
+
+
+def validate_handoff(root: Path) -> list[str]:
+    errors = []
+    actual = load_json(root / HANDOFF, errors)
+    if not (root / FINAL).is_file() or not (root / RESULT).is_file():
+        return errors + ["Handoff sources missing"]
+    if actual != handoff_content(root, errors):
+        errors.append("Implementation handoff differs from frozen Architecture/ADDR inputs")
     return errors

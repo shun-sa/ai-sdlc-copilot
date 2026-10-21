@@ -9,6 +9,7 @@ Requirementの意味や期待Behaviorが
 ## Applies To
 
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

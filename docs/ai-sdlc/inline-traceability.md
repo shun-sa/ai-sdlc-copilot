@@ -6,7 +6,8 @@
 ## 処理と担当
 
 1. Requirementsが分割本文・UC/ACを再構成します。IDと既存の関連参照を保持します。
-2. Architecture PREPARE→ADDR→FINALIZEで、設計書・判断・TASKの既存欄に根拠IDを記入します。
+2. Architecture→ADDRの独立工程で、設計資料・判断・TASKの既存欄に実在根拠IDを記入します。
+   後続ADDRのFILE/TASK参照は正本2章と検証済み派生handoffで結び、通常FINALIZEは行いません。
 3. Architectureの構造検証とQuality/Security/Traceabilityを経て既存のハッシュ固定Gateを保存します。
 4. Implementationはコード作成と同時にADDR/DBD/FILEの先頭注釈を付けます。
 5. UnitTest/IntegrationTestは要件と関連ADDRの注釈を付け、実行でJUnitを生成して実行版を記録します。

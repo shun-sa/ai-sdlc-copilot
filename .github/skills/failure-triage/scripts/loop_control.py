@@ -14,7 +14,7 @@ DIRECTORY = "reports/loop-control"
 LEDGER = DIRECTORY + "/retry-ledger.json"
 SIGNATURE_FIELDS = ("origin_phase", "classification", "artifact", "requirement_reference", "test_case", "stable_error_type")
 EXCLUDED = {".git", ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache", ".ruff_cache", "dist", "build"}
-PHASE_ORDER = ("REQUIREMENTS", "ARCHITECTURE", "IMPLEMENTATION", "UNIT_TEST", "INTEGRATION_TEST", "FULL", "ACCEPTANCE_TEST", "EVALUATION")
+PHASE_ORDER = ("REQUIREMENTS", "ARCHITECTURE", "ADDR", "IMPLEMENTATION", "UNIT_TEST", "INTEGRATION_TEST", "FULL", "ACCEPTANCE_TEST", "EVALUATION")
 
 
 def local(root: Path, value: str) -> Path:
@@ -216,10 +216,12 @@ def record(root: Path, event: dict) -> str:
 
 
 def source_snapshot(root: Path, phase: str) -> list[dict]:
-    architecture = phase in ("REQUIREMENTS", "ARCHITECTURE")
+    architecture = phase in ("REQUIREMENTS", "ARCHITECTURE", "ADDR")
     prefixes = ["docs/requirements", ".github/project-context", ".github/skills/requirements/templates"]
-    if phase == "ARCHITECTURE":
-        prefixes += ["docs/architecture", "docs/addr", "docs/adr", ".github/skills/architecture/templates", ".github/skills/addr/templates"]
+    if phase in ("ARCHITECTURE", "ADDR"):
+        prefixes += ["docs/architecture", ".github/skills/architecture/templates"]
+    if phase == "ADDR":
+        prefixes += ["docs/addr", "docs/adr", ".github/skills/addr/templates"]
     if not architecture:
         prefixes = ["."]
     paths = {POLICY}
@@ -230,7 +232,10 @@ def source_snapshot(root: Path, phase: str) -> list[dict]:
             if path.is_file() and path.resolve().is_relative_to(root) and not (set(relative.parts) & EXCLUDED) and relative.parts[0] != "reports":
                 paths.add(relative.as_posix())
     if phase != "REQUIREMENTS":
-        paths.update("reports/architecture/" + name for name in ("design-input.json", "design-manifest.json", "addr-request.json", "addr-result.json", "cross-artifact-consistency.md"))
+        names = ("design-input.json", "design-manifest.json", "cross-artifact-consistency.md", "design-gate.json") if phase == "ARCHITECTURE" else ("design-input.json", "design-manifest.json", "addr-request.json", "addr-result.json", "cross-artifact-consistency.md", "design-gate.json", "architecture-gate.json")
+        paths.update("reports/architecture/" + name for name in names)
+        if phase != "ARCHITECTURE":
+            paths.add("reports/addr/implementation-handoff.json")
         manifest = root / "reports/architecture/design-manifest.json"
         if manifest.is_file():
             try:

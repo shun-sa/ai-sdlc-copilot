@@ -46,6 +46,7 @@ analysis:
   root_cause_priority:
     - REQUIREMENTS
     - ARCHITECTURE
+    - ADDR
     - IMPLEMENTATION
     - UNIT_TEST
     - INTEGRATION_TEST
@@ -63,7 +64,7 @@ classification:
 
 routing:
   REQUIREMENT_ERROR: REQUIREMENTS
-  ADR_REQUIRED: ARCHITECTURE
+  ADR_REQUIRED: ADDR
   IMPLEMENTATION_ERROR: IMPLEMENTATION
 
   # Test ErrorはFailure発生工程に応じて決定する
@@ -79,6 +80,7 @@ routes:
   allowed:
     - REQUIREMENTS
     - ARCHITECTURE
+    - ADDR
     - IMPLEMENTATION
     - UNIT_TEST
     - INTEGRATION_TEST
@@ -88,11 +90,18 @@ routes:
 invalidation:
   REQUIREMENTS:
     - ARCHITECTURE
+    - ADDR
     - IMPLEMENTATION
     - UNIT_TEST
     - INTEGRATION_TEST
 
   ARCHITECTURE:
+    - ADDR
+    - IMPLEMENTATION
+    - UNIT_TEST
+    - INTEGRATION_TEST
+
+  ADDR:
     - IMPLEMENTATION
     - UNIT_TEST
     - INTEGRATION_TEST

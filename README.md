@@ -1,5 +1,9 @@
 # AI SDLC Agent Framework
 
+通常工程はRequirements→Architecture→ADDR→Implementationです。
+[ArchitectureとADDRの独立工程](docs/ai-sdlc/independent-architecture-addr.md) に責務・Gate・計測・旧版互換をまとめています。
+Architectureは設計資料作成、ADDRは重要判断だけを担当し、通常FINALIZEの再呼出しはありません。
+
 実験用の実時間・工程時間・手戻り・分岐網羅率・結合項目・人の受入合格率は
 [実験計測ガイド](docs/ai-sdlc/experiment-measurement.md) を参照してください。
 開発中は観測記録だけを追加し、設計/ADDRの正本・品質Gate・共通3回ループは維持します。
@@ -29,13 +33,14 @@ RequirementsからArchitecture、Implementation、Unit Test、Integration Test�
 flowchart LR
     R[Requirements]
     A[Architecture]
+    AD[ADDR]
     I[Implementation]
     U[Unit Test]
     IT[Integration Test]
     FA[Final Assurance]
     C([COMPLETE])
 
-    R --> A --> I --> U --> IT --> FA --> C
+    R --> A --> AD --> I --> U --> IT --> FA --> C
 ```
 
 各Phaseは原則として以下の順序で進みます。

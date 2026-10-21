@@ -49,6 +49,7 @@ import yaml
 AUDIT_SCOPES = {
     "REQUIREMENTS",
     "ARCHITECTURE",
+    "ADDR",
     "IMPLEMENTATION",
     "UNIT_TEST",
     "INTEGRATION_TEST",
@@ -58,6 +59,7 @@ AUDIT_SCOPES = {
 SCOPE_LEVEL = {
     "REQUIREMENTS": 1,
     "ARCHITECTURE": 2,
+    "ADDR": 2,
     "IMPLEMENTATION": 3,
     "UNIT_TEST": 4,
     "INTEGRATION_TEST": 5,
@@ -980,6 +982,7 @@ def validate_issues(
         valid_routes = {
             "REQUIREMENTS",
             "ARCHITECTURE",
+            "ADDR",
             "IMPLEMENTATION",
             "UNIT_TEST",
             "INTEGRATION_TEST",

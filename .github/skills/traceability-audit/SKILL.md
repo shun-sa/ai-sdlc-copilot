@@ -18,7 +18,9 @@ Auditorは元成果物・注釈・テスト結果を修正しません。生成�
 
 要件の正本は分割された要件本文・UC・ACです。requirements.mdは派生索引なので定義から除外します。
 旧features、業務背景、用語集、品質チェックリスト、Steeringはグラフ対象外ですが設計の入力として保持します。
-正本テンプレート・要件再構成・Architecture PREPARE→ADDR→FINALIZEを変更しません。
+正本テンプレート・要件再構成を維持し、通常順序はRequirements→Architecture→ADDR→Implementationです。
+新しい設計参照はADDR正本2章の明示的FILE/TASK参照を使い、検証済み派生handoffから関連付けます。
+将来ADDRのために凍結済み設計書へ自動追記せず、推測した参照も作りません。
 FILEは既存テンプレートの「File Interface ID」欄を読みます。DBDは既存入力がある場合のみ使い、
 未提供の設計テンプレートを作りません。配置・接頭辞はpolicy/traceability-policy.yamlで指定します。
 
@@ -43,7 +45,9 @@ FILEは既存テンプレートの「File Interface ID」欄を読みます。DB
 ## 実行
 
 Python 3.10以上とPyYAMLを利用します。Orchestratorから受領したaudit_scopeを変更しません。
-REQUIREMENTS / ARCHITECTURE / IMPLEMENTATION / UNIT_TEST / INTEGRATION_TEST / FULLに対応します。
+REQUIREMENTS / ARCHITECTURE / ADDR / IMPLEMENTATION / UNIT_TEST / INTEGRATION_TEST / FULLに対応します。
+ADDR Scopeでは設計Gateとhandoffを検証し、まだ実装/テストが存在しないことを不合格にしません。
+ADDRのbaselineはhandoffのSHA-256、ARCHITECTUREのbaselineはFINAL manifestです。
 
 ```text
 python .github/skills/traceability-audit/scripts/trace_check.py --scope ARCHITECTURE
@@ -108,9 +112,9 @@ Trace PASSは仕様の意味的充足・品質・安全性やテスト成功を�
 ## 差戻し・完了
 
 validation-resultのissues[].routeとclassification/locationを親へ返します。
-REQUIREMENTS、ARCHITECTURE、IMPLEMENTATION、UNIT_TEST、INTEGRATION_TESTの原因工程が修正します。
-ARCHITECTUREの判断不備はADDR、設計反映/TASK不備はArchitecture FINALIZE、
-入力不備はPREPAREへ親が振り分けます。変更後は既存の無効化規則で再Gateします。
+REQUIREMENTS、ARCHITECTURE、ADDR、IMPLEMENTATION、UNIT_TEST、INTEGRATION_TESTの原因工程が修正します。
+重要判断/判断参照の不備はADDR、設計資料/TASKの不備はArchitecture、
+要求入力の不備はRequirementsへ親が振り分けます。変更後は影響するGateと下流を再検証します。
 TRACEABILITY_REGENERATEはAuditorが現在の正本から派生物のみを再生成します。
 
 同じ原因を3回修正しても残れば、共通ループ台帳の未解決結果を親へ返し、継続判定で次工程へ進みます。

@@ -2,8 +2,9 @@
 
 <!--
 位置付け:
-- 本書はArchitecture Producerが手入力で維持するSource Artifactではなく、
-  Architecture Assurance / Quality Review等が生成するDerived Reportとして使用する。
+- 本書はArchitecture Producerが現在の入力から生成する整合性分析資料として使用する。
+  重要判断の正本や独立Assuranceの合格証拠ではなく、Quality Review等は別の検査結果を生成する。
+  ADDR前の分析では未実施判断・実装準備未完を明示し、後続工程の完了を先取りしない。
 - Requirements、Use Case / Acceptance Criteria、Accepted ADR、設計成果物、
   実装タスク等の「内容上の整合性」を確認する。
 - 単なるID参照の存在確認やRequirement→Code→TestのMappingはTraceability Auditorの責務とし、

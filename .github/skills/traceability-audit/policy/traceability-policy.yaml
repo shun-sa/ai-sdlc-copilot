@@ -135,6 +135,9 @@ checks:
     ARCHITECTURE:
       fail: [C01, C03, C04, C11]
       warn: []
+    ADDR:
+      fail: [C01, C02, C03, C04, C11]
+      warn: []
     IMPLEMENTATION:
       fail: [C01, C02, C03, C04, C05, C06, C11]
       warn: [C08, C09]

@@ -1,109 +1,70 @@
 ---
 name: architecture
 description: >
-  分割要件と既存設計テンプレートから設計成果物を作成し、未確定判断をADDRへ渡し、
-  確定差分と実装タスクを整えて実装へ引き継ぐ。
+  準備済み仕様を設計資料へ再構成し、独立したADDR工程へ一度引き渡す。
 user-invocable: false
 disable-model-invocation: false
 ---
 
 # Architecture / Design Skill
 
-## 実験Runの計測
+## 責務と正本
 
-親から渡されたrun_idを維持する。PREPARE/FINALIZEの開始・終了とADDR委譲は
-Orchestratorが観測記録するため、本Skillは別Runや主工程の遷移を作らない。
-各operationの実結果と中断・待機・差し戻し理由を親へ返す。設計/ADDRの正本とGateは変更しない。
-詳細は `docs/ai-sdlc/experiment-measurement.md`。
-
-## 正本と責務
-
-| テンプレート | 出力 | 作成者 |
+| 正本テンプレート | 出力 | 条件 |
 | --- | --- | --- |
-| `templates/file-definition.template.md` | `docs/architecture/files/FILE-xxx.md` | Architecture。ファイル連携がある場合 |
-| `templates/implementation-task-list.template.md` | `docs/architecture/implementation-task-list.md` | Architecture。FINALIZEで必須 |
-| `templates/cross-artifact-consistency-analysis.template.md` | `reports/architecture/cross-artifact-consistency.md` | Quality Review / Assurance |
+| templates/file-definition.template.md | docs/architecture/files/FILE-xxx.md | ファイル連携がある場合 |
+| templates/cross-artifact-consistency-analysis.template.md | reports/architecture/cross-artifact-consistency.md | 必須。Producerによる入力時点の分析 |
+| templates/implementation-task-list.template.md | docs/architecture/implementation-task-list.md | 必須。新しい設計判断を含めない |
 
-正本の見出し・階層・固定表列を維持し、記入欄と必要な行・Taskブロックだけを展開する。
-ファイル連携がない場合はファイル定義を捏造せず、対象・理由をmanifestに記録する。
-構成図、データモデル、画面・API等は提供済み仕様・既存成果物を参照する。
-今回のZIPにこれら専用の設計テンプレートは存在しない。未提供の必須仕様・テンプレートを
-架空の標準として追加せず、未確定事項と不足成果物を親へ返す。
+見出し・固定表列は維持する。必要な行・Taskブロックだけを展開する。
+要件本文・UC/AC・Steering・提供済み設計仕様・有効な既存判断を根拠に記入する。
+未提供の画面/API/DB等の専用テンプレートを追加せず、必要な不足は根拠と影響を返す。
+仕様に一意な定型詳細は記入するが、重要方式の案比較・採否・理由・新しい実装拘束を決めない。
+それらは独立したADDRの担当。ADDRや旧ADRを新規作成しない。
 
-重要判断と差分はADDR Agentの担当である。旧ADRを新規量産しない。
-有効な旧Accepted ADRは履歴と制約として読み、ADDRと矛盾すれば親へ返す。
-要件・UC/ACが正、設計は実現仕様、ADDRは重要判断の正本、Taskは作業計画である。
-ADDRを設計書・実装タスクの代わりにしない。
+## Procedure
 
-## PREPARE
+1. 分割要件の全リンク先、UC/AC、Steeringと準備済み仕様を読み、対象と根拠付き重要度を決める。
+2. ファイル定義と実装タスクを既存テンプレートへ再構成する。該当しないファイル定義は作らず理由を記録する。
+3. 重要判断が未定なら、候補キー・対象・根拠・判断が必要な理由だけをunresolved_design_decisionsへ記録する。
+   候補方式を先回りして比較・選定しない。Taskで新しい方式や受入条件を作らない。
+4. 整合性分析は現在の要件と設計資料を対象に作成する。ADDR未実施はその旨を記載し、
+   Required ADRs AcceptedやImplementation Readinessを先取りしてYES/READYにしない。
+   分析のFAIL/BLOCKEDは原文のまま保持し、未解決継続が必要なら共通3回ループへ返す。
+5. version=2、stage=FINALのmanifestをreports/architecture/design-manifest.jsonへ出力する。
+   DRAFT入力やFINALIZEは不要。FINALは「Architecture成果物の確定版」であり、重要判断完了を意味しない。
+6. 構造Validatorを実行し親へ返す。独立Assurance・設計Gate・ADDR起動は親が担当する。
 
-1. 要件索引の全リンク先、UC/AC、Steering、既存設計、現行判断を読む。
-2. 対象と重要度を根拠から決める。MANDATORYは隔離すると受入不能、OPTIONALは独立して除外可能な対象。
-   根拠がなければ重要度を推測せずBLOCKEDとする。任意の機能縮退で受入条件を変えない。
-3. 指定済み・一意に導出可能な設計を書き、重要な未確定方式を候補として切り出す。
-4. 必要なファイル定義をテンプレートで作成し、未決はOpen Questionsへ記録する。
-5. 下記manifestをDRAFTで `reports/architecture/design-input.json` へ保存する。
-   出典は要件索引・リンク先・Steering・参照した旧ADR等をSHA-256で固定する。
+## Manifest
 
-```json
-{
-  "version": 1,
-  "stage": "DRAFT",
-  "source_revision": "入力版またはcommit",
-  "sources": [{"path": "docs/requirements/requirements.md", "sha256": "実ファイルのSHA-256"}],
-  "artifacts": [{"artifact_id": "FILE-001", "path": "docs/architecture/files/FILE-001.md", "template": "file-definition", "sha256": "実SHA-256", "target_id": "FR-001", "related_requirement_ids": ["FR-001"], "related_addr_ids": []}],
-  "targets": [{"target_id": "FR-001", "criticality": "MANDATORY", "basis_ids": ["FR-001"]}],
-  "unresolved_design_decisions": [{"candidate_key": "file-retry", "target_id": "FR-001", "topic": "再送方式", "related_requirement_ids": ["FR-001"], "candidate_options": [], "reason_unresolved": "要件から方式が一意に決まらない"}],
-  "not_applicable": []
-}
-```
-
-上記は形式例であり、ID・ハッシュ・判断・配列は実資料で置換する。
-artifactsのtemplateは `file-definition / implementation-task-list / provided`。
-providedは提供済みの他設計仕様で、出典sourcesにも同じパスを記録する。
-新規に推測して作った設計書をprovidedとして登録しない。
-候補がなくても空配列を渡す。ADR/ADDRやコードはartifactsとして新規作成しない。
-テンプレート内のADR列は互換欄としてADDR IDも格納できる。列名は変更しない。
-
-```text
-python .github/skills/architecture/scripts/validate_design.py --stage draft
-```
-
-## FINALIZE
-
-1. Orchestratorが返すADDR結果とLINK_ADDR要求を読む。前工程の入力manifestは変更しない。
-2. 同一入力版の重要判断だけを反映し、設計書の参照欄へADDR IDを追加する。
-   決定内容はADDR参照とし、物理仕様として必要な値のみ設計書へ具体化する。
-3. Taskテンプレートで全実装対象を計画する。Task Summary・Details・Wave・Coverageを照合する。
-   依存Taskは実在し循環しないこと。Taskで新たな重要判断や受入条件を作らない。
-4. 未確定判断が増えればADDR_REQUIREDで返す。通常の局所的設計を全件ADDR化しない。
-5. 全入力sourcesを維持し、最新成果物のハッシュ・関連ADDRを持つFINAL manifestを
-   `reports/architecture/design-manifest.json` へ保存する。`design_input_sha256` にDRAFT manifestの
-   SHA-256を記録する。DRAFT成果物の旧ハッシュは入力履歴として保存し、FINALに最新値を記録する。
-6. 全体を検証して親へ返す。実装計画の初期進捗は未着手。実行中の進捗は別Reportへ記録し、
-   Gateで固定した設計・計画を無断更新しない。
+既存version=1と同じsources/artifacts/targets/unresolved_design_decisionsを持ち、versionだけ2とする。
+sourcesは要件索引・全リンク先・Steering・参照した既存設計/判断の実SHA-256を固定する。
+source_revision、target_id、criticality（MANDATORY/OPTIONAL）、basis_idsは必須。
+artifactsはartifact_id/path/template/sha256/target_id/related_requirement_ids/related_addr_idsを持つ。
+templateはfile-definition / cross-artifact-consistency-analysis / implementation-task-list / provided。
+providedは本当に受領した他設計資料だけで、sourcesへも登録する。
+task一覧は1件、整合性分析は1件必須。FILEのFile Interface IDとTASKの実在ID・依存・Waveを保持する。
+新規ADDRはまだないので将来IDを予約・推測して関連欄へ記入しない。既存判断だけを参照する。
+新規ADDRとの関連付けは後続ADDRの正本2章と機械可読結果に記録し、派生handoffで接続する。
+design_input_sha256は付けない（自己参照/DRAFT依存を作らない）。
 
 ```text
 python .github/skills/architecture/scripts/validate_design.py --stage final
-python .github/skills/addr/scripts/validate_addr.py
 ```
 
-重大な未決・入力の変化・不整合はBLOCKED、生成・検証失敗はFAILED。
-内容の意味的整合、設計不足、Scope、セキュリティは既存Assuranceが評価する。
-構造PASSとProducer SUCCESSだけで実装へ進めない。
+## Gateと修正
 
-# Inline Traceability
+Quality/Security/TraceabilityはARCHITECTURE Scopeで現在の資料の品質を独立検査する。
+Producerの整合性分析をそのまま独立検査のPASS証拠にはしない。同じ分析文書を上書きしない。
+設計GateはADDRへの引渡しを固定し、Implementation開始許可とは区別する。
 
-PREPARE/FINALIZEの責務・正本テンプレート・manifest・Gateは維持します。
-作成時に既存の関連要件/ADR欄へ実在IDを記入し、FILEの「File Interface ID」を保持します。
-Task Summary/Detailsの関連要件・ADDR/DBD根拠を一致させ、TASKだけを設計根拠にしません。
-提供済みDB論理設計がある場合はそのDBDを使用し、未提供のテンプレートは作りません。
-ADDR文書はADDR Agentが作成します。正本外のTraceability専用章やFQN欄を設計書へ追加しません。
-Trace Map/表はAuditorの派生成果物です。手編集での維持は行いません。
+ADDRから設計本文・Taskの具体的修正が要求されたときだけ、親がArchitectureへ差し戻す。
+要求された資料だけを修正し、ADDR本体を編集しない。新manifest/Assurance/設計Gateを作り、
+旧ADDR入力・handoff・実装引渡しGateと影響する後続結果を無効化する。
+参照を追加するだけのために通常FINALIZEを行わない。
 
-## 共通3回ループ
+## 共通ループ・トレーサビリティ・計測
 
-修正・再検査は `docs/ai-sdlc/bounded-repair-loop.md` に集約します。
-初回失敗0＋実修正1〜3の後も残る場合、FAIL/BLOCKEDを維持して親へ未解決として返し、
-親が履歴・影響を記録して次工程への継続を許可します。4回目を自己開始しません。
-未解決継続を品質SUCCESS/PASSへ変換せず、原因を隠す修正・捏造・削除・skipをしません。
+初回失敗0＋実修正/再検査1〜3で残ればFAIL/BLOCKEDと影響を親へ返す。PASSに偽装せず4回目を開始しない。
+正本の既存ID欄を使用し、Trace専用章やFQN欄を追加しない。表はAuditorが派生生成する。
+実験run_idを維持する。Architecture/ADDRは独立主工程で、開始・終了・実際の手戻りは親が記録する。

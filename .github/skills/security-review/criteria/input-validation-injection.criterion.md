@@ -9,6 +9,7 @@ External InputがSecurity Boundaryを越える際に
 
 - REQUIREMENTS
 - ARCHITECTURE
+- ADDR
 - IMPLEMENTATION
 - UNIT_TEST
 - INTEGRATION_TEST

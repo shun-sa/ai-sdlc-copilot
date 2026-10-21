@@ -85,6 +85,35 @@ class RecorderTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.enter("ARCHITECTURE")
 
+    def test_addr_is_a_separate_phase_with_its_own_time(self):
+        self.start()
+        self.enter("ADDR")
+        self.enter("IMPLEMENTATION")
+        self.enter("UNIT_TEST")
+        self.enter("INTEGRATION_TEST")
+        self.finish()
+        measured = recorder.summary(self.root, self.run_id)
+        self.assertEqual(measured["phase_times"]["ADDR"]["seconds"], 10)
+        self.assertEqual(measured["measurement_window_phase_times"]["ADDR"]["seconds"], 10)
+        self.assertEqual(measured["time_window"]["elapsed_seconds"], 50)
+        self.assertEqual(measured["rework"]["total"], 0)
+
+    def test_implementation_to_addr_and_addr_to_architecture_are_actual_rework(self):
+        self.start()
+        self.enter("ADDR")
+        self.enter("IMPLEMENTATION")
+        self.enter("ADDR", result="FAIL", classification="ADR_REQUIRED", reason="重要判断修正")
+        self.enter("ARCHITECTURE", result="BLOCKED", classification="DESIGN_CHANGE_REQUIRED", reason="設計本文修正")
+        self.enter("ADDR")
+        self.enter("IMPLEMENTATION")
+        self.enter("UNIT_TEST")
+        self.enter("INTEGRATION_TEST")
+        self.finish()
+        measured = recorder.summary(self.root, self.run_id)
+        self.assertEqual(measured["rework"]["total"], 2)
+        self.assertEqual(measured["rework"]["by_to_phase"], {"ADDR": 1, "ARCHITECTURE": 1})
+        self.assertEqual(measured["phase_times"]["ADDR"]["visits"], 3)
+
     def test_initial_requirements_and_final_assurance_are_timed_outside_main_window(self):
         self.event("RUN_STARTED", {"phase": "REQUIREMENTS"}, seconds=0)
         self.enter("ARCHITECTURE")
