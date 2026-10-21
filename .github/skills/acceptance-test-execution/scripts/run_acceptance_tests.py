@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sqlite3
 import subprocess
 import sys
@@ -101,6 +102,9 @@ def validate_manifest(
         execution_type = str(
             case.get("execution_type", "")
         ).upper()
+        if execution_type == "BLOCKED":
+            if not manifest.get("sheet_preparation") or not str(case.get("blocked_reason", "")).strip():
+                errors.append(f"{case_id}: BLOCKED is allowed only for approved sheet cases with a reason.")
         if execution_type and execution_type not in supported:
             errors.append(
                 f"{case_id or f'Case #{index}'}: unsupported execution_type "
@@ -120,6 +124,8 @@ def validate_manifest(
                 )
 
         expected = case.get("expected")
+        if execution_type == "BLOCKED":
+            continue
         if not isinstance(expected, dict):
             errors.append(
                 f"{case_id or f'Case #{index}'}: expected must be an object."
@@ -177,6 +183,9 @@ def run_case(
     repo_root: Path,
     policy: dict[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any]]:
+    if case["execution_type"] == "BLOCKED":
+        result = {"case_id": case["case_id"], "requirement_id": case["requirement_id"], "requirement_type": case["requirement_type"], "result": "BLOCKED", "exit_code": "", "duration_seconds": 0, "blocked_reason": case["blocked_reason"]}
+        return result, {**result, "execution_type": "BLOCKED", "command_executed": False, "mismatches": []}
     execution = policy.get("execution", {})
     default_timeout = int(execution.get("default_timeout_seconds", 300))
     maximum_timeout = int(execution.get("maximum_timeout_seconds", 1800))
@@ -213,6 +222,9 @@ def run_case(
             completed.stderr,
         )
         status = "PASS" if matched else "FAIL"
+        blocked = completed.returncode in case.get("blocked_exit_codes", [])
+        if blocked:
+            status = "BLOCKED"
 
         result = {
             "case_id": case["case_id"],
@@ -221,7 +233,7 @@ def run_case(
             "result": status,
             "exit_code": completed.returncode,
             "duration_seconds": duration,
-            "blocked_reason": "",
+            "blocked_reason": "TEST_PREREQUISITE_UNAVAILABLE (exit 125)" if blocked else "",
         }
 
         evidence = {
@@ -322,6 +334,18 @@ def execute(
             "errors": errors,
         }, errors
 
+    preparation = None
+    if "sheet_preparation" in manifest:
+        from prepare_acceptance import verify_prepared_manifest
+        try:
+            preparation = verify_prepared_manifest(manifest, repo_root)
+            marker = Path(preparation["workspace"]) / "execution-started.json"
+            with marker.open("x", encoding="utf-8") as stream:
+                json.dump({"run_id": manifest["run_id"], "manifest_sha256": canonical_json_sha256(manifest)}, stream)
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            errors = [f"Sheet preparation validation failed: {error}"]
+            return [], {"status": "FAIL", "run_id": manifest.get("run_id"), "errors": errors}, errors
+
     rows: list[dict[str, Any]] = []
     case_evidence: list[dict[str, Any]] = []
 
@@ -347,7 +371,17 @@ def execute(
         "errors": [],
     }
 
-    return rows, evidence, []
+    if preparation is not None:
+        from prepare_acceptance import fingerprint
+        unchanged = fingerprint(repo_root) == preparation["plan"]["target_fingerprint"]
+        evidence["sheet_preparation_sha256"] = canonical_json_sha256(preparation)
+        evidence["target_source_unchanged"] = unchanged
+        if not unchanged:
+            errors.append("Target source changed during acceptance execution; results are not confirmed.")
+            evidence["status"] = "FAIL"
+            evidence["errors"] = errors
+
+    return rows, evidence, errors
 
 
 def record_experiment_measurement(repo_root: Path, run_id: str, manifest_path: Path, results_path: Path, evidence_path: Path) -> None:
@@ -399,6 +433,11 @@ def main() -> int:
             manifest_path,
             policy_path,
         )
+
+        if errors and not rows and manifest_path.is_file() and "sheet_preparation" in read_json(manifest_path):
+            for error in errors:
+                print(f"[FAIL] {error}")
+            return 1
 
         run_id = str(
             evidence.get("run_id")

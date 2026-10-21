@@ -6,6 +6,8 @@ Requirements→Architecture→ADDR→Implementationの順で、ADDRをArchitectu
 
 実験の記録担当・指標の定義・出力・開始方法は [実験計測ガイド](experiment-measurement.md) を参照してください。
 観測用Scriptと、開発後に人が起動するEvaluation/AcceptanceTestExecutorを区別します。
+外部受入表のコード化はAcceptanceTestExecutor専用のAcceptanceTestPrepareへ委譲し、
+人の承認後だけ既存Executorで実行します。[受入表の手順](acceptance-sheet-input.md) を参照してください。
 
 設計工程の現行仕様は [設計書とADDRの分離](design-addr-workflow.md) を参照してください。
 Architectureは設計書、ADDRは重要判断・差分を担当し、既存ADRの記述には共通の互換契約を適用します。

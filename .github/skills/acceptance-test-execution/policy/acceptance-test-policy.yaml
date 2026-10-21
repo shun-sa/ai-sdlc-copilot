@@ -13,14 +13,20 @@ manifest:
   require_unique_case_id: true
   supported_execution_types:
     - COMMAND
+    - BLOCKED
   required_case_fields:
     - case_id
     - requirement_id
     - requirement_type
     - execution_type
-    - command
-    - expected
   require_expected_exit_code: true
+
+sheet_preparation:
+  human_approval_required: true
+  workspace_outside_repository: true
+  preserve_all_source_cases: true
+  freeze_tests_and_bindings: true
+  blocked_exit_code: 125
 
 execution:
   default_timeout_seconds: 300
