@@ -1,7 +1,7 @@
 ---
 document_type: "仕様品質チェックリスト"
 system_name: "MiniCommerce"
-version: "1.0-adapted.1"
+version: "1.0-adapted.2"
 status: "作成中"
 created: "未記載（原資料の作成日は未提供）"
 last_updated: "2026-10-21"
@@ -21,6 +21,7 @@ author: "Codex（提供済み資料の構造再配置）"
 | 版数 | 日付 | 改訂内容 | 作成・改訂者 |
 |---|---|---|---|
 | 1.0-adapted.1 | 2026-10-21 | 提供資料1.0を現行テンプレートに再配置。要求内容・既存IDは維持 | Codex（構造再配置） |
+| 1.0-adapted.2 | 2026-10-21 | RUN-002のレビュー対象版・基準コミットを更新（UC-004〜UC-013の表記修正を反映）。判定・人レビュー状況は変更なし | Requirements Agent（RUN-002） |
 
 
 ## 1. 本書の目的と適用範囲
@@ -37,7 +38,7 @@ author: "Codex（提供済み資料の構造再配置）"
 | 区分 | 内容 |
 |---|---|
 | 対象成果物 | 分割要件、全13UC、用語、Steering、API契約 |
-| 対象Revision / Commit | 1.0-adapted.1。reports/requirements/content-preservation.jsonのSHA-256で固定。Git commit未作成 |
+| 対象Revision / Commit | 1.0-adapted.1（UC-004〜UC-013 は 1.0-adapted.2）。入力の基準コミットは c913a98。reports/requirements/content-preservation.jsonのSHA-256で固定 |
 | 本書で確認する | 完全性、明確性、一貫性、検証可能性、参照整合、未決、Scope |
 | 本書で確認しない | 詳細設計、実装、Test Coverage、最終Trace Map |
 
@@ -70,16 +71,16 @@ author: "Codex（提供済み資料の構造再配置）"
 | docs/requirements/use-cases/UC-001.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
 | docs/requirements/use-cases/UC-002.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
 | docs/requirements/use-cases/UC-003.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-004.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-005.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-006.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-007.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-008.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-009.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-010.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-011.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-012.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
-| docs/requirements/use-cases/UC-013.md | 要件・提供仕様 | 元資料1.0 / 構造再配置済み | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-004.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-005.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-006.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-007.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-008.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-009.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-010.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-011.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-012.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
+| docs/requirements/use-cases/UC-013.md | 要件・提供仕様 | 元資料1.0 / 1.0-adapted.2（表記修正済み） | 人レビュー記録は未提供 |
 | .github/project-context/project-ai-steering.md | Steering | 元資料1.0 / 構造再配置済み | 人レビュー未実施 |
 
 

@@ -1,0 +1,142 @@
+/* trace: ADDR-010 */
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  color: #222;
+  background: #fff;
+  min-width: 1280px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #ccc;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #222;
+}
+
+.header-search,
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-nav {
+  margin-left: auto;
+}
+
+.messages {
+  padding: 12px 24px;
+  background: #eef5ff;
+  border-bottom: 1px solid #ccd;
+}
+
+.message-error {
+  color: #a30000;
+}
+
+.main {
+  padding: 24px;
+}
+
+.two-column {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.collections {
+  width: 280px;
+}
+
+.collections .depth-2 {
+  padding-left: 16px;
+}
+
+.collections .depth-3 {
+  padding-left: 32px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 4px 16px;
+}
+
+dt {
+  font-weight: bold;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: inline-block;
+  min-width: 220px;
+}
+
+.required {
+  margin-left: 4px;
+  color: #a30000;
+  font-size: 12px;
+}
+
+.field-errors {
+  margin: 4px 0;
+  color: #a30000;
+  list-style: none;
+  padding-left: 0;
+}
+
+.warning {
+  color: #a30000;
+}
+
+.inline-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+}
+
+.current-page {
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}

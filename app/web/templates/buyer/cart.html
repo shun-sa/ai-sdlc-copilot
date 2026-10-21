@@ -1,0 +1,96 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}カート｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="cart">
+    <h1>カート</h1>
+    {% if cart.lines %}
+      <table>
+        <thead>
+          <tr><th>商品名</th><th>規格名</th><th>SKU</th><th>単価</th><th>数量</th><th>明細金額</th><th>在庫数量</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+          {% for line in cart.lines %}
+            <tr>
+              <td><a href="{% url 'web-item-detail' item_id=line.item_id %}">{{ line.item_name }}</a></td>
+              <td>{{ line.variant_name }}</td>
+              <td>{{ line.sku }}</td>
+              <td>{{ line.unit_price_incl_tax|yen }}（税込）／{{ line.unit_price|yen }}（税抜）</td>
+              <td>
+                <form method="post" action="{% url 'web-cart-update-line' cart_line_id=line.cart_line_id %}" class="inline-form">
+                  {% csrf_token %}
+                  <input type="number" name="quantity" value="{{ form.quantities|get_item:line.cart_line_id }}" min="1" max="99">
+                  <button type="submit" data-submit-once>数量を変更</button>
+                </form>
+                {% if form.error_line_id == line.cart_line_id %}
+                  {% include "includes/field_errors.html" with name="quantity" %}
+                {% endif %}
+              </td>
+              <td>{{ line.line_amount|yen }}（税抜）</td>
+              <td>
+                {{ line.stock_quantity }}個
+                {% if line.shortage %}<span class="warning">在庫が不足しています（現在の在庫数量：{{ line.stock_quantity }}個）。数量を変更してください。</span>{% endif %}
+              </td>
+              <td>
+                <form method="post" action="{% url 'web-cart-delete-line' cart_line_id=line.cart_line_id %}" class="inline-form">
+                  {% csrf_token %}
+                  <button type="submit" data-submit-once
+                          data-confirm="{{ line.item_name }}（{{ line.variant_name }}）をカートから削除します。よろしいですか？">削除</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p>合計点数：{{ cart.total_quantity }}点</p>
+      <p>在庫は注文確定時に確保します。価格は注文確定時点の価格で確定します。</p>
+    {% else %}
+      <p>カートに商品がありません。</p>
+    {% endif %}
+
+    <section class="coupon">
+      <h2>クーポン</h2>
+      {% if cart.coupon %}
+        <p>{{ cart.coupon.code }}：{{ cart.coupon.name }}（{{ cart.coupon|discount_label }}）</p>
+        <p>最低購入金額：{% if cart.coupon.min_spend %}小計{{ cart.coupon.min_spend|yen }}以上で利用可{% else %}条件なし{% endif %}</p>
+        <p>有効期間：{{ cart.coupon.valid_from|datetime_jst }} 〜 {{ cart.coupon.valid_until|datetime_jst }}</p>
+        {% if cart.coupon.is_applicable %}
+          <p>適用中</p>
+        {% else %}
+          <p class="warning">適用条件を満たしていません（{{ cart.coupon.not_applicable_text }}）。このままでは注文を確定できません。クーポンを解除するか、条件を満たしてください。</p>
+        {% endif %}
+        <form method="post" action="{% url 'web-cart-remove-coupon' %}" class="inline-form">
+          {% csrf_token %}
+          <button type="submit" data-submit-once>解除する</button>
+        </form>
+      {% else %}
+        <form method="post" action="{% url 'web-cart-apply-coupon' %}" class="inline-form">
+          {% csrf_token %}
+          <label for="code">クーポンコード</label>
+          <input id="code" type="text" name="code" maxlength="20" value="{{ form.code }}">
+          <button type="submit" data-submit-once>適用する</button>
+        </form>
+        {% include "includes/field_errors.html" with name="code" %}
+      {% endif %}
+    </section>
+
+    <section class="amounts">
+      <h2>金額</h2>
+      <dl>
+        <dt>小計（税抜）</dt><dd>{{ cart.amounts.subtotal|yen }}</dd>
+        <dt>割引額</dt><dd>{{ cart.amounts.discount_amount|yen }}</dd>
+        <dt>割引後小計</dt><dd>{{ cart.amounts.discounted_subtotal|yen }}</dd>
+        <dt>送料</dt><dd>{{ cart.amounts.shipping_fee|yen }}</dd>
+        <dt>消費税額</dt><dd>{{ cart.amounts.tax_amount|yen }}</dd>
+        <dt>合計（税込）</dt><dd>{{ cart.amounts.total|yen }}</dd>
+      </dl>
+      <p>割引後小計が5,000円以上の場合、送料は無料です（5,000円未満は送料500円）。</p>
+    </section>
+
+    {% if cart.lines %}
+      <p><a href="{% url 'web-checkout' %}">注文手続きへ進む</a></p>
+    {% endif %}
+    <p><a href="{% url 'web-items' %}">買い物を続ける</a></p>
+  </section>
+{% endblock %}

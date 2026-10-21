@@ -1,3 +1,14 @@
+__pycache__/
 */__pycache__/
 *.pyc
 reports/
+
+# 秘密情報（NFR-SC-07）
+.env
+
+# 初期データ定義ファイル（平文パスワード・個人情報を含むため追跡しない。FILE-001 12章）
+app/seed/*.json
+
+# ローカル実行時の生成物
+.pytest_cache/
+.ruff_cache/

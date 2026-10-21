@@ -1,0 +1,59 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}商品詳細｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="item-detail">
+    <h1>{{ item.name }}</h1>
+    <p>商品コード：{{ item.item_code }}</p>
+    <p>所属分類：
+      {% for collection in item.collections %}
+        <a href="{% url 'web-items' %}?collection_id={{ collection.collection_id }}">{{ collection.name }}</a>{% if not forloop.last %}、{% endif %}
+      {% empty %}－{% endfor %}
+    </p>
+    <p class="description">{{ item.description|default:"－"|linebreaksbr }}</p>
+
+    <h2>規格</h2>
+    <form method="post" action="{% url 'web-cart-add-line' %}">
+      {% csrf_token %}
+      <input type="hidden" name="item_id" value="{{ item.item_id }}">
+      <table>
+        <thead>
+          <tr><th>選択</th><th>SKU</th><th>規格名</th><th>価格</th><th>在庫数量</th><th>在庫状況</th></tr>
+        </thead>
+        <tbody>
+          {% for unit in item.stock_units %}
+            <tr>
+              <td>
+                {% if can_add_to_cart %}
+                  <input type="radio" name="stock_unit_id" value="{{ unit.stock_unit_id }}"
+                         {% if unit.stock_unit_id|stringformat:"s" == form.stock_unit_id %}checked{% endif %}
+                         {% if not unit.in_stock %}disabled{% endif %}>
+                {% endif %}
+              </td>
+              <td>{{ unit.sku }}</td>
+              <td>{{ unit.variant_name }}</td>
+              <td>{{ unit.price_incl_tax|yen }}（税込）／{{ unit.price|yen }}（税抜）</td>
+              <td>{{ unit.quantity }}個</td>
+              <td>{% if unit.in_stock %}在庫あり{% else %}在庫切れ{% endif %}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if can_add_to_cart %}
+        {% include "includes/field_errors.html" with name="stock_unit_id" %}
+        {% if has_stock %}
+          <label for="quantity">数量<span class="required">必須</span></label>
+          <input id="quantity" type="number" name="quantity" value="{{ form.quantity }}" min="1" max="99">
+          {% include "includes/field_errors.html" with name="quantity" %}
+          <button type="submit" data-submit-once>カートに入れる</button>
+        {% else %}
+          <p>この商品は現在すべての規格が在庫切れのため、カートに入れられません。</p>
+        {% endif %}
+      {% endif %}
+    </form>
+
+    <p><a href="{% url 'web-items' %}">商品一覧へ戻る</a></p>
+  </section>
+{% endblock %}

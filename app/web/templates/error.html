@@ -1,0 +1,14 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% block title %}エラー｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="error-screen">
+    <h1>{{ heading }}</h1>
+    <p>{{ error_body }}</p>
+    {% if is_admin %}
+      <a href="{% url 'web-admin-orders' %}">トップへ戻る</a>
+    {% else %}
+      <a href="{% url 'web-items' %}">トップへ戻る</a>
+    {% endif %}
+  </section>
+{% endblock %}

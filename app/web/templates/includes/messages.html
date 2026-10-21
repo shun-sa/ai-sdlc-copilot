@@ -1,0 +1,7 @@
+{# trace: ADDR-010 #}
+{% if flash_message or error_message %}
+  <div class="messages" role="status">
+    {% if flash_message %}<p class="message">{{ flash_message }}</p>{% endif %}
+    {% if error_message %}<p class="message message-error">{{ error_message }}</p>{% endif %}
+  </div>
+{% endif %}

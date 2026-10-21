@@ -593,3 +593,92 @@ RequirementsからFinal AssuranceまでのAI SDLCを
 旧来の停止条件は品質PASSの判定として維持し、工程継続では共通3回方針を優先します。
 検査FAILは変更しません。最終結果もCOMPLETE_WITH_UNRESOLVEDとして正常完了と区別します。
 詳細は [共通3回ループ](docs/ai-sdlc/bounded-repair-loop.md) を参照してください。
+
+---
+
+# MiniCommerce 起動・運用手順
+
+MiniCommerce（会員向け自社ECサイト）の実行手順です。実装は `app/` 配下の単一 Django プロジェクト、
+実行環境は Docker Compose（`app`・`db` の2サービス）です。外部インターネットに接続せずに起動・動作します
+（コンテナイメージ・依存パッケージの取得時を除く）。
+
+## 1. 前提
+
+| 項目 | 内容 |
+| --- | --- |
+| 実行環境 | Docker / Docker Compose |
+| アプリケーション | Python 3.12 / Django 5.2 LTS / Django REST Framework |
+| データベース | PostgreSQL 16（`db` サービス、ポート 5432） |
+| タイムゾーン・文字コード | Asia/Tokyo / UTF-8 |
+| 画面 | http://localhost:8000 （PCブラウザ：Chrome・Edge 最新版、画面幅1280px以上） |
+| API | ベースパス `/api`（管理者用は `/api/admin`） |
+
+## 2. 環境変数の設定
+
+1. `.env.example` を `.env` としてコピーする。
+2. 各項目へ値を設定する。`.env` はリポジトリに含めない（追跡対象外）。
+
+| 変数 | 用途 |
+| --- | --- |
+| `DJANGO_SECRET_KEY` | アプリケーションの秘密鍵（推測困難なランダム文字列。未設定時は起動のたびに使い捨ての鍵を生成するため、運用では必ず設定する） |
+| `DJANGO_DEBUG` | デバッグ表示（本番・検証とも `false`。未設定・解釈不能時は `false`） |
+| `DJANGO_ALLOWED_HOSTS` | 接続を受け付けるホスト名（カンマ区切り） |
+| `DJANGO_SECURE_COOKIES` | Cookie の Secure 属性。未設定・空・解釈不能時は真（Secure 付与）。HTTP を使う検証環境でのみ `false` を明示する |
+| `DJANGO_LOG_LEVEL` | ログ出力レベル |
+| `DJANGO_SERVE_STATIC` | 静的ファイルを本アプリケーションから配信するか。未設定・空・解釈不能時は真（配信する）。前段のWebサーバーが静的ファイルを配信する環境でのみ `false` を明示する |
+| `POSTGRES_HOST` / `POSTGRES_PORT` / `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | DB 接続情報 |
+| `PAYMENT_GATEWAY` | 決済ゲートウェイ実装（本リリースは模擬実装 `payments.mock.MockPaymentGateway`） |
+| `PAYMENT_TIMEOUT_SECONDS` | 決済結果の応答待ち時間（既定10秒。自動再送は行わない） |
+
+秘密情報（秘密鍵・DBパスワード）はソースコード・リポジトリに含めず、環境変数で与えます。
+
+## 3. 起動
+
+```text
+docker compose build            # 依存パッケージをイメージへ取り込む（外部接続を許容するのはこの時のみ）
+docker compose up -d            # app（8000）と db（5432）が起動する
+docker compose exec app python manage.py migrate
+```
+
+停止は `docker compose down`（データを破棄する場合は `docker compose down -v`）。
+
+## 4. 初期データ一括投入（FR-060）
+
+1. 定義ファイル（JSON、UTF-8。BOM付き・CRLF も可）を `app/seed/initial_data.json` へ配置する。
+   定義ファイルの構造は `docs/architecture/files/FILE-001.md` を参照する。トップレベルのキーは
+   `users` / `suppliers` / `collections` / `items` / `stock_units` / `coupons` の6つ。
+2. 次のコマンドを実行する。
+
+```text
+docker compose exec app python manage.py load_initial_data seed/initial_data.json --reset
+```
+
+- `--reset` は監査ログ以外の全データ（注文・カート・決済記録・状態履歴を含む）を削除してから投入します。
+  **検証環境の初期化専用で、本番環境では実行しないでください。**
+- `--reset` を指定しない場合は既存データに追加し、業務キーが重複する行は違反として扱います。
+- 定義ファイルに違反がある場合は、削除も投入も行わず、違反の全件（データ名・行番号・項目名・理由）を
+  標準エラー出力へ表示します（項目の値は出力しません）。終了コードは成功時0、失敗時0以外です。
+- 成功・失敗のいずれも監査ログを1件記録します。
+- 定義ファイルは平文パスワード・個人情報（架空の値のみ）を含むため、バージョン管理の追跡対象にせず、
+  投入後はサーバー上から退避または削除してください。差し替えは別名で配置してから改名します。
+- 管理者（ロール `admin`）のアカウントは本コマンドでのみ作成します。初期パスワードに共通の既定値を用いないでください。
+
+## 5. 静的解析・テスト
+
+```text
+docker compose exec app ruff check .     # 指摘0件であること
+docker compose exec app pytest           # 単体テスト・結合テストを1コマンドで実行する
+```
+
+テストは pytest＋pytest-django で実行し、`POSTGRES_*` の接続情報から使い捨てのテスト用データベース
+（`test_<POSTGRES_DB>`）を自動的に作成・破棄します。本番データベースへは接続しません。
+テスト専用のデータベースを明示する場合は `POSTGRES_TEST_DB` を設定します。
+
+## 6. 運用上の注意
+
+- アプリケーションログは標準出力へ JSON Lines で出力します（`docker compose logs app`）。
+  保管・ローテーションは基盤側の設定で行います（検証環境は Compose のログ設定、本番は基盤選定時に設定）。
+- ログにはパスワード・認証トークン・メールアドレス・氏名・住所・電話番号・要求本文・クエリ文字列を出力しません。
+- 本番環境では Django 付属の開発用サーバーを使用せず、WSGI サーバー（gunicorn）で起動します。
+- 本番環境は HTTPS（TLS 1.2以上）のみで提供します（終端方式は基盤選定時に決定）。検証環境は HTTP を許容します。
+- 決済は本システム内の模擬決済です。実在の決済サービスへは接続しません。

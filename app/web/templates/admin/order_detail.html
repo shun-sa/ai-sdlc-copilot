@@ -1,0 +1,148 @@
+{# trace: ADDR-010 #}
+{% extends "admin/base_admin.html" %}
+{% load display %}
+{% block title %}注文詳細（管理）｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="admin-order-detail">
+    <h1>注文詳細</h1>
+    <dl>
+      <dt>注文番号</dt><dd>{{ order.order_number }}</dd>
+      <dt>状態</dt><dd>{{ order.status|order_status }}</dd>
+      <dt>注文日時</dt><dd>{{ order.ordered_at|datetime_jst }}</dd>
+      <dt>支払日時</dt><dd>{{ order.paid_at|datetime_jst }}</dd>
+      <dt>出荷日時</dt><dd>{{ order.shipped_at|datetime_jst }}</dd>
+      <dt>配達完了日時</dt><dd>{{ order.delivered_at|datetime_jst }}</dd>
+      <dt>キャンセル日時</dt><dd>{{ order.cancelled_at|datetime_jst }}</dd>
+      <dt>配送伝票番号</dt><dd>{{ order.tracking_number|or_dash }}</dd>
+    </dl>
+
+    <h2>購入者</h2>
+    <dl>
+      <dt>利用者ID</dt><dd>{{ order.buyer.user_id }}</dd>
+      <dt>氏名</dt><dd>{{ order.buyer.full_name }}</dd>
+      <dt>メールアドレス</dt><dd>{{ order.buyer.email }}</dd>
+    </dl>
+
+    <h2>注文明細</h2>
+    <table>
+      <thead>
+        <tr><th>SKU</th><th>商品名</th><th>規格名</th><th>単価</th><th>数量</th><th>明細金額</th></tr>
+      </thead>
+      <tbody>
+        {% for line in order.lines %}
+          <tr>
+            <td>{{ line.sku }}</td>
+            <td>{{ line.item_name }}</td>
+            <td>{{ line.variant_name }}</td>
+            <td>{{ line.unit_price_incl_tax|yen }}（税込）／{{ line.unit_price|yen }}（税抜）</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.line_amount|yen }}（税抜）</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>クーポン</h2>
+    {% if order.coupon %}
+      <p>{{ order.coupon.code }}（{{ order.coupon|discount_label }}）</p>
+    {% else %}
+      <p>クーポンなし</p>
+    {% endif %}
+
+    <h2>金額</h2>
+    <dl>
+      <dt>小計（税抜）</dt><dd>{{ order.amounts.subtotal|yen }}</dd>
+      <dt>割引額</dt><dd>{{ order.amounts.discount_amount|yen }}</dd>
+      <dt>割引後小計</dt><dd>{{ order.amounts.discounted_subtotal|yen }}</dd>
+      <dt>送料</dt><dd>{{ order.amounts.shipping_fee|yen }}</dd>
+      <dt>消費税額</dt><dd>{{ order.amounts.tax_amount|yen }}</dd>
+      <dt>合計（税込）</dt><dd>{{ order.amounts.total|yen }}</dd>
+    </dl>
+
+    <h2>配送先</h2>
+    <dl>
+      <dt>受取人氏名</dt><dd>{{ order.shipping_address.recipient_name }}</dd>
+      <dt>郵便番号</dt><dd>{{ order.shipping_address.postal_code|postal_code }}</dd>
+      <dt>都道府県</dt><dd>{{ order.shipping_address.prefecture_code|prefecture }}</dd>
+      <dt>住所1</dt><dd>{{ order.shipping_address.address_line1 }}</dd>
+      <dt>住所2</dt><dd>{{ order.shipping_address.address_line2|or_dash }}</dd>
+      <dt>電話番号</dt><dd>{{ order.shipping_address.phone_number }}</dd>
+    </dl>
+
+    <h2>決済記録</h2>
+    {% if order.payment_records %}
+      <table>
+        <thead>
+          <tr><th>処理日時</th><th>決済結果</th><th>金額</th><th>取引参照番号</th></tr>
+        </thead>
+        <tbody>
+          {% for record in order.payment_records %}
+            <tr>
+              <td>{{ record.processed_at|datetime_jst }}</td>
+              <td>{{ record.result|payment_result }}</td>
+              <td>{{ record.amount|yen }}</td>
+              <td>{{ record.transaction_ref|or_dash }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>決済記録はありません。</p>
+    {% endif %}
+
+    <h2>状態履歴</h2>
+    <table>
+      <thead>
+        <tr><th>変更日時</th><th>変更前状態</th><th>変更後状態</th><th>実行者区分</th><th>実行者の利用者ID</th></tr>
+      </thead>
+      <tbody>
+        {% for history in order.status_history %}
+          <tr>
+            <td>{{ history.changed_at|datetime_jst }}</td>
+            <td>{{ history.from_status|order_status }}</td>
+            <td>{{ history.to_status|order_status }}</td>
+            <td>{{ history.actor_role|actor_role }}</td>
+            <td>{{ history.actor_user_id }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if order.status == 'paid' %}
+      <p>支払済の注文です。キャンセルした場合、返金は本システム外で5営業日以内に行ってください。</p>
+    {% endif %}
+
+    <div class="actions">
+      {% if order.can_ship %}
+        <form method="post" action="{% url 'web-admin-order-ship' purchase_order_id=order.purchase_order_id %}" class="inline-form">
+          {% csrf_token %}
+          <label for="tracking_number">配送伝票番号</label>
+          <input id="tracking_number" type="text" name="tracking_number" maxlength="30" value="{{ form.tracking_number }}">
+          {% include "includes/field_errors.html" with name="tracking_number" %}
+          <button type="submit" data-submit-once
+                  data-confirm="注文 {{ order.order_number }} を出荷済にします。よろしいですか？">出荷登録</button>
+        </form>
+      {% endif %}
+      {% if order.can_deliver %}
+        <form method="post" action="{% url 'web-admin-order-deliver' purchase_order_id=order.purchase_order_id %}" class="inline-form">
+          {% csrf_token %}
+          <button type="submit" data-submit-once
+                  data-confirm="注文 {{ order.order_number }} を配達完了にします。よろしいですか？">配達完了登録</button>
+        </form>
+      {% endif %}
+      {% if order.can_cancel %}
+        <form method="post" action="{% url 'web-admin-order-cancel' purchase_order_id=order.purchase_order_id %}" class="inline-form">
+          {% csrf_token %}
+          {% if order.status == 'paid' %}
+            <button type="submit" data-submit-once
+                    data-confirm="注文 {{ order.order_number }} をキャンセルし、在庫を戻します。よろしいですか？返金は本システム外で5営業日以内に行ってください。">キャンセル</button>
+          {% else %}
+            <button type="submit" data-submit-once
+                    data-confirm="注文 {{ order.order_number }} をキャンセルし、在庫を戻します。よろしいですか？">キャンセル</button>
+          {% endif %}
+        </form>
+      {% endif %}
+      <a href="{% url 'web-admin-orders' %}">注文一覧へ戻る</a>
+    </div>
+  </section>
+{% endblock %}

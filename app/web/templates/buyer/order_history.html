@@ -1,0 +1,31 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}注文履歴一覧｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="order-history">
+    <h1>注文履歴一覧</h1>
+    {% if orders %}
+      <p>全{{ meta.total_count }}件（{{ range_from }}〜{{ range_to }}件目を表示）</p>
+      <table>
+        <thead>
+          <tr><th>注文番号</th><th>注文日時</th><th>状態</th><th>合計（税込）</th><th>合計点数</th></tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td><a href="{% url 'web-order-detail' purchase_order_id=order.purchase_order_id %}">{{ order.order_number }}</a></td>
+              <td>{{ order.ordered_at|datetime_jst }}</td>
+              <td>{{ order.status|order_status }}</td>
+              <td>{{ order.total|yen }}</td>
+              <td>{{ order.total_quantity }}点</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "includes/pagination.html" %}
+    {% else %}
+      <p>注文履歴はありません。</p>
+    {% endif %}
+  </section>
+{% endblock %}

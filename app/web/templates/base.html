@@ -1,0 +1,55 @@
+{# trace: ADDR-010 #}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}MiniCommerce{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<header class="header">
+  {% block header %}
+    {% if is_admin %}
+      <a class="brand" href="{% url 'web-admin-orders' %}">MiniCommerce</a>
+      <nav class="header-nav">
+        <a href="{% url 'web-admin-stock-units' %}">在庫単位一覧</a>
+        <a href="{% url 'web-admin-orders' %}">注文一覧</a>
+        <span>{{ login_user.full_name }}さん</span>
+        <form method="post" action="{% url 'web-logout' %}" class="inline-form">
+          {% csrf_token %}
+          <button type="submit" data-submit-once>ログアウト</button>
+        </form>
+      </nav>
+    {% else %}
+      <a class="brand" href="{% url 'web-items' %}">MiniCommerce</a>
+      <form class="header-search" method="get" action="{% url 'web-items' %}">
+        <label for="header-keyword">キーワード</label>
+        <input id="header-keyword" type="text" name="keyword" value="{{ keyword|default:'' }}">
+        <button type="submit">検索</button>
+      </form>
+      <nav class="header-nav">
+        <a href="{% url 'web-cart' %}">カート{% if cart_total_quantity is not None %}（{{ cart_total_quantity }}点）{% endif %}</a>
+        <a href="{% url 'web-orders' %}">注文履歴</a>
+        {% if login_user %}
+          <span>{{ login_user.full_name }}さん</span>
+          <form method="post" action="{% url 'web-logout' %}" class="inline-form">
+            {% csrf_token %}
+            <button type="submit" data-submit-once>ログアウト</button>
+          </form>
+        {% else %}
+          <a href="{% url 'web-login' %}">ログイン</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% endblock %}
+</header>
+
+{% include "includes/messages.html" %}
+
+<main class="main">
+  {% block content %}{% endblock %}
+</main>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>

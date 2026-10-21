@@ -1,0 +1,8 @@
+# 依存ライブラリ（版を固定し、取得元は公式の PyPI に限定する。VUL-10, NFR-EN-12）
+Django==5.2.7
+djangorestframework==3.16.1
+psycopg[binary]==3.2.10
+gunicorn==23.0.0
+pytest==9.1.1
+pytest-django==4.14.0
+ruff==0.17.1

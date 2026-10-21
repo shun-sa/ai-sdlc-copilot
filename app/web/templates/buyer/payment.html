@@ -1,0 +1,24 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}支払（模擬決済）｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="payment">
+    <h1>支払（模擬決済）</h1>
+    <p>注文番号：{{ order.order_number }}</p>
+    <p>合計（税込）：{{ order.amounts.total|yen }}</p>
+    <p>注文状態：{{ order.status|order_status }}</p>
+    <p>本リリースの支払は模擬決済です。実際の決済・請求は行われません。</p>
+    <form method="post" action="{% url 'web-order-pay' purchase_order_id=order.purchase_order_id %}">
+      {% csrf_token %}
+      <fieldset>
+        <legend>模擬決済の結果<span class="required">必須</span></legend>
+        <label><input type="radio" name="mock_result" value="approve" {% if mock_result != 'decline' %}checked{% endif %}>承認</label>
+        <label><input type="radio" name="mock_result" value="decline" {% if mock_result == 'decline' %}checked{% endif %}>否認</label>
+        {% include "includes/field_errors.html" with name="mock_result" %}
+      </fieldset>
+      <button type="submit" data-submit-once>支払う</button>
+    </form>
+    <p><a href="{% url 'web-order-detail' purchase_order_id=order.purchase_order_id %}">注文詳細へ戻る</a></p>
+  </section>
+{% endblock %}

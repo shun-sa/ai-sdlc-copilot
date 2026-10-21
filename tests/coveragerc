@@ -1,0 +1,18 @@
+# Unit Test 工程の分岐カバレッジ計測設定（計測対象・除外を実測前に固定する）。
+# 対象: app/ 配下の Production Code。
+# 除外: 自動生成のマイグレーション、起動スクリプト（manage.py / wsgi.py）、キャッシュ。
+
+[run]
+branch = True
+source =
+    app
+omit =
+    */migrations/*
+    app/manage.py
+    app/config/wsgi.py
+    */__pycache__/*
+parallel = False
+
+[report]
+show_missing = False
+skip_empty = False

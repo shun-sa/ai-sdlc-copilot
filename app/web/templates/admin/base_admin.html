@@ -1,0 +1,17 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+
+{% block header %}
+  <a class="brand" href="{% url 'web-admin-orders' %}">MiniCommerce</a>
+  <nav class="header-nav">
+    <a href="{% url 'web-admin-stock-units' %}">在庫単位一覧</a>
+    <a href="{% url 'web-admin-orders' %}">注文一覧</a>
+    {% if login_user %}
+      <span>{{ login_user.full_name }}さん</span>
+      <form method="post" action="{% url 'web-logout' %}" class="inline-form">
+        {% csrf_token %}
+        <button type="submit" data-submit-once>ログアウト</button>
+      </form>
+    {% endif %}
+  </nav>
+{% endblock %}

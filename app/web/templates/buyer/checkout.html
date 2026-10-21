@@ -1,0 +1,93 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}注文手続き｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="checkout">
+    <h1>注文手続き（配送先入力・確認）</h1>
+
+    <h2>注文内容</h2>
+    <table>
+      <thead>
+        <tr><th>商品名</th><th>規格名</th><th>SKU</th><th>単価</th><th>数量</th><th>明細金額</th></tr>
+      </thead>
+      <tbody>
+        {% for line in cart.lines %}
+          <tr>
+            <td>{{ line.item_name }}</td>
+            <td>{{ line.variant_name }}</td>
+            <td>{{ line.sku }}</td>
+            <td>{{ line.unit_price_incl_tax|yen }}（税込）／{{ line.unit_price|yen }}（税抜）</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.line_amount|yen }}（税抜）</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>合計点数：{{ cart.total_quantity }}点</p>
+
+    <h2>クーポン</h2>
+    {% if cart.coupon %}
+      <p>{{ cart.coupon.code }}：{{ cart.coupon.name }}（{{ cart.coupon|discount_label }}）</p>
+      {% if not cart.coupon.is_applicable %}
+        <p class="warning">適用中のクーポンは適用条件を満たしていません（{{ cart.coupon.not_applicable_text }}）。カートでクーポンを解除するか、条件を満たしてから注文してください。</p>
+      {% endif %}
+    {% else %}
+      <p>クーポンなし</p>
+    {% endif %}
+
+    <h2>金額</h2>
+    <dl>
+      <dt>小計（税抜）</dt><dd>{{ cart.amounts.subtotal|yen }}</dd>
+      <dt>割引額</dt><dd>{{ cart.amounts.discount_amount|yen }}</dd>
+      <dt>割引後小計</dt><dd>{{ cart.amounts.discounted_subtotal|yen }}</dd>
+      <dt>送料</dt><dd>{{ cart.amounts.shipping_fee|yen }}</dd>
+      <dt>消費税額</dt><dd>{{ cart.amounts.tax_amount|yen }}</dd>
+      <dt>合計（税込）</dt><dd>{{ cart.amounts.total|yen }}</dd>
+    </dl>
+    <p>注文を確定すると在庫を確保します。金額は注文確定時点の価格で確定します。</p>
+
+    <h2>配送先</h2>
+    <form method="post" action="{% url 'web-checkout' %}">
+      {% csrf_token %}
+      <div class="field">
+        <label for="recipient_name">受取人氏名<span class="required">必須</span></label>
+        <input id="recipient_name" type="text" name="recipient_name" maxlength="50" value="{{ form.recipient_name }}">
+        {% include "includes/field_errors.html" with name="recipient_name" %}
+      </div>
+      <div class="field">
+        <label for="postal_code">郵便番号<span class="required">必須</span></label>
+        <input id="postal_code" type="text" name="postal_code" maxlength="8" value="{{ form.postal_code }}">
+        {% include "includes/field_errors.html" with name="postal_code" %}
+      </div>
+      <div class="field">
+        <label for="prefecture_code">都道府県<span class="required">必須</span></label>
+        <select id="prefecture_code" name="prefecture_code">
+          <option value="">選択してください</option>
+          {% for code, name in prefectures %}
+            <option value="{{ code }}" {% if form.prefecture_code == code %}selected{% endif %}>{{ name }}</option>
+          {% endfor %}
+        </select>
+        {% include "includes/field_errors.html" with name="prefecture_code" %}
+      </div>
+      <div class="field">
+        <label for="address_line1">住所1（市区町村・番地）<span class="required">必須</span></label>
+        <input id="address_line1" type="text" name="address_line1" maxlength="100" value="{{ form.address_line1 }}">
+        {% include "includes/field_errors.html" with name="address_line1" %}
+      </div>
+      <div class="field">
+        <label for="address_line2">住所2（建物名・部屋番号）</label>
+        <input id="address_line2" type="text" name="address_line2" maxlength="100" value="{{ form.address_line2 }}">
+        {% include "includes/field_errors.html" with name="address_line2" %}
+      </div>
+      <div class="field">
+        <label for="phone_number">電話番号<span class="required">必須</span></label>
+        <input id="phone_number" type="text" name="phone_number" maxlength="13" value="{{ form.phone_number }}">
+        {% include "includes/field_errors.html" with name="phone_number" %}
+      </div>
+      <button type="submit" data-submit-once
+              data-confirm="合計（税込）{{ cart.amounts.total|yen }}で注文を確定します。よろしいですか？">注文を確定する</button>
+    </form>
+    <p><a href="{% url 'web-cart' %}">カートに戻る</a></p>
+  </section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{# trace: ADDR-010 #}
+{% if meta and meta.total_pages > 1 %}
+  <nav class="pagination">
+    {% if meta.page > 1 %}
+      <a href="?{{ query_prefix }}page={{ meta.page|add:'-1' }}">前へ</a>
+    {% endif %}
+    {% for number in page_numbers %}
+      {% if number == meta.page %}
+        <span class="current-page">{{ number }}</span>
+      {% else %}
+        <a href="?{{ query_prefix }}page={{ number }}">{{ number }}</a>
+      {% endif %}
+    {% endfor %}
+    {% if meta.page < meta.total_pages %}
+      <a href="?{{ query_prefix }}page={{ meta.page|add:'1' }}">次へ</a>
+    {% endif %}
+  </nav>
+{% endif %}

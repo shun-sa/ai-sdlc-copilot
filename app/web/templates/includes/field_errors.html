@@ -1,0 +1,13 @@
+{# trace: ADDR-010 #}
+{% load display %}
+{% if field_errors %}
+  {% with reasons=field_errors|get_item:name %}
+    {% if reasons %}
+      <ul class="field-errors">
+        {% for reason in reasons %}
+          <li>{{ reason }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+{% endif %}

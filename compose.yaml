@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      context: ./app
+    working_dir: /app
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60
+    environment:
+      TZ: Asia/Tokyo
+      PYTHONUNBUFFERED: "1"
+      DJANGO_SETTINGS_MODULE: config.settings
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-false}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
+      DJANGO_SECURE_COOKIES: ${DJANGO_SECURE_COOKIES:-}
+      DJANGO_LOG_LEVEL: ${DJANGO_LOG_LEVEL:-INFO}
+      DJANGO_SERVE_STATIC: ${DJANGO_SERVE_STATIC:-}
+      POSTGRES_HOST: ${POSTGRES_HOST:-db}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_DB: ${POSTGRES_DB:-minicommerce}
+      POSTGRES_USER: ${POSTGRES_USER:-minicommerce}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-}
+      PAYMENT_GATEWAY: ${PAYMENT_GATEWAY:-payments.mock.MockPaymentGateway}
+      PAYMENT_TIMEOUT_SECONDS: ${PAYMENT_TIMEOUT_SECONDS:-10}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+      - ./tests:/tests
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+  db:
+    image: postgres:16
+    environment:
+      TZ: Asia/Tokyo
+      POSTGRES_DB: ${POSTGRES_DB:-minicommerce}
+      POSTGRES_USER: ${POSTGRES_USER:-minicommerce}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  db_data:

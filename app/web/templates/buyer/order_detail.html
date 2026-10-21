@@ -1,0 +1,105 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}注文詳細｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="order-detail">
+    <h1>注文詳細</h1>
+    <dl>
+      <dt>注文番号</dt><dd>{{ order.order_number }}</dd>
+      <dt>状態</dt><dd>{{ order.status|order_status }}</dd>
+      <dt>注文日時</dt><dd>{{ order.ordered_at|datetime_jst }}</dd>
+      <dt>支払日時</dt><dd>{{ order.paid_at|datetime_jst }}</dd>
+      <dt>出荷日時</dt><dd>{{ order.shipped_at|datetime_jst }}</dd>
+      <dt>配達完了日時</dt><dd>{{ order.delivered_at|datetime_jst }}</dd>
+      <dt>キャンセル日時</dt><dd>{{ order.cancelled_at|datetime_jst }}</dd>
+      <dt>配送伝票番号</dt><dd>{{ order.tracking_number|or_dash }}</dd>
+    </dl>
+
+    <h2>注文明細</h2>
+    <table>
+      <thead>
+        <tr><th>SKU</th><th>商品名</th><th>規格名</th><th>単価</th><th>数量</th><th>明細金額</th></tr>
+      </thead>
+      <tbody>
+        {% for line in order.lines %}
+          <tr>
+            <td>{{ line.sku }}</td>
+            <td>{{ line.item_name }}</td>
+            <td>{{ line.variant_name }}</td>
+            <td>{{ line.unit_price_incl_tax|yen }}（税込）／{{ line.unit_price|yen }}（税抜）</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.line_amount|yen }}（税抜）</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>クーポン</h2>
+    {% if order.coupon %}
+      <p>{{ order.coupon.code }}（{{ order.coupon|discount_label }}）</p>
+    {% else %}
+      <p>クーポンなし</p>
+    {% endif %}
+
+    <h2>金額</h2>
+    <dl>
+      <dt>小計（税抜）</dt><dd>{{ order.amounts.subtotal|yen }}</dd>
+      <dt>割引額</dt><dd>{{ order.amounts.discount_amount|yen }}</dd>
+      <dt>割引後小計</dt><dd>{{ order.amounts.discounted_subtotal|yen }}</dd>
+      <dt>送料</dt><dd>{{ order.amounts.shipping_fee|yen }}</dd>
+      <dt>消費税額</dt><dd>{{ order.amounts.tax_amount|yen }}</dd>
+      <dt>合計（税込）</dt><dd>{{ order.amounts.total|yen }}</dd>
+    </dl>
+
+    <h2>配送先</h2>
+    <dl>
+      <dt>受取人氏名</dt><dd>{{ order.shipping_address.recipient_name }}</dd>
+      <dt>郵便番号</dt><dd>{{ order.shipping_address.postal_code|postal_code }}</dd>
+      <dt>都道府県</dt><dd>{{ order.shipping_address.prefecture_code|prefecture }}</dd>
+      <dt>住所1</dt><dd>{{ order.shipping_address.address_line1 }}</dd>
+      <dt>住所2</dt><dd>{{ order.shipping_address.address_line2|or_dash }}</dd>
+      <dt>電話番号</dt><dd>{{ order.shipping_address.phone_number }}</dd>
+    </dl>
+
+    <h2>状態履歴</h2>
+    <table>
+      <thead>
+        <tr><th>変更日時</th><th>変更前状態</th><th>変更後状態</th><th>実行者区分</th></tr>
+      </thead>
+      <tbody>
+        {% for history in order.status_history %}
+          <tr>
+            <td>{{ history.changed_at|datetime_jst }}</td>
+            <td>{{ history.from_status|order_status }}</td>
+            <td>{{ history.to_status|order_status }}</td>
+            <td>{{ history.actor_role|actor_role }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if order.status == 'paid' or order.paid_at and order.status == 'cancelled' %}
+      <p>支払済の注文をキャンセルした場合、返金は当社が5営業日以内に行います。</p>
+    {% endif %}
+
+    <div class="actions">
+      {% if order.can_pay %}
+        <a href="{% url 'web-order-pay' purchase_order_id=order.purchase_order_id %}">支払う</a>
+      {% endif %}
+      {% if order.can_cancel %}
+        <form method="post" action="{% url 'web-order-cancel' purchase_order_id=order.purchase_order_id %}" class="inline-form">
+          {% csrf_token %}
+          {% if order.status == 'paid' %}
+            <button type="submit" data-submit-once
+                    data-confirm="注文 {{ order.order_number }} をキャンセルします。よろしいですか？返金は当社が5営業日以内に行います。">キャンセルする</button>
+          {% else %}
+            <button type="submit" data-submit-once
+                    data-confirm="注文 {{ order.order_number }} をキャンセルします。よろしいですか？">キャンセルする</button>
+          {% endif %}
+        </form>
+      {% endif %}
+      <a href="{% url 'web-orders' %}">注文履歴へ戻る</a>
+    </div>
+  </section>
+{% endblock %}

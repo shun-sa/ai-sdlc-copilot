@@ -1,0 +1,65 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}商品一覧｜MiniCommerce{% endblock %}
+{% block content %}
+  <div class="two-column">
+    <aside class="collections">
+      <h2>商品分類</h2>
+      <ul>
+        <li><a href="{% url 'web-items' %}">すべての商品</a></li>
+        {% for collection in collections %}
+          <li class="depth-{{ collection.depth }}">
+            <a href="?collection_id={{ collection.collection_id }}{% if keyword %}&amp;keyword={{ keyword }}{% endif %}&amp;sort={{ sort }}">{{ collection.name }}</a>
+            {% if selected_collection_id == collection.collection_id|stringformat:"s" %}<span>（選択中）</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <section class="items">
+      <h1>商品一覧</h1>
+      {% if keyword %}<p>キーワード：{{ keyword }}</p>{% endif %}
+      {% include "includes/field_errors.html" with name="keyword" %}
+      {% include "includes/field_errors.html" with name="sort" %}
+      {% include "includes/field_errors.html" with name="collection_id" %}
+      <form method="get" class="sort-form">
+        <input type="hidden" name="keyword" value="{{ keyword }}">
+        <input type="hidden" name="collection_id" value="{{ selected_collection_id }}">
+        <label for="sort">並び順</label>
+        <select id="sort" name="sort">
+          <option value="new" {% if sort == 'new' %}selected{% endif %}>新着順</option>
+          <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>価格の安い順</option>
+          <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>価格の高い順</option>
+          <option value="name" {% if sort == 'name' %}selected{% endif %}>商品名順</option>
+        </select>
+        <button type="submit">並べ替え</button>
+      </form>
+
+      {% if items %}
+        <p>全{{ meta.total_count }}件（{{ range_from }}〜{{ range_to }}件目を表示）</p>
+        <table>
+          <thead>
+            <tr><th>商品名</th><th>商品コード</th><th>最低価格</th><th>在庫状況</th><th>所属分類</th></tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+              <tr>
+                <td><a href="{% url 'web-item-detail' item_id=item.item_id %}">{{ item.name }}</a></td>
+                <td>{{ item.item_code }}</td>
+                <td>{{ item.min_price_incl_tax|yen }}（税込）／{{ item.min_price|yen }}（税抜）</td>
+                <td>{% if item.in_stock %}在庫あり{% else %}在庫切れ{% endif %}</td>
+                <td>
+                  {% for collection in item.collections %}{{ collection.name }}{% if not forloop.last %}、{% endif %}{% empty %}－{% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% include "includes/pagination.html" %}
+      {% else %}
+        <p>該当する商品はありません。</p>
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{# trace: ADDR-010 #}
+{% extends "admin/base_admin.html" %}
+{% load display %}
+{% block title %}注文一覧（管理）｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="admin-orders">
+    <h1>注文一覧</h1>
+    <form method="get" class="search-form">
+      <div class="field">
+        <label for="order_number">注文番号</label>
+        <input id="order_number" type="text" name="order_number" maxlength="11" value="{{ form.order_number }}">
+        {% include "includes/field_errors.html" with name="order_number" %}
+      </div>
+      <fieldset>
+        <legend>注文状態</legend>
+        {% for value, label in status_choices %}
+          <label><input type="checkbox" name="status" value="{{ value }}" {% if value in form.statuses %}checked{% endif %}>{{ label }}</label>
+        {% endfor %}
+        {% include "includes/field_errors.html" with name="status" %}
+      </fieldset>
+      <div class="field">
+        <label for="ordered_from">注文日（開始）</label>
+        <input id="ordered_from" type="date" name="ordered_from" value="{{ form.ordered_from }}">
+        {% include "includes/field_errors.html" with name="ordered_from" %}
+      </div>
+      <div class="field">
+        <label for="ordered_to">注文日（終了）</label>
+        <input id="ordered_to" type="date" name="ordered_to" value="{{ form.ordered_to }}">
+        {% include "includes/field_errors.html" with name="ordered_to" %}
+      </div>
+      <div class="field">
+        <label for="buyer_email">購入者メールアドレス</label>
+        <input id="buyer_email" type="text" name="buyer_email" maxlength="254" value="{{ form.buyer_email }}">
+        {% include "includes/field_errors.html" with name="buyer_email" %}
+      </div>
+      <button type="submit">検索</button>
+      <a href="{% url 'web-admin-orders' %}">条件をクリア</a>
+    </form>
+
+    {% if orders %}
+      <p>全{{ meta.total_count }}件（{{ range_from }}〜{{ range_to }}件目を表示）</p>
+      <table>
+        <thead>
+          <tr><th>注文番号</th><th>注文日時</th><th>購入者メールアドレス</th><th>購入者氏名</th><th>状態</th><th>合計（税込）</th><th>合計点数</th></tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td><a href="{% url 'web-admin-order-detail' purchase_order_id=order.purchase_order_id %}">{{ order.order_number }}</a></td>
+              <td>{{ order.ordered_at|datetime_jst }}</td>
+              <td>{{ order.buyer_email }}</td>
+              <td>{{ order.buyer_name }}</td>
+              <td>{{ order.status|order_status }}</td>
+              <td>{{ order.total|yen }}</td>
+              <td>{{ order.total_quantity }}点</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "includes/pagination.html" %}
+    {% else %}
+      <p>該当する注文はありません。</p>
+    {% endif %}
+  </section>
+{% endblock %}

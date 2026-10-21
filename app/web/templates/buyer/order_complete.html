@@ -1,0 +1,17 @@
+{# trace: ADDR-010 #}
+{% extends "base.html" %}
+{% load display %}
+{% block title %}注文完了｜MiniCommerce{% endblock %}
+{% block content %}
+  <section class="order-complete">
+    <h1>ご注文を受け付けました。</h1>
+    <p>注文番号：{{ order.order_number }}</p>
+    <p>合計（税込）：{{ order.amounts.total|yen }}</p>
+    <p>注文状態：{{ order.status|order_status }}</p>
+    {% if order.can_pay %}
+      <p>お支払いの完了後に出荷します。</p>
+      <p><a href="{% url 'web-order-pay' purchase_order_id=order.purchase_order_id %}">支払へ進む</a></p>
+    {% endif %}
+    <p><a href="{% url 'web-order-detail' purchase_order_id=order.purchase_order_id %}">注文詳細を見る</a></p>
+  </section>
+{% endblock %}
