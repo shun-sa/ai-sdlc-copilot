@@ -19,6 +19,12 @@ ArchitectureとADDRは独立したAgentですが、データはこの順に引�
 表を配置するだけの自動起動ではありません。開発中は非公開にし、未実行をPASSにしません。
 手順・依頼例は [受入試験表の入力](docs/ai-sdlc/acceptance-sheet-input.md) を参照してください。
 
+## 実験結果のGit保存
+
+`reports/`もGit管理対象です。実験ブランチへコード・要件・結果を保存し、実験後のデータはmainへマージしません。
+設定変更だけを共通基準版へ反映してから実験を始めます。保存・切替・受入データの隔離は
+[実験ブランチと結果の保存](docs/ai-sdlc/experiment-git-workflow.md) を参照してください。
+
 GitHub CopilotのCustom Agent / Skillを利用し、
 RequirementsからArchitecture、ADDR、Implementation、Unit Test、Integration Test、Final Assuranceまでを
 一気通貫で実行するためのAI SDLC Frameworkです。
