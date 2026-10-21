@@ -7,7 +7,7 @@ description: >
   Requirementsから実装対象を抽出し、実装網羅性の確認、既存実装の確認、
   Production Codeの作成・変更、Build検証を行う場合に使用する。
   実装中に新たな重要設計判断を検出した場合はADR_REQUIREDとして報告し、
-  Architecture工程でADRへ反映された後に実装を継続する。
+  独立ADDR工程で判断を記録・検証し、実装引渡しを確認した後に実装を継続する。
   DBを使用する実装では、単体テスト・結合テストでDockerコンテナ等の
   一時的なテストDBを利用可能な構造とする。
 user-invocable: false
@@ -58,7 +58,8 @@ Implementation工程では以下を重視します。
 version=2では独立ADDR工程のimplementation-handoff.jsonも読み、凍結した設計とADDRを組み合わせる。
 重要判断はADDR参照、項目表/TaskはArchitecture参照とし、同じ仕様を再定義しない。
 着手前に `python .github/skills/architecture/scripts/validate_design.py --check-gate` を実行する。
-失敗時はArchitectureへ返す。Taskの実行順・依存・完了条件を守り、判断不足は既存ADR_REQUIRED経路で親へ返す。
+失敗時は原因を親へ返す。設計資料はArchitecture、重要判断/引渡しはADDRが修正する。
+Taskの実行順・依存・完了条件を守り、判断不足は互換Status ADR_REQUIREDで親へ返す。
 設計未決はADDRへ、設計書・計画不足はArchitectureへ親が振り分ける。
 固定したTask計画の進捗更新は別Reportへ記録し、計画内容の変更時は再Gateを要求する。
 
@@ -264,9 +265,9 @@ Implementation AgentへADR_REQUIREDとして返してください。
 Implementation Skill自身で
 新しいADRを作成・Acceptedにしてはいけません。
 
-SDLC Orchestratorを経由してArchitecture工程へ戻し、
-Architecture AgentによってADRが作成または更新され、
-必要な検証を経てAcceptedとなった後に実装を再開してください。
+SDLC Orchestratorを経由してADDR工程へ戻し、ADDR Agentが重要判断を記録・更新します。
+必要な検証・Assuranceと実装引渡しGateを再確認してから実装を再開してください。
+設計本文/Taskも変える必要がある場合だけ、親がArchitectureへ戻します。
 
 
 ## Step 8. 局所的な実装判断を行う

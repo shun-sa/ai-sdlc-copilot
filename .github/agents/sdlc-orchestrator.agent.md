@@ -256,10 +256,10 @@ RequirementおよびAccepted ADRに従って
 Production Codeを実装します。
 
 Implementation AgentがADR_REQUIREDを返した場合は
-Architecture Phaseへ戻してください。
+ADDR Phaseへ戻してください。重要判断をArchitectureに作成させません。
 
 Implementation AgentがBLOCKEDを返した場合は、
-原因に応じてRequirementsまたはArchitectureへ
+原因に応じてRequirements、Architecture、ADDRへ
 Routingしてください。
 
 Implementation完了後は、
@@ -320,7 +320,7 @@ Unit Test Validator再実行
 の順序で処理してください。
 
 ADR_REQUIREDの場合は
-Architectureへ戻してください。
+ADDRへ戻してください。設計本文の修正が必要な場合だけ、ADDRの具体的変更要求でArchitectureへ戻します。
 
 Requirementの問題の場合は
 Requirementsへ戻してください。
@@ -582,17 +582,12 @@ Integration Test
 Architectureから再実行してください。
 
 
-## Accepted ADR Changed
+## ADDR / Existing Decision Changed
 
-Accepted ADRが変更された場合:
-
-Implementation
-Unit Test
-Integration Test
-
-を無効化してください。
-
-Implementationから再実行してください。
+ADDRまたは参照中の旧Accepted ADRが変わった場合、ADDRの検証・handoff・実装引渡しGateと
+影響するImplementation / Unit Test / Integration Testの結果を無効化してください。
+判断だけの変更はADDRから再検査します。設計本文・Taskにも変更が必要ならArchitectureへ戻し、
+設計Gateを更新してからADDRへ進みます。判断変更直後にImplementationへ飛ばしません。
 
 
 ## Production Code Changed
@@ -890,7 +885,7 @@ resume_from:
 
 単なる実装方法の選択について
 ユーザーへ確認する前に、
-ADR_REQUIREDとしてArchitecture工程で
+ADR_REQUIREDとしてADDR工程で
 解決可能か確認してください。
 
 # Completion Conditions

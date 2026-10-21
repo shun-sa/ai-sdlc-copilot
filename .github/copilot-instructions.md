@@ -107,8 +107,8 @@ Implementation/Test/AssuranceはFINAL manifestと派生handoffの設計・計画
 実装開始前に実装引渡しGateを確認する。互換ファイル名はarchitecture-gate.json、phaseはADDR。
 旧ADRのみのプロジェクトは従来どおり読めるが、新ワークフロー開始後はGateを必須とする。
 
-重要なArchitecture Decisionは
-ADRへ記録する。
+新規の重要なArchitecture DecisionはADDR AgentだけがADDRへ記録する。
+Architecture Agentは設計資料を作成し、重要判断の比較・採否を重複して行わない。
 
 Accepted ADRのDecisionおよび
 AI Guardrailsを後続工程で遵守する。
@@ -118,6 +118,8 @@ Accepted ADRに反する実装を
 
 重要な設計判断が不足する場合は
 ADR_REQUIREDとしてOrchestratorへ返却する。
+ADR_REQUIREDは互換Status名であり、戻り先はADDRである。
+設計本文/Taskの不備はArchitecture、要求の不備はRequirementsへ戻す。
 
 
 # Implementation
@@ -215,8 +217,9 @@ Requirements工程へ戻す。
 Requirements変更:
 Architecture以降を再検証する。
 
-Accepted ADR変更:
-Implementation以降を再検証する。
+ADDR / 旧Accepted ADR変更:
+ADDRの検証・handoff・実装引渡しGateと、影響するImplementation以降を再検証する。
+設計本文/Taskも変わる場合はArchitectureから設計Gateを更新する。
 
 Production Code変更:
 影響するUnit TestおよびIntegration Testを再実行する。

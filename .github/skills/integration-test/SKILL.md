@@ -704,6 +704,8 @@ Integration Test Agentへ返却してください。
 重要Architecture Decisionが不足している場合は
 ADR_REQUIREDとして返却してください。
 
+親はADDR工程へ戻す。設計本文/Taskの修正が必要なときだけArchitectureへ差し戻す。
+
 Test側で設計判断を確定してはいけません。
 
 

@@ -56,6 +56,7 @@ Unit Test Agentから
 
 - Implementation Agentの再起動
 - Architecture Agentの再起動
+- ADDR Agentの再起動
 - Requirements Agentの再起動
 - Integration Test Agentの起動
 - Quality Review Agentの起動
@@ -364,9 +365,9 @@ ADR_REQUIREDの場合は、
 
 SDLC OrchestratorへADR_REQUIREDとして返却してください。
 
-Architecture工程で判断が確定し、
-ADRがAcceptedになった後、
-再度Unit Testを実行してください。
+ADDR工程で判断を記録・検証し、実装引渡しGateを再確認した後、
+必要な実装修正とUnit Testを再実行してください。
+設計資料の修正だけが必要な場合は親がArchitectureへ戻します。
 
 
 # Requirement Error Handling

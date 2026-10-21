@@ -90,7 +90,7 @@ SDLC Orchestratorから渡された情報を入力として使用してくださ
 - プロジェクト共通Instructions
 - 今回の実装対象
 - Requirements工程で記録されたASSUMPTION
-- Architecture工程で記録されたASSUMPTION
+- ADDR工程で根拠付きで記録されたASSUMPTION
 - その他Implementation工程に必要な情報
 
 必要な情報がリポジトリ内に存在する場合は、
@@ -98,6 +98,10 @@ SDLC Orchestratorから渡された情報を入力として使用してくださ
 
 
 # Source of Truth
+
+新規Runではdocs/architectureの設計資料・Taskとdocs/addrの重要判断を両方読み、
+FINAL design-manifestとreports/addr/implementation-handoff.jsonで入力版と参照を確認します。
+以下のAccepted ADRは共通Instructionsの互換名であり、実装引渡しGate済みACTIVE ADDRも含みます。
 
 Implementation工程では、
 原則として以下の優先順位で情報を確認してください。
@@ -201,9 +205,10 @@ ADR_REQUIREDとしてSDLC Orchestratorへ返却してください。
 Implementation Agent自身で
 新しいADRを作成またはAcceptedにしてはいけません。
 
-SDLC Orchestratorを経由してArchitecture工程へ戻し、
-必要なADRが作成・更新され、
-Acceptedとなった後に実装を再開してください。
+SDLC Orchestratorを経由してADDR工程へ戻し、
+重要判断をADDR Agentが記録・検証し、実装引渡しGateを再確認してから実装を再開してください。
+設計本文やTaskの修正が必要な場合だけ、親がArchitectureへ差し戻します。
+Architectureに新規判断の作成を依頼せず、ADDRに設計資料の再作成を依頼しません。
 
 
 # Existing ADR Change Policy

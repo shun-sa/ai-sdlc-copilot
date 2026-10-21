@@ -699,8 +699,8 @@ IMPLEMENTATION_ERROR:
 Implementation工程でProduction Codeを修正する必要がある。
 
 ADR_REQUIRED:
-Architecture工程でArchitecture Decisionを
-ADRへ反映する必要がある。
+ADDR工程で重要判断をADDRへ記録・検証する必要がある。
+設計資料を修正する場合だけ親がArchitectureへ差し戻す。
 
 REQUIREMENT_ERROR:
 Requirements工程でRequirementを

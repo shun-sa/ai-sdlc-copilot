@@ -1,19 +1,19 @@
 # AI SDLC Agent Framework
 
-通常工程はRequirements→Architecture→ADDR→Implementationです。
-[ArchitectureとADDRの独立工程](docs/ai-sdlc/independent-architecture-addr.md) に責務・Gate・計測・旧版互換をまとめています。
-Architectureは設計資料作成、ADDRは重要判断だけを担当し、通常FINALIZEの再呼出しはありません。
+通常工程は **Requirements → Architecture（設計資料）→ ADDR（重要判断）→ Implementation** です。
+ArchitectureとADDRは独立したAgentですが、データはこの順に引き渡します。
+「独立」とは親子関係ではなく責務が別という意味で、無関係に動くという意味ではありません。
 
-実験用の実時間・工程時間・手戻り・分岐網羅率・結合項目・人の受入合格率は
-[実験計測ガイド](docs/ai-sdlc/experiment-measurement.md) を参照してください。
-開発中は観測記録だけを追加し、設計/ADDRの正本・品質Gate・共通3回ループは維持します。
+- Architectureは、準備済み仕様を既存テンプレートへ再構成します。
+- ADDRは、その資料で一意に定まらない重要判断だけを記録します。
+- 両Agentを呼ぶのはSDLC Orchestratorです。Agent同士は直接起動しません。
+- Implementationは設計資料とADDRの両方を読みます。どちらか片方で代用しません。
 
-設計工程は設計書担当のArchitecture Agentと判断記録担当のADDR Agentへ分離しました。
-現在の工程・正本・検証・旧ADR互換は [設計書とADDRの分離](docs/ai-sdlc/design-addr-workflow.md) を参照してください。
-以下の旧ADR中心の説明は共通Instructionsの設計判断契約で読み替えます。
+実行契約は [ArchitectureとADDRの独立工程](docs/ai-sdlc/independent-architecture-addr.md)、
+実験の時間・手戻り等は [実験計測ガイド](docs/ai-sdlc/experiment-measurement.md) を参照してください。
 
 GitHub CopilotのCustom Agent / Skillを利用し、
-RequirementsからArchitecture、Implementation、Unit Test、Integration Test、Final Assuranceまでを
+RequirementsからArchitecture、ADDR、Implementation、Unit Test、Integration Test、Final Assuranceまでを
 一気通貫で実行するためのAI SDLC Frameworkです。
 
 本Frameworkでは、各工程を担当する専門Agentと、
@@ -60,7 +60,74 @@ flowchart LR
 
 ---
 
-## Architecture
+## 設計AgentとADDR Agentのつながり
+
+### 何を渡すのか
+
+```text
+Requirements
+  要件本文・UC/AC・Steering・準備済み仕様
+       ↓
+Architecture Agent（設計資料を作る）
+  ファイル定義（該当時）
+  成果物間整合性分析
+  実装タスク一覧
+  上記の出典・版・対象・未確定判断をまとめたdesign-manifest
+       ↓ Orchestratorが資料と設計Gateを渡す
+ADDR Agent（重要判断だけを記録する）
+  判断の要否、選択肢、採否理由、設計差分・実装拘束
+  影響する実在FILE/TASKへの明示参照
+       ↓ Orchestratorが検証・独立検査し、handoffと実装引渡しGateを作る
+Implementation Agent
+  Architectureの設計資料 ＋ ADDRの判断 ＋ 実装タスクを読む
+```
+
+| 成果物・作業 | 担当 | 他方との境界 |
+| --- | --- | --- |
+| file-definition | Architecture | ADDRは項目表を再作成しない |
+| cross-artifact-consistency-analysis | Architecture | 入力時点の自己分析。独立Qualityの合格証拠ではない |
+| implementation-task-list | Architecture | ADDRはTask・依存・Waveを再定義しない |
+| 重要判断の比較・採否・理由 | ADDR | Architectureは判断が必要な場所と根拠だけ渡す |
+| 判断から生じた差分・不変条件・実装拘束 | ADDR | 確定済みの設計本文全体は複製せずID/Pathで参照する |
+| 最終的な内容整合・品質検査 | 独立Quality / Security / Traceability | Producerの分析だけで品質PASSにしない |
+
+### Architectureが先でも重要判断を先取りしない
+
+例えば受領済み仕様でファイルの列・形式が確定していれば、Architectureがその内容を定義書へ整理します。
+二重取込防止や再試行方式に重要な選択が残る場合は、Architectureが勝手に比較・決定せずADDRへ渡します。
+ADDRはその選択と理由だけを記録し、列定義表やTask一覧をもう一度作りません。
+ADDR前の整合性分析では未実施判断を明示し、実装Readinessを先取りしてREADYにしません。
+
+### ADDRの後にArchitectureへ毎回戻るのか
+
+**戻りません。通常のFINALIZE再呼出しはありません。**
+
+- 新しいADDRとの参照追加だけなら、ADDR正本2章のFILE/TASK参照と派生handoffで接続します。
+  凍結済みの設計書に将来IDを自動追記するための再起動はしません。
+- ADDRの決定で、ファイル定義の再送条件やTask本体などを本当に変える必要がある場合だけ、
+  ADDRが具体的なdesign_change_requestsを返し、OrchestratorがArchitectureへ差し戻します。
+- 判断そのものの不足・誤りはADDRへ、資料本文の不備はArchitectureへ戻します。
+  互換Status名ADR_REQUIREDの戻り先もADDRです。
+
+### どのファイルがつながりを担うのか
+
+| ファイル | 作成者 / 意味 |
+| --- | --- |
+| docs/architecture/files/FILE-xxx.md | Architecture。ファイル連携がある場合 |
+| docs/architecture/implementation-task-list.md | Architecture。実装作業と依存 |
+| reports/architecture/cross-artifact-consistency.md | Architecture。入力時点の分析 |
+| reports/architecture/design-manifest.json | Architecture。version=2 / FINALの資料一覧・出典・判断候補 |
+| reports/architecture/design-gate.json | 親のValidator。ADDRへ渡す設計資料を固定 |
+| docs/addr/ADDR-xxx.md | ADDR。重要判断の正本 |
+| reports/architecture/addr-request.json / addr-result.json | ADDRの受領契約と機械可読結果。保存場所は旧版互換名 |
+| reports/addr/implementation-handoff.json | 親のScript。設計とADDRのハッシュ・明示参照を束ねる派生データ |
+| reports/architecture/architecture-gate.json | 親のValidator。ADDR後の実装引渡しGate。version=2ではphase=ADDR |
+
+reports/architecture配下にADDR関連ファイルがあるのは保存先の互換性のためです。
+**ADDRがArchitectureの子工程であることを意味しません。**
+manifestやhandoffは別の設計書・判断文書ではなく、実ファイルの版と関連を機械確認するための情報です。
+
+## Agentの起動関係
 
 Agent間の遷移はすべてSDLC Orchestratorが制御します。
 
@@ -74,6 +141,7 @@ flowchart TB
     subgraph Producer["Producer Agents"]
         R[Requirements Agent]
         A[Architecture Agent]
+        AD[ADDR Agent]
         I[Implementation Agent]
         U[Unit Test Agent]
         IT[Integration Test Agent]
@@ -89,6 +157,7 @@ flowchart TB
 
     O --> R
     O --> A
+    O --> AD
     O --> I
     O --> U
     O --> IT
@@ -100,6 +169,7 @@ flowchart TB
 
     R -. result .-> O
     A -. result .-> O
+    AD -. result .-> O
     I -. result .-> O
     U -. result .-> O
     IT -. result .-> O
@@ -118,8 +188,9 @@ flowchart TB
 | --- | --- |
 | SDLC Orchestrator | Agent起動、Phase遷移、Validator、Assurance、Routing、Invalidation、Final Assuranceを制御 |
 | Requirements Agent | Requirementを定義・更新 |
-| Architecture Agent | 重要なArchitecture DecisionをADRとして定義 |
-| Implementation Agent | RequirementsとAccepted ADRに従ってProduction Codeを実装 |
+| Architecture Agent | 既存仕様からファイル定義・整合性分析・実装タスク等の設計資料を作成 |
+| ADDR Agent | 設計資料を参照し、重要判断の要否・比較・採否理由・差分・実装拘束を記録 |
+| Implementation Agent | 要件・設計資料・ADDR・実装タスクに従ってProduction Codeを実装 |
 | Unit Test Agent | Requirements / Accepted ADRからExpected Resultを導出しUnit Testを作成・実行 |
 | Integration Test Agent | Integration BehaviorとExternal Test Caseを含むIntegration Testを作成・実行 |
 | Quality Review Agent | SDLC成果物の意味的品質を独立レビュー |
@@ -157,26 +228,24 @@ flowchart TB
 
 ---
 
-## Architecture Decision Lifecycle
+## ADDR Decision Lifecycle
 
-新しいADRはArchitecture Phaseで`Proposed`として作成されます。
+新規の重要判断はADDR工程で作成します。テンプレート状態はACTIVE / SUPERSEDEDです。
+ACTIVEは文書の状態であって、実装開始許可ではありません。
 
 ```mermaid
 flowchart LR
-    P[Proposed ADR]
-    V[ADR Validator]
-    A[Architecture Scope Assurance]
-    AC[Accepted ADR]
-    D[Downstream Source of Truth]
-
-    P --> V --> A --> AC --> D
+    D[Architectureの設計資料と設計Gate]
+    A[ADDRの要否判断と重要判断記録]
+    H[派生handoff]
+    V[ADDR Scopeの独立検査]
+    G[実装引渡しGate]
+    I[Implementation]
+    D --> A --> H --> V --> G --> I
 ```
 
-Architecture PhaseのAssuranceでは、
-Acceptance候補のProposed ADRを監査対象とします。
-
-Architecture Phase完了後のImplementation以降では、
-Accepted ADRのみを現在有効なArchitecture Decisionとして扱います。
+新規判断を旧ADRへ二重生成したり、Proposed→Acceptedへ変換したりしません。
+既存docs/adrのAccepted ADRは履歴・制約として読み取れますが、新規Runの標準手順とは分けます。
 
 ---
 
@@ -218,7 +287,7 @@ Secret値そのものをReportへ出力してはいけません。
 作成Agentが参照を記入し、AuditorがTrace Map v3と要件対応表・確認結果表・ADDR別一覧を生成します。
 AST/FQN・呼出し解析によるリンク生成は廃止しました。
 意味的レビューは助言へ分離し、既存Quality/Security/Test Gateは維持します。
-設計工程はArchitecture PREPARE→ADDR→FINALIZE→Assurance→Gateのままです。
+設計資料作成とADDRは別工程です。各Scopeで独立検査し、ADDR後に実装引渡しを確認します。
 3回修正後も残る不合格は未解決として記録し、工程継続判定で次へ進めます。
 
 詳細・移行・コマンドは [注釈方式トレーサビリティ](docs/ai-sdlc/inline-traceability.md) を参照してください。
@@ -231,7 +300,9 @@ AST/FQN・呼出し解析によるリンク生成は廃止しました。
 例:
 
 ```text
+Requirements      → audit_scope=REQUIREMENTS
 Architecture      → audit_scope=ARCHITECTURE
+ADDR              → audit_scope=ADDR
 Implementation    → audit_scope=IMPLEMENTATION
 Unit Test         → audit_scope=UNIT_TEST
 Integration Test  → audit_scope=INTEGRATION_TEST
@@ -264,7 +335,8 @@ Root Causeに基づいてRoutingします。
 | Classification | Route |
 | --- | --- |
 | REQUIREMENT_ERROR | Requirements |
-| ADR_REQUIRED | Architecture |
+| ADR_REQUIRED | ADDR |
+| ARCHITECTURE_QUALITY_ISSUE | Architecture（設計資料/TASKの不備） |
 | IMPLEMENTATION_ERROR | Implementation |
 | TEST_ERROR | Unit Test / Integration Test |
 | ENVIRONMENT_ERROR | Environment / Orchestrator |
@@ -281,7 +353,8 @@ Root Causeに基づいてRoutingします。
 通常Routingによる修正・再実行を行っても、
 同一Root CauseのFailureが繰り返される場合はFailure Triageを実行します。
 
-標準では同一Root Causeについて3回失敗した場合に起動します。
+初回失敗はcycle=0、その後に実修正・再検査を最大3回行います。
+3回後も残れば未解決を記録して継続します。Failure Triageは任意の補足診断で、4回目の修正命令ではありません。
 
 ```mermaid
 flowchart LR
@@ -291,9 +364,10 @@ flowchart LR
     R3[Retry 3]
     T[Failure Triage]
     V[Validator]
-    RR[Root Cause Route]
+    N[未解決を記録して継続]
 
-    F --> R1 --> R2 --> R3 --> T --> V --> RR
+    F --> R1 --> R2 --> R3 --> N
+    N -. 補足診断 .-> T --> V
 ```
 
 Failure Triageの主なResult:
@@ -337,7 +411,8 @@ AI自身の判断で「External Caseなし」として処理を継続せず、
 | Changed Artifact | Re-validation |
 | --- | --- |
 | Requirements | Architecture以降 |
-| Accepted ADR | Implementation以降 |
+| 設計資料 / Task | Architectureの検証・設計Gate、ADDRと影響下流 |
+| ADDR / 参照中の旧Accepted ADR | ADDRの検証・handoff・実装引渡しGateと影響下流 |
 | Production Code | 影響するUnit Test / Integration Test |
 | Unit Test Codeのみ | Unit Test |
 | Integration Test Codeのみ | Integration Test |
@@ -354,55 +429,35 @@ Integration Test Codeが変更された場合は、
 
 ## Repository Structure
 
+以下はFrameworkと生成される成果物の主な配置です。
+
 ```text
-.
-├── README.md
-│
-├── .github/
-│   ├── copilot-instructions.md
-│   │
-│   ├── agents/
-│   │   ├── orchestrator/
-│   │   │   └── sdlc-orchestrator.agent.md
-│   │   ├── ...
-│   │   └── assurance/
-│   │       ├── quality-review.agent.md
-│   │       ├── security-review.agent.md
-│   │       ├── traceability-auditor.agent.md
-│   │       └── failure-triage.agent.md
-│   │
-│   └── skills/
-│       ├── requirements/
-│       ├── architecture/
-│       ├── implementation/
-│       ├── unit-test/
-│       ├── integration-test/
-│       ├── quality-review/
-│       ├── security-review/
-│       ├── traceability-audit/
-│       └── failure-triage/
-│
-├── docs/
-│   ├── requirements/
-│   ├── adr/
-│   └── ai-sdlc/
-│       └── agent-framework-guide.md
-│
-├── external-tests/
-│   └── integration-test/
-│
-└── reports/
-    ├── unit-test/
-    ├── integration-test/
-    ├── quality-review/
-    ├── security-review/
-    ├── traceability/
-    │   ├── trace-map.json
-    │   ├── traceability-report.json
-    │   ├── traceability-report.md
-    │   └── validation-result.json
-    ├── failure-triage/
-    └── sdlc/
+.github/
+  copilot-instructions.md
+  agents/
+    sdlc-orchestrator.agent.md
+    architecture.agent.md
+    addr.agent.md
+    implementation.agent.md
+    ...（Requirements、テスト、独立監査）
+  skills/
+    requirements/
+    architecture/
+    addr/
+    implementation/
+    ...（テスト、監査、復旧、計測・評価）
+docs/
+  requirements/                  要件本文・UC/AC
+  architecture/                  設計資料・実装タスク
+  addr/                          新規の重要判断
+  adr/                           既存ADR（互換読取り）
+  ai-sdlc/                       利用・実行契約の説明
+reports/
+  architecture/                  設計manifest、設計Gate、互換ADDR契約、実装引渡しGate
+  addr/                          派生handoff
+  loop-control/                  実修正回数・未解決結果・継続判定
+  experiments/<run-id>/           工程時間・手戻り・試験証跡
+  ...（テスト・独立監査の実行結果）
 ```
 
 ---
@@ -441,7 +496,7 @@ Orchestratorが、
 5. FAIL時にRoot Cause工程へRouting
 6. 必要に応じて後続PhaseをInvalidate
 7. Integration Test完了後にFinal Assuranceを実行
-8. すべてのGateがPASSした場合のみ`COMPLETE`
+8. 全品質PASSならCOMPLETE、未解決持越しならCOMPLETE_WITH_UNRESOLVEDとして区別
 
 という流れを制御します。
 
@@ -504,6 +559,7 @@ SDLC Orchestrator
   ├─ Producer Agents
   │    ├─ Requirements
   │    ├─ Architecture
+  │    ├─ ADDR
   │    ├─ Implementation
   │    ├─ Unit Test
   │    └─ Integration Test

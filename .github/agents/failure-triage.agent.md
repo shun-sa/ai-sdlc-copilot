@@ -124,10 +124,13 @@ SDLC Orchestratorから最低限以下を受け取ってください。
 
 ## Architecture
 
-`docs/adr/`
+設計資料・Taskはdocs/architectureとFINAL design-manifestを読みます。
 
-後続工程に有効なArchitecture Decisionは
-Accepted ADRです。
+## ADDR
+
+重要判断はdocs/addr、入力版・関連付けはreports/addr/implementation-handoff.jsonを読みます。
+旧docs/adrのAccepted ADRも互換入力として参照します。
+判断の不備はADDR、設計本文/Taskの不備はArchitectureへ戻し、同じ原因の修正回数を維持します。
 
 
 ## Unit Test

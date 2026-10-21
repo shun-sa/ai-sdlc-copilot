@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -240,6 +241,65 @@ class IndependentAddrTests(unittest.TestCase):
         self.assertEqual(stages, sorted(stages))
         self.assertNotIn("operation=FINALIZE", text)
         self.assertNotIn("operation=PREPARE", text)
+
+
+class DocumentationContractTests(unittest.TestCase):
+    def source(self, name):
+        return (REPOSITORY / name).read_text(encoding="utf-8").replace("\r\n", "\n")
+
+    def test_readme_has_separate_design_and_decision_owners(self):
+        text = self.source("README.md")
+        architecture = next(line for line in text.splitlines() if line.startswith("| Architecture Agent |"))
+        addr = next(line for line in text.splitlines() if line.startswith("| ADDR Agent |"))
+        self.assertIn("設計資料を作成", architecture)
+        self.assertIn("重要判断", addr)
+        self.assertNotIn("重要なArchitecture DecisionをADRとして定義", architecture)
+
+    def test_public_parent_diagrams_include_addr_as_a_peer_not_architecture_child(self):
+        for name, start, end in (("README.md", "## Agentの起動関係", "## Agent Roles"), ("docs/ai-sdlc/agent-framework-guide.md", "## 3. Agent全体構成", "## 4. SDLC全体")):
+            text = self.source(name).split(start, 1)[1].split(end, 1)[0]
+            self.assertIn("AD[ADDR Agent]", text)
+            self.assertIn("O --> AD", text)
+            self.assertIn("AD -. result .-> O", text)
+            self.assertNotIn("A --> AD", text)
+
+    def test_readme_connects_design_manifest_addr_and_implementation(self):
+        text = self.source("README.md").split("## 設計AgentとADDR Agentのつながり", 1)[1].split("## Agentの起動関係", 1)[0]
+        for value in ("design-manifest", "ADDR Agent", "Implementation Agent", "implementation-handoff.json", "design_change_requests"):
+            self.assertIn(value, text)
+        self.assertIn("設計資料とADDRの両方を読みます", self.source("README.md"))
+        self.assertIn("参照追加だけ", text)
+        self.assertIn("毎回戻るのか", text)
+
+    def test_legacy_decision_return_routes_are_absent_from_runtime_and_public_docs(self):
+        paths = ["README.md", "docs/ai-sdlc/agent-framework-guide.md", ".github/copilot-instructions.md"]
+        paths += [f".github/agents/{name}.agent.md" for name in ("sdlc-orchestrator", "implementation", "unit-test", "integration-test")]
+        paths += [f".github/skills/{name}/SKILL.md" for name in ("implementation", "unit-test", "integration-test")]
+        forbidden = ("SDLC Orchestratorを経由してArchitecture工程へ戻し", "Architecture AgentによってADRが作成", "Architecture工程で判断が確定", "Architecture工程でArchitecture Decisionを\nADRへ反映", "ADR_REQUIREDとしてArchitecture工程で", "| ADR_REQUIRED | Architecture |", "ADR_REQUIRED\n→ Architecture")
+        for name in paths:
+            text = self.source(name)
+            for value in forbidden:
+                self.assertNotIn(value, text, name)
+            self.assertIsNone(re.search(r"ADR_REQUIRED[^\n]*\nArchitecture(?: Phase|工程)?へ戻", text), name)
+
+    def test_review_and_triage_sources_include_design_and_addr_not_only_legacy_adr(self):
+        for name in ("quality-review", "security-review", "failure-triage", "implementation"):
+            text = self.source(f".github/agents/{name}.agent.md")
+            for value in ("docs/architecture", "docs/addr", "implementation-handoff.json"):
+                self.assertIn(value, text, name)
+
+    def test_new_workflow_does_not_present_proposed_adr_as_standard(self):
+        for name in ("README.md", "docs/ai-sdlc/agent-framework-guide.md", ".github/skills/quality-review/SKILL.md", ".github/skills/security-review/SKILL.md"):
+            text = self.source(name)
+            for value in ("新しいADRはArchitecture Phaseで`Proposed`", "Architecture Phaseでは新規ADRをまず`Proposed`", "Acceptance候補となるProposed ADR", "P[Proposed ADR]", "Architecture PREPARE→ADDR→FINALIZE→Assurance→Gateのまま"):
+                self.assertNotIn(value, text, name)
+
+    def test_test_agents_return_decision_work_to_addr_via_parent(self):
+        for name in ("unit-test", "integration-test"):
+            self.assertIn("- ADDR Agentの再起動", self.source(f".github/agents/{name}.agent.md"))
+        text = self.source(".github/agents/sdlc-orchestrator.agent.md")
+        self.assertIn("Implementation AgentがADR_REQUIREDを返した場合は\nADDR Phaseへ戻してください", text)
+        self.assertIn("ADR_REQUIREDの場合は\nADDRへ戻してください", text)
 
 
 if __name__ == "__main__":

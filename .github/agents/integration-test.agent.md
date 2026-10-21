@@ -56,6 +56,7 @@ Integration Test Agentから
 
 - Implementation Agentの再起動
 - Architecture Agentの再起動
+- ADDR Agentの再起動
 - Requirements Agentの再起動
 - Quality Review Agentの起動
 - Security Review Agentの起動
@@ -409,6 +410,8 @@ Architecture Decisionを確定してはいけません。
 
 ADR_REQUIREDとして
 SDLC Orchestratorへ返却してください。
+
+親の戻り先はADDRです。設計本文/Taskの修正が必要な場合だけ、具体的変更要求でArchitectureへ戻します。
 
 
 # Requirement Error Handling

@@ -127,7 +127,8 @@ Expected BehaviorがRequirementsから
 ## Step 9. Accepted ADRを確認する
 
 Architecture Decisionが必要な場合、
-Accepted ADRを確認してください。
+新規の正本ADDRと設計資料を読み、handoffで入力版・明示参照を確認してください。
+旧Accepted ADRは互換入力です。重要判断の不足・誤りはADDR、資料本文/Taskの問題はArchitectureへ返します。
 
 
 ## Step 10. Implementationを確認する

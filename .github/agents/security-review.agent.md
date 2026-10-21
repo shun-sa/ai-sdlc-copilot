@@ -112,10 +112,13 @@ SDLC Orchestratorから
 
 ## Architecture
 
-`docs/adr/`
+設計資料・実装タスクは `docs/architecture/` とFINAL design-manifestを読みます。
 
-後続工程に有効なArchitecture Decisionは
-Accepted ADRです。
+## ADDR
+
+新しい重要判断は `docs/addr/`、引渡しは `reports/addr/implementation-handoff.json` を読みます。
+ADDR ScopeではACTIVEをGate前の検査候補とし、実装以降は実装引渡しGateの有効性を確認します。
+`docs/adr/` の旧Accepted ADRも履歴・制約として読みますが、新規ADRの生成は要求しません。
 
 
 ## Implementation
