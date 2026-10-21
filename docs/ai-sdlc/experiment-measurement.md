@@ -173,8 +173,9 @@ COMPLETE_WITH_UNRESOLVEDを使う。FULLから手戻りしたら必要工程か�
 `evaluation-input/<run-id>/` に置き、ソース領域へ評価専用ファイルを混ぜない。
 run-context.jsonのrun_id/sdlc_completed_atと実際のevaluation_data_exposed_atをmanifestへ記入する。
 
-既存ExecutorはCOMMANDのみ対応する。人が作った表のケースを渡すだけでUI試験まで自動実行できるわけではない。
-人が承認した期待値を変えず、実行可能manifest/テストへ対応付ける。
+表入力は [受入表の手順](acceptance-sheet-input.md) に従い、開発後にAcceptanceTestPrepareが外部コードへ対応付ける。
+期待値・ケースを変えず、元表とコードの対応を人が承認してから凍結・実行する。
+既存COMMAND manifestは互換維持し、表入力の実行不能項目だけ理由付きBLOCKED型として全分母へ残す。
 manifestの形式は `.github/skills/acceptance-test-execution/templates/` を参照する。
 
 ```text

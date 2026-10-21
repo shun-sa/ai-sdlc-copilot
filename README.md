@@ -12,6 +12,13 @@ ArchitectureとADDRは独立したAgentですが、データはこの順に引�
 実行契約は [ArchitectureとADDRの独立工程](docs/ai-sdlc/independent-architecture-addr.md)、
 実験の時間・手戻り等は [実験計測ガイド](docs/ai-sdlc/experiment-measurement.md) を参照してください。
 
+## 受入試験表からの実行
+
+開発完了後にAcceptanceTestExecutorへ受入表（XLSX/CSV/試験定義JSON）の保存先を指定できます。
+外部テスト準備担当が確定条件を実行コードへ翻訳し、人の承認後に凍結・実行・結果検証します。
+表を配置するだけの自動起動ではありません。開発中は非公開にし、未実行をPASSにしません。
+手順・依頼例は [受入試験表の入力](docs/ai-sdlc/acceptance-sheet-input.md) を参照してください。
+
 GitHub CopilotのCustom Agent / Skillを利用し、
 RequirementsからArchitecture、ADDR、Implementation、Unit Test、Integration Test、Final Assuranceまでを
 一気通貫で実行するためのAI SDLC Frameworkです。

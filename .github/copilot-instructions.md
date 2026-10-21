@@ -58,6 +58,8 @@ SDLC Orchestratorが制御する。
 UnitTestは分岐計測付き実コマンドを記録器経由で実行し、IntegrationTestはINITIAL/計画/結果を保存する。
 観測用Scriptの開発中実行だけを認め、Evaluation/AcceptanceTestExecutorの開発中起動や
 Hidden Acceptance入力の早期公開は認めない。取得できなかった時間・網羅率・合格率・トークン数を推測しない。
+AcceptanceTestPrepareも開発中には起動しない。開発完了後のAcceptanceTestExecutor専用準備担当とし、
+外部表の条件を変えず外部テストへ翻訳する。人の明示承認・凍結前の評価実行は認めない。
 計測結果は品質Gateや共通3回ループを変更せず、未解決継続と品質PASSを区別する。
 
 # Source of Truth

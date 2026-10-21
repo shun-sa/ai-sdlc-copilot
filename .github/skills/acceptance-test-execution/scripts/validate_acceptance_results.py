@@ -23,6 +23,17 @@ def validate(
 ) -> list[str]:
     errors: list[str] = []
 
+    if "sheet_preparation" in manifest:
+        from prepare_acceptance import verify_prepared_manifest
+        try:
+            preparation = verify_prepared_manifest(manifest)
+            if evidence.get("sheet_preparation_sha256") != canonical_json_sha256(preparation):
+                errors.append("Evidence does not bind the approved sheet preparation.")
+            if evidence.get("target_source_unchanged") is not True:
+                errors.append("Evaluated source was modified or its integrity was not confirmed.")
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            errors.append(f"Sheet preparation validation failed: {error}")
+
     cases = manifest.get("cases")
     if not isinstance(cases, list):
         return ["Manifest cases must be an array."]
