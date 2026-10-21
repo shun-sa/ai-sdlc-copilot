@@ -2,6 +2,8 @@ version: 1
 
 invocation:
   retry_threshold: 3
+  on_exhausted: CONTINUE_WITH_UNRESOLVED
+  diagnosis_after_threshold: advisory
 
   require_same_failure: true
 

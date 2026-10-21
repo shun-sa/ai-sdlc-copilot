@@ -15,6 +15,12 @@ Architecture DecisionがRequirementに対して
 
 ## Required Review
 
+設計書・実装タスク・ADDRの3種を対象とする。ADDRの判断基準、選択肢、決定理由、
+DD/INV/ASM、設計種別、旧Accepted ADRとの整合と、Taskの依存・網羅性を確認する。
+ADDRが不要な対象であることと、設計書が不要であることを混同しない。
+既存cross-artifact-consistency-analysis.template.mdで意味的整合のReportを生成し、
+未確定判断・設計差分未反映・Task不足があればArchitecture GateをPASSにしない。
+
 以下を確認する。
 
 - ContextとDecisionが整合している

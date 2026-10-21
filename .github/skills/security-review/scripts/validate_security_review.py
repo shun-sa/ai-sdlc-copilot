@@ -873,6 +873,7 @@ def validate(
     result = {
         "status": "PASS" if not errors else "FAIL",
         "audit_scope": scope,
+        "source_baseline_sha256": report.get("source_baseline_sha256"),
         "criteria": {
             "discovered": sorted(criteria),
             "total": criteria_counts["total"],

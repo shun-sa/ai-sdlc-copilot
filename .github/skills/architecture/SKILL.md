@@ -1,355 +1,109 @@
 ---
 name: architecture
 description: >
-  要件定義成果物から重要なArchitecture Decisionを抽出し、
-  プロジェクト標準の軽量ADR形式で設計判断を作成・更新するSkill。
-  設計工程、ADR候補の抽出、設計選択肢の比較、
-  Related Requirementsによる要件トレーサビリティ設定、
-  AI Guardrailsの定義を行う場合に使用する。
+  分割要件と既存設計テンプレートから設計成果物を作成し、未確定判断をADDRへ渡し、
+  確定差分と実装タスクを整えて実装へ引き継ぐ。
 user-invocable: false
 disable-model-invocation: false
 ---
 
-# Architecture Skill
-
-## Purpose
-
-このSkillは、
-要件定義成果物から重要な設計判断を抽出し、
-Architecture Decision Record（ADR）として
-記録するための手順を定義します。
-
-本プロジェクトでは、
-設計工程の正式な成果物をADRに限定します。
-
-ADRは詳細設計書ではありません。
-
-AIが後続工程において
-誤った設計・実装判断を行わないようにするための
-軽量な設計判断記録として作成してください。
-
-
-# Canonical ADR Template
-
-ADRを作成または更新するときは、
-必ず以下を使用してください。
-
-`.github/skills/architecture/templates/adr-template.md`
-
-Canonical ADR Templateの構造を
-Skillの判断で変更してはいけません。
-
-
-# Fundamental Rules
-
-以下を常に守ってください。
-
-1. 設計成果物はADRのみとする
-2. ADRが不要な判断を無理にADR化しない
-3. 1つのADRには1つの重要判断だけを記録する
-4. ADRは要件を根拠として作成する
-5. Related Requirementsを必ず確認する
-6. 採用案だけでなく重要な代替案も確認する
-7. DecisionからAI Guardrailsを導出する
-8. Accepted ADRの履歴を失わない
-9. ADRを詳細設計書化しない
-
-
-# Procedure
-
-## Step 1. 要件定義成果物を確認する
-
-設計対象に関連する以下を確認してください。
-
-- 機能要件（FR）
-- 非機能要件（NFR）
-- 認証・認可
-- エラー仕様
-- データモデル
-- 制約条件
-- Out of Scope
-- Acceptance Criteria
-
-設計判断を要件から切り離して行ってはいけません。
-
-
-## Step 2. 既存ADRを確認する
-
-新しいADRを作成する前に
-既存ADRを確認してください。
-
-特に以下を確認します。
-
-- Accepted ADR
-- Proposed ADR
-- Superseded ADR
-- 同じ判断を扱うADR
-- 関連要件を扱うADR
-
-同じ設計判断について
-重複ADRを作成しないでください。
-
-
-## Step 3. ADR候補を抽出する
-
-要件から設計上の判断が必要となる事項を抽出してください。
-
-以下に該当する場合、
-ADR候補として扱います。
-
-1. 複数案が存在する
-2. 後から変更すると高コスト
-3. 非機能要件に影響する
-4. AIの誤判断による手戻りが大きい
-5. 複数の後続成果物に影響する
-
-
-## Step 4. ADR化の必要性を判定する
-
-各候補について
-本当にADRが必要か確認してください。
-
-以下のようなものは
-原則としてADR化しません。
-
-- 入力項目
-- 表示文言
-- 単純なバリデーション
-- 細かな画面配置
-- 単純なCRUD
-- 一時的な実装都合
-
-軽微な判断を大量にADR化してはいけません。
-
-
-## Step 5. Related Requirementsを特定する
-
-ADRの判断根拠となるRequirement IDを特定してください。
-
-参照可能な例:
-
-- FR-xxx
-- NFR-xxx
-- SEC-xxx
-- CON-xxx
-
-ただし、
-Requirements成果物に存在しないIDを
-新しく作成してはいけません。
-
-現在FR/NFRのみがID管理されている場合は、
-存在するFR/NFRを使用してください。
-
-関連要件が1件も存在しない場合、
-その設計判断が本当に必要か再確認してください。
-
-
-## Step 6. 設計判断のContextを整理する
-
-以下を簡潔に整理してください。
-
-- なぜ判断が必要か
-- どの要件が関係するか
-- どの制約が関係するか
-- 何が問題となっているか
-
-Contextは原則3〜5行程度としてください。
-
-
-## Step 7. 選択肢を洗い出す
-
-現実的な設計選択肢を確認してください。
-
-必要以上に選択肢を増やしてはいけません。
-
-Alternativesは原則最大3案とします。
-
-
-## Step 8. 選択肢を比較する
-
-各選択肢について、
-関連要件および制約を基準として比較してください。
-
-一般論だけで決定してはいけません。
-
-例えば以下を確認します。
-
-- FRへの適合
-- NFRへの適合
-- 制約への適合
-- 将来の変更コスト
-- 実装への影響
-- 運用への影響
-- AIによる誤判断リスク
-
-
-## Step 9. Decisionを決定する
-
-比較結果をもとに
-採用する判断を明確にしてください。
-
-Decisionは、
-後続AIが再度同じ設計判断を行う必要がない程度に
-明確である必要があります。
-
-
-## Step 10. Consequencesを整理する
-
-採用した判断によって発生する影響を整理してください。
-
-最低限以下を確認します。
-
-- 良い影響
-- 悪い影響
-- 後続工程への影響
-
-メリットのみを記載してはいけません。
-
-
-## Step 11. AI Guardrailsを作成する
-
-Decisionから、
-後続AIが守るべき制約を抽出してください。
-
-AI Guardrailsでは特に以下を明示します。
-
-- AIが必ず守ること
-- AIが提案してはいけないこと
-- AIが省略してはいけないこと
-
-最大3項目を目安としてください。
-
-一般的なコーディング規約ではなく、
-当該ADR固有のGuardrailを記載してください。
-
-
-## Step 12. ADRを作成する
-
-Canonical ADR Templateを使用してください。
-
-ADR IDは既存ADRを確認したうえで
-未使用番号を採番してください。
-
-ファイル名は以下を基本とします。
-
-`ADR-xxx-<short-title>.md`
-
-配置先:
-
-`docs/adr/`
-
-
-## Step 13. Statusを設定する
-
-新規ADRは原則として
-Proposedとしてください。
-
-Architecture Agent自身の判断で
-Acceptedへ変更してはいけません。
-
-SDLC Orchestratorから
-Assurance工程PASSの情報を受け取った場合のみ
-Acceptedへ変更してください。
-
-
-## Step 14. トレーサビリティを確認する
-
-各ADRについて、
-Related Requirementsが正しいことを確認してください。
-
-最低限以下を確認します。
-
-- Requirement IDが存在する
-- Requirement IDが重複していない
-- 判断とRequirementに関係がある
-- 無関係なRequirementを付与していない
-
-Architecture Skillは
-Implementation IDやTest IDを作成してはいけません。
-
-
-## Step 15. ADR間の整合性を確認する
-
-新しいDecisionが
-既存Accepted ADRと矛盾していないことを確認してください。
-
-矛盾が存在する場合は、
-既存ADRを直接書き換えて解消してはいけません。
-
-必要に応じて新しいADRとして判断を記録します。
-
-
-## Step 16. ADR変更を処理する
-
-Accepted ADRの判断自体が変更された場合は、
-新しいADRを作成してください。
-
-新しいADRがAcceptedになった後、
-古いADRをSupersededとしてください。
-
-設計判断履歴を削除してはいけません。
-
-
-## Step 17. Completion Checkを行う
-
-ADR作成後、以下を確認してください。
-
-- ADR化すべき判断を見落としていない
-- ADR化不要な判断を大量にADR化していない
-- 1 ADR = 1 Decisionになっている
-- Related Requirementsが存在する
-- Decisionが明確である
-- Alternativesが適切である
-- Consequencesが記録されている
-- AI Guardrailsが具体的である
-- 既存ADRと矛盾していない
-- ADRが過度に長くなっていない
-- Canonical ADR Templateに従っている
-
-
-# ADR Size Guidelines
-
-ADRは軽量にしてください。
-
-原則:
-
-- ADR全体は50行以内
-- Contextは3〜5行程度
-- Alternativesは最大3案
-- Consequencesは必要最小限
-- AI Guardrailsは最大3項目
-
-この目安を超える場合は、
-複数の独立した設計判断を
-1つのADRに含めていないか確認してください。
-
-
-# Traceability Rules
-
-ADRとRequirementの関連は
-ADRのRelated Requirementsを正とします。
-
-Requirement IDを変更してはいけません。
-
-Requirements成果物に存在しないIDを
-Architecture Skillが生成してはいけません。
-
-ADR側からRequirementへのリンクを必須とし、
-後続のTraceability Auditorが
-その整合性を検証できる状態にしてください。
-
-
-# Output
-
-処理完了後、
-Architecture Agentへ以下を返してください。
-
-- 作成したADR
-- 更新したADR
-- Superseded候補ADR
-- ADRごとのRelated Requirements
-- ADR化しなかった主要な判断と理由
-- ASSUMPTION
-- BLOCKED事項
-- 既存ADRとの矛盾確認結果
-- ADR構造確認結果
+# Architecture / Design Skill
+
+## 実験Runの計測
+
+親から渡されたrun_idを維持する。PREPARE/FINALIZEの開始・終了とADDR委譲は
+Orchestratorが観測記録するため、本Skillは別Runや主工程の遷移を作らない。
+各operationの実結果と中断・待機・差し戻し理由を親へ返す。設計/ADDRの正本とGateは変更しない。
+詳細は `docs/ai-sdlc/experiment-measurement.md`。
+
+## 正本と責務
+
+| テンプレート | 出力 | 作成者 |
+| --- | --- | --- |
+| `templates/file-definition.template.md` | `docs/architecture/files/FILE-xxx.md` | Architecture。ファイル連携がある場合 |
+| `templates/implementation-task-list.template.md` | `docs/architecture/implementation-task-list.md` | Architecture。FINALIZEで必須 |
+| `templates/cross-artifact-consistency-analysis.template.md` | `reports/architecture/cross-artifact-consistency.md` | Quality Review / Assurance |
+
+正本の見出し・階層・固定表列を維持し、記入欄と必要な行・Taskブロックだけを展開する。
+ファイル連携がない場合はファイル定義を捏造せず、対象・理由をmanifestに記録する。
+構成図、データモデル、画面・API等は提供済み仕様・既存成果物を参照する。
+今回のZIPにこれら専用の設計テンプレートは存在しない。未提供の必須仕様・テンプレートを
+架空の標準として追加せず、未確定事項と不足成果物を親へ返す。
+
+重要判断と差分はADDR Agentの担当である。旧ADRを新規量産しない。
+有効な旧Accepted ADRは履歴と制約として読み、ADDRと矛盾すれば親へ返す。
+要件・UC/ACが正、設計は実現仕様、ADDRは重要判断の正本、Taskは作業計画である。
+ADDRを設計書・実装タスクの代わりにしない。
+
+## PREPARE
+
+1. 要件索引の全リンク先、UC/AC、Steering、既存設計、現行判断を読む。
+2. 対象と重要度を根拠から決める。MANDATORYは隔離すると受入不能、OPTIONALは独立して除外可能な対象。
+   根拠がなければ重要度を推測せずBLOCKEDとする。任意の機能縮退で受入条件を変えない。
+3. 指定済み・一意に導出可能な設計を書き、重要な未確定方式を候補として切り出す。
+4. 必要なファイル定義をテンプレートで作成し、未決はOpen Questionsへ記録する。
+5. 下記manifestをDRAFTで `reports/architecture/design-input.json` へ保存する。
+   出典は要件索引・リンク先・Steering・参照した旧ADR等をSHA-256で固定する。
+
+```json
+{
+  "version": 1,
+  "stage": "DRAFT",
+  "source_revision": "入力版またはcommit",
+  "sources": [{"path": "docs/requirements/requirements.md", "sha256": "実ファイルのSHA-256"}],
+  "artifacts": [{"artifact_id": "FILE-001", "path": "docs/architecture/files/FILE-001.md", "template": "file-definition", "sha256": "実SHA-256", "target_id": "FR-001", "related_requirement_ids": ["FR-001"], "related_addr_ids": []}],
+  "targets": [{"target_id": "FR-001", "criticality": "MANDATORY", "basis_ids": ["FR-001"]}],
+  "unresolved_design_decisions": [{"candidate_key": "file-retry", "target_id": "FR-001", "topic": "再送方式", "related_requirement_ids": ["FR-001"], "candidate_options": [], "reason_unresolved": "要件から方式が一意に決まらない"}],
+  "not_applicable": []
+}
+```
+
+上記は形式例であり、ID・ハッシュ・判断・配列は実資料で置換する。
+artifactsのtemplateは `file-definition / implementation-task-list / provided`。
+providedは提供済みの他設計仕様で、出典sourcesにも同じパスを記録する。
+新規に推測して作った設計書をprovidedとして登録しない。
+候補がなくても空配列を渡す。ADR/ADDRやコードはartifactsとして新規作成しない。
+テンプレート内のADR列は互換欄としてADDR IDも格納できる。列名は変更しない。
+
+```text
+python .github/skills/architecture/scripts/validate_design.py --stage draft
+```
+
+## FINALIZE
+
+1. Orchestratorが返すADDR結果とLINK_ADDR要求を読む。前工程の入力manifestは変更しない。
+2. 同一入力版の重要判断だけを反映し、設計書の参照欄へADDR IDを追加する。
+   決定内容はADDR参照とし、物理仕様として必要な値のみ設計書へ具体化する。
+3. Taskテンプレートで全実装対象を計画する。Task Summary・Details・Wave・Coverageを照合する。
+   依存Taskは実在し循環しないこと。Taskで新たな重要判断や受入条件を作らない。
+4. 未確定判断が増えればADDR_REQUIREDで返す。通常の局所的設計を全件ADDR化しない。
+5. 全入力sourcesを維持し、最新成果物のハッシュ・関連ADDRを持つFINAL manifestを
+   `reports/architecture/design-manifest.json` へ保存する。`design_input_sha256` にDRAFT manifestの
+   SHA-256を記録する。DRAFT成果物の旧ハッシュは入力履歴として保存し、FINALに最新値を記録する。
+6. 全体を検証して親へ返す。実装計画の初期進捗は未着手。実行中の進捗は別Reportへ記録し、
+   Gateで固定した設計・計画を無断更新しない。
+
+```text
+python .github/skills/architecture/scripts/validate_design.py --stage final
+python .github/skills/addr/scripts/validate_addr.py
+```
+
+重大な未決・入力の変化・不整合はBLOCKED、生成・検証失敗はFAILED。
+内容の意味的整合、設計不足、Scope、セキュリティは既存Assuranceが評価する。
+構造PASSとProducer SUCCESSだけで実装へ進めない。
+
+# Inline Traceability
+
+PREPARE/FINALIZEの責務・正本テンプレート・manifest・Gateは維持します。
+作成時に既存の関連要件/ADR欄へ実在IDを記入し、FILEの「File Interface ID」を保持します。
+Task Summary/Detailsの関連要件・ADDR/DBD根拠を一致させ、TASKだけを設計根拠にしません。
+提供済みDB論理設計がある場合はそのDBDを使用し、未提供のテンプレートは作りません。
+ADDR文書はADDR Agentが作成します。正本外のTraceability専用章やFQN欄を設計書へ追加しません。
+Trace Map/表はAuditorの派生成果物です。手編集での維持は行いません。
+
+## 共通3回ループ
+
+修正・再検査は `docs/ai-sdlc/bounded-repair-loop.md` に集約します。
+初回失敗0＋実修正1〜3の後も残る場合、FAIL/BLOCKEDを維持して親へ未解決として返し、
+親が履歴・影響を記録して次工程への継続を許可します。4回目を自己開始しません。
+未解決継続を品質SUCCESS/PASSへ変換せず、原因を隠す修正・捏造・削除・skipをしません。

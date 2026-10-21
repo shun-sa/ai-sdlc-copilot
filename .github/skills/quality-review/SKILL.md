@@ -93,6 +93,13 @@ Requirements Criterionを評価してください。
 
 ## Step 6. ADRを読み込む
 
+新ワークフローではFINAL設計manifest、設計書、実装タスク、`docs/addr/` のACTIVE ADDRも読む。
+共通Instructionsの設計判断契約に従い、旧ADRのみという読み方をしない。
+ARCHITECTUREではACTIVEをGate前の監査候補として評価し、後続Scopeでは有効なGateを要求する。
+ADDRの4章を判断根拠、5〜6章を差分、7章をGuardrailとして確認する。
+設計・Taskとの意味的整合を既存の整合性分析テンプレートで別Reportに記録する。
+ARCHITECTUREのJSON Reportへsource_baseline_sha256としてFINAL manifestのSHA-256を記録する。
+
 `docs/adr/`
 
 からScopeに応じてADRを取得してください。

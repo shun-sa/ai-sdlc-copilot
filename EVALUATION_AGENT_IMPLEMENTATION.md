@@ -1,5 +1,13 @@
 # Evaluation Agent Implementation
 
+## 実験計測の追加（2026-10-21）
+
+以下の「Framework本体への変更なし」は初回Evaluation導入時の説明です。
+現行版は実験の途中記録のためOrchestrator/テストAgentへ観測専用Scriptを接続しています。
+EvaluationとAcceptanceTestExecutorの開発後・人起動という境界、正本、Validator、品質Gate、
+共通3回ループは維持します。新指標と旧指標の違いは
+[実験計測ガイド](docs/ai-sdlc/experiment-measurement.md) を参照してください。
+
 ## 目的
 
 SDLC Frameworkへの影響を最小化しつつ、

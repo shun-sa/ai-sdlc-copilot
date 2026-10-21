@@ -385,3 +385,10 @@ SDLC Orchestratorへ診断結果だけを返してください。
 - Evidence
 - JSON Report
 - Markdown Report
+
+## 共通3回ループ
+
+修正・再検査は `docs/ai-sdlc/bounded-repair-loop.md` に集約します。
+初回失敗0＋実修正1〜3の後も残る場合、FAIL/BLOCKEDを維持して親へ未解決として返し、
+親が履歴・影響を記録して次工程への継続を許可します。4回目を自己開始しません。
+未解決継続を品質SUCCESS/PASSへ変換せず、原因を隠す修正・捏造・削除・skipをしません。

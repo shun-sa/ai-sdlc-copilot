@@ -1,5 +1,13 @@
 # AI SDLC Agent Framework
 
+実験用の実時間・工程時間・手戻り・分岐網羅率・結合項目・人の受入合格率は
+[実験計測ガイド](docs/ai-sdlc/experiment-measurement.md) を参照してください。
+開発中は観測記録だけを追加し、設計/ADDRの正本・品質Gate・共通3回ループは維持します。
+
+設計工程は設計書担当のArchitecture Agentと判断記録担当のADDR Agentへ分離しました。
+現在の工程・正本・検証・旧ADR互換は [設計書とADDRの分離](docs/ai-sdlc/design-addr-workflow.md) を参照してください。
+以下の旧ADR中心の説明は共通Instructionsの設計判断契約で読み替えます。
+
 GitHub CopilotのCustom Agent / Skillを利用し、
 RequirementsからArchitecture、Implementation、Unit Test、Integration Test、Final Assuranceまでを
 一気通貫で実行するためのAI SDLC Frameworkです。
@@ -201,75 +209,14 @@ Secret値そのものをReportへ出力してはいけません。
 
 ### Traceability Audit
 
-Traceability Auditorは、
-Requirements、ADR、Production Code、Unit Test、Integration Testを解析し、
-Semantic AuditとAST解析を組み合わせてTraceabilityを監査します。
+成果物に記入したID参照・trace注釈を正本として、C01〜C11を決定論的に検査します。
+作成Agentが参照を記入し、AuditorがTrace Map v3と要件対応表・確認結果表・ADDR別一覧を生成します。
+AST/FQN・呼出し解析によるリンク生成は廃止しました。
+意味的レビューは助言へ分離し、既存Quality/Security/Test Gateは維持します。
+設計工程はArchitecture PREPARE→ADDR→FINALIZE→Assurance→Gateのままです。
+3回修正後も残る不合格は未解決として記録し、工程継続判定で次へ進めます。
 
-まずSource Code / Test Codeから決定論的なAST Evidenceを生成します。
-
-```text
-reports/traceability/ast-index.json
-```
-
-そのEvidenceとRequirements / ADRを統合し、Derived Trace Mapを生成します。
-
-```text
-reports/traceability/trace-map.json
-```
-
-AST IndexとTrace MapはいずれもSource Artifactから再生成可能なDerived Artifactであり、
-RequirementsやADRのSource of Truthではありません。
-
-```mermaid
-flowchart LR
-    SRC[Requirements / ADR / Code / Test]
-    AST[AST Analyzers]
-    IDX[ast-index.json]
-    T[Traceability Auditor]
-    MAP[trace-map.json]
-    R[traceability-report.json]
-    V[Traceability Validator]
-
-    SRC --> AST --> IDX
-    SRC --> T
-    IDX --> T
-    T --> MAP
-    T --> R
-    IDX --> V
-    MAP --> V
-    R --> V
-```
-
-AST Analyzerは以下を標準対応します。
-
-- Python: Python標準`ast`
-- Java: JDK Compiler Tree API
-- TypeScript / JavaScript: TypeScript Compiler API
-
-Traceability Validatorは、意味判断ではなく以下を決定論的に確認します。
-
-- Requirement / ADR Referenceの実在
-- Implementation File / Symbol / qualified_nameの実在
-- AST IndexのSource Fingerprint整合
-- Trace Mapに紐付かないPublic Production Symbol
-- Unit Test → Production CodeのCall Trace
-- Unit Test Assertionの存在
-- Unit Test Mappingの`implementation_targets` / `assertion_count`
-- Integration Test Caseの実在
-- Coverage / Report整合
-
-Trace Map v2では、AST対応SourceについてImplementation Mappingに
-`file / symbol / qualified_name`を保持します。
-Unit Test Mappingには加えて
-`implementation_targets / assertion_count`を保持します。
-
-Traceability維持だけを目的にProduction/Test CodeへRequirement IDやADR IDコメントを埋め込みません。
-実装構造の識別情報はDerived Trace Mapで管理します。
-
-Derived Artifact自体の不整合を理由に、Source ArtifactをMapへ合わせて修正してはいけません。
-この場合は現在のSource ArtifactからAST Index / Trace Map / Reportを再生成します。
-
----
+詳細・移行・コマンドは [注釈方式トレーサビリティ](docs/ai-sdlc/inline-traceability.md) を参照してください。
 
 ## Phase Scope Assurance and Final Assurance
 
@@ -445,7 +392,6 @@ Integration Test Codeが変更された場合は、
     ├── quality-review/
     ├── security-review/
     ├── traceability/
-    │   ├── ast-index.json
     │   ├── trace-map.json
     │   ├── traceability-report.json
     │   ├── traceability-report.md
@@ -579,3 +525,10 @@ Orchestrator= SDLC制御
 として責務を分離し、
 RequirementsからFinal AssuranceまでのAI SDLCを
 一貫したGateとRouting Ruleのもとで実行することを目的としています。
+
+## 工程継続の基本方針（2026-10-21更新）
+
+全工程は、初回失敗とは別に修正・再検査を最大3回行い、残れば未解決を記録して次へ進めます。
+旧来の停止条件は品質PASSの判定として維持し、工程継続では共通3回方針を優先します。
+検査FAILは変更しません。最終結果もCOMPLETE_WITH_UNRESOLVEDとして正常完了と区別します。
+詳細は [共通3回ループ](docs/ai-sdlc/bounded-repair-loop.md) を参照してください。

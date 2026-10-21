@@ -1,843 +1,429 @@
 #!/usr/bin/env python3
-
-"""
-Requirements Structure Validator
-
-研究で定義されたCanonical Requirements Templateと、
-生成された要件定義成果物の構造一致を検証する。
-
-このValidatorは要件内容の意味的な妥当性は評価しない。
-構造・ID・ファイル間整合性のみを決定論的に検証する。
-
-Exit Code:
-    0: PASS
-    1: FAIL
-"""
+"""Validate split requirements against repository templates. Exit: 0 PASS, 1 FAIL."""
 
 from __future__ import annotations
 
 import argparse
 import re
 import sys
+from collections import Counter
+from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import unquote
 
 
-# ============================================================
-# Canonical Requirements Structure
-# ============================================================
-
-EXPECTED_TITLE = "要件定義構造"
-
-
-EXPECTED_SECTIONS = [
-    "1. 用語集",
-    "2. 背景",
-    "3. 目的",
-    "4. 誰のために",
-    "5. 開発のスコープ外（Out of Scope）",
-    "6. 成功条件（Acceptance Criteria）",
-    "7. 業務フロー/ユーザーストーリー",
-    "8. 共通機能要件",
-    "9. 認証・認可",
-    "10. エラー仕様（共通）",
-    "11. 非機能要件（NFR）",
-    "12. データモデル",
-    "13. 機能要件（FR）",
-    "14. 制約条件",
-]
+ARTIFACTS = {
+    "business_requirements.md": "docs/requirements/business_requirements.md",
+    "functional_requirements.md": "docs/requirements/functional_requirements.md",
+    "non_functional_requirements.md": "docs/requirements/non_functional_requirements.md",
+    "data_requirements.md": "docs/requirements/data_requirements.md",
+    "external_interface_requirements.md": "docs/requirements/external_interface_requirements.md",
+    "ui_report_requirements.md": "docs/requirements/ui_report_requirements.md",
+    "use_case_user_story_list.md": "docs/requirements/use-case-user-story-index.md",
+    "glossary.md": "docs/requirements/glossary.md",
+    "requirements_quality_checklist.md": "docs/requirements/requirements_quality_checklist.md",
+}
+TEMPLATE_DIR = Path(".github/skills/requirements/templates")
+STEERING_TEMPLATE = Path(".github/project-context/templates/project-ai-steering.md")
+STEERING_OUTPUT = Path(".github/project-context/project-ai-steering.md")
+INDEX = Path("docs/requirements/requirements.md")
+PLACEHOLDER = re.compile(r"\{\{[^{}]+\}\}|<\w[^<>\n]*>")
+HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+IDENTIFIER = re.compile(r"\b[A-Z][A-Z0-9_]*-\d+\b")
+LINK = re.compile(r"\[[^\]]+\]\(([^\s)]+)\)")
+NOT_APPLICABLE = {"該当なし", "N/A", "None", "なし", "－", "-"}
 
 
-EXPECTED_FR_FIELDS = [
-    "機能目的",
-    "機能概要",
-    "ユーザーストーリー",
-    "入力項目",
-    "バリデーション",
-    "データ構造（必要に応じて）",
-    "画面要件 ※詳細画面イメージは機能設計フェーズ（PLAN）でAIが作成",
-    "エラー条件",
-    "制約条件",
-    "非機能要件（任意, PJ全体非機能要件のカスタマイズ）",
-    "出力/挙動・完了条件",
-]
+@dataclass
+class Section:
+    level: int
+    title: str
+    body: list[str] = field(default_factory=list)
+    children: list[Section] = field(default_factory=list)
 
 
-# ============================================================
-# Regular Expressions
-# ============================================================
-
-H1_PATTERN = re.compile(
-    r"^#\s+(.+?)\s*$"
-)
-
-H2_PATTERN = re.compile(
-    r"^##\s+(.+?)\s*$"
-)
-
-MAIN_FR_PATTERN = re.compile(
-    r"^-\s+(FR-\d{3,})\s*:\s*(.+?)\s*$"
-)
-
-FEATURE_TITLE_PATTERN = re.compile(
-    r"^#\s+(FR-\d{3,})\s*:\s*(.+?)\s*$"
-)
-
-BULLET_PATTERN = re.compile(
-    r"^\s*-\s+(.+?)\s*$"
-)
-
-TOP_LEVEL_BULLET_PATTERN = re.compile(
-    r"^-\s+(.+?)\s*$"
-)
+def visible_text(text: str) -> str:
+    return re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
 
 
-# ============================================================
-# Utility
-# ============================================================
-
-def read_file(path: Path) -> str:
-    """UTF-8でMarkdownファイルを読み込む。"""
-
-    if not path.exists():
-        raise FileNotFoundError(
-            f"File not found: {path}"
-        )
-
-    if not path.is_file():
-        raise ValueError(
-            f"Not a file: {path}"
-        )
-
-    return path.read_text(encoding="utf-8")
-
-
-def normalize(value: str) -> str:
-    """
-    比較に影響する不要な空白のみを正規化する。
-
-    構造上の名称自体は変更しない。
-    """
-
-    return value.strip().replace("\u00a0", " ")
-
-
-def find_first_h1(text: str) -> str | None:
-    """最初のH1を取得する。"""
-
-    for line in text.splitlines():
-        match = H1_PATTERN.match(line)
-
-        if match:
-            # ## をH1として誤認しない
-            if line.startswith("##"):
-                continue
-
-            return normalize(match.group(1))
-
-    return None
-
-
-def extract_h2_sections(text: str) -> list[str]:
-    """H2を出現順に取得する。"""
-
-    sections: list[str] = []
-
-    for line in text.splitlines():
-        match = H2_PATTERN.match(line)
-
-        if match:
-            sections.append(
-                normalize(match.group(1))
-            )
-
-    return sections
-
-
-def extract_section_body(
-    text: str,
-    section_name: str,
-) -> str:
-    """
-    指定されたH2セクションの本文だけを取得する。
-    """
-
-    lines = text.splitlines()
-
-    start_index: int | None = None
-
-    for index, line in enumerate(lines):
-        match = H2_PATTERN.match(line)
-
-        if not match:
+def markdown_lines(text: str) -> list[str]:
+    lines = []
+    fence = None
+    for line in visible_text(text).splitlines():
+        marker = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if marker:
+            token = marker.group(1)
+            if fence is None:
+                fence = token
+            elif token[0] == fence[0] and len(token) >= len(fence):
+                fence = None
             continue
-
-        if normalize(match.group(1)) == section_name:
-            start_index = index + 1
-            break
-
-    if start_index is None:
-        return ""
-
-    end_index = len(lines)
-
-    for index in range(start_index, len(lines)):
-        if H2_PATTERN.match(lines[index]):
-            end_index = index
-            break
-
-    return "\n".join(
-        lines[start_index:end_index]
-    )
+        if fence is None:
+            lines.append(line)
+    return lines
 
 
-# ============================================================
-# Main Structure Validation
-# ============================================================
-
-def validate_title(
-    text: str,
-    source_name: str,
-) -> list[str]:
-
-    errors: list[str] = []
-
-    actual_title = find_first_h1(text)
-
-    if actual_title != EXPECTED_TITLE:
-        errors.append(
-            f"{source_name}: "
-            f"H1 title mismatch. "
-            f"Expected='{EXPECTED_TITLE}', "
-            f"Actual='{actual_title}'"
-        )
-
-    return errors
-
-
-def validate_sections(
-    text: str,
-    source_name: str,
-) -> list[str]:
-
-    errors: list[str] = []
-
-    actual_sections = extract_h2_sections(text)
-
-    if actual_sections == EXPECTED_SECTIONS:
-        return errors
-
-    errors.append(
-        f"{source_name}: "
-        "Requirements section structure does not "
-        "match the Canonical Requirements Structure."
-    )
-
-    # 不足
-    missing = [
-        section
-        for section in EXPECTED_SECTIONS
-        if section not in actual_sections
-    ]
-
-    for section in missing:
-        errors.append(
-            f"{source_name}: "
-            f"Missing section: '{section}'"
-        )
-
-    # 余分
-    extra = [
-        section
-        for section in actual_sections
-        if section not in EXPECTED_SECTIONS
-    ]
-
-    for section in extra:
-        errors.append(
-            f"{source_name}: "
-            f"Unexpected section: '{section}'"
-        )
-
-    # 同じ要素でも順番違い
-    if (
-        not missing
-        and not extra
-        and actual_sections != EXPECTED_SECTIONS
-    ):
-        errors.append(
-            f"{source_name}: "
-            "Section order has been changed."
-        )
-
-        for index, expected in enumerate(
-            EXPECTED_SECTIONS
-        ):
-            actual = actual_sections[index]
-
-            if expected != actual:
-                errors.append(
-                    f"{source_name}: "
-                    f"Position {index + 1}: "
-                    f"Expected='{expected}', "
-                    f"Actual='{actual}'"
-                )
-
-    return errors
-
-
-# ============================================================
-# Canonical Template Validation
-# ============================================================
-
-def extract_template_fr_fields(
-    text: str,
-) -> list[str]:
-
-    """
-    Canonical Templateの13章から、
-    FR内部構成要素を抽出する。
-
-    サンプル値は無視し、
-    EXPECTED_FR_FIELDSに該当するラベルのみを取得する。
-    """
-
-    fr_body = extract_section_body(
-        text,
-        "13. 機能要件（FR）",
-    )
-
-    expected_set = set(EXPECTED_FR_FIELDS)
-
-    result: list[str] = []
-
-    for line in fr_body.splitlines():
-
-        match = BULLET_PATTERN.match(line)
-
+def parse_document(text: str) -> Section:
+    root = Section(0, "")
+    stack = [root]
+    for line in markdown_lines(text):
+        match = HEADING.match(line)
         if not match:
+            stack[-1].body.append(line)
             continue
+        section = Section(len(match.group(1)), match.group(2))
+        while stack[-1].level >= section.level:
+            stack.pop()
+        stack[-1].children.append(section)
+        stack.append(section)
+    return root
 
-        value = normalize(
-            match.group(1)
-        )
 
-        if value in expected_set:
-            result.append(value)
+def walk(section: Section):
+    yield section
+    for child in section.children:
+        yield from walk(child)
 
+
+def cells(line: str) -> list[str]:
+    return [cell.strip().strip("`") for cell in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+
+
+def tables(section: Section) -> list[tuple[list[str], list[list[str]]]]:
+    result = []
+    lines = section.body
+    position = 0
+    while position + 1 < len(lines):
+        if not lines[position].lstrip().startswith("|"):
+            position += 1
+            continue
+        header = cells(lines[position])
+        separator = cells(lines[position + 1])
+        if not separator or not all(re.fullmatch(r":?-{3,}:?", value) for value in separator):
+            position += 1
+            continue
+        position += 2
+        rows = []
+        while position < len(lines) and lines[position].lstrip().startswith("|"):
+            rows.append(cells(lines[position]))
+            position += 1
+        result.append((header, rows))
     return result
 
 
-def validate_template_fr_structure(
-    text: str,
-    source_name: str,
-) -> list[str]:
+def all_tables(document: Section):
+    for section in walk(document):
+        for header, rows in tables(section):
+            yield section, header, rows
 
-    errors: list[str] = []
 
-    actual = extract_template_fr_fields(text)
+def pattern(value: str) -> str:
+    parts = []
+    cursor = 0
+    for match in PLACEHOLDER.finditer(value):
+        parts.extend((re.escape(value[cursor:match.start()]), r".+?"))
+        cursor = match.end()
+    parts.append(re.escape(value[cursor:]))
+    return "".join(parts)
 
-    if actual == EXPECTED_FR_FIELDS:
-        return errors
 
-    errors.append(
-        f"{source_name}: "
-        "FR internal structure has been modified."
+def same_value(expected: str, actual: str) -> bool:
+    return re.fullmatch(pattern(expected), actual) is not None
+
+
+def renamed_number(title: str, old: str, new: str) -> str:
+    if old and (title.startswith(old + ".") or title.startswith(old + " ")):
+        return new + title[len(old):]
+    return title
+
+
+def compare_structure(expected: Section, actual: Section, source: Path, errors: list[str]) -> None:
+    expected_tables = tables(expected)
+    actual_tables = tables(actual)
+    if len(expected_tables) != len(actual_tables):
+        errors.append(f"{source}: table count mismatch in '{actual.title}'")
+    for (expected_header, _), (actual_header, _) in zip(expected_tables, actual_tables):
+        actor_columns = expected_header[:2] == ["機能ID", "機能名"] and any(
+            "{{利用者区分" in value for value in expected_header[2:]
+        )
+        valid = (
+            len(actual_header) >= 3 and actual_header[:2] == expected_header[:2]
+            if actor_columns
+            else len(expected_header) == len(actual_header)
+            and all(same_value(left, right) for left, right in zip(expected_header, actual_header))
+        )
+        if not valid:
+            errors.append(f"{source}: table columns mismatch in '{actual.title}'")
+    for header, rows in actual_tables:
+        for row in rows:
+            if len(row) != len(header) or any(not value for value in row):
+                errors.append(f"{source}: empty cell or invalid row width in '{actual.title}'")
+
+    position = 0
+    for template_child in expected.children:
+        repeat = PLACEHOLDER.search(template_child.title) is not None and template_child.level > 1
+        count = 0
+        while position < len(actual.children):
+            child = actual.children[position]
+            title = template_child.title
+            number = re.match(r"^(\d+(?:\.\d+)+)\s", title)
+            old_number = number.group(1) if number else ""
+            new_number = old_number
+            if repeat and old_number:
+                prefix, ordinal = old_number.rsplit(".", 1)
+                new_number = f"{prefix}.{int(ordinal) + count}"
+                title = renamed_number(title, old_number, new_number)
+            if child.level != template_child.level or not same_value(title, child.title):
+                break
+            adjusted = template_child
+            if new_number != old_number:
+                adjusted = renumber_section(template_child, old_number, new_number)
+            compare_structure(adjusted, child, source, errors)
+            position += 1
+            count += 1
+            if not repeat:
+                break
+        if count == 0:
+            non_applicable = "該当なし" in "\n".join(actual.body)
+            if not (repeat and non_applicable):
+                errors.append(f"{source}: missing or reordered heading '{template_child.title}'")
+    for extra in actual.children[position:]:
+        errors.append(f"{source}: unexpected or reordered heading '{extra.title}'")
+
+
+def renumber_section(section: Section, old: str, new: str) -> Section:
+    return Section(
+        section.level,
+        renamed_number(section.title, old, new),
+        section.body,
+        [renumber_section(child, old, new) for child in section.children],
     )
 
-    missing = [
-        value
-        for value in EXPECTED_FR_FIELDS
-        if value not in actual
-    ]
 
-    extra = [
-        value
-        for value in actual
-        if value not in EXPECTED_FR_FIELDS
-    ]
+def validate_document(template: str, text: str, source: Path) -> list[str]:
+    errors = []
+    visible = visible_text(text)
+    if re.search(r"\{\{[^{}]+\}\}", visible):
+        errors.append(f"{source}: unresolved placeholder")
+    for token in set(re.findall(r"<\w[^<>\n]*>", visible_text(template))):
+        if token in visible:
+            errors.append(f"{source}: unresolved placeholder {token}")
+    expected_keys = re.findall(r"^([a-z_]+):", template.split("---", 2)[1], re.MULTILINE) if template.startswith("---") else []
+    actual_keys = re.findall(r"^([a-z_]+):", text.split("---", 2)[1], re.MULTILINE) if text.startswith("---") and text.count("---") >= 2 else []
+    if expected_keys != actual_keys:
+        errors.append(f"{source}: front matter keys mismatch")
+    compare_structure(parse_document(template), parse_document(text), source, errors)
+    return errors
 
-    for value in missing:
-        errors.append(
-            f"{source_name}: "
-            f"Missing FR field: '{value}'"
-        )
 
-    for value in extra:
-        errors.append(
-            f"{source_name}: "
-            f"Unexpected FR field: '{value}'"
-        )
+def row_records(document: Section, required: set[str], chapter: str = ""):
+    for section, header, rows in all_tables(document):
+        if required.issubset(header) and section.title.startswith(chapter):
+            for row in rows:
+                if len(row) == len(header):
+                    yield dict(zip(header, row))
 
-    if (
-        not missing
-        and not extra
-        and actual != EXPECTED_FR_FIELDS
+
+def definitions(records, column: str, source: Path, errors: list[str]) -> list[str]:
+    values = [record[column] for record in records if record[column] not in NOT_APPLICABLE]
+    for value, count in Counter(values).items():
+        if count > 1:
+            errors.append(f"{source}: duplicate definition {value}")
+    return values
+
+
+def resolve_link(source: Path, link: str, root: Path) -> Path | None:
+    target = unquote(link.split("#", 1)[0])
+    if not target or re.match(r"[a-zA-Z][a-zA-Z0-9+.-]*:", target):
+        return None
+    resolved = (source.parent / target).resolve()
+    if not resolved.is_relative_to(root.resolve()):
+        return None
+    return resolved
+
+
+def validate_index(root: Path, paths: list[Path], fr_ids: list[str], nfr_ids: list[str]) -> list[str]:
+    errors = []
+    source = root / INDEX
+    try:
+        text = source.read_text(encoding="utf-8-sig")
+    except (OSError, UnicodeError) as error:
+        return [f"{source}: {error}"]
+    if not text.splitlines() or text.splitlines()[0] != "# Requirements Index":
+        errors.append(f"{source}: expected '# Requirements Index' for downstream discovery")
+    targets = set()
+    for link in LINK.findall(visible_text(text)):
+        target = resolve_link(source, link, root)
+        if target is None or not target.is_file():
+            errors.append(f"{source}: invalid artifact link {link}")
+        else:
+            targets.add(target)
+    for path in paths:
+        if path.resolve() not in targets:
+            errors.append(f"{source}: missing artifact link {path.relative_to(root)}")
+    document = parse_document(text)
+    for heading, identifiers, output in (
+        ("機能要件", fr_ids, "functional_requirements.md"),
+        ("非機能要件", nfr_ids, "non_functional_requirements.md"),
     ):
-        errors.append(
-            f"{source_name}: "
-            "FR field order has been changed."
-        )
-
+        sections = [section for section in walk(document) if section.level == 2 and section.title == heading]
+        actual = []
+        for section in sections:
+            for line in section.body:
+                match = re.match(r"^-\s+([^\s:]+):\s+(.+)$", line)
+                if match:
+                    actual.append(match.group(1))
+                    links = LINK.findall(match.group(2))
+                    expected_path = root / "docs/requirements" / output
+                    if len(links) != 1 or resolve_link(source, links[0], root) != expected_path.resolve():
+                        errors.append(f"{source}: wrong source link for {match.group(1)}")
+        if len(sections) != 1 or Counter(actual) != Counter(identifiers):
+            errors.append(f"{source}: {heading} IDs differ from source definitions")
     return errors
 
 
-def validate_canonical_template(
-    path: Path,
-) -> list[str]:
-
+def validate(root: Path) -> list[str]:
+    root = root.resolve()
     errors: list[str] = []
-
-    try:
-        text = read_file(path)
-
-    except (FileNotFoundError, ValueError) as error:
-        return [
-            f"Canonical Template: {error}"
-        ]
-
-    errors.extend(
-        validate_title(
-            text,
-            "Canonical Template",
-        )
-    )
-
-    errors.extend(
-        validate_sections(
-            text,
-            "Canonical Template",
-        )
-    )
-
-    errors.extend(
-        validate_template_fr_structure(
-            text,
-            "Canonical Template",
-        )
-    )
-
-    return errors
-
-
-# ============================================================
-# requirements.md Validation
-# ============================================================
-
-def extract_main_fr_ids(
-    text: str,
-) -> list[str]:
-
-    """
-    requirements.md の
-    「13. 機能要件（FR）」に記載されたFR IDを取得する。
-    """
-
-    fr_body = extract_section_body(
-        text,
-        "13. 機能要件（FR）",
-    )
-
-    ids: list[str] = []
-
-    for line in fr_body.splitlines():
-
-        match = MAIN_FR_PATTERN.match(line)
-
-        if match:
-            ids.append(
-                match.group(1)
-            )
-
-    return ids
-
-
-def find_duplicates(
-    values: list[str],
-) -> list[str]:
-
-    seen: set[str] = set()
-    duplicates: set[str] = set()
-
-    for value in values:
-
-        if value in seen:
-            duplicates.add(value)
-
-        seen.add(value)
-
-    return sorted(duplicates)
-
-
-def validate_main_requirements(
-    path: Path,
-) -> tuple[list[str], list[str]]:
-
-    errors: list[str] = []
-
-    try:
-        text = read_file(path)
-
-    except (FileNotFoundError, ValueError) as error:
-        return (
-            [f"Requirements document: {error}"],
-            [],
-        )
-
-    errors.extend(
-        validate_title(
-            text,
-            str(path),
-        )
-    )
-
-    errors.extend(
-        validate_sections(
-            text,
-            str(path),
-        )
-    )
-
-    fr_ids = extract_main_fr_ids(text)
-
-    duplicates = find_duplicates(fr_ids)
-
-    for fr_id in duplicates:
-        errors.append(
-            f"{path}: "
-            f"Duplicate FR ID: {fr_id}"
-        )
-
-    return errors, fr_ids
-
-
-# ============================================================
-# Split Feature File Validation
-# ============================================================
-
-def extract_feature_title(
-    text: str,
-) -> tuple[str, str] | None:
-
-    for line in text.splitlines():
-
-        match = FEATURE_TITLE_PATTERN.match(line)
-
-        if match:
-            return (
-                match.group(1),
-                normalize(match.group(2)),
-            )
-
-    return None
-
-
-def extract_feature_fields(
-    text: str,
-) -> list[str]:
-
-    """
-    FR別ファイルのトップレベル構成要素を取得する。
-
-    以下の形式を前提とする。
-
-    - 機能目的
-      - ...
-    - 機能概要
-      - ...
-    """
-
-    result: list[str] = []
-
-    for line in text.splitlines():
-
-        match = TOP_LEVEL_BULLET_PATTERN.match(line)
-
-        if not match:
+    texts: dict[str, str] = {}
+    documents: dict[str, Section] = {}
+    templates: dict[str, str] = {}
+    pairs = [(name, TEMPLATE_DIR / name, Path(output)) for name, output in ARTIFACTS.items()]
+    pairs.append(("steering", STEERING_TEMPLATE, STEERING_OUTPUT))
+    for name, template_path, output in pairs:
+        try:
+            templates[name] = (root / template_path).read_text(encoding="utf-8-sig")
+            texts[name] = (root / output).read_text(encoding="utf-8-sig")
+        except (OSError, UnicodeError) as error:
+            errors.append(f"{name}: {error}")
             continue
-
-        result.append(
-            normalize(match.group(1))
-        )
-
-    return result
-
-
-def validate_feature_structure(
-    path: Path,
-    main_fr_ids: list[str],
-) -> tuple[list[str], str | None]:
-
-    errors: list[str] = []
-
+        errors.extend(validate_document(templates[name], texts[name], root / output))
+        documents[name] = parse_document(texts[name])
     try:
-        text = read_file(path)
-
-    except (FileNotFoundError, ValueError) as error:
-        return (
-            [f"{path}: {error}"],
-            None,
-        )
-
-    title = extract_feature_title(text)
-
-    if title is None:
-        errors.append(
-            f"{path}: "
-            "FR title is missing. "
-            "Expected format: "
-            "'# FR-001: 機能名'"
-        )
-
-        return errors, None
-
-    fr_id, _ = title
-
-    # requirements.md側にFRがあること
-    if fr_id not in main_fr_ids:
-        errors.append(
-            f"{path}: "
-            f"{fr_id} is not defined in "
-            "requirements.md section "
-            "'13. 機能要件（FR）'."
-        )
-
-    actual_fields = extract_feature_fields(text)
-
-    if actual_fields != EXPECTED_FR_FIELDS:
-
-        errors.append(
-            f"{path}: "
-            "FR structure does not match "
-            "the Canonical Requirements Structure."
-        )
-
-        missing = [
-            field
-            for field in EXPECTED_FR_FIELDS
-            if field not in actual_fields
-        ]
-
-        extra = [
-            field
-            for field in actual_fields
-            if field not in EXPECTED_FR_FIELDS
-        ]
-
-        for field in missing:
-            errors.append(
-                f"{path}: "
-                f"Missing FR field: '{field}'"
-            )
-
-        for field in extra:
-            errors.append(
-                f"{path}: "
-                f"Unexpected top-level FR field: "
-                f"'{field}'"
-            )
-
-        if (
-            not missing
-            and not extra
-            and actual_fields != EXPECTED_FR_FIELDS
-        ):
-            errors.append(
-                f"{path}: "
-                "FR field order has been changed."
-            )
-
-    return errors, fr_id
-
-
-def validate_feature_directory(
-    feature_dir: Path,
-    main_fr_ids: list[str],
-) -> list[str]:
-
-    errors: list[str] = []
-
-    # FRファイル分割は任意のため、
-    # ディレクトリ不存在はエラーにしない。
-    if not feature_dir.exists():
+        uc_template = (root / TEMPLATE_DIR / "use_case_detail.md").read_text(encoding="utf-8-sig")
+    except (OSError, UnicodeError) as error:
+        errors.append(f"Use Case template: {error}")
+        return errors
+    if len(documents) != len(pairs):
         return errors
 
-    files = sorted(
-        path
-        for path in feature_dir.glob("*.md")
-        if path.is_file()
-    )
+    functional = documents["functional_requirements.md"]
+    non_functional = documents["non_functional_requirements.md"]
+    fr_ids = definitions(row_records(functional, {"ID", "機能名"}, "4."), "ID", root / ARTIFACTS["functional_requirements.md"], errors)
+    nfr_rows = list(row_records(non_functional, {"ID", "要件項目", "目標値（単位付き）", "検証方法"}))
+    nfr_ids = definitions(nfr_rows, "ID", root / ARTIFACTS["non_functional_requirements.md"], errors)
+    for identifier in set(fr_ids) & set(nfr_ids):
+        errors.append(f"Requirement ID defined as both functional and non-functional: {identifier}")
+    details = [section for section in walk(functional) if section.level == 3 and re.match(r"^6\.\d+ ", section.title)]
+    detail_ids = [re.sub(r"^6\.\d+\s+", "", section.title).split("：", 1)[0].split(":", 1)[0].strip() for section in details]
+    if Counter(detail_ids) != Counter(fr_ids):
+        errors.append("Functional list and detail IDs differ")
+    for section, identifier in zip(details, detail_ids):
+        values = [row["内容"] for row in row_records(section, {"項目", "内容"}) if row["項目"] == "機能ID"]
+        if values != [identifier]:
+            errors.append(f"Functional detail basic information ID differs: {identifier}")
+    permission_ids = [row["機能ID"] for row in row_records(functional, {"機能ID", "機能名"}, "5.1") if row["機能ID"] not in NOT_APPLICABLE]
+    if Counter(permission_ids) != Counter(fr_ids):
+        errors.append("Functional list and permission IDs differ")
+    template_nfr = parse_document(templates["non_functional_requirements.md"])
+    required_items = [(row["区分"], row["要件項目"]) for row in row_records(template_nfr, {"ID", "区分", "要件項目", "目標値（単位付き）"})]
+    actual_items = {(row["区分"], row["要件項目"]) for row in nfr_rows}
+    for item in required_items:
+        if item not in actual_items:
+            errors.append(f"Non-functional representative item removed: {item}")
 
-    feature_ids: list[str] = []
+    steering_references = {
+        row["種別"]: row["Path / Reference"]
+        for row in row_records(documents["steering"], {"種別", "Path / Reference"})
+    }
+    for kind, expected in (
+        ("Requirements", INDEX),
+        ("Use Case Index", Path(ARTIFACTS["use_case_user_story_list.md"])),
+        ("Use Case Details", Path("docs/requirements/use-cases")),
+        ("Glossary", Path(ARTIFACTS["glossary.md"])),
+    ):
+        value = steering_references.get(kind, "")
+        links = LINK.findall(value)
+        target = resolve_link(root / STEERING_OUTPUT, links[0], root) if links else (root / value).resolve()
+        if target != (root / expected).resolve():
+            errors.append(f"AI Steering reference differs from artifact contract: {kind}")
 
-    for path in files:
+    index_doc = documents["use_case_user_story_list.md"]
+    actors = definitions(row_records(index_doc, {"Actor ID", "種別"}, "2."), "Actor ID", root / ARTIFACTS["use_case_user_story_list.md"], errors)
+    stories = list(row_records(index_doc, {"User Story ID", "Actor ID"}, "3."))
+    story_ids = definitions(stories, "User Story ID", root / ARTIFACTS["use_case_user_story_list.md"], errors)
+    use_cases = list(row_records(index_doc, {"Use Case ID", "詳細ファイル"}, "4."))
+    uc_ids = definitions(use_cases, "Use Case ID", root / ARTIFACTS["use_case_user_story_list.md"], errors)
+    uc_paths = []
+    ac_ids = []
+    for record in use_cases:
+        if record["Use Case ID"] in NOT_APPLICABLE:
+            continue
+        source = root / ARTIFACTS["use_case_user_story_list.md"]
+        link = record["詳細ファイル"]
+        matches = LINK.findall(link)
+        target = resolve_link(source, matches[0] if matches else link, root)
+        if target is None or not target.is_relative_to(root / "docs/requirements/use-cases"):
+            errors.append(f"Use Case detail path invalid: {link}")
+            continue
+        uc_paths.append(target)
+        try:
+            text = target.read_text(encoding="utf-8-sig")
+        except (OSError, UnicodeError) as error:
+            errors.append(f"{target}: {error}")
+            continue
+        errors.extend(validate_document(uc_template, text, target))
+        document = parse_document(text)
+        documents[str(target)] = document
+        info = {row["項目"]: row["内容"] for row in row_records(document, {"項目", "内容"}, "2.")}
+        if info.get("Use Case ID") != record["Use Case ID"]:
+            errors.append(f"{target}: Use Case ID differs from index")
+        criteria = [section for section in walk(document) if section.level == 3 and re.match(r"^9\.\d+ ", section.title)]
+        ac_ids.extend(re.sub(r"^9\.\d+\s+", "", section.title).split("：", 1)[0].strip() for section in criteria)
+    for identifier, count in Counter(ac_ids).items():
+        if count > 1:
+            errors.append(f"Duplicate AC definition: {identifier}")
+    for path in (root / "docs/requirements/use-cases").rglob("*.md"):
+        if path.resolve() not in uc_paths:
+            errors.append(f"Unlisted Use Case detail: {path}")
 
-        file_errors, fr_id = (
-            validate_feature_structure(
-                path,
-                main_fr_ids,
-            )
-        )
-
-        errors.extend(file_errors)
-
-        if fr_id is not None:
-            feature_ids.append(fr_id)
-
-    duplicates = find_duplicates(feature_ids)
-
-    for fr_id in duplicates:
-        errors.append(
-            f"{feature_dir}: "
-            f"Multiple feature files found "
-            f"for {fr_id}."
-        )
-
+    known = {
+        "関連Requirement ID": set(fr_ids + nfr_ids),
+        "Actor ID": set(actors),
+        "Primary Actor": set(actors),
+        "関連Use Case ID": set(uc_ids),
+        "関連User Story ID": set(story_ids),
+    }
+    for name, document in documents.items():
+        for _, header, rows in all_tables(document):
+            for row in rows:
+                references = list(zip(header, row))
+                if header == ["項目", "内容"] and len(row) == 2:
+                    references.append((row[0], row[1]))
+                for column, value in references:
+                    if column in known:
+                        for identifier in IDENTIFIER.findall(value):
+                            if identifier not in known[column]:
+                                errors.append(f"{name}: undefined reference {identifier} in {column}")
+    paths = [root / output for output in ARTIFACTS.values()] + [root / STEERING_OUTPUT] + uc_paths
+    errors.extend(validate_index(root, paths, fr_ids, nfr_ids))
     return errors
 
-
-# ============================================================
-# Full Validation
-# ============================================================
-
-def validate(
-    template_path: Path,
-    requirements_path: Path,
-    feature_dir: Path,
-) -> list[str]:
-
-    errors: list[str] = []
-
-    # 1. Canonical Template自体を検証
-    errors.extend(
-        validate_canonical_template(
-            template_path
-        )
-    )
-
-    # Templateが壊れている場合、
-    # その後のValidation結果を信用しない。
-    if errors:
-        return errors
-
-    # 2. requirements.md
-    main_errors, main_fr_ids = (
-        validate_main_requirements(
-            requirements_path
-        )
-    )
-
-    errors.extend(main_errors)
-
-    # 3. 分割されたFR
-    errors.extend(
-        validate_feature_directory(
-            feature_dir,
-            main_fr_ids,
-        )
-    )
-
-    return errors
-
-
-# ============================================================
-# CLI
-# ============================================================
 
 def parse_args() -> argparse.Namespace:
-
-    parser = argparse.ArgumentParser(
-        description=(
-            "Validate Requirements artifacts "
-            "against the Canonical "
-            "Requirements Structure."
-        )
-    )
-
-    parser.add_argument(
-        "--template",
-        default=(
-            ".github/skills/requirements/"
-            "templates/requirements-template.md"
-        ),
-        help=(
-            "Path to Canonical Requirements Template."
-        ),
-    )
-
-    parser.add_argument(
-        "--requirements",
-        default=(
-            "docs/requirements/requirements.md"
-        ),
-        help=(
-            "Path to requirements.md."
-        ),
-    )
-
-    parser.add_argument(
-        "--feature-dir",
-        default=(
-            "docs/requirements/features"
-        ),
-        help=(
-            "Directory containing split FR files."
-        ),
-    )
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=Path.cwd(), help="Repository root (default: current directory)")
     return parser.parse_args()
 
 
 def main() -> int:
-
-    args = parse_args()
-
-    template_path = Path(args.template)
-    requirements_path = Path(args.requirements)
-    feature_dir = Path(args.feature_dir)
-
-    errors = validate(
-        template_path=template_path,
-        requirements_path=requirements_path,
-        feature_dir=feature_dir,
-    )
-
-    print(
-        "========================================"
-    )
-    print(
-        " Requirements Structure Validation"
-    )
-    print(
-        "========================================"
-    )
-
+    errors = validate(parse_args().root)
     if errors:
-
-        print()
-        print("[FAIL] Validation failed.")
-        print()
-
-        for index, error in enumerate(
-            errors,
-            start=1,
-        ):
-            print(
-                f"{index}. {error}"
-            )
-
-        print()
-        print(
-            f"Total errors: {len(errors)}"
-        )
-
+        print("[FAIL] Requirements structure validation")
+        for error in errors:
+            print(f"- {error}")
         return 1
-
-    print()
-    print(
-        "[PASS] Requirements structure is valid."
-    )
-    print()
-
+    print("[PASS] Requirements structure is valid (semantic review is separate).")
     return 0
 
 

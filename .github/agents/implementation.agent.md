@@ -254,28 +254,16 @@ Implementation Agentにあります。
 Regression確認として必要に応じて実行してください。
 
 
-# Traceability
+# Inline Traceability
 
-Implementation工程では、
-Requirementと実装箇所の対応を記録してください。
-
-最低限以下を特定します。
-
-- Requirement ID
-- 実装ファイル
-- 主要Symbolまたは責務
-- Related ADR
-
-Requirement IDおよびADR IDを
-Implementation Agent自身で変更してはいけません。
-
-Implementation Agentは
-Unit Test IDまたはIntegration Test IDを
-先回りして生成してはいけません。
-
-後続のTraceability Auditorが利用できる状態で
-SDLC Orchestratorへ返却してください。
-
+成果物作成と同時に先頭へ `# trace: ADDR-001, FILE-001`（実在IDのみ）を付けます。
+Djangoは `{# trace: ADDR-001 #}`。通常のProduction注釈はADDR/DBD/FILEのみで、TASKを根拠にしません。
+先頭ID>=2かつトップレベル定義>=2ならprivate/helperも含め、各定義直前・decoratorより前へ
+先頭の部分集合のtraceを付けます。詳細はTraceability Audit SkillとPolicyに従います。
+要件への直接参照は、現在のArchitecture GateがADDR不要として承認した対象のbasis_idsに限ります。
+監査表・Trace Mapは手編集せず、仕様根拠を変える修正は設計/ADDR工程へ戻します。
+既存IDを変更せず、Test IDを先回りして作りません。
+依頼された場合だけコミットし、件名先頭に既存[TASK-nnn]/[CR-nnn]を使います。
 
 # Out of Scope
 

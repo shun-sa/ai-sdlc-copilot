@@ -1,5 +1,11 @@
 # AI SDLC Agent Framework Guide
 
+実験の記録担当・指標の定義・出力・開始方法は [実験計測ガイド](experiment-measurement.md) を参照してください。
+観測用Scriptと、開発後に人が起動するEvaluation/AcceptanceTestExecutorを区別します。
+
+設計工程の現行仕様は [設計書とADDRの分離](design-addr-workflow.md) を参照してください。
+Architectureは設計書、ADDRは重要判断・差分を担当し、既存ADRの記述には共通の互換契約を適用します。
+
 ## 1. このドキュメントの目的
 
 本ドキュメントは、本Repositoryで利用するAI SDLC Agent Frameworkについて、
@@ -563,210 +569,15 @@ Deterministic Check:
 
 ### 6.3 Traceability Auditor
 
-#### 目的（Traceability Auditor）
+成果物内ID・trace注釈を正本としてC01〜C11を機械検査します。
+作成Agentが参照を記入し、Auditorは元成果物を編集せず表とTrace Map v3を再生成します。
+意味的レビューは助言として分離し、独立Quality/Security/Test Gateは維持します。
+正本テンプレートとArchitecture PREPARE→ADDR→FINALIZE→Gateは変更しません。
 
-Traceability Auditorは、
-現在のSource Artifactを意味的に監査すると同時に、
-AST Analyzerから得た決定論的Evidenceを利用してTraceabilityを生成・検証します。
-
-```text
-Requirements / ADR / Code / Test
-              │
-              ├───────────────┐
-              ↓               ↓
-       Semantic Audit      AST Analysis
-              │               ↓
-              │          ast-index.json
-              │               │
-              └───────┬───────┘
-                      ↓
-               trace-map.json
-               [Derived Index]
-                      ↓
-            Traceability Validator
-```
-
-生成するDerived Artifact:
-
-```text
-reports/traceability/ast-index.json
-reports/traceability/trace-map.json
-```
-
-`ast-index.json`はSource Code / Test Codeの物理構造Evidenceです。
-最低限、以下を保持します。
-
-- Source Fingerprint
-- Analyzer Status
-- Production Symbol / qualified_name
-- Test Symbol / qualified_name
-- Symbol間Call
-- Assertion Count
-
-標準Analyzer:
-
-| Language | Analyzer |
-|---|---|
-| Python | Python標準`ast` |
-| Java | JDK Compiler Tree API |
-| TypeScript / JavaScript | TypeScript Compiler API |
-
-AST IndexもTrace MapもSource of Truthではありません。
-Source Artifact変更後は再生成します。
-
-#### Phase 2: Symbol / FQN実在確認
-
-Trace Map v2では、AST対応Production SourceについてImplementation Mappingに
-以下を保持します。
-
-```text
-file
-symbol
-qualified_name
-```
-
-ValidatorはAST Indexを使い、`symbol`と`qualified_name`が実在し、
-同一Symbolを指していることを決定論的に確認します。
-
-これにより、AIが存在しないFQNを生成した場合や、
-リファクタリング後に古いFQNが残った場合を検出できます。
-
-#### Phase 3: Orphan Implementation検出
-
-ASTでRepository内のProduction Symbolを列挙し、
-Trace MapのImplementation Mappingと比較します。
-
-```text
-Repository Production Symbols
-          -
-Trace Map Covered Symbols
-          =
-Orphan Implementation Candidates
-```
-
-正当な除外理由がないPublic SymbolがどのRequirement / ADRにも紐付かない場合、
-`ORPHAN_IMPLEMENTATION`として扱います。
-
-誤検知を抑えるため、Mapping粒度は以下のように扱います。
-
-- file-only Mapping: File内のSymbolをCoverage済み
-- Class Mapping: Classおよび配下MethodをCoverage済み
-- Function / Method Mapping: 対象SymbolのみCoverage済み
-
-Private Symbol、Generated Code、Migration等はPolicyで除外できます。
-
-#### Phase 4: Code → Test AST Traceability
-
-Unit Test Mappingについて、Test ASTから以下を確認します。
-
-```text
-Unit Test Symbol
-      ↓ Call
-Production Symbol
-      ↓ optional transitive call
-Mapped Implementation
-```
-
-さらにTestにAssertionが存在することを確認します。
-
-Trace Map v2のUnit Test Mapping:
-
-```yaml
-test_id:
-file:
-symbol:
-qualified_name:
-implementation_targets:
-  - <Production qualified_name>
-assertion_count:
-```
-
-`implementation_targets`は、Testから到達可能で、かつ同じRequirementにMappingされた
-Production Symbolを記録します。Policyで許可される場合はProduction Call Graphを
-`max_call_depth`まで辿ります。
-
-ASTは「物理的に存在しCallされている」ことを判断し、
-Traceability Auditorは「Requirement / ADRとの意味的な関係」を判断します。
-どちらか一方だけでTraceabilityを成立させません。
-
-#### Trace Map / AST Index / Reportの役割
-
-```text
-ast-index.json
-= Source/Test ASTから生成した物理構造Evidence
-
-trace-map.json
-= Requirement / ADRとAST Evidenceを統合したMapping
-
-traceability-report.json
-= Semantic Audit結果
-
-validation-result.json
-= Deterministic Validator結果
-```
-
-Production CodeやTest CodeへTraceability維持だけを目的とした
-Requirement ID / ADR IDコメントを埋め込みません。
-実装構造の変化はDerived Artifactの再生成で追従します。
-
-#### Derived Artifact Failureの扱い
-
-AST Index / Trace Mapの構造不正、Source Fingerprint不一致、
-存在しないSymbol / qualified_name、MapとASTの不整合など、
-Derived Artifact側のFailureだけを理由にSource ArtifactをMapへ合わせて修正してはいけません。
-
-この場合はTraceability Auditorを再実行し、
-現在のSource ArtifactからAST Index / Trace Map / Reportを再生成します。
-
-一方、Semantic Auditによって実際のSource Artifact側の問題が特定された場合は、
-`recommended_route`に従ってRoot Cause工程へ差し戻します。
-
-#### Requirement IDを持たない項目
-
-Project-wide Requirementなど、IDがないRequirementへ新しいIDを勝手に付与してはいけません。
-必要な場合は、
-
-```text
-docs/requirements/requirements.md#heading
-```
-
-のようなSource Referenceを使用します。
-
-#### カスタマイズポイント（Traceability Auditor）
-
-Traceability Rule:
-
-```text
-.github/skills/traceability-audit/policy/
-```
-
-監査手順:
-
-```text
-.github/skills/traceability-audit/SKILL.md
-```
-
-AST / FQN解析:
-
-```text
-.github/skills/traceability-audit/scripts/traceability_ast.py
-.github/skills/traceability-audit/scripts/JavaAstAnalyzer.java
-.github/skills/traceability-audit/scripts/typescript_ast_analyzer.cjs
-.github/skills/traceability-audit/scripts/build_traceability_ast_index.py
-```
-
-Deterministic Validation:
-
-```text
-.github/skills/traceability-audit/scripts/validate_traceability.py
-```
-
-Validator / AST Unit Test:
-
-```text
-.github/skills/traceability-audit/scripts/test_validate_traceability.py
-.github/skills/traceability-audit/scripts/test_traceability_ast.py
-```
+詳細・対象・移行・実行版記録は [注釈方式トレーサビリティ](inline-traceability.md) を参照してください。
+手順は `.github/skills/traceability-audit/SKILL.md`、
+設定は `policy/traceability-policy.yaml`、
+生成・検証は `scripts/trace_check.py`、テストは `scripts/test_trace_check.py` です。
 
 ---
 
@@ -1027,7 +838,6 @@ Unit Test Code、Integration Test Codeが変更された場合、
     ├── quality-review/
     ├── security-review/
     ├── traceability/
-    │   ├── ast-index.json
     │   ├── trace-map.json
     │   ├── traceability-report.json
     │   ├── traceability-report.md
@@ -1469,3 +1279,10 @@ Failure
 すべての工程、Validator、Final AssuranceがPASSし、
 未解決Blocking Issueが存在しない場合のみ
 SDLC全体をCOMPLETEとします。
+
+## 工程継続の基本方針（2026-10-21更新）
+
+全工程は、初回失敗とは別に修正・再検査を最大3回行い、残れば未解決を記録して次へ進めます。
+旧来の停止条件は品質PASSの判定として維持し、工程継続では共通3回方針を優先します。
+検査FAILは変更しません。最終結果もCOMPLETE_WITH_UNRESOLVEDとして正常完了と区別します。
+詳細は [共通3回ループ](bounded-repair-loop.md) を参照してください。

@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import sqlite3
 import subprocess
+import sys
 import time
 from pathlib import Path
 from typing import Any
@@ -348,6 +350,18 @@ def execute(
     return rows, evidence, []
 
 
+def record_experiment_measurement(repo_root: Path, run_id: str, manifest_path: Path, results_path: Path, evidence_path: Path) -> None:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "evaluation/scripts"))
+    from experiment_recorder import capture_acceptance, directory, export
+    try:
+        if (directory(repo_root, run_id) / "events.sqlite3").is_file():
+            identifier = "acceptance-" + text_sha256(manifest_path.read_text(encoding="utf-8") + results_path.read_text(encoding="utf-8") + evidence_path.read_text(encoding="utf-8"))[:20]
+            capture_acceptance(repo_root, run_id, identifier, manifest_path, results_path, evidence_path)
+            export(repo_root, run_id)
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error) as error:
+        print(f"[MEASUREMENT WARNING] Acceptance recording incomplete: {error}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Execute human-authored hidden Acceptance Tests."
@@ -424,6 +438,9 @@ def main() -> int:
             for index, error in enumerate(errors, start=1):
                 print(f"{index}. {error}")
             return 1
+
+        if rows:
+            record_experiment_measurement(repo_root, run_id, manifest_path, results_path, evidence_path)
 
         # Test FAIL/BLOCKED is measurement output, not executor failure.
         return 0

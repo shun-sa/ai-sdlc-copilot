@@ -54,6 +54,12 @@ Implementation工程では以下を重視します。
 
 # Inputs
 
+新ワークフローではFINAL設計manifest、設計書、実装タスク、Gate通過後のACTIVE ADDRも入力とする。
+着手前に `python .github/skills/architecture/scripts/validate_design.py --check-gate` を実行する。
+失敗時はArchitectureへ返す。Taskの実行順・依存・完了条件を守り、判断不足は既存ADR_REQUIRED経路で親へ返す。
+設計未決はADDRへ、設計書・計画不足はArchitectureへ親が振り分ける。
+固定したTask計画の進捗更新は別Reportへ記録し、計画内容の変更時は再Gateを要求する。
+
 実装開始前に以下を確認してください。
 
 - 要件定義成果物
@@ -477,31 +483,16 @@ Step 3で作成したRequirement Coverageを更新してください。
 未確認のRequirementを残してはいけません。
 
 
-## Step 20. Requirementと実装箇所を紐づける
+## Step 20. 作成時に参照を記入する
 
-各Requirementについて、
-実装箇所を特定してください。
-
-最低限以下を記録します。
-
-- Requirement ID
-- 実装ファイル
-- 主要Symbolまたは責務
-- Related ADR
-
-例:
-
-FR-001
-
-implementation:
-- src/user/UserService.ts
-- src/user/UserController.ts
-
-related_adrs:
-- ADR-001
-
-後続のTraceability Auditorが利用できる状態にしてください。
-
+成果物作成と同時に先頭へ `# trace: ADDR-001, FILE-001`（実在IDのみ）を付けます。
+Djangoは `{# trace: ADDR-001 #}`。通常のProduction注釈はADDR/DBD/FILEのみで、TASKを根拠にしません。
+先頭ID>=2かつトップレベル定義>=2ならprivate/helperも含め、各定義直前・decoratorより前へ
+先頭の部分集合のtraceを付けます。詳細はTraceability Audit SkillとPolicyに従います。
+要件への直接参照は、現在のArchitecture GateがADDR不要として承認した対象のbasis_idsに限ります。
+監査表・Trace Mapは手編集せず、仕様根拠を変える修正は設計/ADDR工程へ戻します。
+既存IDを変更せず、Test IDを先回りして作りません。
+依頼された場合だけコミットし、件名先頭に既存[TASK-nnn]/[CR-nnn]を使います。
 
 ## Step 21. Build Validationを実行する
 
@@ -563,7 +554,7 @@ BLOCKEDとして返してください。
 
 同一原因について3回修正しても
 BuildまたはValidationが成功しない場合は、
-FAILEDとしてImplementation Agentへ返してください。
+FAILEDと実施履歴をSDLC Orchestratorへ返してください。親が共通台帳へ未解決を記録して次工程へ渡します。
 
 以下を記録してください。
 
@@ -687,3 +678,10 @@ Implementation Agentが判断できるように
 - Out of Scope確認結果
 - ASSUMPTION
 ```
+
+## 共通3回ループ
+
+修正・再検査は `docs/ai-sdlc/bounded-repair-loop.md` に集約します。
+初回失敗0＋実修正1〜3の後も残る場合、FAIL/BLOCKEDを維持して親へ未解決として返し、
+親が履歴・影響を記録して次工程への継続を許可します。4回目を自己開始しません。
+未解決継続を品質SUCCESS/PASSへ変換せず、原因を隠す修正・捏造・削除・skipをしません。

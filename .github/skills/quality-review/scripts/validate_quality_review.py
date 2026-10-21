@@ -1466,6 +1466,7 @@ def validate(
     )
 
     result = {
+        "source_baseline_sha256": report.get("source_baseline_sha256"),
         "status": (
             "PASS"
             if not errors

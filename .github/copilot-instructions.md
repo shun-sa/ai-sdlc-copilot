@@ -32,6 +32,10 @@ SDLC Orchestratorのみが担当する。
 
 # Phase Order
 
+Architectureは設計書作成→ADDR判断→設計反映・実装計画の順に実施する。
+設計書はArchitecture Agent、重要判断・差分はADDR Agentが担当する。
+両AgentのSUCCESSと検証・Assuranceを経てArchitecture Gateを固定する。
+
 標準工程順序は以下とする。
 
 Requirements
@@ -44,10 +48,26 @@ Requirements
 SDLC Orchestratorが制御する。
 
 
+# Experiment Measurement
+
+実験時の工程境界・実行証跡は `docs/ai-sdlc/experiment-measurement.md` に従って記録する。
+主工程の開始・終了・実際の差し戻しはOrchestratorが記録し、子Agentへ同じrun_idを渡す。
+UnitTestは分岐計測付き実コマンドを記録器経由で実行し、IntegrationTestはINITIAL/計画/結果を保存する。
+観測用Scriptの開発中実行だけを認め、Evaluation/AcceptanceTestExecutorの開発中起動や
+Hidden Acceptance入力の早期公開は認めない。取得できなかった時間・網羅率・合格率・トークン数を推測しない。
+計測結果は品質Gateや共通3回ループを変更せず、未解決継続と品質PASSを区別する。
+
 # Source of Truth
 
 RequirementのSource of Truthは
 Requirements成果物とする。
+
+要件定義の構造は `.github/skills/requirements/templates/` の分割テンプレートと
+`.github/project-context/templates/project-ai-steering.md` を正本とする。
+`docs/requirements/requirements.md` は分割成果物とFR/NFRへの派生索引である。
+すべてのAgent/Assuranceはリンク先の本文とUC詳細を読み、AC / Pass-Fail RuleはUC詳細を正本とする。
+PJ固有情報は `.github/project-context/project-ai-steering.md` を参照する。
+Steeringへ要求本文やFramework共通手順を複製しない。
 
 重要なArchitecture DecisionのSource of Truthは
 Accepted ADRとする。
@@ -72,6 +92,16 @@ Requirement IDを
 
 
 # Architecture Decision
+
+現在の設計判断契約は `.github/skills/addr/SKILL.md` とする。
+以下および既存Agent/Skillの「Accepted ADR」は、旧Accepted ADRに加え、
+Architecture Gate通過済みのACTIVE ADDRを含む有効判断として読む。
+ADRのみという旧来の成果物制限は適用しない。構造の正本は既存設計テンプレートとADDRテンプレートとする。
+ADDRは `docs/addr/`、設計・実装計画は `docs/architecture/` に配置する。
+ADR欄・adrs・adr_id等の既存の互換フィールドへADDR IDを記録できる。
+正本を二重化する旧ADR投影ファイルは作らず、ACTIVEだけでGate済みとみなさない。
+Implementation/Test/AssuranceはFINAL manifestの設計・計画を読み、開始前にArchitecture Gateを確認する。
+旧ADRのみのプロジェクトは従来どおり読めるが、新ワークフロー開始後はGateを必須とする。
 
 重要なArchitecture Decisionは
 ADRへ記録する。
@@ -131,10 +161,29 @@ Testを削除、skip、無効化、
 Assertion弱体化してはいけない。
 
 
+# 共通ループ基本方針（工程遷移では本節を優先）
+
+全工程・全Agentに、`docs/ai-sdlc/bounded-repair-loop.md` と
+`.github/skills/failure-triage/policy/loop-policy.json` を適用します。
+同一原因の初回失敗はcycle=0。その後の修正・再検査を最大3回行い、
+3回後も残ればUNRESOLVEDとして検査結果へ記録し、CONTINUE_WITH_UNRESOLVEDで次工程へ進めます。
+担当Agentや工程を変えて回数をリセットせず、4回目の修正ループは開始しません。
+
+検査FAIL、未実行、未承認判断をPASS/成功へ書き換えません。
+通常の品質Gateは残し、工程継続はOrchestratorが別の継続判定で許可します。
+旧来の「すべてPASSまで停止」「未解決の持越し禁止」は品質PASSの条件として読み、
+工程継続については3回後の記録・継続規則を優先します。正本・期待値・外部ケースの改変、
+失敗テストの削除/skip、欠落資料・設計判断の捏造で回避しません。
+依存して実行不能な作業は未実行と影響を残し、実行可能な後続作業を進めます。
+この許可は本番反映・不可逆操作・権限やユーザー承認の代替ではありません。
+
+実行履歴と未解決結果はreports/loop-controlへ保存します。
+後続Agentへissue ID・影響・根拠・推奨対応先を渡し、既知の未解決原因を新しい3回ループにしません。
+最終結果に未解決が残る場合はCOMPLETE_WITH_UNRESOLVEDとし、COMPLETE/PASSと区別します。
+
 # Error Carry Forward
 
-既知のErrorを
-後工程へ持ち越してはいけない。
+既知のErrorは黙って持ち越さない。3修正後も残る場合は共通ループ方針で記録して引き継ぐ。
 
 Production CodeのErrorは
 Implementation Agentで修正する。
@@ -213,7 +262,7 @@ Validatorが存在する工程では、
 Validator結果を工程Gateとして使用する。
 
 ValidatorがFAILしている状態で
-次工程へ進んではいけない。
+品質PASSとしてはいけない。工程継続は共通3回ループの別判定を使用する。
 
 AIの自己評価を
 Deterministic Validatorの代わりにしてはいけない。
@@ -221,71 +270,27 @@ Deterministic Validatorの代わりにしてはいけない。
 
 # Traceability
 
-以下のTraceabilityを維持する。
+正本は成果物内のID参照とコード・テストのtrace注釈です。
+Producerが作成時に記入し、Auditorは推測せずC01〜C11で検査・表生成します。
+AST/FQN/Call解析や手編集Mapは使いません。詳細は
+`.github/skills/traceability-audit/SKILL.md` と
+`docs/ai-sdlc/inline-traceability.md` に従います。
 
-Requirement
-→ ADR
-→ Implementation
-→ Unit Test
-→ Integration Test
-
-Traceability Auditorは、
-現在のSource Artifactから
-以下のDerived Artifactを生成できます。
-
-`reports/traceability/ast-index.json`
-
-`reports/traceability/trace-map.json`
-
-AST Indexは、
-Production CodeおよびTest Codeの
-Symbol / qualified_name / Call / Assertionを
-決定論的に抽出したDerived Evidenceです。
-
-Trace Mapは、
-Requirements、ADR、Production Code、
-Unit Test、Integration Test間の関係を表すDerived Indexです。
-
-Trace Mapを
-RequirementsやAccepted ADRに代わる
-Source of Truthとして扱ってはいけません。
-
-Requirements、ADR、Production Code、
-Unit Test、Integration Testが変更された場合、
-変更前のTrace Mapを
-変更後Artifactに対する正しいMapとして
-そのまま再利用してはいけません。
-
-Traceability Auditorによる再監査時に、
-現在のSource Artifactから
-AST IndexおよびTrace Mapを再生成してください。
-
-Producer Agentへ
-Trace Mapの手動維持を要求してはいけません。
-
-Production CodeまたはTest Codeへ、
-Traceability維持だけを目的とした
-Requirement ID / ADR IDコメントを埋め込んではいけません。
-
-AST対応Sourceのfile / symbol / qualified_nameは
-AST Indexで実在確認し、
-存在しない値を推測してはいけません。
-
-Trace MapまたはTraceability Reportの
-構造・参照実在性に関するValidator Failureだけを理由に、
-Requirements、ADR、Production Code、Test Codeを
-Trace Mapへ合わせる目的で修正してはいけません。
-
-Derived Artifact側の不整合である場合は、
-現在のSource Artifactから
-AST Index、Trace Map、Traceability Reportを再生成してください。
-
-既存IDを変更して
-Traceability Failureを隠してはいけない。
-
-存在しないRequirement IDやADR IDを
-推測で作成してはいけない。
-
+- 要件本文・UC/ACを読む。派生requirements.md、旧features、背景・用語・SteeringをID定義に数えない。
+- ADDRの2章「要件」行へ実在要件IDを記入する。設計/TASKの既存参照欄を維持する。
+- Production先頭: `# trace: ADDR-001, FILE-001`。Djangoは `{# trace: ADDR-001 #}`。
+  通常はADDR/DBD/FILEのみ。TASKを根拠にしない。
+- Test先頭: `# trace: FR-001, ADDR-001`。要件参照を必須とする。
+- 先頭ID>=2かつトップレベル定義>=2なら、private/helperも含め各定義直前
+  （decoratorより前）に先頭の部分集合となるtraceを付ける。
+- ADDR不要の要件直接参照は、現行Architecture Gateで承認された対象根拠だけに限定する。
+- 各テスト担当は実JUnit実行直後に `trace_check.py --record-test-run <role>` で実行版を記録する。
+  過去JUnit・監査時HEADを現在の実行証拠にすり替えない。
+- Auditorは `trace_check.py --scope <scope>`、次に同一条件の `--no-write` を実行する。
+  派生物だけ再生成し、原因成果物は担当工程へ差し戻す。
+- Traceの意味的レビューは助言。独立Quality/Security/Test Gateは引き続き必須。
+- 同一原因を3回修正しても残れば未解決結果を保存し、Orchestratorの継続許可で次へ進める。
+- 依頼されたコミットのみ件名先頭に既存[TASK-nnn]/[CR-nnn]を使う。
 
 # Security
 

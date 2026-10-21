@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "repair_cycles": 3,
+  "on_exhausted": "CONTINUE_WITH_UNRESOLVED",
+  "initial_failure_counts_as_repair": false,
+  "required_checks": {
+    "REQUIREMENTS": ["producer", "requirements", "quality", "security", "traceability"],
+    "ARCHITECTURE": ["prepare", "design_draft", "addr", "addr_validation", "finalize", "design_final", "addr_final", "quality", "security", "traceability", "architecture_gate"],
+    "IMPLEMENTATION": ["producer", "build", "quality", "security", "traceability"],
+    "UNIT_TEST": ["producer", "unit_test", "quality", "security", "traceability"],
+    "INTEGRATION_TEST": ["producer", "integration_test", "quality", "security", "traceability"],
+    "FULL": ["quality", "security", "traceability"],
+    "ACCEPTANCE_TEST": ["producer", "acceptance_test"],
+    "EVALUATION": ["producer", "evaluation"]
+  }
+}
