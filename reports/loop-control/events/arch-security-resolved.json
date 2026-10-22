@@ -1,0 +1,14 @@
+{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/arch-security-resolved",
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DEPENDENCY_CONFIGURATION_ISSUE",
+    "artifact": "docs/architecture/implementation-task-list.md",
+    "requirement_reference": "NFR-SC-11",
+    "test_case": "",
+    "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "TASK-001にバージョン固定・公式配布元限定・サポート期限内の版・ライセンスの制約とDoDを追加し、確認手順をTASK-016へ割当、7章Coverageへ記載",
+  "validation_result": "reports/security-review/validation-result.json"
+}

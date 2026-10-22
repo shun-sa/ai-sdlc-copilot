@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/full-regression-resolved",
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "MISSING_BEHAVIOR_COVERAGE",
+    "artifact": "app/shop/tests/unit",
+    "requirement_reference": "FR-030",
+    "test_case": "OBS-IT-001",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "test_fullwidth_digit_rejection.py（21関数44ケース）を追加し半角受理と全角拒否を対で検証。単体証跡（junit/coverage/trace-execution/evidence）を最終コードに対して再生成し分岐網羅率91.14%を再実測",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

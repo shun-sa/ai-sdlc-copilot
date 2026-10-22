@@ -1,0 +1,1 @@
+﻿{"check_id":"addr_validation","command":["python",".github/skills/addr/scripts/validate_addr.py","--final"],"result_path":"reports/loop-control/checks/ADDR-addr_validation.json","timeout_seconds":300}

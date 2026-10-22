@@ -1,0 +1,26 @@
+{# trace: ADDR-001 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+{% for detail in details %}<p class="field-error">{{ detail.reason }}</p>{% endfor %}
+{% if page_data.results %}
+  <table>
+    <caption>注文履歴（{{ page_data.total_count }}件）</caption>
+    <thead><tr><th>注文番号</th><th>注文日時</th><th>注文状態</th><th>合計</th><th>合計点数</th></tr></thead>
+    <tbody>
+      {% for order in page_data.results %}
+      <tr>
+        <td><a href="/purchase-orders/{{ order.purchase_order_id }}">{{ order.order_number }}</a></td>
+        <td>{{ order.ordered_at|date:"Y/m/d H:i" }}</td>
+        <td>{{ order.status|order_status }}</td>
+        <td>{{ order.total|yen }}</td>
+        <td>{{ order.total_quantity }}点</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "web/_pagination.html" %}
+{% else %}
+  <p>注文履歴はありません。</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,262 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "repair_cycle": 4,
+  "analyzed_at": "2026-10-22T18:55:00+09:00",
+  "note": "実行結果が PASS でなかった Test Case の原因分類と Defect 集約。期待結果は要件・UCの受入基準・Accepted ADR から導出しており、Production Code に合わせて期待結果を変更していない。repair cycle 4（Traceability Audit C10 の再精査・修正2回目）では Production Defect は発生しておらず、Test Code 側の誤り（TEST_ERROR）2件を是正して全件 PASS とした。",
+  "case_classifications": {
+    "IT-AI-GF-023": {
+      "classification": "ADR_REQUIRED",
+      "defect_id": "DEF-IT-001",
+      "cause": "支払とキャンセルの同時実行で、キャンセルが先に確定した試行（AC-UC-007-019 (a)）でも、決済サービス（模擬）が当該注文の決済要求を受信していた。FR-031 手順5 は E-031-05（注文受付以外）のとき「決済要求を送信しない」と定めるが、注文行ロックによる再判定が決済要求の送信より後にあるため、再判定で検出した E-031-05 では決済要求が既に送信済みとなる。",
+      "error_location": "app/shop/services/orders.py pay_order（手順5の状態判定が行ロック外、決済サービス呼び出し後に select_for_update で再判定）／docs/addr/ADDR-009.md DD-005・INV-006",
+      "error_location_identifiable": true,
+      "resolved": true,
+      "resolved_at": "2026-10-22T16:05:00+09:00",
+      "final_result": "PASS",
+      "resolution": "ADDR-013（ACTIVE）を採択し、支払では注文行のロックを手順5の状態判定の前に取得して、状態判定→決済要求送信→結果反映を同一トランザクション・同一ロック区間で確定する方式へ決定した（ADDR-009 DD-005・INV-006、ADDR-001 DD-007・INV-004 を更新し、ロック保持中の禁止対象を外部ネットワーク通信・スリープ・他プロセス待ちに限定）。Implementation 工程が ADDR-013 に従って app/shop/services/orders.py の pay_order を是正し、ロック取得後に CREATED 以外であれば決済ゲートウェイを呼び出さずに InvalidStatusTransitionError を送出する実装とした（_authorize_locked_order を新設、否認・連携エラーは決済記録を同一トランザクションで登録しコミット後に例外送出、_record_payment の独立トランザクションを廃止）。Integration Test Agent は Production Code・ADDR・要件を変更していない。",
+      "resolution_route": "ADDR（ADDR-013 採択）→ IMPLEMENTATION（app/shop/services/orders.py 是正）",
+      "verification": "Production Code 変更後に全ケースを再実行して確認した。IT-AI-GF-023（AC-UC-007-019、各10試行）を単独で3回再実行し3回とも PASS。関連ケース（tests/integration/test_concurrency.py 10件、test_orders_api.py・test_e2e_flow.py・test_admin_api.py 計29件）PASS。結合試験 82ケース全件 PASS（junit.xml 再生成）。全体（単体742件＋結合82件）は docker compose exec -T app pytest で 824 passed / 0 failed。"
+    }
+  },
+  "defects": [
+    {
+      "defect_id": "DEF-IT-001",
+      "classification": "ADR_REQUIRED",
+      "title": "同時キャンセル時に E-031-05 となる支払でも決済サービスへ決済要求が送信される",
+      "detected_by_cases": [
+        "IT-AI-GF-023"
+      ],
+      "detection_source": "AI_ONLY_DEFECT",
+      "requirement_id": "FR-031",
+      "related_requirements": [
+        "FR-031 6.16.4 手順5",
+        "AC-UC-007-019",
+        "NFR-SC-21/VUL-07（二重決済防止）"
+      ],
+      "related_adr": [
+        "ADDR-009",
+        "ADDR-001",
+        "ADDR-013"
+      ],
+      "expected": "注文受付以外の状態で支払が E-031-05（INVALID_STATUS_TRANSITION）となる場合、決済サービス（模擬）へ決済要求を送信しない（FR-031 手順5）。AC-UC-007-019 (a) は 409 の試行で決済サービスが当該注文の決済要求を受けていないことを求める。",
+      "actual": "10試行の1試行目で、キャンセルが先に確定し支払が 409 INVALID_STATUS_TRANSITION（current_status=cancelled）となったが、決済サービス（模擬）は当該注文（例: PO-00000001）の決済要求を受信済みだった。決済記録は登録されないため、承認された決済要求がシステム上どこにも記録されない。",
+      "root_cause": "ADDR-009 DD-005・INV-006 が『承認の反映は注文行のロックと状態再確認の後に行う』と定め、決済要求の送信はトランザクション外・ロック取得前に行う設計になっている。このため、送信後にキャンセルが確定した場合、FR-031 手順5 の『決済要求を送信しない』を満たせない。実装は Accepted ADR のとおりであり、ADR を変更せずに要件を満たす修正方法が確定できない。",
+      "error_location": "app/shop/services/orders.py pay_order（状態判定→決済要求→行ロック再判定の順序）／docs/addr/ADDR-009.md DD-005・INV-006",
+      "error_location_identifiable": true,
+      "decision_needed": "同時キャンセル時に決済要求の送信を避ける方式（注文行ロックの保持範囲に決済要求を含める／事前の予約状態を設ける／送信済みの決済要求を打ち消す記録と取消要求を定義する 等）の選択と、ADDR-009 DD-005・INV-006 および ADDR-001 への反映。Integration Test Agent では確定できない。",
+      "reproducibility": "決定的（単独実行3回すべて1試行目で再現。flaky ではない）",
+      "resolved": true,
+      "rerun": {
+        "target_cases": "PASS",
+        "related_cases": "PASS",
+        "full_suite": "PASS",
+        "detail": {
+          "target_cases": "IT-AI-GF-023 を3回単独再実行し3回とも PASS（1回目 1.59s / 2回目 1.53s / 3回目 1.59s、各10試行）",
+          "related_cases": "test_concurrency.py（10件）・test_orders_api.py・test_e2e_flow.py・test_admin_api.py の計29ケースが PASS",
+          "full_suite": "docker compose exec -T app pytest：824 passed / 0 failed（単体742件・結合82件）。結合のみの再実行（tests/integration）も 82 passed"
+        }
+      },
+      "resolved_at": "2026-10-22T16:05:00+09:00",
+      "resolution": "ADDR-013（ACTIVE）を採択し、支払では注文行のロックを手順5の状態判定の前に取得して、状態判定→決済要求送信→結果反映を同一トランザクション・同一ロック区間で確定する方式へ決定した（ADDR-009 DD-005・INV-006、ADDR-001 DD-007・INV-004 を更新し、ロック保持中の禁止対象を外部ネットワーク通信・スリープ・他プロセス待ちに限定）。Implementation 工程が ADDR-013 に従って app/shop/services/orders.py の pay_order を是正し、ロック取得後に CREATED 以外であれば決済ゲートウェイを呼び出さずに InvalidStatusTransitionError を送出する実装とした（_authorize_locked_order を新設、否認・連携エラーは決済記録を同一トランザクションで登録しコミット後に例外送出、_record_payment の独立トランザクションを廃止）。Integration Test Agent は Production Code・ADDR・要件を変更していない。",
+      "resolution_route": "ADDR（ADDR-013 採択）→ IMPLEMENTATION（app/shop/services/orders.py 是正）",
+      "fixed_by": {
+        "addr": "ADDR-013（支払における決済要求送信の排他単位とトランザクション境界。status: ACTIVE）",
+        "implementation": "app/shop/services/orders.py（pay_order / _authorize_locked_order / _record_payment）のみ変更",
+        "integration_test_changes": "なし（Test Case・期待結果・アサーションは変更していない）"
+      },
+      "regression_test": "IT-AI-GF-023（tests/integration/test_concurrency.py::test_concurrent_payment_and_cancel_matches_sequential_result）",
+      "verification": "Production Code 変更後に全ケースを再実行して確認した。IT-AI-GF-023（AC-UC-007-019、各10試行）を単独で3回再実行し3回とも PASS。関連ケース（tests/integration/test_concurrency.py 10件、test_orders_api.py・test_e2e_flow.py・test_admin_api.py 計29件）PASS。結合試験 82ケース全件 PASS（junit.xml 再生成）。全体（単体742件＋結合82件）は docker compose exec -T app pytest で 824 passed / 0 failed。",
+      "repair_cycle": {
+        "initial_failure_cycle": 0,
+        "repair_attempts": 1,
+        "state": "RESOLVED",
+        "note": "共通3回ループの1回目の修正（ADDR-013 採択＋実装是正）で解消。4回目の修正ループは発生していない。"
+      }
+    }
+  ],
+  "criteria_overrides": {},
+  "regression": {
+    "rerun_failed_cases": "NOT_REQUIRED（今回のサイクルで Failed / Error Case は0件）",
+    "rerun_related_cases": "PASS（既存123ケースを含む結合試験全ケースを再実行）",
+    "rerun_full_suite": "PASS（単体747件＋結合134件＝881 passed / 0 failed）",
+    "full_suite_command": "docker compose exec -T app pytest",
+    "integration_suite_command": "docker compose exec -T app pytest tests/integration --junitxml=reports/integration-test/junit.xml",
+    "executed_at": "2026-10-22T18:55+09:00",
+    "detail": {
+      "previous_cases": "既存の123ケース（IT-AI-001〜054、IT-AI-GF-001〜069）を再実行し全件 PASS",
+      "added_cases": "C10 再精査で追加した11ケース（IT-AI-GF-070〜080）を実行し全件 PASS",
+      "stability_check": "同時実行を含む tests/integration/test_resilience_contract.py を3回連続実行し、いずれも 4 passed（偶発失敗なし）"
+    }
+  },
+  "flaky_tests": [],
+  "repair_cycle_summary": {
+    "cycle": 4,
+    "addressed": [
+      {
+        "issue_id": "SR-IT-001",
+        "classification": "SECURITY_TEST_GAP",
+        "action": "Required Coverage の導出元へ非機能要件（NFR-SC-04・NFR-SC-05 の検証方法、8.2 VUL-04〜06、12.2 VDC-06）を追加し、ICOV-071〜ICOV-078 を定義。tests/integration/test_security.py（6ケース）と tests/integration/test_seeding_command.py（2ケース）で (a) CSRF対策用トークン欠落時の拒否、(b) 画面出力のHTMLエスケープ、(c) SQL・OSコマンド攻撃文字列の投入、(d) 全削除後の旧トークン・旧セッションの拒否を検証。",
+        "cases": [
+          "IT-AI-GF-012",
+          "IT-AI-GF-013",
+          "IT-AI-GF-014",
+          "IT-AI-GF-015",
+          "IT-AI-GF-016",
+          "IT-AI-GF-017",
+          "IT-AI-GF-018",
+          "IT-AI-GF-019"
+        ],
+        "result": "全8ケース PASS"
+      },
+      {
+        "issue_id": "QR-IT-001",
+        "classification": "MISSING_BEHAVIOR_COVERAGE",
+        "action": "Required Coverage の導出元へ UC の同時実行受入基準を追加し、ICOV-079〜ICOV-087 を定義。tests/integration/test_concurrency.py に AC-UC-001-017 / AC-UC-004-025 / AC-UC-007-013 / AC-UC-007-019 / AC-UC-009-007 / AC-UC-011-020 / AC-UC-012-009 / AC-UC-012-010 / AC-UC-012-011 の9ケース（各10試行）を追加。",
+        "cases": [
+          "IT-AI-GF-020",
+          "IT-AI-GF-021",
+          "IT-AI-GF-022",
+          "IT-AI-GF-023",
+          "IT-AI-GF-024",
+          "IT-AI-GF-025",
+          "IT-AI-GF-026",
+          "IT-AI-GF-027",
+          "IT-AI-GF-028"
+        ],
+        "result": "9ケース中8ケースが初回 PASS。IT-AI-GF-023（AC-UC-007-019）で DEF-IT-001 を検出し ADR_REQUIRED として返却。ADDR-013 採択と実装是正の後に再実行し、9ケース全件 PASS。"
+      },
+      {
+        "issue_id": "QR-IT-003",
+        "classification": "INTEGRATION_TEST_QUALITY_ISSUE",
+        "action": "指摘本文を参照できなかったため（reports/quality-review/quality-review-report.json は ADDR Scope 再Review（QR-ADDR-20261022-003）で上書きされ、QR-IT-20261022-001 の本文が現存しない。reports/loop-control・reports/experiments 内にも保存されていない）、自己点検として結合試験コードの静的解析（ruff E,F,W,I,UP,B,C4）と Traceability 注釈（C05・C06）を実施して検出した指摘を是正した。",
+        "cases": [],
+        "result": "PARTIAL（指摘本文が入手不能。解消の確認は INTEGRATION_TEST Scope の Quality Review 再実行が必要）"
+      },
+      {
+        "issue_id": "DEF-IT-001",
+        "classification": "ADR_REQUIRED",
+        "action": "ADDR-013（ACTIVE）を採択し、支払では注文行のロックを手順5の状態判定の前に取得して、状態判定→決済要求送信→結果反映を同一トランザクション・同一ロック区間で確定する方式へ決定した（ADDR-009 DD-005・INV-006、ADDR-001 DD-007・INV-004 を更新し、ロック保持中の禁止対象を外部ネットワーク通信・スリープ・他プロセス待ちに限定）。Implementation 工程が ADDR-013 に従って app/shop/services/orders.py の pay_order を是正し、ロック取得後に CREATED 以外であれば決済ゲートウェイを呼び出さずに InvalidStatusTransitionError を送出する実装とした（_authorize_locked_order を新設、否認・連携エラーは決済記録を同一トランザクションで登録しコミット後に例外送出、_record_payment の独立トランザクションを廃止）。Integration Test Agent は Production Code・ADDR・要件を変更していない。",
+        "cases": [
+          "IT-AI-GF-023"
+        ],
+        "result": "解消。Production Code 変更後に全ケースを再実行して確認した。IT-AI-GF-023（AC-UC-007-019、各10試行）を単独で3回再実行し3回とも PASS。関連ケース（tests/integration/test_concurrency.py 10件、test_orders_api.py・test_e2e_flow.py・test_admin_api.py 計29件）PASS。結合試験 82ケース全件 PASS（junit.xml 再生成）。全体（単体742件＋結合82件）は docker compose exec -T app pytest で 824 passed / 0 failed。"
+      },
+      {
+        "issue_id": "TA-C10-001",
+        "classification": "TEST_TRACEABILITY_MISSING",
+        "action": "Traceability Audit（FULL Scope）の C10 で不合格となった 124 件の要件について、要件本文を正本として 「自動テストで正当に検証できるもの」と「検証方法が自動テストではないもの」を分類した。検証できる 41 観点（対象外機能 FR-OUT-01〜16 が実装されていないことの確認、および設定値・形式・件数・記録・同時実行整合に関する非機能要件）を Required Coverage へ追加（ICOV-088〜ICOV-128）し、AI GAP_FILL Case IT-AI-GF-029〜069 として tests/integration/test_out_of_scope.py・test_security_contract.py・test_platform_contract.py・test_concurrency.py に実装した。自動テストで検証できない要件は reports/integration-test/non-automatable-requirements.json / .md へ 要件IDごとの検証方法・対象外理由とともに記録した。AI INITIAL Case 54件と初回測定値は変更していない。",
+        "cases": [
+          "IT-AI-GF-029",
+          "IT-AI-GF-030",
+          "IT-AI-GF-031",
+          "IT-AI-GF-032",
+          "IT-AI-GF-033",
+          "IT-AI-GF-034",
+          "IT-AI-GF-035",
+          "IT-AI-GF-036",
+          "IT-AI-GF-037",
+          "IT-AI-GF-038",
+          "IT-AI-GF-039",
+          "IT-AI-GF-040",
+          "IT-AI-GF-041",
+          "IT-AI-GF-042",
+          "IT-AI-GF-043",
+          "IT-AI-GF-044",
+          "IT-AI-GF-045",
+          "IT-AI-GF-046",
+          "IT-AI-GF-047",
+          "IT-AI-GF-048",
+          "IT-AI-GF-049",
+          "IT-AI-GF-050",
+          "IT-AI-GF-051",
+          "IT-AI-GF-052",
+          "IT-AI-GF-053",
+          "IT-AI-GF-054",
+          "IT-AI-GF-055",
+          "IT-AI-GF-056",
+          "IT-AI-GF-057",
+          "IT-AI-GF-058",
+          "IT-AI-GF-059",
+          "IT-AI-GF-060",
+          "IT-AI-GF-061",
+          "IT-AI-GF-062",
+          "IT-AI-GF-063",
+          "IT-AI-GF-064",
+          "IT-AI-GF-065",
+          "IT-AI-GF-066",
+          "IT-AI-GF-067",
+          "IT-AI-GF-068",
+          "IT-AI-GF-069"
+        ],
+        "result": "41ケースすべて初回 PASS。結合試験 123ケース全件 PASS（単体747件と合わせて 870 passed / 0 failed）"
+      },
+      {
+        "issue_id": "TA-C10-001",
+        "classification": "TEST_TRACEABILITY_MISSING",
+        "cycle": 2,
+        "action": "修正1回目で「自動テスト対象外」と分類した 74 件を、要件本文の「検証方法」欄を正本として1件ずつ再精査した。区分名ではなく「結合試験環境（app サービスのコンテナ）の中に解析・判定の対象が存在するか」「形骸的（常に真・実質無検証・ファイル存在確認のみ）でない検証ができるか」で判定し、11 件を自動検証へ移した。内訳は静的解析6件（NFR-OM-07・NFR-EN-11・NFR-EN-12・NFR-PF-17・NFR-SC-07・NFR-EN-09）、構成・設定レビュー2件（NFR-EN-08・NFR-LG-03）、該当なし2件（NFR-AV-10・NFR-PF-12）、性能テスト1件（NFR-PF-11 の不変条件のみ）。Required Coverage へ ICOV-129〜ICOV-139 を追加し、AI GAP_FILL Case IT-AI-GF-070〜080 として tests/integration/test_quality_contract.py・test_resilience_contract.py に実装した。負荷の測定値そのもの、本番環境でのみ測定できる指標、ブラウザ操作・移行リハーサル・脆弱性診断を要する要件は追加していない。AI INITIAL Case 54件と初回測定値（initial-coverage-metrics.json）は変更していない。",
+        "cases": [
+          "IT-AI-GF-070",
+          "IT-AI-GF-071",
+          "IT-AI-GF-072",
+          "IT-AI-GF-073",
+          "IT-AI-GF-074",
+          "IT-AI-GF-075",
+          "IT-AI-GF-076",
+          "IT-AI-GF-077",
+          "IT-AI-GF-078",
+          "IT-AI-GF-079",
+          "IT-AI-GF-080"
+        ],
+        "result": "11ケースすべて初回 PASS（1件は WhiteNoise のハッシュ付き静的ファイル名に対する照合誤り、1件は管理コマンドの終了方法の想定誤りを TEST_ERROR として Test Code 側で是正。いずれも期待結果を Production Code に合わせて変更していない）。結合試験 134ケース全件 PASS（単体747件と合わせて 881 passed / 0 failed）",
+        "c10_effect": "自動テスト対象外 74 件 → 63 件。C10 残存見込みは 63 件。"
+      }
+    ],
+    "open_items": [
+      {
+        "item": "QR-IT-003（LOW / INTEGRATION_TEST_QUALITY_ISSUE）の指摘本文が入手できない",
+        "detail": "reports/quality-review/quality-review-report.json は ADDR Scope（QR-ADDR-20261022-003）で上書きされており、QR-IT-003 は observations の列挙でのみ言及されている。今回の再実行時点でも本文は復元できていない。自己点検として (1) プロジェクト標準の静的解析 `ruff check .`（pyproject.toml: line-length=120、select=E,F,W,I,UP,B,C4、exclude に ./tests を含む＝ADDR-004・ADDR-012 の決定により結合試験コードは解析対象外）を実行し All checks passed、(2) 参考として tests/integration を明示指定して同一ルールで解析し、tests/integration/test_admin_api.py の2行に E501（122>120、121>120）を検出（行長のみ。設計上の解析対象外であり、意味・アサーションには影響しない）、(3) Traceability 注釈（C05・C06）の充足、を確認した。SDLC Orchestrator が INTEGRATION_TEST Scope の Quality Review を再実行し、QR-IT-003 の残存可否と E501 2件の扱い（ADDR-004 の解析対象外方針を維持するか是正するか）を判定する必要がある。",
+        "recommended_route": "QUALITY_REVIEW"
+      },
+      {
+        "item": "OBS-IT-001（全角数字の都道府県コード・郵便番号が受理される）の扱いが未決",
+        "detail": "FR-030 の入力条件は半角数字を定めるが、実機では全角数字が受理され保存される。Integration Test Agent はProduction Code を変更できず、また本サイクルの差し戻し範囲外であるため、Test Case の期待結果には含めていない（したがって Failure としては計上していない）。SDLC Orchestrator が是正の要否を判定し、是正する場合は Implementation 工程での修正後に結合試験ケースを追加して再実行する必要がある。",
+        "recommended_route": "IMPLEMENTATION"
+      }
+    ]
+  },
+  "status": "SUCCESS",
+  "observations": [
+    {
+      "observation_id": "OBS-IT-001",
+      "title": "全角数字の都道府県コード・郵便番号が入力エラーにならず保存される",
+      "classification": "POSSIBLE_IMPLEMENTATION_ERROR（本サイクルの Test Case では判定していない）",
+      "requirement_id": "FR-030, NFR-SC-04",
+      "requirement_text": "機能要件定義書 FR-030 の入力条件は、都道府県コードを「2桁の半角数字で \"01\" 以上 \"47\" 以下」、郵便番号を「半角数字7桁」または「半角数字3桁・ハイフン・半角数字4桁」と定める。",
+      "observed": "prefecture_code=\"１３\"、postal_code=\"１２３４５６７\"（いずれも全角数字）を含む注文確定が 201 で受理され、配送先に全角数字のまま保存された（ShippingAddress.prefecture_code='１３'、postal_code='１２３４５６７'）。原因は、都道府県コードの判定が str.isdigit()＋int() で全角数字を数字として扱うこと、郵便番号・電話番号・日付の正規表現が \\d（Unicode 数字）で半角に限定していないこと。",
+      "how_observed": "C10 是正の作業中に、NFR-LG-09（JIS X 0401）のケース設計のため一時的な確認用テストで実測した（確認後に削除済み。コミットした Test Case には含めていない）。",
+      "impact": "注文の配送先に半角・全角が混在して保存されうる。出荷は手作業で行うため直ちに業務が停止する種類の問題ではないが、検索・集計・外部帳票との突合で不一致が生じうる。NFR-SC-04（型・桁数・値域・形式のサーバー側検証）の観点でも不足である。",
+      "handling": "本サイクルの差し戻し範囲（C10 のテスト追加）の外であり、Integration Test Agent は Production Code を変更できないため、期待結果に含めず観測事項として記録した。Test Case 化すると現状の実装では FAIL となるため、是正方針の決定後にケースを追加する。",
+      "recommended_route": "IMPLEMENTATION（半角限定の検証へ是正）。要件の意図の確認が必要な場合は REQUIREMENTS"
+    }
+  ],
+  "resolved_test_errors": [
+    {
+      "case_id": "IT-AI-GF-075",
+      "classification": "TEST_ERROR",
+      "cause": "画面が読み込む JavaScript の参照を 'web/app.js' の完全一致で照合したが、実際の配信名は WhiteNoise の CompressedManifestStaticFilesStorage によるハッシュ付き名（/static/web/app.<hash>.js）であった（ADDR-011 DD-003）。",
+      "fix": "script タグをハッシュ付き名も許す正規表現で照合するよう Test Code を是正した（本数1本の条件は維持）。",
+      "expected_result_changed": false,
+      "cycle": 4
+    },
+    {
+      "case_id": "IT-AI-GF-078",
+      "classification": "TEST_ERROR",
+      "cause": "初期データ一括投入コマンドの引数不足時の終了を CommandError と想定したが、実装は FR-060 の終了コード規定に従い SystemExit(1) で終了する。",
+      "fix": "終了コード0以外での終了を判定するよう Test Code を是正した（手動実行であることの判定内容は維持）。",
+      "expected_result_changed": false,
+      "cycle": 4
+    }
+  ]
+}

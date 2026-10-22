@@ -1,0 +1,56 @@
+{# trace: ADDR-006 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+<p><a href="/">商品一覧へ戻る</a></p>
+<h2>{{ item.name }}</h2>
+<p>商品コード：{{ item.item_code }}</p>
+<p>所属分類：{% for collection in item.collections %}<a href="/?collection_id={{ collection.collection_id }}">{{ collection.name }}</a>{% if not forloop.last %}、{% endif %}{% empty %}－{% endfor %}</p>
+<p class="description">{{ item.description|unset }}</p>
+
+<form method="post" action="/cart/lines">
+  {% csrf_token %}
+  <input type="hidden" name="item_id" value="{{ item.item_id }}">
+  <input type="hidden" name="return_to" value="/items/{{ item.item_id }}">
+  <table>
+    <caption>規格（在庫単位）</caption>
+    <thead>
+      <tr>{% if not is_admin %}<th>選択</th>{% endif %}<th>SKU</th><th>規格名</th><th>価格</th><th>在庫数量</th><th>在庫状況</th></tr>
+    </thead>
+    <tbody>
+      {% for unit in item.stock_units %}
+      <tr>
+        {% if not is_admin %}
+        <td>
+          <label for="stock-unit-{{ unit.stock_unit_id }}" class="sr-only">{{ unit.variant_name }}を選択</label>
+          <input id="stock-unit-{{ unit.stock_unit_id }}" type="radio" name="stock_unit_id"
+                 value="{{ unit.stock_unit_id }}"
+                 {% if not unit.in_stock %}disabled{% endif %}
+                 {% if selected_stock_unit_id == unit.stock_unit_id|stringformat:'s' %}checked{% endif %}>
+        </td>
+        {% endif %}
+        <td>{{ unit.sku }}</td>
+        <td>{{ unit.variant_name }}</td>
+        <td>{{ unit.price_incl_tax|yen }}（税込）／{{ unit.price|yen }}（税抜）</td>
+        <td>{{ unit.quantity }}個</td>
+        <td>{% if unit.in_stock %}在庫あり{% else %}在庫切れ{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if not is_admin %}
+    {% if not any_in_stock %}
+      <p class="message error">この商品は現在すべての規格が在庫切れのため、カートに入れられません。</p>
+    {% endif %}
+    {% for reason in details|field_errors:"stock_unit_id" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+    <p>
+      <label for="quantity">数量</label><span class="required-label">必須</span>
+      <input id="quantity" type="number" name="quantity" inputmode="numeric"
+             min="1" max="99" step="1" size="2" value="{{ quantity }}"
+             {% if not any_in_stock %}disabled{% endif %}>
+      {% for reason in details|field_errors:"quantity" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+      <button type="submit" data-submit-once="true" {% if not any_in_stock %}disabled{% endif %}>カートに入れる</button>
+    </p>
+  {% endif %}
+</form>
+{% endblock %}

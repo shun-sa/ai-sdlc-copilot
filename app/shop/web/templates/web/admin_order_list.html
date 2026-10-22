@@ -1,0 +1,64 @@
+{# trace: ADDR-006 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+<form method="get" action="/admin/purchase-orders" class="search-form">
+  <span>
+    <label for="order_number">注文番号</label><br>
+    <input id="order_number" type="text" name="order_number" value="{{ form.order_number }}" maxlength="11">
+    {% for reason in details|field_errors:"order_number" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </span>
+  <fieldset>
+    <legend>注文状態</legend>
+    {% for value, label in statuses %}
+      <label for="status-{{ value }}">
+        <input id="status-{{ value }}" type="checkbox" name="status" value="{{ value }}"
+               {% if value in selected_statuses %}checked{% endif %}>
+        {{ label }}
+      </label>
+    {% endfor %}
+    {% for reason in details|field_errors:"status" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </fieldset>
+  <span>
+    <label for="ordered_from">注文日（開始）</label><br>
+    <input id="ordered_from" type="date" name="ordered_from" value="{{ form.ordered_from }}">
+    {% for reason in details|field_errors:"ordered_from" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </span>
+  <span>
+    <label for="ordered_to">注文日（終了）</label><br>
+    <input id="ordered_to" type="date" name="ordered_to" value="{{ form.ordered_to }}">
+    {% for reason in details|field_errors:"ordered_to" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </span>
+  <span>
+    <label for="buyer_email">購入者のメールアドレス</label><br>
+    <input id="buyer_email" type="text" name="buyer_email" value="{{ form.buyer_email }}" maxlength="254">
+    {% for reason in details|field_errors:"buyer_email" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </span>
+  <button type="submit">検索</button>
+</form>
+
+{% if page_data.results %}
+  <table>
+    <caption>注文一覧（{{ page_data.total_count }}件）</caption>
+    <thead>
+      <tr><th>注文番号</th><th>注文日時</th><th>購入者メールアドレス</th><th>購入者氏名</th><th>注文状態</th><th>合計金額</th><th>合計点数</th></tr>
+    </thead>
+    <tbody>
+      {% for order in page_data.results %}
+      <tr>
+        <td><a href="/admin/purchase-orders/{{ order.purchase_order_id }}">{{ order.order_number }}</a></td>
+        <td>{{ order.ordered_at|date:"Y/m/d H:i" }}</td>
+        <td>{{ order.buyer_email }}</td>
+        <td>{{ order.buyer_name }}</td>
+        <td>{{ order.status|order_status }}</td>
+        <td>{{ order.total|yen }}</td>
+        <td>{{ order.total_quantity }}点</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "web/_pagination.html" %}
+{% else %}
+  <p>該当する注文はありません。</p>
+{% endif %}
+{% endblock %}

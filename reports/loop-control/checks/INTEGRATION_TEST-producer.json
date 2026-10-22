@@ -1,0 +1,22 @@
+{
+  "check_id": "producer",
+  "phase": "INTEGRATION_TEST",
+  "audit_scope": "INTEGRATION_TEST",
+  "status": "SUCCESS",
+  "errors": [],
+  "producer_agent": "IntegrationTest",
+  "run_id": "RUN-20261022-MC",
+  "returned_status": "SUCCESS",
+  "repair_cycles": 1,
+  "cases_total": 82,
+  "cases_ai_initial": 54,
+  "cases_ai_gap_fill": 28,
+  "cases_external": 0,
+  "cases_passed": 82,
+  "cases_failed": 0,
+  "cases_blocked": 0,
+  "final_coverage_rate": 100.0,
+  "initial_metrics_preserved": true,
+  "external_input": "provided=false / user_confirmed_without_external_cases=true（ユーザー明示確認 2026-10-22T13:15 JST）",
+  "notes": "AI INITIAL 54件をExternal確認前に固定（sha256 94f1d865…、以後不変）。GAP_FILL 28件でCoverage 100%。実不具合DEF-IT-001（決済要求がFR-031手順5に反して送信される）を検出し、ADDR-013採択とImplementation是正で解消。全体824 passed / 0 failed"
+}

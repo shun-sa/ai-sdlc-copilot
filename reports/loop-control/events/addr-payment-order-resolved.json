@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/addr-payment-order-resolved",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr/ADDR-009.md",
+    "requirement_reference": "FR-031",
+    "test_case": "IT-AI-GF-023",
+    "stable_error_type": "DECISION_CONTRADICTS_REQUIREMENT"
+  },
+  "repair": "ADDR-013を採択し決済要求送信を注文行ロック取得後の同一トランザクション区間へ移動。ADDR-009/001を是正し実装も更新、IT-AI-GF-023が3回再実行で全PASS",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

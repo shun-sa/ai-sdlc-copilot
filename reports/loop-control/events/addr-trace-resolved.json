@@ -1,0 +1,14 @@
+{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/addr-trace-resolved",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "INVALID_REFERENCE",
+    "artifact": "docs/addr/ADDR-010.md",
+    "requirement_reference": "FR-060",
+    "test_case": "",
+    "stable_error_type": "TRACE_C01_UNDEFINED_ID"
+  },
+  "repair": "ADDR-010 2章の FILE-DEF-001 を実在ID FILE-001 へ訂正し、PLAN-001/TASK-014 の参照行を追加",
+  "validation_result": "reports/traceability/validation-result.json"
+}

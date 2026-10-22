@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/it-external-input-cycle0",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "EXTERNAL_TEST_INPUT_REQUIRED",
+    "artifact": "external-tests/integration-test",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "EXTERNAL_TEST_INPUT_MISSING"
+  },
+  "impact": "External Test Caseが未配置のため、外部ケースの取込・Coverage比較・GAP_FILL生成・結合試験の実行が開始できない。ユーザーの明示確認が必要",
+  "recommended_route": "INTEGRATION_TEST",
+  "validation_result": "reports/integration-test/external-input-status.json"
+}

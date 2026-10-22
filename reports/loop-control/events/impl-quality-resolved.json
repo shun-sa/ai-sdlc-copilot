@@ -1,0 +1,14 @@
+{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/impl-quality-resolved",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_QUALITY_ISSUE",
+    "artifact": "app/shop",
+    "requirement_reference": "SCR-005-IN01",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "画面の数量を数値入力・規格をradio単一選択へ変更し画面側の上限重複実装を全廃、権限判定をservices.accountsへ集約しweb/apiからのmodels直接参照を解消、FR-060手順6の分類名重複判定を追加、ログtimestampを+09:00表記へ修正",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

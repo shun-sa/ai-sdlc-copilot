@@ -1,0 +1,4274 @@
+{
+  "generated_from": {
+    "junit": "reports/unit-test/junit.xml",
+    "coverage_summary": "reports/unit-test/coverage-summary.json",
+    "trace_annotations": "app/shop/tests/unit/test_*.py"
+  },
+  "coverage": {
+    "statements": {
+      "total": 2839,
+      "covered": 2743,
+      "pct": 96.62
+    },
+    "branches": {
+      "total": 722,
+      "covered": 658,
+      "pct": 91.14
+    },
+    "functions": {
+      "total": 329,
+      "covered": 313,
+      "pct": 95.14
+    },
+    "lines": {
+      "total": 2839,
+      "covered": 2743,
+      "pct": 96.62
+    }
+  },
+  "criteria_coverage": [
+    {
+      "criterion": "boundary-value",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "パスワード8/64文字、数量1/10、在庫数量、送料無料の5,000円、最低購入金額、クーポン有効期間の両端、ページング件数などの境界値を確認した。"
+    },
+    {
+      "criterion": "database",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "Repository相当のORM操作・制約・トランザクションは使い捨てテストDB（pytest-django が作成・破棄する test_<DB_NAME>）で確認し、決済ゲートウェイなど外部依存は差し替えて確認した。"
+    },
+    {
+      "criterion": "exception",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "業務例外（在庫不足・数量上限・状態不正・決済否認・連携エラー・対象なし・権限なし）と共通例外ハンドラの変換を確認した。"
+    },
+    {
+      "criterion": "invalid-input",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "必須・形式・文字数・列挙値の不備について、不備のある全項目を列挙する入力エラー（VALIDATION_ERROR）を確認した。半角数字を求める項目（郵便番号・都道府県コード・電話番号・数量・ページ番号・日付・注文番号）は、全角数字を拒否し半角数字だけを受理することを確認した（FR-030 入力条件・CMN-15）。"
+    },
+    {
+      "criterion": "normal-case",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "各FRの正常系（会員登録・ログイン・カタログ参照・カート操作・注文確定・支払・管理者操作・初期データ投入）を要件の処理手順どおりに確認した。"
+    },
+    {
+      "criterion": "security",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "認証トークンの検証・無効化、ロール別権限、パスワードのハッシュ保存、ログの禁止項目除外、遷移先の自サイト限定を確認した。"
+    }
+  ],
+  "requirement_coverage": [
+    {
+      "requirement": "FR-001",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002",
+        "ADDR-007",
+        "ADDR-008"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_hash_password_uses_salt",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_register_then_login",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_creates_buyer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_does_not_issue_token_or_session",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_does_not_store_plain_password",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_email_max_length_boundary",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_full_name_length_boundary",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_keeps_password_whitespace",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_normalizes_email",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_password_length_boundary",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_rejects_duplicated_email_after_normalization",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_rejects_empty_password_confirmation",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_rejects_invalid_email",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_rejects_password_confirmation_mismatch",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_rejects_password_equal_to_email",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_reports_all_invalid_fields_at_once",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_requires_letter_and_digit",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_strips_full_name",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_validates_input_before_duplicate_check",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_public_endpoints_do_not_require_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_register_api_returns_201_with_user",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_register_api_returns_400_for_invalid_input",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_register_api_returns_409_for_duplicate_email",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_normalize_email",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_register_screen_creates_user_and_redirects_to_login",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_register_screen_keeps_input_on_validation_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_register_screen_shows_duplicate_email_error",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-002",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_authenticate_returns_user_without_issuing_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_helpers_create_distinct_users",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_invalid_credentials_message_does_not_reveal_which_field_is_wrong",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_issue_token_generates_unique_values",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_does_not_revoke_existing_tokens",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_for_session_records_audit_log_without_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_normalizes_email",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_requires_email_and_password",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_with_token_for_admin_user",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_with_token_issues_token_valid_for_24_hours",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_with_token_records_login_success_audit_log",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_with_token_stores_only_token_hash",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_with_unknown_email_raises_invalid_credentials",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_with_wrong_password_raises_invalid_credentials",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_resolve_token_accepts_token_before_expiry",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_resolve_token_rejects_expired_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_resolve_token_rejects_missing_or_unknown_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_resolve_token_returns_user_for_valid_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_authenticate_header_announces_bearer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_public_endpoints_do_not_require_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_login_api_returns_401_for_invalid_credentials",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_login_api_returns_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_session_current_user_flushes_session_for_deleted_user",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_session_current_user_returns_logged_in_user",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_session_current_user_returns_none_when_not_logged_in",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_session_login_sets_user_and_cycles_key",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_login_screen_ignores_external_next",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_login_screen_redirects_admin_to_admin_screen",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_login_screen_shows_invalid_credentials",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_login_screen_shows_validation_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_login_screen_starts_session_for_buyer",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-003",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_logout_session_records_audit_log",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_logout_token_records_logout_audit_log",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_logout_token_revokes_only_the_used_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_resolve_token_rejects_revoked_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_logout_api_returns_204",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_session_logout_clears_session",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_logout_screen_clears_session",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-004",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_find_user_returns_none_for_empty_identifier",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_find_user_returns_user_or_none",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_is_admin",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_resolve_token_returns_user_for_valid_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_user_payload_contains_only_public_fields",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_authentication_resolves_user_from_bearer_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_authentication_returns_none_without_header",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_me_api_returns_401_without_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_me_api_returns_user",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-010",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002",
+        "ADDR-006"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_public_endpoints_do_not_require_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_collections_api_returns_all_collections",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_list_collections_returns_depth_first_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_list_collections_returns_empty_list_when_no_collection",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-011",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002",
+        "ADDR-003",
+        "ADDR-006",
+        "ADDR-007"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_public_endpoints_do_not_require_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_items_api_returns_400_for_invalid_sort",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_items_api_returns_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_accepts_page_one_boundary",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_defaults_to_newest_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_filters_by_collection_including_descendants",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_filters_by_keyword_partial_match",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_ignores_blank_keyword",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_keyword_is_case_insensitive",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_keyword_length_boundary",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_paginates_20_per_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_rejects_invalid_conditions",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_reports_all_invalid_conditions_at_once",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_reports_in_stock_flag",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_returns_collections_of_each_item",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_returns_empty_page_beyond_total_pages",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_returns_min_price_and_tax_included_price",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_returns_only_public_items_with_stock_units",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_returns_zero_total_pages_when_no_match",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_search_items_sorts_by_requested_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_paginate_returns_empty_results_beyond_last_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_paginate_returns_requested_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_paginate_returns_zero_pages_when_empty",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_parse_page_accepts_valid_values",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_parse_page_rejects_invalid_values",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_page_range",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_item_list_screen_shows_input_errors",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_item_list_screen_shows_items",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-012",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002",
+        "ADDR-006"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_public_endpoints_do_not_require_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_item_detail_api_returns_404_for_unknown_item",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_get_item_detail_rejects_item_without_stock_unit",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_get_item_detail_rejects_private_item",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_get_item_detail_rejects_unknown_identifier",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_get_item_detail_returns_collections",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_catalog_services.py",
+          "test": "test_get_item_detail_returns_item_and_stock_units_in_sku_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_item_detail_screen_blocks_cart_input_when_all_units_sold_out",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_item_detail_screen_disables_only_sold_out_rows",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_item_detail_screen_preselects_first_in_stock_unit_by_sku",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_item_detail_screen_returns_not_found_for_private_item",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_item_detail_screen_shows_stock_units",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-020",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-004"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_cart_api_rejects_admin",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_cart_api_returns_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_open_cart_total_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_view_cart_creates_open_cart_when_missing",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_view_cart_orders_lines_by_added_at",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_view_cart_returns_line_details_and_amounts",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_view_cart_reuses_existing_open_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_layout_shows_cart_quantity_for_buyer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_screen_rejects_admin",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_screen_requires_login",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_screen_shows_quantity_input_with_current_quantity",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-021",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-003",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-009",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_cart_lines_api_adds_line",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_cart_lines_api_returns_409_for_stock_shortage",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_accepts_quantity_equal_to_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_accepts_quantity_within_limit",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_creates_new_line",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_merges_quantity_for_same_stock_unit",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_rejects_invalid_input",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_rejects_merged_quantity_over_limit",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_rejects_quantity_over_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_rejects_stock_unit_of_private_item",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_add_line_rejects_unknown_stock_unit",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_add_line_accepts_halfwidth_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_add_line_rejects_fullwidth_quantity_and_stock_unit_id",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_integer_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_int_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_int_returns_value_for_halfwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_cart_line_quantity_over_limit_is_rejected_by_database_constraint",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_cart_line_message_without_shortage_context_keeps_business_message",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_messages_fall_back_to_business_error_message_without_internal_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_flash_message_is_shown_once",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_add_line_screen_redirects_with_flash",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_add_line_screen_shows_insufficient_stock_message_of_scr_002",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_add_line_screen_shows_stock_error_on_item_detail",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-022",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-009",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_cart_line_api_updates_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_update_line_quantity_rejects_invalid_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_update_line_quantity_rejects_other_users_line",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_update_line_quantity_rejects_over_limit",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_update_line_quantity_rejects_over_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_update_line_quantity_rejects_unknown_line",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_update_line_quantity_replaces_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_integer_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_int_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_int_returns_value_for_halfwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_update_line_quantity_rejects_fullwidth_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_messages_fall_back_to_business_error_message_without_internal_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_update_line_screen_keeps_other_lines_quantity_on_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_update_line_screen_shows_error_and_keeps_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_update_line_screen_shows_field_error_for_invalid_quantity",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_update_line_screen_shows_quantity_limit_message_of_scr_005",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_update_line_screen_shows_success_message_of_scr_005",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-023",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_cart_line_api_deletes_line",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_remove_line_deletes_line",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_remove_line_keeps_applied_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_remove_line_rejects_unknown_line",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_remove_line_screen_redirects",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-024",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-004",
+        "ADDR-007",
+        "ADDR-009"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_apply_coupon_api_returns_409_for_unknown_code",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_accepts_max_length_code",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_applies_discount",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_normalizes_code",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_rejects_empty_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_rejects_expired_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_rejects_invalid_code_format",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_rejects_min_spend_not_met",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_rejects_not_yet_valid_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_rejects_second_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_coupon_rejects_unknown_code",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_apply_percentage_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_remove_line_keeps_applied_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_strip_code_removes_surrounding_whitespace",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_normalize_coupon_code",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_discount_type_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_coupon_message_shows_unset_applied_code_as_dash_of_ui_32",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_coupon_message_shows_unset_period_as_dash_of_ui_32",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_messages_fall_back_to_business_error_message_without_internal_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_already_applied_message_of_scr_005",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_business_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_cart_empty_message_of_scr_005",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_code_field_error_of_scr_005",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_expired_message_of_scr_005",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_min_spend_not_met_message_of_scr_005",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_not_yet_valid_message_of_scr_005",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_apply_coupon_screen_shows_success_message_of_scr_005",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-025",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_remove_coupon_api_returns_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_remove_coupon_clears_applied_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_carts_services.py",
+          "test": "test_remove_coupon_succeeds_when_not_applied",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_cart_remove_coupon_screen_redirects",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-026",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-003",
+        "ADDR-004",
+        "ADDR-007"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_empty_cart_with_coupon_returns_cart_empty_reason",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_empty_cart_without_coupon_has_no_reason",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_fixed_coupon_is_capped_by_subtotal",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_fixed_coupon_matches_requirement_example",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_percentage_coupon_matches_requirement_example",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_percentage_coupon_truncates_fraction",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_sums_multiple_lines",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_amounts_without_coupon_matches_requirement_examples",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_calculate_discount_amount",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_coupon_after_valid_until_is_expired",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_coupon_before_valid_from_is_not_applicable",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_coupon_min_spend_boundary",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_coupon_period_boundaries_are_inclusive",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_coupon_period_is_checked_before_min_spend",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_shipping_fee_boundary_at_five_thousand_yen",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_amounts_fr026.py",
+          "test": "test_tax_included_price_truncates_fraction",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_fixes_amounts_at_confirmation",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_layout_pops_flash_message",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_tax_included_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_unset_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_yen_filter",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-030",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-003",
+        "ADDR-004",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-009",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_checkout_api_returns_201",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_checkout_api_returns_409_for_empty_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_next_order_number_format_and_sequence",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_order_number_upper_limit_is_eight_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_checkout_rejects_fullwidth_address_digits_without_creating_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_checkout_stores_halfwidth_address_as_entered",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_digits_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_phone_and_tracking_number_patterns_reject_fullwidth_characters",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_postal_code_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_validate_shipping_address_registers_halfwidth_values_without_conversion",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_validate_shipping_address_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_validate_shipping_address_reports_every_fullwidth_digit_field",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_cart_line_quantity_over_limit_is_rejected_by_database_constraint",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_allocates_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_allows_quantity_equal_to_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_applies_coupon_snapshot",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_assigns_increasing_order_numbers",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_converts_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_creates_order_from_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_fixes_amounts_at_confirmation",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_orders_lines_by_added_at",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_registers_normalized_address",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_rejects_cart_without_lines",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_rejects_coupon_min_spend_not_met",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_rejects_coupon_not_yet_valid",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_rejects_empty_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_rejects_expired_coupon",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_rejects_insufficient_stock_without_partial_allocation",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_rejects_private_item",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_stores_empty_address_line2_as_unset",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_checkout_validates_address_before_touching_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_validate_shipping_address_accepts_boundary_values",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_validate_shipping_address_rejects_invalid_values",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_checkout.py",
+          "test": "test_validate_shipping_address_reports_all_invalid_fields",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_prefecture_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_prefectures_cover_all_47_codes",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_checkout_message_lists_all_unavailable_lines_of_scr_006",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_checkout_message_lists_shortages_of_scr_006",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_checkout_message_shows_quantity_limit_with_target_label_of_scr_006",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_messages_fall_back_to_business_error_message_without_internal_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_form_screen_shows_cart",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_creates_order_and_redirects",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_redirects_to_cart_when_empty",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_shows_coupon_expired_message_of_scr_006",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_shows_coupon_min_spend_message_of_scr_006",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_shows_coupon_not_yet_valid_message_of_scr_006",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_shows_item_not_available_message_of_scr_006",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_shows_stock_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_checkout_screen_shows_validation_errors",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_order_complete_screen_shows_order_number",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-031",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-007",
+        "ADDR-009",
+        "ADDR-013"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_pay_api_approves_payment",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_pay_api_returns_409_for_declined_payment",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_mock_gateway_generates_unique_transaction_refs",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_mock_gateway_returns_approved_response",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_mock_gateway_returns_declined_response",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_approves_and_updates_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_can_be_retried_after_decline",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_declined_keeps_order_created",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_defaults_to_approve",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_does_not_change_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_does_not_send_payment_request_when_status_is_not_created",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_keeps_processed_at_from_gateway",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_records_payment_service_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_rejects_invalid_mock_result",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_rejects_non_created_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_rejects_other_buyers_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_rejects_unknown_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_sends_payment_request_while_holding_order_lock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_pay_order_strips_mock_result",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_client_accepts_response_within_deadline",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_client_accepts_valid_declined_response",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_client_converts_unexpected_exception_to_gateway_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_client_rejects_invalid_response",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_client_rejects_response_after_deadline",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_client_rejects_unsupported_gateway",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_client_uses_configured_gateway",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_payment.py",
+          "test": "test_payment_request_carries_order_amount_and_currency",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_messages_fall_back_to_business_error_message_without_internal_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_pay_screen_redirects_on_approval",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_pay_screen_redirects_to_order_detail_on_invalid_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_pay_screen_shows_declined_message",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_pay_screen_shows_mock_result_field_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_pay_screen_shows_payment_form",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_pay_screen_shows_payment_service_error_message",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-032",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-003",
+        "ADDR-007"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_purchase_orders_api_returns_own_orders",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_list_orders_paginates_20_per_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_list_orders_rejects_invalid_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_list_orders_returns_empty_result_for_no_orders",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_list_orders_returns_only_own_orders",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_list_orders_returns_summary_fields",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_list_orders_sorted_by_ordered_at_desc",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_order_list_screen_shows_orders",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_order_list_screen_shows_page_error",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-033",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-004"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_purchase_order_detail_api_returns_404_for_other_buyer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_get_order_detail_excludes_payment_records_and_actor_user_id",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_get_order_detail_rejects_other_buyers_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_get_order_detail_rejects_unknown_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_get_order_detail_returns_detail",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_order_detail_coupon_snapshot",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_order_operation_availability_by_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_order_status_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_postal_code_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_order_detail_screen_rejects_other_buyer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_order_detail_screen_shows_detail",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_pay_screen_redirects_to_order_detail_on_invalid_status",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-034",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-007",
+        "ADDR-009"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_cancel_api_cancels_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_cancel_order_rejects_other_buyers_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_cancel_order_rejects_shipped_or_later",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_orders_buyer.py",
+          "test": "test_cancel_order_restores_stock_and_records_history",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_messages_fall_back_to_business_error_message_without_internal_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_messages.py",
+          "test": "test_status_transition_message_without_current_status_keeps_business_message",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_cancel_screen_adds_refund_note_for_paid_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_cancel_screen_cancels_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_cancel_screen_shows_status_error",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-040",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-004",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_list_suppliers_in_code_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_stock_units_filters_by_low_stock_only",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_stock_units_filters_by_sku_prefix_and_item_name",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_stock_units_filters_by_supplier",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_stock_units_marks_low_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_stock_units_paginates_50_per_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_stock_units_rejects_invalid_conditions",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_stock_units_returns_all_units_in_sku_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_admin_stock_units_api_requires_admin",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_page_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_search_stock_units_rejects_fullwidth_page_and_supplier_id",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_layout_hides_cart_quantity_for_admin",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_screens_reject_buyer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_stock_unit_list_screen",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_stock_unit_list_screen_shows_errors",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-041",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_list_order_statuses_returns_code_values",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_orders_accepts_same_date_range",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_orders_filters_by_buyer_email_partial_match",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_orders_filters_by_order_number_and_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_orders_filters_by_ordered_date_range",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_orders_rejects_invalid_conditions",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_orders_rejects_reversed_date_range",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_search_orders_returns_all_buyers_orders",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_admin_purchase_orders_api_lists_all_orders",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_date_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_order_number_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_page_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_search_orders_accepts_halfwidth_date_and_page",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_search_orders_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_order_list_screen",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_order_list_screen_shows_errors",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-042",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-004",
+        "ADDR-006"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_get_admin_order_detail_includes_buyer_and_payment_records",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_get_admin_order_detail_rejects_unknown_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_admin_purchase_order_detail_api",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_actor_role_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_payment_result_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_order_detail_screen",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-043",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_ship_order_accepts_max_length_tracking_number",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_ship_order_moves_paid_order_to_shipped",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_ship_order_rejects_invalid_tracking_number",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_ship_order_rejects_non_paid_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_ship_order_without_tracking_number",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_admin_ship_api",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_phone_and_tracking_number_patterns_reject_fullwidth_characters",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_ship_screen_registers_shipment",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_ship_screen_shows_status_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_ship_screen_shows_tracking_number_field_error_of_scr_103",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_ship_screen_shows_validation_error",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-044",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-006",
+        "ADDR-007"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_deliver_order_moves_shipped_order_to_delivered",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_deliver_order_rejects_non_shipped_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_admin_deliver_api",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_deliver_screen_registers_delivery",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_deliver_screen_shows_status_error",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-045",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-006",
+        "ADDR-007"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_admin_cancel_order_rejects_shipped_or_later",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_admin_orders.py",
+          "test": "test_admin_cancel_order_restores_stock",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_views.py",
+          "test": "test_admin_cancel_api_returns_409_for_shipped_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_cancel_screen_cancels_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_order_screens.py",
+          "test": "test_admin_cancel_screen_shows_status_error",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-060",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_seed_definition_rejects_fullwidth_datetime",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_loads_data_and_exits_with_zero",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_loads_repository_seed_file",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_reports_invalid_json",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_reports_missing_file",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_reports_violations_without_loading",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_requires_path",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_reset_option_replaces_existing_data",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_reset_with_violation_keeps_existing_data",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_without_reset_rejects_duplicates",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_applies_default_values_for_omitted_optional_fields",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_builds_collection_hierarchy",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_inserts_all_data",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_keeps_specified_values_for_optional_fields",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_records_audit_log",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_result_is_ok_when_no_violation",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_stores_password_as_hash",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_read_definition_file_accepts_bom",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_read_definition_file_reads_utf8_json",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_read_definition_file_rejects_invalid_structure",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_read_definition_file_rejects_missing_file",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_read_definition_file_rejects_non_utf8",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_read_definition_file_treats_missing_keys_as_empty",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_record_failure_writes_audit_log",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_reset_allows_same_business_keys_and_deletes_existing_data",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_seed_file_of_repository_is_valid",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_accepts_collection_depth_three",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_allows_same_collection_name_under_different_parent_without_reset",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_coupon_period_order",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_detects_circular_parent_reference",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_detects_conflict_with_existing_data_without_reset",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_detects_duplicate_business_keys",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_detects_duplicate_collection_codes_in_item",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_detects_duplicate_collection_name_under_same_parent",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_detects_duplicate_collection_name_with_existing_sibling_without_reset",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_detects_missing_references",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_ignores_existing_collection_names_when_reset_specified",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_percentage_discount_upper_bound",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_rejects_collection_depth_over_three",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_rejects_invalid_datetime",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_user_rows",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_validate_value_ranges",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_violation_format_excludes_values",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "FR-OUT-01",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-04",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-09",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-11",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-12",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-13",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-14",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-15",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "FR-OUT-16",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "本リリースの対象外機能であり、対応する実装が存在しないため単体テストの対象外。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-01",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-04",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-09",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-11",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-AV-12",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "可用性・復旧の要件であり、稼働環境での運用確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-01",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-04",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-09",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-11",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-12",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-EN-13",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "実行環境・依存ライブラリ・ライセンス等の要件であり、構成とリリース手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-01",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-04",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-09",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-LG-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "法令・規約順守の要件であり、文書確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-01",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-04",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-MG-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "保守・管理体制の要件であり、運用手順の確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-01",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-003",
+        "ADDR-005",
+        "ADDR-007"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_json_lines_formatter_outputs_iso8601_with_offset",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_json_lines_formatter_outputs_single_line_json",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_middleware_accepts_valid_request_id_only",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_middleware_generates_request_id_when_not_provided",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_middleware_logs_one_request_log",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_middleware_resets_context_after_response",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_request_context_filter_injects_request_id_and_user_id",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_request_context_reset_clears_values",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_jst_converts_to_japan_standard_time",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_now_truncates_microseconds",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_pagination_time.py",
+          "test": "test_to_iso_outputs_iso8601_with_offset",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-OM-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-04",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_loads_data_and_exits_with_zero",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_reset_option_replaces_existing_data",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_management_command.py",
+          "test": "test_command_reset_with_violation_keeps_existing_data",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-OM-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-09",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-11",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-12",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-13",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-14",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-15",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-16",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-17",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-18",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-OM-19",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "運用・監視の要件であり、稼働環境での運用確認で検証する（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-01",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-04",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-09",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-11",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-12",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-13",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-14",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-15",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-16",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-PF-17",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "性能・応答時間の要件であり、性能測定で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-01",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002",
+        "ADDR-008",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_with_token_stores_only_token_hash",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_does_not_store_plain_password",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_seeding_fr060.py",
+          "test": "test_load_stores_password_as_hash",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-SC-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-03",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_require_admin_allows_admin_and_rejects_buyer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_require_authenticated_rejects_anonymous",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_require_buyer_allows_buyer_and_rejects_admin",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_role_check_requires_authentication_first",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_admin_endpoints_require_admin_role",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_authentication_rejects_empty_bearer_value",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_authentication_rejects_revoked_token",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_authentication_rejects_unknown_scheme",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_buyer_endpoints_require_buyer_role",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_current_user_and_token_require_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_permission_classes_allow_matching_roles",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_permission_classes_reject_anonymous",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_permission_classes_reject_other_roles",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_api_auth.py",
+          "test": "test_protected_endpoints_require_authentication",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_require_buyer_and_require_admin_use_session_user",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_require_buyer_rejects_anonymous",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_safe_internal_path_rejects_external_destinations",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-SC-04",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-001",
+        "ADDR-002",
+        "ADDR-004",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-010"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_error_collector_collects_all_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_parse_int",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_strip_value",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_date_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_digits_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_integer_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_order_number_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_int_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_parse_int_returns_value_for_halfwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_phone_and_tracking_number_patterns_reject_fullwidth_characters",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+          "test": "test_postal_code_pattern_accepts_halfwidth_and_rejects_fullwidth_digits",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_display.py",
+          "test": "test_field_errors_filter",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_login_return_path_for_get_request",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_login_return_path_for_post_uses_return_to",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_login_return_path_ignores_external_referer",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_login_return_path_ignores_external_return_to",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_login_return_path_uses_referer_of_same_host",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_safe_internal_path_accepts_internal_paths",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_safe_internal_path_rejects_external_destinations",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_safe_internal_path_uses_given_fallback",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_login_screen_ignores_external_next",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-SC-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-06",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002",
+        "ADDR-005",
+        "ADDR-007"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_error_code_and_http_status",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_error_message_can_be_overridden",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_error_payload_structure",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_exception_handler_converts_app_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_exception_handler_converts_drf_validation_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_exception_handler_converts_http404",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_exception_handler_deduplicates_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_errors.py",
+          "test": "test_exception_handler_hides_internal_details",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_build_extra_drops_disallowed_fields",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_json_lines_formatter_excludes_exception_message",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_common_logging.py",
+          "test": "test_json_lines_formatter_omits_disallowed_attributes",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_handle_app_errors_redirects_to_login_for_authentication_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_handle_app_errors_renders_error_screen_for_not_found",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_handle_app_errors_renders_error_screen_for_permission_denied",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_handle_app_errors_renders_system_error",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_handle_app_errors_reraises_business_errors",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_error_screens",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_error_screens_show_scr_901_texts",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_web_views.py",
+          "test": "test_server_error_screen_hides_internal_details",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-SC-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-09",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_web_support.py",
+          "test": "test_session_cookie_timeout_and_httponly_settings",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-SC-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-11",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-12",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-13",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-14",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-15",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-16",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002",
+        "ADDR-008"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_validate_password_collects_multiple_reasons",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_password_length_boundary",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_rejects_password_equal_to_email",
+          "result": "PASS"
+        },
+        {
+          "path": "app/shop/tests/unit/test_accounts_register.py",
+          "test": "test_register_user_requires_letter_and_digit",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-SC-17",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-18",
+      "unit_testable": true,
+      "related_adrs": [
+        "ADDR-002"
+      ],
+      "tests": [
+        {
+          "path": "app/shop/tests/unit/test_accounts_auth.py",
+          "test": "test_login_does_not_revoke_existing_tokens",
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "requirement": "NFR-SC-19",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-20",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-21",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-22",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-23",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-24",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-25",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-26",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-27",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-28",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-SC-29",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "構成・運用・インフラに関わるセキュリティ要件であり、構成確認またはセキュリティ検証で行う（単体テスト可能な範囲は別途検証済み）。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-01",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-02",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-03",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-04",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-05",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-06",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-07",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-08",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-09",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    },
+    {
+      "requirement": "NFR-US-10",
+      "unit_testable": false,
+      "related_adrs": [],
+      "reason": "画面の使用性の要件であり、画面確認で検証する。",
+      "tests": []
+    }
+  ],
+  "database_tests": [
+    {
+      "target": "shop.models / shop.services（ORMマッピング・一意制約・検査制約・トランザクション）",
+      "strategy": "CONTAINER",
+      "database_type": "PostgreSQL 16（Docker コンテナ db）",
+      "production_database_used": false,
+      "shared_database_used": false,
+      "note": "pytest-django が接続先に test_<DB_NAME> を作成し、実行後に破棄する使い捨てテストDB。本番DB・本番データ・本番資格情報は使用しない。"
+    },
+    {
+      "target": "shop.payments.client / shop.services.orders（決済ゲートウェイ呼び出し）",
+      "strategy": "MOCK",
+      "database_type": "該当なし",
+      "production_database_used": false,
+      "shared_database_used": false,
+      "note": "外部決済サービスへは接続せず、模擬実装または差し替えたゲートウェイで検証した。"
+    }
+  ],
+  "defects": [
+    {
+      "id": "UT-DEF-001",
+      "classification": "TEST_ERROR",
+      "related_requirement": "FR-030",
+      "related_adr": "ADDR-001",
+      "failing_test": "app/shop/tests/unit/test_orders_checkout.py::test_checkout_rejects_quantity_over_limit",
+      "expected": "数量11以上の明細を含むカートの注文確定が QUANTITY_LIMIT_EXCEEDED となる。",
+      "actual": "テストデータ作成時に cart_line の検査制約（数量1以上10以下、D-09-04／DQ-19）違反で IntegrityError。",
+      "cause": "FR-030 手順6の前提となる数量11以上のカート明細は、データモデルの制約により作成できない。",
+      "action": "制約によって当該状態が発生し得ないことを確認するテストへ是正した（期待結果は要件・データ制約のまま変更していない）。",
+      "regression_test": "app/shop/tests/unit/test_orders_checkout.py::test_cart_line_quantity_over_limit_is_rejected_by_database_constraint",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-002",
+      "classification": "TEST_ERROR",
+      "related_requirement": "FR-031",
+      "related_adr": "ADDR-009",
+      "failing_test": "app/shop/tests/unit/test_orders_payment.py::test_pay_order_declined_keeps_order_created",
+      "expected": "否認時は注文状態履歴が増えない。",
+      "actual": "テストデータが初期の状態履歴を作らないため、件数の期待値が誤っていた。",
+      "cause": "Assertion の誤り（履歴の総件数を前提にしていた）。",
+      "action": "支払済への状態履歴が増えないことを確認する Assertion へ是正した。",
+      "regression_test": "app/shop/tests/unit/test_orders_payment.py::test_pay_order_declined_keeps_order_created",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-003",
+      "classification": "TEST_ERROR",
+      "related_requirement": "FR-031",
+      "related_adr": "ADDR-009",
+      "failing_test": "app/shop/tests/unit/test_orders_payment.py::test_payment_client_rejects_response_after_deadline",
+      "expected": "応答が制限時間（10秒）を超えた場合は連携エラーとする。",
+      "actual": "経過時間の計測分解能に依存し、制限時間超過を再現できず例外が発生しなかった。",
+      "cause": "非決定的なテスト設計（実時間に依存）。",
+      "action": "経過時間の取得を差し替え、10秒超過・10秒内の双方を決定的に確認するテストへ是正した。",
+      "regression_test": "app/shop/tests/unit/test_orders_payment.py::test_payment_client_rejects_response_after_deadline, app/shop/tests/unit/test_orders_payment.py::test_payment_client_accepts_response_within_deadline",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-004",
+      "classification": "TEST_ERROR",
+      "related_requirement": "FR-040",
+      "related_adr": "ADDR-006",
+      "failing_test": "app/shop/tests/unit/test_admin_orders.py::test_search_stock_units_filters_by_supplier",
+      "expected": "仕入先での絞り込みが行える。",
+      "actual": "共通フィクスチャと同じ仕入先コードを再作成し、一意制約違反。",
+      "cause": "テストデータが他のフィクスチャと衝突していた（テスト間の独立性の不足）。",
+      "action": "テスト専用の架空の仕入先コードへ是正した。",
+      "regression_test": "app/shop/tests/unit/test_admin_orders.py::test_search_stock_units_filters_by_supplier",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-005",
+      "classification": "TEST_ERROR",
+      "related_requirement": "NFR-OM-01",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_common_pagination_time.py::test_jst_converts_to_japan_standard_time",
+      "expected": "日時を JST（+09:00）へ変換する。",
+      "actual": "テストが廃止済みの django.utils.timezone.utc を参照し AttributeError。",
+      "cause": "テストコードの誤り（採用バージョンで廃止された属性の使用）。",
+      "action": "標準ライブラリの datetime.UTC を用いるよう是正した。",
+      "regression_test": "app/shop/tests/unit/test_common_pagination_time.py::test_jst_converts_to_japan_standard_time, app/shop/tests/unit/test_common_pagination_time.py::test_to_iso_outputs_iso8601_with_offset",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-006",
+      "classification": "TEST_ERROR",
+      "related_requirement": "FR-002",
+      "related_adr": "ADDR-002",
+      "failing_test": "app/shop/tests/unit/test_web_support.py::test_session_current_user_returns_logged_in_user",
+      "expected": "セッションの利用者IDから利用者を取得できる。",
+      "actual": "テストが存在しない属性を削除しようとして AttributeError。",
+      "cause": "テストコードの誤り（実装の内部キャッシュに関する誤った前提）。",
+      "action": "不要な操作を除き、公開手続きだけで確認するテストへ是正した。",
+      "regression_test": "app/shop/tests/unit/test_web_support.py::test_session_current_user_returns_logged_in_user",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-007",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-020, FR-021",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_views.py::test_cart_add_line_screen_shows_insufficient_stock_message_of_scr_002, app/shop/tests/unit/test_web_views.py::test_cart_update_line_screen_shows_quantity_limit_message_of_scr_005",
+      "expected": "SCR-002-OP01 は在庫不足を「在庫が不足しています（現在の在庫数量：n個）。」、SCR-005-OP01 は数量上限超過を規定の文言でメッセージ領域へ表示する。",
+      "actual": "画面が規定の文言へ変換せず、要件の文言が応答本文に含まれなかった。",
+      "cause": "画面側に SCR の表示文言の変換が実装されていなかった（業務判定は services で正しく行われていた）。",
+      "action": "Implementation 工程へ IMPLEMENTATION_FIX_REQUIRED として返却し、shop/web/messages.py へ文言変換を集約して views_cart・cart.html から利用する実装へ修正された。",
+      "regression_test": "app/shop/tests/unit/test_web_views.py::test_cart_add_line_screen_shows_insufficient_stock_message_of_scr_002, app/shop/tests/unit/test_web_views.py::test_cart_update_line_screen_shows_quantity_limit_message_of_scr_005",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-008",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-024",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_code_field_error_of_scr_005",
+      "expected": "SCR-005-OP03：クーポンコードの入力エラーはクーポンコード欄の近傍に「クーポンコードは英字・数字・ハイフンの20文字以内で入力してください。」を表示する。",
+      "actual": "画面が規定の入力エラー文言を当該入力欄の近傍へ表示しなかった。",
+      "cause": "画面側の入力エラー表示が SCR-005-OP03 の文言・表示位置に合っていなかった。",
+      "action": "Implementation 工程で shop/web/messages.py の項目別入力エラー文言と views_cart・cart.html の表示位置が修正された。",
+      "regression_test": "app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_code_field_error_of_scr_005",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-009",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-024",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_cart_empty_message_of_scr_005",
+      "expected": "SCR-005-OP03：カートが空（CART_EMPTY）は「カートに商品がないため、クーポンを適用できません。」をメッセージ領域へ表示する。",
+      "actual": "画面が規定の文言を表示しなかった。",
+      "cause": "業務例外（CART_EMPTY）から SCR-005-OP03 の文言への変換が画面側に実装されていなかった。",
+      "action": "Implementation 工程で shop/web/messages.py・views_cart の変換が修正された。",
+      "regression_test": "app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_cart_empty_message_of_scr_005",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-010",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-031",
+      "related_adr": "ADDR-009",
+      "failing_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_shows_declined_message",
+      "expected": "SCR-008-OP01：否認（PAYMENT_DECLINED）は本画面に留まり「決済が承認されませんでした。お支払いは完了していません。再度お支払いください。」を表示する（状態は注文受付のまま）。",
+      "actual": "支払画面が規定の文言を表示しなかった。",
+      "cause": "決済否認の業務例外から SCR-008-OP01 の文言への変換が画面側に実装されていなかった。",
+      "action": "Implementation 工程で shop/web/messages.py・views_orders・pay.html が修正された。",
+      "regression_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_shows_declined_message",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-011",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-031",
+      "related_adr": "ADDR-009",
+      "failing_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_shows_payment_service_error_message",
+      "expected": "SCR-008-OP01：連携エラー（PAYMENT_SERVICE_ERROR）は本画面に留まり「決済サービスとの通信でエラーが発生しました。お支払いは完了していません。時間をおいて再度お支払いください。」を表示する（状態は注文受付のまま）。",
+      "actual": "支払画面が規定の文言を表示しなかった。",
+      "cause": "連携エラーの業務例外から SCR-008-OP01 の文言への変換が画面側に実装されていなかった。",
+      "action": "Implementation 工程で shop/web/messages.py・views_orders・pay.html が修正された。",
+      "regression_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_shows_payment_service_error_message",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-012",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-031",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_shows_mock_result_field_error",
+      "expected": "SCR-008-OP01：入力エラーは模擬決済の結果の近傍に「模擬決済の結果を選択してください。」を表示する。",
+      "actual": "支払画面が規定の入力エラー文言を当該入力欄の近傍へ表示しなかった。",
+      "cause": "画面側の入力エラー表示が SCR-008-OP01 の文言・表示位置に合っていなかった。",
+      "action": "Implementation 工程で shop/web/messages.py・views_orders・pay.html が修正された。",
+      "regression_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_shows_mock_result_field_error",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-013",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-043",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_order_screens.py::test_admin_ship_screen_shows_tracking_number_field_error_of_scr_103",
+      "expected": "SCR-103-OP01：入力エラーは配送伝票番号欄の近傍に「配送伝票番号は英数字とハイフンの30文字以内で入力してください。」を表示し、入力値を保持する。",
+      "actual": "管理者の注文詳細画面が規定の入力エラー文言を当該入力欄の近傍へ表示しなかった。",
+      "cause": "画面側の入力エラー表示が SCR-103-OP01 の文言・表示位置に合っていなかった。",
+      "action": "Implementation 工程で shop/web/messages.py・views_admin・admin_order_detail.html が修正された。",
+      "regression_test": "app/shop/tests/unit/test_web_order_screens.py::test_admin_ship_screen_shows_tracking_number_field_error_of_scr_103",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-014",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-001",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_views.py::test_register_screen_keeps_input_on_validation_error",
+      "expected": "CMN-17：入力エラーで再表示する画面は入力値を保持する（パスワードなどの秘密情報は保持しない）。",
+      "actual": "入力エラーでの再表示時に入力値が保持されていなかった。",
+      "cause": "画面側に入力値の再表示（CMN-17）が実装されていなかった。",
+      "action": "Implementation 工程へ申し送り、入力値保持が実装された（秘密情報は保持しない）。",
+      "regression_test": "app/shop/tests/unit/test_web_views.py::test_register_screen_keeps_input_on_validation_error",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-015",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-031, FR-033",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_redirects_to_order_detail_on_invalid_status",
+      "expected": "SCR-008 のアクセス条件：状態が注文受付以外のときは SCR-010 へ遷移し「この注文は支払できません（現在の状態：状態の表示名）。」を表示する。",
+      "actual": "状態不正時に SCR-010 への遷移と規定の文言表示が行われなかった。",
+      "cause": "SCR-008 のアクセス条件（状態不正時の遷移先と文言）が画面側に実装されていなかった。",
+      "action": "Implementation 工程へ申し送り、views_orders で SCR-010 への遷移と文言表示が実装された。",
+      "regression_test": "app/shop/tests/unit/test_web_order_screens.py::test_pay_screen_redirects_to_order_detail_on_invalid_status",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-016",
+      "classification": "TEST_ERROR",
+      "related_requirement": "FR-022, FR-024, FR-030",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_web_views.py::test_cart_update_line_screen_shows_success_message_of_scr_005, app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_success_message_of_scr_005, app/shop/tests/unit/test_web_messages.py::test_checkout_message_shows_quantity_limit_with_target_label_of_scr_006",
+      "expected": "SCR-005-OP01 の「数量を変更しました。」、SCR-005-OP03 の「クーポンを適用しました。」と適用済み・開始前・期限切れ・最低購入金額未達の各文言（有効期間・最低購入金額・小計の併記を含む）、SCR-006-OP01 の販売終了（該当明細の一覧）・数量上限超過（対象ラベル）・クーポン条件不成立（理由の併記）を検証する単体テストが存在する。",
+      "actual": "shop/web/messages.py の当該文言を検証する単体テストが無く、文言を退行させても単体テストが全件PASSしていた（分岐網羅 45.45%、未到達分岐24件）。",
+      "cause": "直前の Implementation 差し戻し（UT-DEF-007〜013）で新設した画面文言変換に対し、兄弟ケース（CART_EMPTY・COUPON_NOT_FOUND・INSUFFICIENT_STOCK 等）と同じ網羅方針を適用していなかった。",
+      "action": "Unit Test 工程でテストを追加した（Production Code は変更していない）。数量上限超過の注文確定はデータ制約（D-09-04／DQ-19）により再現できないため（UT-DEF-001）、表示変換を直接検証する test_web_messages.py を追加した。",
+      "regression_test": "app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_already_applied_message_of_scr_005, app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_not_yet_valid_message_of_scr_005, app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_expired_message_of_scr_005, app/shop/tests/unit/test_web_views.py::test_cart_apply_coupon_screen_shows_min_spend_not_met_message_of_scr_005, app/shop/tests/unit/test_web_order_screens.py::test_checkout_screen_shows_item_not_available_message_of_scr_006, app/shop/tests/unit/test_web_order_screens.py::test_checkout_screen_shows_coupon_expired_message_of_scr_006, app/shop/tests/unit/test_web_order_screens.py::test_checkout_screen_shows_coupon_not_yet_valid_message_of_scr_006, app/shop/tests/unit/test_web_order_screens.py::test_checkout_screen_shows_coupon_min_spend_message_of_scr_006, app/shop/tests/unit/test_web_messages.py::test_checkout_message_lists_all_unavailable_lines_of_scr_006",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    },
+    {
+      "id": "UT-DEF-017",
+      "classification": "IMPLEMENTATION_ERROR",
+      "related_requirement": "FR-030, FR-021, FR-022, FR-041, FR-040, FR-032, FR-060",
+      "related_adr": "ADDR-007",
+      "failing_test": "app/shop/tests/unit/test_fullwidth_digit_rejection.py::test_validate_shipping_address_rejects_fullwidth_digits, app/shop/tests/unit/test_fullwidth_digit_rejection.py::test_checkout_rejects_fullwidth_address_digits_without_creating_order",
+      "expected": "FR-030 6.15.3 の入力条件（郵便番号＝半角数字7桁または半角数字3桁-4桁、都道府県コード＝2桁の半角数字、電話番号＝半角数字とハイフン）と CMN-15（全角文字と半角文字の相互変換は行わない）により、全角数字の値は入力エラー（E-030-03／VALIDATION_ERROR）となり注文を作成しない。数量・ページ番号・注文日・注文番号も同様に半角数字だけを整数・日付として解釈する。",
+      "actual": "正規表現の数字クラスが Unicode 既定の \\d だったため、全角数字の prefecture_code（例 \"１３\"）・postal_code（例 \"１２３４５６７\"）が受理され、全角のまま登録されていた（OBS-IT-001：結合テストで 201 を確認）。",
+      "cause": "共通検証（shop/common/validators.py）の数字判定が半角（ASCII）に限定されておらず、全角数字が半角数字として扱われていた。",
+      "action": "Implementation 工程で \\d を [0-9] へ是正済み（POSTAL_CODE_PATTERN・DATE_PATTERN・DIGITS_PATTERN・INTEGER_PATTERN・parse_int ほか）。Unit Test 工程では Production Code を変更せず、再発を検出する回帰テストを追加した。[0-9] を \\d へ戻すと本回帰テストの26ケースが失敗することを確認済み（確認後に Production Code はバイト同一へ復元した）。",
+      "regression_test": "app/shop/tests/unit/test_fullwidth_digit_rejection.py（44ケース）",
+      "resolved": true,
+      "rerun": {
+        "target_test": "PASS",
+        "related_tests": "PASS",
+        "full_suite": "PASS"
+      }
+    }
+  ],
+  "flaky_tests": []
+}

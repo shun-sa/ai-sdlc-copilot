@@ -1,0 +1,16 @@
+﻿{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/it-concurrency-cycle0",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "MISSING_BEHAVIOR_COVERAGE",
+    "artifact": "tests/integration",
+    "requirement_reference": "AC-UC-012-009",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "同時実行の必須AC8件のうち7件が未検証で、在庫の二重戻し・決済記録の二重登録を検出できない。Required Coverageの同時実行キーもCK-FR030-09の1件のみ",
+  "recommended_route": "INTEGRATION_TEST",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

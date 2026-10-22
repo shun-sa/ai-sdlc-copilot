@@ -1,0 +1,1 @@
+﻿{"check_id":"design_final","command":["python",".github/skills/architecture/scripts/validate_design.py","--stage","final"],"result_path":"reports/loop-control/checks/ARCHITECTURE-design_final.json","timeout_seconds":300}

@@ -1,0 +1,14 @@
+{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/impl-security-resolved",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "SECURITY_IMPLEMENTATION_ISSUE",
+    "artifact": "app/shop/web",
+    "requirement_reference": "NFR-SC-04",
+    "test_case": "",
+    "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "safe_internal_path()による遷移先検証をlogin/add_line/login_return_pathへ適用、stack_traceをファイル名・行番号・関数名に限定、DRF既定権限を拒否側へ変更",
+  "validation_result": "reports/security-review/validation-result.json"
+}

@@ -1,0 +1,41 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "checked_at": "2026-10-22T13:05:00+09:00",
+  "status": "EXTERNAL_TEST_INPUT_REQUIRED",
+  "standard_location": "external-tests/integration-test/",
+  "location_exists": false,
+  "external_case_files_found": [],
+  "external_cases_confirmed_absent": false,
+  "confirmed_absent_source": null,
+  "check_order": {
+    "ai_initial_cases_generated_at": "2026-10-22T12:49:06+09:00",
+    "ai_initial_cases_frozen": true,
+    "ai_initial_snapshot_event_id": "initial-1",
+    "ai_initial_snapshot_sha256": "94f1d86597cc4dc3733b091b63ee16634c12996f3341e2f49ad0f9020d5a5d63",
+    "external_location_checked_after_freeze": true
+  },
+  "note": "External Test Caseは任意入力だが、未配置であることとExternal Caseを使用しないことは同一ではない。Integration Test Agent自身の判断でexternal_cases_confirmed_absentをtrueにしてはならないため、SDLC Orchestrator経由でユーザー確認を求める。確認が得られるまでintegration-test-evidence.jsonのexternal_inputは生成しない（provided=false かつ user_confirmed_without_external_cases=false の状態を作らないため）。",
+  "user_decision_required": [
+    "external-tests/integration-test/ へ結合試験項目表を配置する（テンプレート: .github/skills/integration-test/templates/integration-test-case-template.xlsx）",
+    "または External Caseなしで続行することを明示的に確認する（external_cases_confirmed_absent: true を親から渡す）"
+  ],
+  "resolution": {
+    "resolved_at": "2026-10-22T13:15:47+09:00",
+    "decision": "CONTINUE_WITHOUT_EXTERNAL_CASES",
+    "external_cases_confirmed_absent": true,
+    "confirmed_by": "ユーザー（SDLC Orchestrator 経由で明示確認）",
+    "note": "ユーザーの明示的な選択に基づく。Integration Test Agent 自身の判断で設定した値ではない。以後 integration-test-evidence.json の external_input は provided=false / user_confirmed_without_external_cases=true として記録する。",
+    "recheck_of_standard_location": {
+      "checked_at": "2026-10-22T13:40:00+09:00",
+      "location_exists": false,
+      "external_case_files_found": []
+    }
+  },
+  "ai_initial_summary": {
+    "required_coverage_total": 70,
+    "ai_initial_case_total": 54,
+    "coverage_keys_covered_by_ai_initial": 59,
+    "coverage_keys_not_covered_by_ai_initial": 11
+  }
+}

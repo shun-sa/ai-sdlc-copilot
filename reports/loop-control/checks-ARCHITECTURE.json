@@ -1,0 +1,8 @@
+﻿{
+  "producer": "reports/loop-control/checks/ARCHITECTURE-producer.json",
+  "design_final": "reports/loop-control/checks/ARCHITECTURE-design_final.json",
+  "quality": "reports/quality-review/validation-result.json",
+  "security": "reports/security-review/validation-result.json",
+  "traceability": "reports/traceability/validation-result.json",
+  "architecture_gate": "reports/loop-control/checks/ARCHITECTURE-architecture_gate.json"
+}

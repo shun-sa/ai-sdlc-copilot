@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/arch-security-cycle0",
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DEPENDENCY_CONFIGURATION_ISSUE",
+    "artifact": "docs/architecture/implementation-task-list.md",
+    "requirement_reference": "NFR-SC-11",
+    "test_case": "",
+    "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "依存ライブラリの供給網セキュリティ要件（NFR-SC-11 / NFR-EN-10 / VUL-09 / VUL-10）がTASKのScope・DoD・Coverage表のいずれにも割り当てられず、後工程で欠落が検知されない",
+  "recommended_route": "ARCHITECTURE",
+  "validation_result": "reports/security-review/validation-result.json"
+}

@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/it-security-gap-cycle0",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "SECURITY_TEST_GAP",
+    "artifact": "tests/integration",
+    "requirement_reference": "NFR-SC-05",
+    "test_case": "",
+    "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "CSRFトークン欠落時の拒否、画面出力のHTMLエスケープ、SQL/OSコマンド攻撃文字列の投入、全削除後の旧トークン拒否の4項目が単体742件・結合65件のいずれにも存在せず、1行の変更で制御が静かに失われても検知できない",
+  "recommended_route": "INTEGRATION_TEST",
+  "validation_result": "reports/security-review/validation-result.json"
+}

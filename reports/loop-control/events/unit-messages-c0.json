@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/unit-messages-coverage-cycle0",
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "MISSING_BEHAVIOR_COVERAGE",
+    "artifact": "app/shop/web/messages.py",
+    "requirement_reference": "SCR-005-OP03",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "新設されたweb/messages.pyの要件文言分岐（SCR-005-OP01成功/SCR-005-OP03成功・失敗4種/SCR-006-OP01失敗3種）が未検証で、文言を退行させても719件すべてPASSしてしまう",
+  "recommended_route": "UNIT_TEST",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

@@ -1,0 +1,16 @@
+{# trace: ADDR-004 #}
+<nav class="pagination" aria-label="ページ移動">
+  {% if page_data.page > 1 %}
+    <a href="?{{ request.GET.urlencode }}&page={{ page_data.page|add:'-1' }}">前へ</a>
+  {% endif %}
+  {% for number in page_numbers %}
+    {% if number == page_data.page %}
+      <span class="current">{{ number }}</span>
+    {% else %}
+      <a href="?{{ request.GET.urlencode }}&page={{ number }}">{{ number }}</a>
+    {% endif %}
+  {% endfor %}
+  {% if page_data.page < page_data.total_pages %}
+    <a href="?{{ request.GET.urlencode }}&page={{ page_data.page|add:'1' }}">次へ</a>
+  {% endif %}
+</nav>

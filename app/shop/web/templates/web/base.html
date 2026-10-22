@@ -1,0 +1,62 @@
+{# trace: ADDR-004 #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>{{ page_title }}｜MiniCommerce</title>
+  <link rel="stylesheet" href="{% static 'web/app.css' %}">
+</head>
+<body>
+<header class="header">
+  {% if is_admin %}
+    <nav class="header-nav" aria-label="管理者メニュー">
+      <a class="brand" href="/admin/purchase-orders">MiniCommerce</a>
+      <a href="/admin/stock-units">在庫単位一覧</a>
+      <a href="/admin/purchase-orders">注文一覧</a>
+      <form method="post" action="/logout" class="inline-form">{% csrf_token %}
+        <button type="submit" data-submit-once="true">ログアウト</button>
+      </form>
+    </nav>
+  {% else %}
+    <nav class="header-nav" aria-label="メニュー">
+      <a class="brand" href="/">MiniCommerce</a>
+      <form method="get" action="/" class="inline-form" role="search">
+        <label for="header-keyword">キーワード</label>
+        <input id="header-keyword" type="search" name="keyword" value="{{ keyword|default_if_none:'' }}">
+        <button type="submit">検索</button>
+      </form>
+      <a href="/cart">カート{% if current_user %}（{{ cart_total_quantity }}点）{% endif %}</a>
+      <a href="/purchase-orders">注文履歴</a>
+      {% if current_user %}
+        <span class="user-name">{{ current_user.full_name }}さん</span>
+        <form method="post" action="/logout" class="inline-form">{% csrf_token %}
+          <button type="submit" data-submit-once="true">ログアウト</button>
+        </form>
+      {% else %}
+        <a href="/login">ログイン</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+</header>
+
+{% if flash_message or error_message %}
+  <div class="message-area" role="status">
+    {% if flash_message %}<p class="message">{{ flash_message }}</p>{% endif %}
+    {% if error_message %}<p class="message error">{{ error_message }}</p>{% endif %}
+    {% if error_message_items %}
+      <ul class="message error">
+        {% for item in error_message_items %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endif %}
+
+<main class="main">
+  <h1>{{ page_title }}</h1>
+  {% block content %}{% endblock %}
+</main>
+
+<script src="{% static 'web/app.js' %}" defer></script>
+</body>
+</html>

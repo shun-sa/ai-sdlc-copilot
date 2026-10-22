@@ -1,0 +1,5 @@
+﻿{
+  "quality": "reports/quality-review/validation-result.json",
+  "security": "reports/security-review/validation-result.json",
+  "traceability": "reports/traceability/validation-result.json"
+}

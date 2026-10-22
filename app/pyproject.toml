@@ -1,0 +1,18 @@
+# trace: ADDR-004, ADDR-012
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+# ./tests は ENV-01 でリポジトリ直下 tests/ を /app/tests へ読取り専用マウントした写しであり（ADDR-012 DD-001）、
+# app のソースコードではないため静的解析の対象外とする（NFR-OM-07 の対象は app の全 Python ソースコード）。
+# app/shop/tests（単体テスト）は app のソースとして解析対象に残す。
+exclude = ["staticfiles", "migrations", "./tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]
+# コンテナ内（rootdir=/app）でパス引数なしに単体（shop/tests）と結合（tests、ENV-01 の
+# 読取り専用マウントで与えられる）の双方を収集する（ADDR-012 DD-002、INV-003）。
+testpaths = ["shop/tests", "tests"]

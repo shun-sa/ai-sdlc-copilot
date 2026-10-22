@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/impl-fullwidth-resolved",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "INPUT_VALIDATION_ISSUE",
+    "artifact": "app/shop/services/orders.py",
+    "requirement_reference": "FR-030",
+    "test_case": "OBS-IT-001",
+    "stable_error_type": "FULLWIDTH_DIGIT_ACCEPTED"
+  },
+  "repair": "validators.pyのPOSTAL_CODE_PATTERN/DATE_PATTERNの\\dを[0-9]へ変更しDIGITS/INTEGER_PATTERNを追加、parse_intを半角限定化。orders.pyの_is_prefecture_code等も是正。単体44ケースの回帰テストで\\d復帰時に26件失敗することを実証",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

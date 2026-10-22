@@ -1,0 +1,267 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "status": "SUCCESS",
+  "test_summary": {
+    "ai_initial": {
+      "total": 54,
+      "passed": 54,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    },
+    "ai_gap_fill": {
+      "total": 84,
+      "passed": 84,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    },
+    "external": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    },
+    "total": {
+      "total": 138,
+      "passed": 138,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    }
+  },
+  "coverage": {
+    "required": 143,
+    "common": 0,
+    "ai_only": 59,
+    "external_only": 0,
+    "missing": 84,
+    "ai_initial_coverage_rate": 41.26,
+    "external_coverage_rate": null,
+    "combined_initial_coverage_rate": 41.26,
+    "final_coverage_rate": 100.0,
+    "initial_metrics_as_first_measured": {
+      "required": 70,
+      "common": 0,
+      "ai_only": 59,
+      "external_only": 0,
+      "missing": 11,
+      "ai_initial_coverage_rate": 84.29,
+      "external_coverage_rate": null,
+      "combined_initial_coverage_rate": 84.29,
+      "note": "Gap Fill 前に確定した測定値。GAP_FILL Case の追加では書き換えない。"
+    }
+  },
+  "defects": {
+    "total": 1,
+    "common": 0,
+    "ai_only": 1,
+    "external_only": 0
+  },
+  "errors": {
+    "total": 0,
+    "test_spec_conflict": 0,
+    "automation_blocked": 0,
+    "unresolved": 0
+  },
+  "external_input": {
+    "provided": false,
+    "user_confirmed_without_external_cases": true
+  },
+  "repair_cycle_summary": {
+    "cycle": 5,
+    "addressed": [
+      {
+        "issue_id": "SR-IT-001",
+        "classification": "SECURITY_TEST_GAP",
+        "action": "Required Coverage の導出元へ非機能要件（NFR-SC-04・NFR-SC-05 の検証方法、8.2 VUL-04〜06、12.2 VDC-06）を追加し、ICOV-071〜ICOV-078 を定義。tests/integration/test_security.py（6ケース）と tests/integration/test_seeding_command.py（2ケース）で (a) CSRF対策用トークン欠落時の拒否、(b) 画面出力のHTMLエスケープ、(c) SQL・OSコマンド攻撃文字列の投入、(d) 全削除後の旧トークン・旧セッションの拒否を検証。",
+        "cases": [
+          "IT-AI-GF-012",
+          "IT-AI-GF-013",
+          "IT-AI-GF-014",
+          "IT-AI-GF-015",
+          "IT-AI-GF-016",
+          "IT-AI-GF-017",
+          "IT-AI-GF-018",
+          "IT-AI-GF-019"
+        ],
+        "result": "全8ケース PASS"
+      },
+      {
+        "issue_id": "QR-IT-001",
+        "classification": "MISSING_BEHAVIOR_COVERAGE",
+        "action": "Required Coverage の導出元へ UC の同時実行受入基準を追加し、ICOV-079〜ICOV-087 を定義。tests/integration/test_concurrency.py に AC-UC-001-017 / AC-UC-004-025 / AC-UC-007-013 / AC-UC-007-019 / AC-UC-009-007 / AC-UC-011-020 / AC-UC-012-009 / AC-UC-012-010 / AC-UC-012-011 の9ケース（各10試行）を追加。",
+        "cases": [
+          "IT-AI-GF-020",
+          "IT-AI-GF-021",
+          "IT-AI-GF-022",
+          "IT-AI-GF-023",
+          "IT-AI-GF-024",
+          "IT-AI-GF-025",
+          "IT-AI-GF-026",
+          "IT-AI-GF-027",
+          "IT-AI-GF-028"
+        ],
+        "result": "9ケース中8ケースが初回 PASS。IT-AI-GF-023（AC-UC-007-019）で DEF-IT-001 を検出し ADR_REQUIRED として返却。ADDR-013 採択と実装是正の後に再実行し、9ケース全件 PASS。"
+      },
+      {
+        "issue_id": "QR-IT-003",
+        "classification": "INTEGRATION_TEST_QUALITY_ISSUE",
+        "action": "指摘本文を参照できなかったため（reports/quality-review/quality-review-report.json は ADDR Scope 再Review（QR-ADDR-20261022-003）で上書きされ、QR-IT-20261022-001 の本文が現存しない。reports/loop-control・reports/experiments 内にも保存されていない）、自己点検として結合試験コードの静的解析（ruff E,F,W,I,UP,B,C4）と Traceability 注釈（C05・C06）を実施して検出した指摘を是正した。",
+        "cases": [],
+        "result": "PARTIAL（指摘本文が入手不能。解消の確認は INTEGRATION_TEST Scope の Quality Review 再実行が必要）"
+      },
+      {
+        "issue_id": "DEF-IT-001",
+        "classification": "ADR_REQUIRED",
+        "action": "ADDR-013（ACTIVE）を採択し、支払では注文行のロックを手順5の状態判定の前に取得して、状態判定→決済要求送信→結果反映を同一トランザクション・同一ロック区間で確定する方式へ決定した（ADDR-009 DD-005・INV-006、ADDR-001 DD-007・INV-004 を更新し、ロック保持中の禁止対象を外部ネットワーク通信・スリープ・他プロセス待ちに限定）。Implementation 工程が ADDR-013 に従って app/shop/services/orders.py の pay_order を是正し、ロック取得後に CREATED 以外であれば決済ゲートウェイを呼び出さずに InvalidStatusTransitionError を送出する実装とした（_authorize_locked_order を新設、否認・連携エラーは決済記録を同一トランザクションで登録しコミット後に例外送出、_record_payment の独立トランザクションを廃止）。Integration Test Agent は Production Code・ADDR・要件を変更していない。",
+        "cases": [
+          "IT-AI-GF-023"
+        ],
+        "result": "解消。Production Code 変更後に全ケースを再実行して確認した。IT-AI-GF-023（AC-UC-007-019、各10試行）を単独で3回再実行し3回とも PASS。関連ケース（tests/integration/test_concurrency.py 10件、test_orders_api.py・test_e2e_flow.py・test_admin_api.py 計29件）PASS。結合試験 82ケース全件 PASS（junit.xml 再生成）。全体（単体742件＋結合82件）は docker compose exec -T app pytest で 824 passed / 0 failed。"
+      },
+      {
+        "issue_id": "TA-C10-001",
+        "classification": "TEST_TRACEABILITY_MISSING",
+        "action": "Traceability Audit（FULL Scope）の C10 で不合格となった 124 件の要件について、要件本文を正本として 「自動テストで正当に検証できるもの」と「検証方法が自動テストではないもの」を分類した。検証できる 41 観点（対象外機能 FR-OUT-01〜16 が実装されていないことの確認、および設定値・形式・件数・記録・同時実行整合に関する非機能要件）を Required Coverage へ追加（ICOV-088〜ICOV-128）し、AI GAP_FILL Case IT-AI-GF-029〜069 として tests/integration/test_out_of_scope.py・test_security_contract.py・test_platform_contract.py・test_concurrency.py に実装した。自動テストで検証できない要件は reports/integration-test/non-automatable-requirements.json / .md へ 要件IDごとの検証方法・対象外理由とともに記録した。AI INITIAL Case 54件と初回測定値は変更していない。",
+        "cases": [
+          "IT-AI-GF-029",
+          "IT-AI-GF-030",
+          "IT-AI-GF-031",
+          "IT-AI-GF-032",
+          "IT-AI-GF-033",
+          "IT-AI-GF-034",
+          "IT-AI-GF-035",
+          "IT-AI-GF-036",
+          "IT-AI-GF-037",
+          "IT-AI-GF-038",
+          "IT-AI-GF-039",
+          "IT-AI-GF-040",
+          "IT-AI-GF-041",
+          "IT-AI-GF-042",
+          "IT-AI-GF-043",
+          "IT-AI-GF-044",
+          "IT-AI-GF-045",
+          "IT-AI-GF-046",
+          "IT-AI-GF-047",
+          "IT-AI-GF-048",
+          "IT-AI-GF-049",
+          "IT-AI-GF-050",
+          "IT-AI-GF-051",
+          "IT-AI-GF-052",
+          "IT-AI-GF-053",
+          "IT-AI-GF-054",
+          "IT-AI-GF-055",
+          "IT-AI-GF-056",
+          "IT-AI-GF-057",
+          "IT-AI-GF-058",
+          "IT-AI-GF-059",
+          "IT-AI-GF-060",
+          "IT-AI-GF-061",
+          "IT-AI-GF-062",
+          "IT-AI-GF-063",
+          "IT-AI-GF-064",
+          "IT-AI-GF-065",
+          "IT-AI-GF-066",
+          "IT-AI-GF-067",
+          "IT-AI-GF-068",
+          "IT-AI-GF-069"
+        ],
+        "result": "41ケースすべて初回 PASS。結合試験 123ケース全件 PASS（単体747件と合わせて 870 passed / 0 failed）"
+      },
+      {
+        "issue_id": "TA-C10-001",
+        "classification": "TEST_TRACEABILITY_MISSING",
+        "cycle": 2,
+        "action": "修正1回目で「自動テスト対象外」と分類した 74 件を、要件本文の「検証方法」欄を正本として1件ずつ再精査した。区分名ではなく「結合試験環境（app サービスのコンテナ）の中に解析・判定の対象が存在するか」「形骸的（常に真・実質無検証・ファイル存在確認のみ）でない検証ができるか」で判定し、11 件を自動検証へ移した。内訳は静的解析6件（NFR-OM-07・NFR-EN-11・NFR-EN-12・NFR-PF-17・NFR-SC-07・NFR-EN-09）、構成・設定レビュー2件（NFR-EN-08・NFR-LG-03）、該当なし2件（NFR-AV-10・NFR-PF-12）、性能テスト1件（NFR-PF-11 の不変条件のみ）。Required Coverage へ ICOV-129〜ICOV-139 を追加し、AI GAP_FILL Case IT-AI-GF-070〜080 として tests/integration/test_quality_contract.py・test_resilience_contract.py に実装した。負荷の測定値そのもの、本番環境でのみ測定できる指標、ブラウザ操作・移行リハーサル・脆弱性診断を要する要件は追加していない。AI INITIAL Case 54件と初回測定値（initial-coverage-metrics.json）は変更していない。",
+        "cases": [
+          "IT-AI-GF-070",
+          "IT-AI-GF-071",
+          "IT-AI-GF-072",
+          "IT-AI-GF-073",
+          "IT-AI-GF-074",
+          "IT-AI-GF-075",
+          "IT-AI-GF-076",
+          "IT-AI-GF-077",
+          "IT-AI-GF-078",
+          "IT-AI-GF-079",
+          "IT-AI-GF-080"
+        ],
+        "result": "11ケースすべて初回 PASS（1件は WhiteNoise のハッシュ付き静的ファイル名に対する照合誤り、1件は管理コマンドの終了方法の想定誤りを TEST_ERROR として Test Code 側で是正。いずれも期待結果を Production Code に合わせて変更していない）。結合試験 134ケース全件 PASS（単体747件と合わせて 881 passed / 0 failed）",
+        "c10_effect": "自動テスト対象外 74 件 → 63 件。C10 残存見込みは 63 件。"
+      },
+      {
+        "issue_id": "TA-C10-001",
+        "classification": "TEST_TRACEABILITY_MISSING",
+        "action": "C10 残存 63 件の最終精査（修正3回目）。要件本文の検証方法欄を正本に1件ずつ再確認し、結合試験環境の中に判定対象があり形骸的でない判定ができる 4 件（NFR-SC-25・NFR-OM-17・NFR-EN-07・NFR-EN-03）をRequired Coverage（ICOV-140〜143）へ追加し、IT-AI-GF-081〜084 として実装した。残る 59 件は検証方法が本質的に自動テストの対象外のため追加せず、non-automatable-requirements（最終版）へ検証方法の引用・自動化できない理由・本番稼働前に人が実施すべき検証を整理した。",
+        "cases": [
+          "IT-AI-GF-081",
+          "IT-AI-GF-082",
+          "IT-AI-GF-083",
+          "IT-AI-GF-084"
+        ],
+        "result": "4ケースすべて PASS。結合試験 138ケース全件 PASS（単体791件と合わせて 929 passed / 0 failed）。C10 は 63 件 → 59 件（見込み）。残存分は UNRESOLVED として継続記録する。"
+      }
+    ],
+    "open_items": [
+      {
+        "item": "QR-IT-003（LOW / INTEGRATION_TEST_QUALITY_ISSUE）の指摘本文が入手できない",
+        "detail": "reports/quality-review/quality-review-report.json は ADDR Scope（QR-ADDR-20261022-003）で上書きされており、QR-IT-003 は observations の列挙でのみ言及されている。今回の再実行時点でも本文は復元できていない。自己点検として (1) プロジェクト標準の静的解析 `ruff check .`（pyproject.toml: line-length=120、select=E,F,W,I,UP,B,C4、exclude に ./tests を含む＝ADDR-004・ADDR-012 の決定により結合試験コードは解析対象外）を実行し All checks passed、(2) 参考として tests/integration を明示指定して同一ルールで解析し、tests/integration/test_admin_api.py の2行に E501（122>120、121>120）を検出（行長のみ。設計上の解析対象外であり、意味・アサーションには影響しない）、(3) Traceability 注釈（C05・C06）の充足、を確認した。SDLC Orchestrator が INTEGRATION_TEST Scope の Quality Review を再実行し、QR-IT-003 の残存可否と E501 2件の扱い（ADDR-004 の解析対象外方針を維持するか是正するか）を判定する必要がある。",
+        "recommended_route": "QUALITY_REVIEW"
+      },
+      {
+        "item": "OBS-IT-001（全角数字の都道府県コード・郵便番号が受理される）の扱いが未決",
+        "detail": "FR-030 の入力条件は半角数字を定めるが、実機では全角数字が受理され保存される。Integration Test Agent はProduction Code を変更できず、また本サイクルの差し戻し範囲外であるため、Test Case の期待結果には含めていない（したがって Failure としては計上していない）。SDLC Orchestrator が是正の要否を判定し、是正する場合は Implementation 工程での修正後に結合試験ケースを追加して再実行する必要がある。",
+        "recommended_route": "IMPLEMENTATION"
+      },
+      {
+        "item": "Traceability C10 の残存 59 件（要件の検証方法が自動テストではないもの）",
+        "detail": "最終精査後も C10 は 59 件 FAIL のまま残る見込み（運用時に測定22／互換性・操作性テスト9／性能・負荷テスト8／移行リハーサル5／脆弱性診断4／構成・設定レビュー4／運用テスト3／該当なし4）。原因は結合試験の失敗・未実行ではなく、要件本文が定める検証方法が自動テストの対象外であることである（結合試験は 138 ケース全件 PASS）。共通3回ループの規定により、修正3回目（本サイクル）後も残るものは UNRESOLVED として記録し、4回目の修正ループは行わない。人が実施すべき検証は non-automatable-requirements.md 5章に受入試験・運用準備への申し送りとして整理した。",
+        "recommended_route": "ACCEPTANCE_TEST / 運用準備（人手検証）。Traceability C10 の扱いは SDLC Orchestrator が継続判定する"
+      }
+    ]
+  },
+  "junit_summary": {
+    "total": 138,
+    "passed": 138,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "reports": [
+    "reports/integration-test/required-coverage.json",
+    "reports/integration-test/initial-coverage-metrics.json",
+    "reports/integration-test/ai-initial-cases.json",
+    "reports/integration-test/ai-gap-fill-cases.json",
+    "reports/integration-test/integration-test-plan.json",
+    "reports/integration-test/case-comparison.json",
+    "reports/integration-test/coverage-gap-report.json",
+    "reports/integration-test/integration-test-evidence.json",
+    "reports/integration-test/failure-analysis.json",
+    "reports/integration-test/error-report.json",
+    "reports/integration-test/error-report.md",
+    "reports/integration-test/integration-test-report.json",
+    "reports/integration-test/integration-test-report.md",
+    "reports/integration-test/non-automatable-requirements.json",
+    "reports/integration-test/non-automatable-requirements.md",
+    "reports/integration-test/junit.xml",
+    "reports/integration-test/validation-result.json"
+  ],
+  "unresolved_carry_forward": {
+    "issue_id": "UNRESOLVED-698b995280f60801",
+    "classification": "TEST_TRACEABILITY_MISSING",
+    "origin_phase": "INTEGRATION_TEST",
+    "cycle_after_this_repair": 3,
+    "state": "UNRESOLVED",
+    "count": 59,
+    "impact": "Traceability Audit（FULL Scope）C10 が 59 件 FAIL のまま残る。影響は「要件の検証が自動テストで行われていない」ことであり、結合試験の品質（全ケース PASS）・Coverage（最終100%）には影響しない。当該要件の充足は人が実施する検証（性能試験・脆弱性診断・移行リハーサル・互換性/操作性テスト・運用テスト・構成設定レビュー・運用時の測定）で確認する必要がある。",
+    "evidence": [
+      "reports/integration-test/non-automatable-requirements.json",
+      "reports/integration-test/non-automatable-requirements.md",
+      "reports/traceability/traceability-report.json"
+    ],
+    "recommended_route": "ACCEPTANCE_TEST / 運用準備（人手検証）"
+  }
+}

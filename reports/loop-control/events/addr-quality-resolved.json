@@ -1,0 +1,14 @@
+{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/addr-quality-resolved",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADDR_QUALITY_ISSUE",
+    "artifact": "docs/addr/ADDR-002.md",
+    "requirement_reference": "FR-060",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "ADDR-002へDC-006/DD-009〜DD-012/INV-007/INV-008を追加しFR-060手順9とAC-UC-013-004の扱いを確定、永続オブジェクトの実装先をTASK-002へ統一",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

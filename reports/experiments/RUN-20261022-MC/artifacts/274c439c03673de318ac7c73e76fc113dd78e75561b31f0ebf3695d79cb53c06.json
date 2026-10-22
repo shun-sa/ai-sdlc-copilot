@@ -1,0 +1,38 @@
+{
+  "commands": [
+    [
+      ".venv/Scripts/python.exe",
+      "-m",
+      "coverage",
+      "erase"
+    ],
+    [
+      ".venv/Scripts/python.exe",
+      "-m",
+      "coverage",
+      "run",
+      "-m",
+      "pytest",
+      "app/shop/tests",
+      "-q",
+      "--junitxml=reports/unit-test/junit.xml"
+    ],
+    [
+      ".venv/Scripts/python.exe",
+      "-m",
+      "coverage",
+      "json",
+      "-o",
+      "reports/unit-test/coverage.json"
+    ],
+    [
+      ".venv/Scripts/python.exe",
+      "scripts/unit_coverage_summary.py",
+      "reports/unit-test/coverage.json",
+      "reports/unit-test/coverage-summary.json"
+    ]
+  ],
+  "coverage": "reports/unit-test/coverage.json",
+  "junit": "reports/unit-test/junit.xml",
+  "timeout_seconds": 600
+}

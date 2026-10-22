@@ -1,0 +1,28 @@
+{
+  "source_baseline_sha256": "a61c2c91659b363ea19360f14842044dd502e0e85b9a3cd38e5816cb6ca48574",
+  "status": "FAIL",
+  "audit_scope": "ADDR",
+  "criteria": {
+    "discovered": [
+      "architecture-quality",
+      "cross-phase-consistency",
+      "implementation-quality",
+      "integration-test-quality",
+      "requirements-quality",
+      "unit-test-quality"
+    ],
+    "total": 6,
+    "pass": 2,
+    "not_applicable": 3,
+    "fail": 1
+  },
+  "issues": {
+    "total": 2,
+    "unresolved": 2,
+    "blocking": 1
+  },
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Unresolved blocking Quality Review Issue(s): 1"
+  ]
+}

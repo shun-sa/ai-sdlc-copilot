@@ -1,0 +1,2106 @@
+{
+  "input_archive_sha256": "58615942cc280609586c239b5a3be070bc2eecacfe90512c49a2dbd5772185e4",
+  "date": "2026-10-21",
+  "checks": [
+    {
+      "check": "calculation_example_values",
+      "rows": 7,
+      "preserved": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-001-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-020",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-002-021",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-020",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-003-021",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-020",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-021",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-022",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-023",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-024",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-025",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-026",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-004-027",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-020",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-021",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-022",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-023",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-024",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-025",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-026",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-027",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-028",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-029",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-005-030",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-020",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-021",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-022",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-023",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-024",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-025",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-026",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-027",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-028",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-029",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-030",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-031",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-006-032",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-007-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-008-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-009-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-010-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-012",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-013",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-014",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-015",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-016",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-017",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-018",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-019",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-020",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-011-021",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-012-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-001",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-002",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-003",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-004",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-005",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-006",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-007",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-008",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-009",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-010",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    },
+    {
+      "check": "acceptance_content",
+      "id": "AC-UC-013-011",
+      "given_when_then_exact": true,
+      "pass_fail_exact": true,
+      "evidence_exact": true,
+      "measurement_values_exact": true
+    }
+  ],
+  "ac_count": 249,
+  "outputs": [
+    {
+      "path": ".github/project-context/project-ai-steering.md",
+      "sha256": "6b9fe81d51f0f0436abfdcea14980d7b8eab6194431d0080e20af6d698fb9d0e"
+    },
+    {
+      "path": "docs/requirements/business_requirements.md",
+      "sha256": "b157e18ab596b78ecb7ef7b6bf6ca6f9736589cebffee5edc5fe67ec54e70f4b"
+    },
+    {
+      "path": "docs/requirements/data_requirements.md",
+      "sha256": "89a99986ba597a8813a94e132efb6360ed745c96caea53625607e015d44c381d"
+    },
+    {
+      "path": "docs/requirements/external_interface_requirements.md",
+      "sha256": "0145f8f389d3ce5d5897526f8b90a9989e78c23b8dbee25261ef7a03c0318910"
+    },
+    {
+      "path": "docs/requirements/functional_requirements.md",
+      "sha256": "af5f34ba4c238e56689743d8fc26dcddd82c8adc50023ad3770c48fe0d9295c2"
+    },
+    {
+      "path": "docs/requirements/glossary.md",
+      "sha256": "ee9a2d3f9444369f701e592f2658436d6bed9daa017263e55d2232f1be560dc7"
+    },
+    {
+      "path": "docs/requirements/non_functional_requirements.md",
+      "sha256": "bf2c0f565781b56e4c3cf20c3115b6e4c2d4962f7b6bdaecdd6850496239ab55"
+    },
+    {
+      "path": "docs/requirements/requirements.md",
+      "sha256": "a162580e551729beed2115f377ea7dfbcadc196c84cf2254c17ba43376958f47"
+    },
+    {
+      "path": "docs/requirements/requirements_quality_checklist.md",
+      "sha256": "47f3e100bc95e265549db5260b9c12e49e3231f2402badeed20a15a0a82ef4b9"
+    },
+    {
+      "path": "docs/requirements/ui_report_requirements.md",
+      "sha256": "766b6294aed79ed1d6a53b6870cc09e015f4ba9a17ab79f1a8a65f5c758f5329"
+    },
+    {
+      "path": "docs/requirements/use-case-user-story-index.md",
+      "sha256": "47fa4d3f90398f18c8766d4e1e37ef23ba0ad1cf456a06511918b8a6bf1595a0"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-001.md",
+      "sha256": "e71325ae60888beb0c56edf707acc839ac89f1886300b56ec6c373b21163f28f"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-002.md",
+      "sha256": "05c0da9aa544c0be5474ceb9c6d7e81f615aec4b53e359a4ca1d71d7290dcba1"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-003.md",
+      "sha256": "96ef409609a8502fe96e443ed74ff6e407f11d4bde491327ba24e1f9ebf70021"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-004.md",
+      "sha256": "231a123cffaac9302c3b63716cfa94a90ca3312f45b04add67fcd7799566c345"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-005.md",
+      "sha256": "452281d5ef4b9f5d855b3a59bb347f15a5fbf88e000ba4b56b0934a4f8bcd489"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-006.md",
+      "sha256": "c3267a7609049c7145a457797069521e523384e931c5c4a5c5e3774759d38b5f"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-007.md",
+      "sha256": "0da96da269f59b93a3e6a5fb11187a2d45bb41653d0a524d49ea23444b4b22c0"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-008.md",
+      "sha256": "8bd4564812aa3460350d1b252cab9d9ddb0f9ef56685f59737dc52f21dd5be60"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-009.md",
+      "sha256": "557d82546a407307258bf186f325b144d2bc27cc3840533e9eab747dbfa1dae8"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-010.md",
+      "sha256": "de31e8d01bf02733a9121a3ecf1000bc12e8f54ce6232d4e4629009153f19fd3"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-011.md",
+      "sha256": "790fdd91c7d73d52942d25cd4cd6d5d77cb8975dd385aca5a102e348397dfbc1"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-012.md",
+      "sha256": "642ffc785e111ddc66396da5d568ead1956d8300ed5f382cddb6336b5191a82a"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-013.md",
+      "sha256": "ec8ea340b0041f01d786d072da0d91758981c8c6a93bdae203d30c5ef92814af"
+    },
+    {
+      "path": "docs/specifications/api-contract.md",
+      "sha256": "7683ce0f7735a4b257fd80ef3dbdaddd3ec93c79103f197711dbb4fbd4142a29"
+    }
+  ]
+}

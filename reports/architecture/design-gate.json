@@ -1,0 +1,151 @@
+{
+  "status": "PASS",
+  "phase": "ARCHITECTURE",
+  "snapshots": [
+    {
+      "path": ".github/project-context/project-ai-steering.md",
+      "sha256": "6b9fe81d51f0f0436abfdcea14980d7b8eab6194431d0080e20af6d698fb9d0e"
+    },
+    {
+      "path": ".github/skills/architecture/templates/cross-artifact-consistency-analysis.template.md",
+      "sha256": "723d8ad4b1fe9bb6c93029bf4ee700595727c066c67f68557b4ed09b446fe0dc"
+    },
+    {
+      "path": ".github/skills/architecture/templates/file-definition.template.md",
+      "sha256": "529889c948afeb55191e5a971a8a07de19cffe397ca4c00728317acdf82cc47c"
+    },
+    {
+      "path": ".github/skills/architecture/templates/implementation-task-list.template.md",
+      "sha256": "1b5103f90069ddc14352d0c39efb0f8dd3d03db377d59d51e6ab607d364679f5"
+    },
+    {
+      "path": "docs/architecture/files/FILE-001.md",
+      "sha256": "883a363f96416837e1f17d98160bb2e2b2ce2b3ed0c0941f0993cd93ba2ae247"
+    },
+    {
+      "path": "docs/architecture/implementation-task-list.md",
+      "sha256": "e48518f494a95ac497ba21e791b6d7e60e36bdabb0f1eec6c37d1f023d92a544"
+    },
+    {
+      "path": "docs/requirements/business_requirements.md",
+      "sha256": "b157e18ab596b78ecb7ef7b6bf6ca6f9736589cebffee5edc5fe67ec54e70f4b"
+    },
+    {
+      "path": "docs/requirements/data_requirements.md",
+      "sha256": "89a99986ba597a8813a94e132efb6360ed745c96caea53625607e015d44c381d"
+    },
+    {
+      "path": "docs/requirements/external_interface_requirements.md",
+      "sha256": "0145f8f389d3ce5d5897526f8b90a9989e78c23b8dbee25261ef7a03c0318910"
+    },
+    {
+      "path": "docs/requirements/functional_requirements.md",
+      "sha256": "af5f34ba4c238e56689743d8fc26dcddd82c8adc50023ad3770c48fe0d9295c2"
+    },
+    {
+      "path": "docs/requirements/glossary.md",
+      "sha256": "ee9a2d3f9444369f701e592f2658436d6bed9daa017263e55d2232f1be560dc7"
+    },
+    {
+      "path": "docs/requirements/non_functional_requirements.md",
+      "sha256": "bf2c0f565781b56e4c3cf20c3115b6e4c2d4962f7b6bdaecdd6850496239ab55"
+    },
+    {
+      "path": "docs/requirements/requirements.md",
+      "sha256": "a162580e551729beed2115f377ea7dfbcadc196c84cf2254c17ba43376958f47"
+    },
+    {
+      "path": "docs/requirements/requirements_quality_checklist.md",
+      "sha256": "47f3e100bc95e265549db5260b9c12e49e3231f2402badeed20a15a0a82ef4b9"
+    },
+    {
+      "path": "docs/requirements/ui_report_requirements.md",
+      "sha256": "766b6294aed79ed1d6a53b6870cc09e015f4ba9a17ab79f1a8a65f5c758f5329"
+    },
+    {
+      "path": "docs/requirements/use-case-user-story-index.md",
+      "sha256": "47fa4d3f90398f18c8766d4e1e37ef23ba0ad1cf456a06511918b8a6bf1595a0"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-001.md",
+      "sha256": "e71325ae60888beb0c56edf707acc839ac89f1886300b56ec6c373b21163f28f"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-002.md",
+      "sha256": "05c0da9aa544c0be5474ceb9c6d7e81f615aec4b53e359a4ca1d71d7290dcba1"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-003.md",
+      "sha256": "96ef409609a8502fe96e443ed74ff6e407f11d4bde491327ba24e1f9ebf70021"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-004.md",
+      "sha256": "231a123cffaac9302c3b63716cfa94a90ca3312f45b04add67fcd7799566c345"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-005.md",
+      "sha256": "452281d5ef4b9f5d855b3a59bb347f15a5fbf88e000ba4b56b0934a4f8bcd489"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-006.md",
+      "sha256": "c3267a7609049c7145a457797069521e523384e931c5c4a5c5e3774759d38b5f"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-007.md",
+      "sha256": "0da96da269f59b93a3e6a5fb11187a2d45bb41653d0a524d49ea23444b4b22c0"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-008.md",
+      "sha256": "8bd4564812aa3460350d1b252cab9d9ddb0f9ef56685f59737dc52f21dd5be60"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-009.md",
+      "sha256": "557d82546a407307258bf186f325b144d2bc27cc3840533e9eab747dbfa1dae8"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-010.md",
+      "sha256": "de31e8d01bf02733a9121a3ecf1000bc12e8f54ce6232d4e4629009153f19fd3"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-011.md",
+      "sha256": "790fdd91c7d73d52942d25cd4cd6d5d77cb8975dd385aca5a102e348397dfbc1"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-012.md",
+      "sha256": "642ffc785e111ddc66396da5d568ead1956d8300ed5f382cddb6336b5191a82a"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-013.md",
+      "sha256": "ec8ea340b0041f01d786d072da0d91758981c8c6a93bdae203d30c5ef92814af"
+    },
+    {
+      "path": "docs/specifications/api-contract.md",
+      "sha256": "7683ce0f7735a4b257fd80ef3dbdaddd3ec93c79103f197711dbb4fbd4142a29"
+    },
+    {
+      "path": "reports/architecture/cross-artifact-consistency.md",
+      "sha256": "3dbc80f991d67e7a9365fa8e61a018c45668a1377ba478e0b0a9ebf3adc6c7f6"
+    },
+    {
+      "path": "reports/architecture/design-manifest.json",
+      "sha256": "80819e003e82f370820af8c2365b8cc4755efa57a905c09f3a084c653a720b32"
+    }
+  ],
+  "assurance": [
+    {
+      "kind": "quality-review",
+      "path": "reports/architecture/design-assurance/quality-review-validation-result.json",
+      "sha256": "3a80d60668e854ed2f6fe336b51f3033a9a9c7a8142fc468c36b1af46f959d24"
+    },
+    {
+      "kind": "security-review",
+      "path": "reports/architecture/design-assurance/security-review-validation-result.json",
+      "sha256": "eb0dc8354468e0af44b5abe4daee1961bd9f1417b360296137f3de31daa93f32"
+    },
+    {
+      "kind": "traceability",
+      "path": "reports/architecture/design-assurance/traceability-validation-result.json",
+      "sha256": "4893a75583060eb30903bb84c4cfa5e3dab90f6440bdd41aa7f22b7c5515ca0c"
+    }
+  ]
+}

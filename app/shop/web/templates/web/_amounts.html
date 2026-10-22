@@ -1,0 +1,13 @@
+{# trace: ADDR-004 #}
+{% load display %}
+<table class="amounts">
+  <caption>金額</caption>
+  <tbody>
+    <tr><th>小計</th><td>{{ amounts.subtotal|yen }}</td></tr>
+    <tr><th>割引額</th><td>{{ amounts.discount_amount|yen }}</td></tr>
+    <tr><th>割引後小計</th><td>{{ amounts.discounted_subtotal|yen }}</td></tr>
+    <tr><th>送料</th><td>{{ amounts.shipping_fee|yen }}</td></tr>
+    <tr><th>消費税額</th><td>{{ amounts.tax_amount|yen }}</td></tr>
+    <tr><th>合計（税込）</th><td>{{ amounts.total|yen }}</td></tr>
+  </tbody>
+</table>

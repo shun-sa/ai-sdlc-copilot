@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/impl-security-cycle0",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "SECURITY_IMPLEMENTATION_ISSUE",
+    "artifact": "app/shop/web",
+    "requirement_reference": "NFR-SC-04",
+    "test_case": "",
+    "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "オープンリダイレクト（next_path/return_toの検証不足）と例外メッセージ全文のstack_trace出力により、認証直後の外部サイト誘導とログへの項目値混入が発生しうる",
+  "recommended_route": "IMPLEMENTATION",
+  "validation_result": "reports/security-review/validation-result.json"
+}

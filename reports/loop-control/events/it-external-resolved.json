@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/it-external-resolved",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "EXTERNAL_TEST_INPUT_REQUIRED",
+    "artifact": "external-tests/integration-test",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "EXTERNAL_TEST_INPUT_MISSING"
+  },
+  "repair": "ユーザーがExternal Caseなしでの続行を明示確認（2026-10-22T13:15 JST）。external_cases_confirmed_absent=trueを親から渡し、provided=false / user_confirmed_without_external_cases=true として記録のうえ結合試験を完了",
+  "validation_result": "reports/integration-test/validation-result.json"
+}

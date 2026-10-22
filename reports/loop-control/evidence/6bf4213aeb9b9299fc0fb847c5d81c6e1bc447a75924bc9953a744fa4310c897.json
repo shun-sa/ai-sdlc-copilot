@@ -1,0 +1,20 @@
+{
+  "status": "FAIL",
+  "audit_scope": "ADDR",
+  "method": "inline-annotation",
+  "source_baseline_sha256": "a61c2c91659b363ea19360f14842044dd502e0e85b9a3cd38e5816cb6ca48574",
+  "errors": [
+    "[C01] docs/addr/ADDR-010.md:38: FILE-DEF-001 はどの成果物にも定義されていません。（差し戻し先: ADDR）"
+  ],
+  "warnings": [],
+  "issues": [
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REFERENCE",
+      "location": "docs/addr/ADDR-010.md:38",
+      "message": "FILE-DEF-001 はどの成果物にも定義されていません。",
+      "route": "ADDR"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# trace: ADDR-011, ADDR-012, NFR-OM-06
+# ビルドコンテキストから除外する生成物（開発端末で生成されたキャッシュを本番イメージへ持ち込まない）。
+# shop/tests の単体テストは ADDR-004 DD-005・NFR-OM-06 のためイメージへ含める（除外しない）。
+# リポジトリ直下 tests/（結合テストの正本）は本番イメージへ持ち込まない（ADDR-012 DD-003、INV-001）。
+# ENV-01 では compose.yaml の読取り専用マウントで /app/tests として与える。
+tests/
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.ruff_cache/
+app/staticfiles/

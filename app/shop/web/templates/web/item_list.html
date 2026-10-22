@@ -1,0 +1,55 @@
+{# trace: ADDR-006 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+<section class="search-form">
+  <form method="get" action="/">
+    <label for="collection">商品分類</label>
+    <select id="collection" name="collection_id">
+      <option value="">すべて</option>
+      {% for collection in collections %}
+        <option value="{{ collection.collection_id }}"
+          {% if selected_collection_id == collection.collection_id|stringformat:"s" %}selected{% endif %}>
+          {{ collection.name }}（階層{{ collection.depth }}）
+        </option>
+      {% endfor %}
+    </select>
+    <label for="sort">並び順</label>
+    <select id="sort" name="sort">
+      <option value="new" {% if sort == "new" %}selected{% endif %}>新着順</option>
+      <option value="price_asc" {% if sort == "price_asc" %}selected{% endif %}>価格の安い順</option>
+      <option value="price_desc" {% if sort == "price_desc" %}selected{% endif %}>価格の高い順</option>
+      <option value="name" {% if sort == "name" %}selected{% endif %}>商品名順</option>
+    </select>
+    <input type="hidden" name="keyword" value="{{ keyword }}">
+    <button type="submit">絞り込む</button>
+  </form>
+</section>
+
+{% for detail in details %}<p class="field-error">{{ detail.reason }}</p>{% endfor %}
+
+{% if page_data.results %}
+  <table>
+    <caption>商品一覧（{{ page_data.total_count }}件）</caption>
+    <thead>
+      <tr><th>商品名</th><th>商品コード</th><th>価格（最低）</th><th>在庫状況</th><th>所属分類</th></tr>
+    </thead>
+    <tbody>
+      {% for item in page_data.results %}
+      <tr>
+        <td><a href="/items/{{ item.item_id }}">{{ item.name }}</a></td>
+        <td>{{ item.item_code }}</td>
+        <td>{{ item.min_price_incl_tax|yen }}（税込）／{{ item.min_price|yen }}（税抜）</td>
+        <td>{% if item.in_stock %}在庫あり{% else %}在庫切れ{% endif %}</td>
+        <td>
+          {% for collection in item.collections %}{{ collection.name }}{% if not forloop.last %}、{% endif %}{% empty %}－{% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "web/_pagination.html" %}
+{% else %}
+  <p>該当する商品はありません。</p>
+{% endif %}
+{% endblock %}

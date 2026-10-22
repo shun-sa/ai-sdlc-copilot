@@ -1,0 +1,15 @@
+# trace: NFR-OM-06, ADDR-011
+# MiniCommerce テスト専用の追加依存（Production 成果物の requirements.txt とは分離する）
+#
+# requirements.txt は Dockerfile（`COPY requirements.txt` → `pip install`）で
+# 本番イメージへ導入される Production 依存の正本であり、脆弱性確認（NFR-SC-11）・
+# サポート期限確認（NFR-EN-10）・ライセンス確認（NFR-EN-12）の対象一覧でもある。
+# 計測専用ツールを本番イメージへ持ち込まないため、ここに分離して定義する。
+#
+# NFR-OM-06 の「コマンド1回（docker compose exec app pytest）で全件実行」は
+# requirements.txt 同梱の pytest / pytest-django だけで満たせるため、
+# 本ファイルは本番イメージへは導入しない（Dockerfile は変更しない）。
+#
+# coverage : Apache-2.0。単体テストの分岐網羅率（Unit Test Policy coverage.thresholds）の計測にのみ使用する。
+-r requirements.txt
+coverage==7.16.2

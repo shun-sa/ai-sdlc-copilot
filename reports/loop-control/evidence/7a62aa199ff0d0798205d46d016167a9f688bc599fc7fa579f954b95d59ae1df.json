@@ -1,0 +1,26 @@
+{
+  "check_id": "producer",
+  "phase": "ADDR",
+  "audit_scope": "ADDR",
+  "status": "SUCCESS",
+  "errors": [],
+  "producer_agent": "ADDR",
+  "run_id": "RUN-20261022-MC",
+  "returned_status": "SUCCESS",
+  "repair_cycles": 1,
+  "artifacts": [
+    "docs/addr/ADDR-001.md",
+    "docs/addr/ADDR-002.md",
+    "docs/addr/ADDR-003.md",
+    "docs/addr/ADDR-004.md",
+    "docs/addr/ADDR-005.md",
+    "docs/addr/ADDR-006.md",
+    "docs/addr/ADDR-007.md",
+    "docs/addr/ADDR-008.md",
+    "docs/addr/ADDR-009.md",
+    "docs/addr/ADDR-010.md",
+    "docs/addr/ADDR-011.md",
+    "reports/addr/implementation-handoff.json"
+  ],
+  "notes": "ADDR Agentが未決判断11件（BLK-001〜BLK-011）すべてにACTIVE ADDRを作成し、Quality 2件・Traceability C01 1件の指摘をrepair cycle 1で解消してSUCCESSを返却した。design_change_requests 0件。仮定事項（ASM）6件は後続テストで検証予定"
+}

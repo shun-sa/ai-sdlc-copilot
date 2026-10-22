@@ -1,0 +1,7 @@
+﻿{
+  "producer": "reports/loop-control/checks/INTEGRATION_TEST-producer.json",
+  "integration_test": "reports/loop-control/checks/INTEGRATION_TEST-integration_test.json",
+  "quality": "reports/quality-review/validation-result.json",
+  "security": "reports/security-review/validation-result.json",
+  "traceability": "reports/traceability/validation-result.json"
+}

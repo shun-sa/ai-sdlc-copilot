@@ -1,0 +1,16 @@
+﻿{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/full-regression-cycle0",
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "MISSING_BEHAVIOR_COVERAGE",
+    "artifact": "app/shop/tests/unit",
+    "requirement_reference": "FR-030",
+    "test_case": "OBS-IT-001",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "OBS-IT-001（全角数字受理）の是正に対する回帰テストが単体・結合のいずれにも無く、[0-9]を\\dへ戻しても全件PASSのまま要件違反が再発する。加えて単体証跡が最終コードより古い",
+  "recommended_route": "UNIT_TEST",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

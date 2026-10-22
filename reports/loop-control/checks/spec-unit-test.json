@@ -1,0 +1,1 @@
+﻿{"check_id":"unit_test","command":["python",".github/skills/unit-test/scripts/validate_unit_test.py"],"result_path":"reports/loop-control/checks/UNIT_TEST-unit_test.json","timeout_seconds":600}

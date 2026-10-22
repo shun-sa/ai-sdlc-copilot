@@ -1,0 +1,986 @@
+{
+  "report_id": "SECREV-20261022-FULL-003",
+  "run_id": "RUN-20261022-MC",
+  "review_cycle": "Phase 7 Final Assurance re-review #2 (unit 747→791, integration 123→134, evidence regenerated)",
+  "generated_at": "2026-10-22T19:22:58+09:00",
+  "generated_by": "Security Review Agent",
+  "audit_scope": "FULL",
+  "status": "PASS",
+  "policy": ".github/skills/security-review/policy/security-review-policy.yaml",
+  "policy_sha256": "de671caab2a1a22074335e1f6a5240555546a8965a9931d32be1a216a95f4359",
+  "criteria_directory": ".github/skills/security-review/criteria",
+  "source_baseline_path": "reports/loop-control/unresolved-results.json",
+  "source_baseline_sha256": "527f5ac135479a9c42545b794ea866802f8687aa2b35e7049c59f34ceac7cc14",
+  "baseline_note": "Skill / Policy は FULL Scope の source baseline を規定していない。SDLC全体の最終状態を一意に指す成果物として reports/loop-control/unresolved-results.json（status=CLEAR）のSHA-256を採用し、変更後の試験成果物のハッシュを supplementary_baselines に記録する。",
+  "supplementary_baselines": {
+    "unit_test_junit": "a475e7f5a7d52ba83f5700df647c2ebf8a3d02f7df375e9ad66d83df1bf2758c",
+    "integration_test_junit": "2b6347ba4d4fa89cb00733f4a27f8760e043f593fb4a0f56a97081731b88a19d",
+    "design_manifest": "80819e003e82f370820af8c2365b8cc4755efa57a905c09f3a084c653a720b32",
+    "addr_implementation_handoff": "3d70f60a4d797ab19479ba75aaa89af783793a9a4bc7d526667992f01737512f"
+  },
+  "previous_reports": [
+    {
+      "report_id": "SECREV-20261022-ARCH-002",
+      "audit_scope": "ARCHITECTURE",
+      "status": "PASS"
+    },
+    {
+      "report_id": "SECREV-20261022-ADDR-004",
+      "audit_scope": "ADDR",
+      "status": "PASS"
+    },
+    {
+      "report_id": "SECREV-20261022-IMPL-002",
+      "audit_scope": "IMPLEMENTATION",
+      "status": "PASS"
+    },
+    {
+      "report_id": "SECREV-20261022-UT-003",
+      "audit_scope": "UNIT_TEST",
+      "status": "PASS"
+    },
+    {
+      "report_id": "SECREV-20261022-IT-002",
+      "audit_scope": "INTEGRATION_TEST",
+      "status": "PASS"
+    },
+    {
+      "report_id": "SECREV-20261022-FULL-001",
+      "audit_scope": "FULL",
+      "status": "PASS"
+    },
+    {
+      "report_id": "SECREV-20261022-FULL-002",
+      "audit_scope": "FULL",
+      "status": "PASS"
+    }
+  ],
+  "final_assurance_note": "Invalidation Rules に従い、前回の FULL Scope PASS（SECREV-20261022-FULL-002）は変更後成果物へ再利用していない。変更された成果物（単体44件・結合11件の追加、証跡の再生成）に加え、Security要件（NFR-SC-01〜29）と脆弱性対策方針（VUL-01〜13）の全項目を最終成果物に対して再度突合し、8Criterionを再評価した。Production Code は mtime が更新されているが、内容は是正後の状態（Unicode 既定の正規表現クラス0件）であることを実測で確認した。",
+  "sdlc_final_state": {
+    "phases": [
+      "REQUIREMENTS",
+      "ARCHITECTURE",
+      "ADDR",
+      "IMPLEMENTATION",
+      "UNIT_TEST",
+      "INTEGRATION_TEST"
+    ],
+    "addr_active": 13,
+    "unit_tests": 791,
+    "unit_branch_coverage": 91.14,
+    "integration_tests": 134,
+    "total_tests": 925,
+    "test_result_verified_by_reviewer": "925 passed / 0 failed / 0 skipped（排他的な環境での完走2回で再現）",
+    "ruff": "All checks passed!（exit 0）",
+    "django_check": "0 issues（exit 0）",
+    "makemigrations_check": "No changes detected（exit 0）",
+    "unit_validation": "PASS（791 passed / 0 skipped / 分岐網羅率 91.14%）",
+    "integration_validation": "PASS（134 passed / 0 failed / 0 errors / 0 skipped）",
+    "loop_control": "CLEAR（未解決0件）"
+  },
+  "revalidation_method": {
+    "approach": "最終成果物全体に対して静的走査と実機実行の双方で再検査した。今回の重点である『全角数字拒否の回帰テスト』『秘密情報の非固定化検証（IT-AI-GF-074）』については、テストコードの読解だけでなく、Production Code 側の実態と検出能力を独立に検証した。",
+    "executed_checks": [
+      "docker compose exec -T app pytest を排他的な環境で実行し 925 passed / 0 failed / 0 skipped を2回確認",
+      "docker compose exec -T app ruff check . → All checks passed!（exit 0）",
+      "docker compose exec -T app python manage.py check → 0 issues（exit 0）",
+      "docker compose exec -T app python manage.py makemigrations --check --dry-run → No changes detected（exit 0）",
+      "reports/unit-test/validation-result.json（PASS / 791 / 分岐91.14%）と reports/integration-test/validation-result.json（PASS / 134 / skipped 0）を確認",
+      "Production Code 62ファイルを走査し、Unicode 既定の正規表現クラス（\\\\d / \\\\w / \\\\s 等）が EMAIL_PATTERN の否定クラス [^@\\\\s] 1箇所のみであることを確認（否定クラスは非ASCII空白も除外するため、より厳格側に働く）",
+      "Production Code の re.compile パターン13件をすべて列挙し、数字・コード項目が [0-9] / [A-Za-z0-9-] 等の明示的ASCIIクラスであることを確認",
+      "int() 呼び出し7箇所を列挙し、外部入力を扱う2箇所（validators.parse_int、orders._is_prefecture_code）がいずれもパターン検証後であることを確認",
+      "isdigit / isalpha の4箇所がすべて isascii() で保護されていることを確認",
+      "unicodedata / .normalize( が Production Code に0件であることを確認",
+      "app/shop/tests/unit/test_fullwidth_digit_rejection.py を全文精読し、期待値が要件本文（FR-030 / FR-021 / FR-022 / FR-041 / FR-043 / FR-060 / CMN-15）から導出され、半角受理と全角拒否が対で検証されていることを確認。単独実行で 44 passed",
+      "tests/integration/test_quality_contract.py IT-AI-GF-074 を全文精読し、走査対象・検出条件・空振り防止（走査件数50件以上かつ settings.py を含む）を評価",
+      "app/・tests/・scripts/ とルート設定ファイル計154ファイルを走査し、秘密情報らしきリテラル7件がすべてテストコード内の架空パスワード定数であることを確認",
+      "同154ファイルのメールアドレス212箇所がすべて example.com ドメインであることを確認（他ドメイン0件）",
+      "Production Code の危険構成（raw( / .extra( / os.system / eval( / exec( / pickle / mark_safe / |safe / autoescape / csrf_exempt / time.sleep / requests. / urllib.request / verify=False / DEBUG = True）が0件であることを確認",
+      "単体・結合の全テストコードに skip / xfail / pytest.skip が0件であることを確認",
+      "requirements.txt 8件・requirements-dev.txt 2件がすべて == でバージョン固定されていることを確認",
+      "DEFAULT_PERMISSION_CLASSES を表明するテストの有無を単体791件・結合134件の全テストコードで再走査（SR-UNIT-001 の最終確認）",
+      "新規結合ケース IT-AI-GF-070〜080 のうち Security 関連（072 / 073 / 074 / 076 / 077 / 080）のAssertionを精読し、退行検知能力を評価"
+    ]
+  },
+  "focused_review_findings": [
+    {
+      "topic": "① 9観点の最終再評価",
+      "verdict": "9観点すべて PASS",
+      "assessment": "Authentication / Authorization：トークン契約（43文字以上の乱数・DBはハッシュのみ・24時間・期限ちょうどで401・ログアウトで無効化）、セッション識別子の再発行と破棄、ヘッダー以外のトークン拒否、失敗応答の非区別、role 昇格不可が結合 IT-AI-GF-047〜051 で表明されている。既定拒否は Production Code 側で存続。Secret：154ファイル走査でハードコード0件に加え、IT-AI-GF-074 が稼働中の秘密値によるソース走査と環境変数なし読み込みの二重検証を行う。Input Validation / Injection：ORM のみ・OSコマンド0件に加え、全角数字拒否が単体44ケースで固定された。Data Protection：PBKDF2、参照範囲の限定、決済要求の4項目固定（IT-AI-GF-073 では AST 解析で payments から業務パッケージへの参照0件まで確認）。Error・Logging：内部情報の非開示とログの例外メッセージ非出力、path にクエリ文字列を含めないことが IT-AI-GF-048 / 059 で表明。Dependency・Configuration：全依存バージョン固定に加え、IT-AI-GF-072（ライセンス解決・AGPL 0件）、IT-AI-GF-076（PID1 が gunicorn、runserver 0件）が追加された。Security Test Coverage：単体791件・結合134件で Security 回帰を網羅。",
+      "evidence": [
+        "本Report criteria_results の8Criterion（全PASS）",
+        "新規 IT-AI-GF-070〜080（うち Security 関連 072 / 073 / 074 / 076 / 077 / 080）",
+        "新規単体 test_fullwidth_digit_rejection.py（44件）",
+        "レビュー実施者の再実行：925 passed / 0 failed / 0 skipped（2回再現）"
+      ]
+    },
+    {
+      "topic": "② IT-AI-GF-074（秘密情報の非固定化検証）の実効性",
+      "verdict": "形骸的ではない。実効的な退行検知手段として有効。ただし検出範囲に限界がある",
+      "assessment": "本ケースは3層で検証している。(1) 稼働中プロセスの環境変数から DJANGO_SECRET_KEY と DB_PASSWORD の実値を取得し、settings.SECRET_KEY / DATABASES の値と一致することを確認したうえで、同梱ソース全件を走査して当該実値が平文で現れないことを表明する。実際に誰かが稼働中の秘密値をソースへ貼り付ける退行は確実に検出される。(2) 走査の空振りを防ぐため、走査対象が50件以上であることと settings.py が対象に含まれることを明示的に表明している（走査ロジックが壊れて0件になっても PASS してしまう形骸化を防いでいる）。(3) 環境変数を完全に除去した状態で config/settings.py を2回ロードし、DB パスワードの既定値が空文字であること、SECRET_KEY が2回の読み込みで異なること、生成値が稼働中の実値と一致しないこと、長さが32文字以上であることを表明する。これは『ソースに秘密鍵の固定値が書かれていないこと』を、文字列検索ではなく挙動として立証する強い検証である。固定値を埋め込む退行（例：SECRET_KEY = \"...\"）を入れれば2回の読み込み値が一致して必ず失敗する。限界としては、(a) 走査対象が app/ 配下の同梱ソースに限られ、リポジトリルートの compose.yaml・.env.example や tests/integration 配下は対象外、(b) 検出できるのは『現在の稼働値と一致する文字列』であり、別環境の鍵や一般的な秘密情報パターンの混入は検出しない、の2点がある。これらは本レビューの独立走査（154ファイル・汎用パターン）で補完済みであり、不備とはしないが SR-OBS-021 として記録する。",
+      "evidence": [
+        "tests/integration/test_quality_contract.py IT-AI-GF-074（380行目以降）",
+        "空振り防止：assert len(scanned) >= 50 / assert any(path.name == 'settings.py' ...)",
+        "挙動による立証：環境変数クリアでの2回ロードと SECRET_KEY 不一致・DBパスワード既定値の空文字",
+        "app/config/settings.py：SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or secrets.token_urlsafe(64)",
+        "補完：レビュー実施者による154ファイル・汎用パターン走査（検出0件）"
+      ]
+    },
+    {
+      "topic": "③ SR-UNIT-001（DRF DEFAULT_PERMISSION_CLASSES の回帰テスト）の最終確認",
+      "verdict": "未追加（継続・LOW）",
+      "assessment": "単体791件・結合134件の全テストコードを再走査したが、settings.REST_FRAMEWORK の DEFAULT_PERMISSION_CLASSES を表明するテストは依然として0件である。今回追加された IT-AI-GF-072 / 074 / 076 は依存ライセンス・秘密情報・起動プロセスを対象としており、権限既定を対象としていない。Production Code 側の既定拒否は最終状態でも存続しており実害は無いが、SR-IMPL-003 と同種の退行は、明示宣言の無い新規Viewが追加されたときに初めて顕在化する。Severity は LOW（Advisory）のまま据え置き、引き下げ・引き上げのいずれも行わない。",
+      "evidence": [
+        "走査結果：単体・結合のテストコードに DEFAULT_PERMISSION_CLASSES を参照するテストが0件",
+        "app/config/settings.py REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES = ['shop.api.permissions.IsAuthenticated']（最終状態で存続）"
+      ]
+    },
+    {
+      "topic": "④ 全角数字拒否の回帰テストの十分性と Unicode 関連脆弱性の残存",
+      "verdict": "NFR-SC-04 の回帰テストとして十分。Unicode 関連の残存を認めない",
+      "assessment": "test_fullwidth_digit_rejection.py は44ケースで、(1) パターン層（POSTAL_CODE / DIGITS / INTEGER / DATE / ORDER_NUMBER / PHONE / TRACKING_NUMBER）、(2) 変換層（parse_int、pagination.parse_page）、(3) 業務サービス層（validate_shipping_address、checkout、carts.add_line / update_line_quantity、admin_orders.search_orders / search_stock_units、seeding の日時検証）の3階層を、半角受理と全角拒否の対で検証している。混在（'123４567'、'1３'）や全角ハイフン（'123－4567'）も対象で、checkout では『全角入力で注文が作成されないこと』、正常系では『半角値が変換されずそのまま登録されること』まで表明しており、CMN-15 の『相互変換を行わない』という要件意味をそのまま固定している。期待値は冒頭 docstring で要件本文（FR-030 / FR-021 / FR-022 / FR-032 / FR-040 / FR-041 / FR-043 / FR-060 / CMN-15）から導出すると明記され、実装挙動の追認ではない。Unicode 関連の残存については、Production Code 62ファイルの re.compile パターン13件をすべて列挙し、数字・コード項目が例外なく明示的ASCIIクラスであることを確認した。Unicode 既定クラスの使用は EMAIL_PATTERN の否定クラス [^@\\\\s] のみで、これは非ASCII空白も除外するためより厳格側に働き、バイパスにはならない。unicodedata / .normalize( は0件で、正規化差異による検証回避の余地がない。int() は Unicode 十進数字を受理するが、外部入力を扱う2箇所はいずれもパターン検証後である。同形異字については前サイクルの実測どおり、メールアドレス正規化の lower() により U+212A 等が既存値と衝突しても一意制約で登録拒否となるフェイルセーフで、なりすまし・権限昇格に繋がらない。",
+      "evidence": [
+        "app/shop/tests/unit/test_fullwidth_digit_rejection.py（44ケース、単独実行で 44 passed）",
+        "走査結果：re.compile パターン13件すべてが明示的ASCIIクラス（EMAIL_PATTERN の否定クラスを除く）",
+        "走査結果：unicodedata / .normalize( 0件、isdigit / isalpha は4箇所とも isascii() で保護",
+        "int() 呼び出し7箇所の個別確認（外部入力2箇所はパターン検証後）",
+        "結合 IT-AI-GF-066（都道府県は JIS X0401 コードのみ受理）",
+        "Implementation Agent 報告の退行実証（[0-9]→\\\\d で 26 failed）と整合"
+      ]
+    },
+    {
+      "topic": "⑤ 本番 go-live に向けた残存リスクの最終整理",
+      "verdict": "Blocking 7件・Advisory 3件。申し送り（SR-OBS-00x）も併せて整理",
+      "assessment": "R1（本番HTTPS・Cookie Secure）、R2（公開ポートを443のみ）、R3（保存時暗号化）、R4（リリース前の依存脆弱性確認）、R5（稼働前の動的脆弱性診断）、R6（本番初期データのパスワード個別化とサンプル非転用）、R7（本番環境変数の確定）の7件を Blocking として維持する。R8（実決済サービス差替え時のロック区間再判断）、R9（本番イメージへの pytest・単体テスト同梱）、R10（ログイン試行回数制限・レート制限を設けない承認済み要件判断）を Advisory として維持する。申し送りのうち SR-OBS-013（全画面・全入力項目の網羅）と SR-OBS-014（決済要求の項目固定テスト）は前サイクルで解消済み。本サイクルでは、IT-AI-GF-072（ライセンス解決・AGPL 0件）が NFR-EN-12 の確認を自動化したことで R4 の負担が軽減され、IT-AI-GF-076（PID1 が gunicorn・runserver 0件）が VUL-08 / NFR-EN-08 の起動設定を自動確認するようになった点を改善として記録する。新規の申し送りは SR-OBS-021（IT-AI-GF-074 の走査範囲）と SR-OBS-018 の更新（単一の使い捨てテストDBへの排他アクセス前提）である。",
+      "evidence": [
+        "本Report residual_risks_for_go_live（10件、うち pre_go_live_blocking 7件）",
+        "本Report observations（SR-OBS-003 / 011 / 015 / 017 / 018 / 019 / 020 / 021、および解消済み 013 / 014）",
+        "結合 IT-AI-GF-072（ライセンス）/ 076（起動設定）"
+      ]
+    },
+    {
+      "topic": "⑥ Secret / Credential / 本番データのハードコード（全ファイル横断）",
+      "verdict": "混入を認めない",
+      "assessment": "app/・tests/・scripts/ とルート設定ファイルの計154ファイルを走査した。秘密情報らしきリテラル代入は7件で、すべてテストコード内のテスト用パスワード定数（架空値。値は本Reportに記載しない）であり、本番資格情報・本番トークンではない。メールアドレスは212箇所すべてが example.com（RFC 2606 の予約ドメイン）で、他ドメインは0件。カード情報非保持の検証に用いる公開テスト用カード番号は実在の利用者に紐づかない検証用番号で、用途は『受理も保存も送信もしないこと』の表明である。app/seed/initial_data.json は架空の3利用者でパスワード値は相互に異なる。秘密情報はすべて環境変数から供給され、既定値に秘密情報を埋め込んでいないことは IT-AI-GF-074 が挙動として立証している。.env はリポジトリ未追跡かつ本番イメージ不在、.env.example は実値を持たない。",
+      "evidence": [
+        "走査結果（154ファイル）：本番資格情報のハードコード0件",
+        "走査結果：メールアドレス212件すべて @example.com",
+        "結合 IT-AI-GF-074（稼働値によるソース走査＋環境変数なし読み込み）",
+        ".gitignore の .env、本番イメージに /app/.env 不在、.env.example は実値なし"
+      ]
+    },
+    {
+      "topic": "⑦ 新規Security関連結合ケース（IT-AI-GF-070〜080）の実効性",
+      "verdict": "実効的",
+      "assessment": "IT-AI-GF-073 は AST 解析により payments パッケージから業務パッケージへの import が0件であること、境界のデータ構造が4項目であること、実際の決済要求の各値が str | int であること（業務オブジェクトが渡っていないこと）を表明し、NFR-PF-17 と NFR-SC-24 を構造と実挙動の両面から固定する。IT-AI-GF-076 は稼働プロセス（PID1）が gunicorn かつ config.wsgi であること、runserver の使用が0件であることを表明し、VUL-08 / NFR-EN-08 の退行を検知する。IT-AI-GF-072 は全導入ディストリビューションのライセンスを解決し不明0件・AGPL 0件を表明する（NFR-EN-12）。IT-AI-GF-077 は DB 接続エラーを注入したうえで、公開API・認証API・画面が一律500かつ INTERNAL_ERROR を返し、画面に部分データ（<table>）が出ないこと、復旧後に再び200となることを表明する。これは縮退運転の不在（NFR-AV-10）に加え、障害時に内部情報や部分的な業務データが露出しないこと（NFR-SC-10）の裏付けにもなる。IT-AI-GF-080 は在庫12個に24並列＋支払/キャンセル同時実行で、500が0件・在庫0未満0件・全注文の金額整合を表明し、VUL-07 の負荷下での成立を補強する。いずれも対応する制御を退行させれば失敗する構成である。",
+      "evidence": [
+        "tests/integration/test_quality_contract.py IT-AI-GF-072 / 073 / 074 / 076",
+        "tests/integration/test_resilience_contract.py IT-AI-GF-077 / 080",
+        "レビュー実施者の再実行：結合134件すべてPASS"
+      ]
+    },
+    {
+      "topic": "⑧ Failure隠蔽（skip / xfail / Assertion弱体化）の不在",
+      "verdict": "隠蔽を認めない。ただし試験環境の排他性に関する注意事項あり",
+      "assessment": "単体・結合の全テストコードに skip / xfail / pytest.skip が0件であることを走査で確認した。validation-result.json も skipped 0 を記録し、排他的な環境での完走2回で 925 passed / 0 skipped を再現した。一方、本レビュー中に他プロセスと並行して実行した完走では、使い捨てテストDB test_minicommerce に対する『database is being accessed by other users』および teardown 時の deadlock により、最大で 12 failed / 20 errors となる degraded な結果が複数回発生した。原因は、並行実行または異常終了した実行が残した孤立セッションにより pytest-django がテストDBを再作成できなくなることで、Production Code の欠陥ではない（孤立セッション解消後の完走は 925 passed）。エラーは明示的に報告され skip のような暗黙の回避ではないため『隠蔽』には当たらないが、Security 回帰（VUL-07 等）を含む試験一式の信頼性に関わるため SR-OBS-018 として更新記録する。",
+      "evidence": [
+        "走査結果：全テストコードに skip / xfail が0件",
+        "reports/unit-test/validation-result.json（791 / skipped 0）・reports/integration-test/validation-result.json（134 / skipped 0）",
+        "degraded 実行時のエラー内容：database \"test_minicommerce\" is being accessed by other users / DeadlockDetected（teardown の flush）",
+        "孤立セッション解消後の完走：925 passed を2回再現"
+      ]
+    }
+  ],
+  "security_requirement_matrix": [
+    {
+      "requirement_id": "NFR-SC-01",
+      "topic": "パスワードのソルト付き一方向ハッシュ",
+      "status": "SATISFIED",
+      "evidence": "PBKDF2-HMAC-SHA256。会員登録と初期投入が同一の hash_password()。単体 test_accounts_register.py / test_seeding_fr060.py。"
+    },
+    {
+      "requirement_id": "NFR-SC-02",
+      "topic": "本番のHTTPS限定",
+      "status": "OUT_OF_RELEASE_SCOPE_GO_LIVE_CONDITION",
+      "evidence": "実装計画で N/A 宣言（OQ-PJ-003 未決）。残存リスク R1。"
+    },
+    {
+      "requirement_id": "NFR-SC-03",
+      "topic": "サーバー側の認可判定（401/403/404）",
+      "status": "SATISFIED",
+      "evidence": "既定拒否＋services 集約。他購入者データは404。結合 IT-AI-008 / 011 / 049 / 050 / 054。"
+    },
+    {
+      "requirement_id": "NFR-SC-04",
+      "topic": "入力値検証・プレースホルダ・OSコマンド禁止",
+      "status": "SATISFIED",
+      "evidence": "ORM のみ（raw( / .extra( 0件）、OSコマンド0件。全角等の Unicode 数字拒否を単体44ケースで固定。パターン13件すべて明示ASCIIクラス。結合 IT-AI-GF-016/017/018/066。"
+    },
+    {
+      "requirement_id": "NFR-SC-05",
+      "topic": "HTMLエスケープ・CSRF検証",
+      "status": "SATISFIED",
+      "evidence": "|safe / autoescape / mark_safe / csrf_exempt が0件。結合 IT-AI-GF-012〜015。"
+    },
+    {
+      "requirement_id": "NFR-SC-06",
+      "topic": "ログへの機密情報非出力・path にクエリ文字列を含めない",
+      "status": "SATISFIED",
+      "evidence": "許可項目方式＋_stack_trace。結合 IT-AI-GF-059（SQL・パスを含む例外メッセージの非出力）/ 054（ログに個人情報0件）。"
+    },
+    {
+      "requirement_id": "NFR-SC-07",
+      "topic": "秘密情報をソース・リポジトリに含めない",
+      "status": "SATISFIED",
+      "evidence": "154ファイル走査でハードコード0件。結合 IT-AI-GF-074 が稼働値によるソース走査と環境変数なし読み込みで固定値の不在を挙動として立証。"
+    },
+    {
+      "requirement_id": "NFR-SC-08",
+      "topic": "認証トークンの乱数性・24時間・ログアウト無効化",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-047（43文字以上・URL安全文字集合・平文の非保存・期限ちょうどで401・revoked_at）。"
+    },
+    {
+      "requirement_id": "NFR-SC-09",
+      "topic": "無操作30分・Cookie属性",
+      "status": "SATISFIED_WITH_GO_LIVE_SETTING",
+      "evidence": "SESSION_COOKIE_AGE=1800・HttpOnly=True・毎要求延長。Secure は本番で true 必須（R1）。"
+    },
+    {
+      "requirement_id": "NFR-SC-10",
+      "topic": "内部情報の非開示・本番デバッグ無効",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-048（DEBUG=False 表明・トレース/SQL/パス/ライブラリ名の非出現・error キー集合の固定）。IT-AI-GF-077 が DB 障害時も一律 INTERNAL_ERROR で部分表示が無いことを表明。"
+    },
+    {
+      "requirement_id": "NFR-SC-11",
+      "topic": "依存ライブラリの既知重大脆弱性0件（リリース前確認）",
+      "status": "PROCEDURE_READY_EXECUTION_PENDING",
+      "evidence": "全件バージョン固定。README 7章に手順。実行は未実施＝R4。IT-AI-GF-072 がライセンス面（NFR-EN-12）を自動確認。"
+    },
+    {
+      "requirement_id": "NFR-SC-12",
+      "topic": "認証方式（Bearer／ログインセッション）",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-049（ヘッダー以外のトークンを拒否・失敗応答の完全一致）。"
+    },
+    {
+      "requirement_id": "NFR-SC-13",
+      "topic": "二要素認証（該当なし）",
+      "status": "N/A_BY_REQUIREMENT",
+      "evidence": "結合 IT-AI-GF-045 が1段階認証で完了することを確認。"
+    },
+    {
+      "requirement_id": "NFR-SC-14",
+      "topic": "アカウントロック（該当なし）",
+      "status": "N/A_BY_REQUIREMENT",
+      "evidence": "結合 IT-AI-GF-039。代償制御は NFR-SC-16。残存リスク R10（Advisory）。"
+    },
+    {
+      "requirement_id": "NFR-SC-15",
+      "topic": "管理者は初期投入のみ・ロール変更手段なし",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-050（API・画面・任意メソッドで role 昇格不可、admin は投入のみ）。"
+    },
+    {
+      "requirement_id": "NFR-SC-16",
+      "topic": "パスワード方針",
+      "status": "SATISFIED",
+      "evidence": "8〜64文字・ASCII英数字各1以上・メールアドレス一致禁止。会員登録と初期投入の双方に適用。"
+    },
+    {
+      "requirement_id": "NFR-SC-17",
+      "topic": "（該当なし）",
+      "status": "N/A_BY_REQUIREMENT",
+      "evidence": "結合 test_out_of_scope.py で確認。"
+    },
+    {
+      "requirement_id": "NFR-SC-18",
+      "topic": "複数端末の同時ログイン許可",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-047（2回ログインで異なるトークン、既存トークンは無効化しない）。"
+    },
+    {
+      "requirement_id": "NFR-SC-19",
+      "topic": "セッション識別子の再発行・破棄",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-051（前後の識別子差異・旧行の削除・旧識別子再利用の無効化・ログアウトで破棄）。"
+    },
+    {
+      "requirement_id": "NFR-SC-20",
+      "topic": "DB格納領域・バックアップの保存時暗号化",
+      "status": "OUT_OF_RELEASE_SCOPE_GO_LIVE_CONDITION",
+      "evidence": "基盤機能で app の実装対象外（OQ-PJ-001）。残存リスク R3。"
+    },
+    {
+      "requirement_id": "NFR-SC-21",
+      "topic": "VUL-01〜13 の全項目充足",
+      "status": "SATISFIED_EXCEPT_GO_LIVE_ITEMS",
+      "evidence": "VUL-01〜07・VUL-10〜13 は実装・試験で充足。VUL-08（本番設定）・VUL-09（リリース前確認）は go-live 条件。"
+    },
+    {
+      "requirement_id": "NFR-SC-22",
+      "topic": "監査ログの記録対象",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-052（4種の記録・detail に個人情報が含まれない）。"
+    },
+    {
+      "requirement_id": "NFR-SC-23",
+      "topic": "監査ログ・注文状態履歴の追記のみ",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-053（既存行のスライス比較で不変・更新削除経路が4xx）/ IT-AI-GF-019。"
+    },
+    {
+      "requirement_id": "NFR-SC-24",
+      "topic": "個人情報の表示・返却範囲",
+      "status": "SATISFIED",
+      "evidence": "結合 IT-AI-GF-054（来訪者・他購入者への非開示、決済要求とログに個人情報0件）/ IT-AI-GF-073（AST解析で payments へ業務オブジェクトが渡らないこと）。"
+    },
+    {
+      "requirement_id": "NFR-SC-25",
+      "topic": "ENV-01 で本番データを使わない",
+      "status": "SATISFIED",
+      "evidence": "メールアドレス212箇所すべて example.com。使い捨てテストDBのみ使用。本番DB・本番資格情報の使用0件。"
+    },
+    {
+      "requirement_id": "NFR-SC-26",
+      "topic": "本番で不要ポートを公開しない",
+      "status": "OUT_OF_RELEASE_SCOPE_GO_LIVE_CONDITION",
+      "evidence": "compose.yaml は ENV-01 用に 8000・5432 を公開。本番配備定義は未作成（OQ-PJ-001）。残存リスク R2。"
+    },
+    {
+      "requirement_id": "NFR-SC-27",
+      "topic": "レート制限（該当なし）",
+      "status": "N/A_BY_REQUIREMENT",
+      "evidence": "結合 IT-AI-GF-046。残存リスク R10（Advisory）。"
+    },
+    {
+      "requirement_id": "NFR-SC-28",
+      "topic": "（該当なし）",
+      "status": "N/A_BY_REQUIREMENT",
+      "evidence": "結合 test_out_of_scope.py で確認。"
+    },
+    {
+      "requirement_id": "NFR-SC-29",
+      "topic": "稼働開始前の動的脆弱性診断",
+      "status": "EXECUTION_PENDING",
+      "evidence": "稼働開始前に実施する作業として N/A 宣言。未実施＝R5。"
+    },
+    {
+      "requirement_id": "VUL-01",
+      "topic": "アクセス制御の不備",
+      "status": "SATISFIED",
+      "evidence": "既定拒否（SR-IMPL-003 是正）。所有者判定はサーバー側、他購入者データは404。"
+    },
+    {
+      "requirement_id": "VUL-02",
+      "topic": "認証・セッション管理の不備",
+      "status": "SATISFIED",
+      "evidence": "NFR-SC-08/09/16/19 を充足。IT-AI-GF-049 が失敗応答の完全一致（アカウント列挙不可）を表明。"
+    },
+    {
+      "requirement_id": "VUL-03",
+      "topic": "暗号化の不備",
+      "status": "PARTIALLY_SATISFIED_GO_LIVE",
+      "evidence": "ハッシュ・暗号論的乱数は充足。TLS と保存時暗号化は go-live 条件（R1・R3）。"
+    },
+    {
+      "requirement_id": "VUL-04",
+      "topic": "インジェクション",
+      "status": "SATISFIED",
+      "evidence": "NFR-SC-04 と同じ。全角数字拒否の回帰44ケースで入力検証の意味が固定された。"
+    },
+    {
+      "requirement_id": "VUL-05",
+      "topic": "XSS",
+      "status": "SATISFIED",
+      "evidence": "自動エスケープの迂回0件。API 応答は JSONRenderer 単独。IT-AI-GF-075 が画面の JavaScript が app.js 1本のみで描画をJSに委ねていないことを表明。"
+    },
+    {
+      "requirement_id": "VUL-06",
+      "topic": "CSRF",
+      "status": "SATISFIED",
+      "evidence": "CsrfViewMiddleware 有効・csrf_exempt 0件。IT-AI-GF-012/013 で強制を実証。"
+    },
+    {
+      "requirement_id": "VUL-07",
+      "topic": "安全でない設計（二重決済防止）",
+      "status": "SATISFIED",
+      "evidence": "ADDR-013 により解消。結合 IT-AI-GF-022/023/028/069 と IT-AI-GF-080（在庫12・24並列で500が0件・在庫0未満0件・金額整合）、単体 ADDR-013 回帰5件。"
+    },
+    {
+      "requirement_id": "VUL-08",
+      "topic": "セキュリティ設定の不備",
+      "status": "PARTIALLY_SATISFIED_GO_LIVE",
+      "evidence": "DEBUG=False（IT-AI-GF-048）、起動プロセスが gunicorn で runserver 0件（IT-AI-GF-076）。本番の公開ポート限定と初期データのパスワード個別化は go-live 条件（R2・R6）。"
+    },
+    {
+      "requirement_id": "VUL-09",
+      "topic": "脆弱なコンポーネント・供給網",
+      "status": "PROCEDURE_READY_EXECUTION_PENDING",
+      "evidence": "版固定済み。ライセンスは IT-AI-GF-072 で自動確認（不明0件・AGPL 0件）。脆弱性確認の実行は未実施（R4）。"
+    },
+    {
+      "requirement_id": "VUL-10",
+      "topic": "完全性の不備",
+      "status": "SATISFIED",
+      "evidence": "全件 == 固定・PyPI 公式・公式ベースイメージ。IT-AI-GF-058 が外部遮断下での全機能動作と画面の外部URL参照0を表明。"
+    },
+    {
+      "requirement_id": "VUL-11",
+      "topic": "ログ・監視の不備",
+      "status": "SATISFIED_EXCEPT_OPERATIONS",
+      "evidence": "監査ログ記録とログの機密情報非出力は IT-AI-GF-052 / 059 で充足。監視ツールの選定は NOQ-02 未決（SR-OBS-017）。"
+    },
+    {
+      "requirement_id": "VUL-12",
+      "topic": "SSRF",
+      "status": "SATISFIED",
+      "evidence": "利用者入力のURLへ要求を送る機能は無い。IT-AI-GF-058 が外部接続の不在を遮断環境で実証。"
+    },
+    {
+      "requirement_id": "VUL-13",
+      "topic": "例外処理の不備",
+      "status": "SATISFIED",
+      "evidence": "IT-AI-GF-048 / 059 / 077 がエラー応答・画面・ログのいずれにも内部情報が出ないことを表明。"
+    }
+  ],
+  "criteria_results": [
+    {
+      "criterion": "authentication-authorization",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "認証は Bearer トークン（43文字以上のURL安全乱数・DBはハッシュのみ・24時間・有効期限ちょうどで401・ログアウトで revoked_at）と DB セッション（1800秒・HttpOnly・ログイン時に識別子再発行し旧識別子を無効化・ログアウトで破棄）で、結合 IT-AI-GF-047 / 049 / 051 が実挙動として表明する。認可は DRF 既定拒否を起点に services へ集約され、他購入者データは NOT_FOUND、ロール越境は双方向に403。role を入力しても buyer 以外にならず admin は初期投入でのみ生成されることを IT-AI-GF-050 が DB の role 集合で表明する。ログイン失敗応答は完全一致でアカウント列挙ができない。テスト用の認証迂回・権限緩和は Production Code に存在しない。",
+      "evidence": [
+        "結合 IT-AI-GF-047 / 049 / 050 / 051、IT-AI-008 / 009 / 011 / CK-CMN-ERR-01 / IT-AI-GF-019 / 054",
+        "app/config/settings.py REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES（既定拒否）",
+        "単体 test_api_auth.py / test_accounts_auth.py"
+      ]
+    },
+    {
+      "criterion": "secret-credentials",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "154ファイル走査で本番資格情報・本番トークン・APIキーのハードコードは0件。検出された秘密情報らしきリテラルはテスト用の架空パスワード定数7件のみ。結合 IT-AI-GF-074 が、稼働中の秘密値による同梱ソース全件走査（空振り防止の表明つき）と、環境変数を除去した設定モジュールの2回ロードによる『固定値が書かれていないこと』の挙動立証を行っている。.env はリポジトリ未追跡かつ本番イメージ不在、.env.example は実値を持たない。compose.yaml は :? により未設定時の起動を失敗させる。平文トークンがDBへ保存されないことは IT-AI-GF-047 が、ログへ秘密情報が出ないことは IT-AI-GF-054 / 059 が表明する。",
+      "evidence": [
+        "走査結果（154ファイル）：本番資格情報のハードコード0件、メールアドレス212件すべて example.com",
+        "結合 IT-AI-GF-074（稼働値走査＋環境変数なし2回ロード＋走査件数50件以上の空振り防止）",
+        ".gitignore の .env、本番イメージに /app/.env 不在、.env.example は実値なし"
+      ]
+    },
+    {
+      "criterion": "input-validation-injection",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "外部入力はすべてサーバー側で型・桁数・値域・形式を検証する。Production Code の re.compile パターン13件はすべて明示的ASCII文字クラスで、Unicode 既定クラスの使用は EMAIL_PATTERN の否定クラス [^@\\\\s] のみ（より厳格側に働く）。unicodedata / .normalize( は0件、isdigit / isalpha は4箇所とも isascii() で保護、外部入力を扱う int() 2箇所はいずれもパターン検証後である。全角数字の拒否は単体44ケース（パターン層・変換層・業務サービス層の3階層、半角受理と全角拒否の対、混在・全角ハイフンを含む）で固定された。DB操作は ORM に一本化（raw( / .extra( 0件、cursor() は定数SQLのみ）、OSコマンド実行・eval / exec・pickle は0件。遷移先は safe_internal_path() により自サイト内相対パスへ限定される。",
+      "evidence": [
+        "app/shop/tests/unit/test_fullwidth_digit_rejection.py（44ケース）",
+        "走査結果：re.compile パターン13件・int() 7箇所・isdigit/isalpha 4箇所の個別確認",
+        "走査結果：unicodedata / .normalize( 0件、raw( / .extra( / os.system / eval( / exec( / pickle 0件",
+        "結合 IT-AI-GF-016 / 017 / 018 / 066、単体 test_web_support.py / test_seeding_fr060.py"
+      ]
+    },
+    {
+      "criterion": "data-protection",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "パスワードは PBKDF2-HMAC-SHA256 で保存し、会員登録と初期投入は同一のハッシュ関数を使う。個人情報の参照範囲は本人と管理者に限られることを IT-AI-GF-054 が表明する。決済境界については IT-AI-GF-073 が AST 解析で payments から業務パッケージへの参照0件を確認し、実際の決済要求の各値が str | int であること（業務オブジェクトが渡っていないこと）まで表明する。カード情報の非受理・非保存は IT-AI-GF-055 が、モデル定義に card / security_code を含む項目が無いことまで含めて表明する。検証データは架空値のみで、テストDBは使い捨ての test_<DB_NAME> に隔離されている。",
+      "evidence": [
+        "結合 IT-AI-GF-054 / 055 / 073",
+        "app/shop/payments/gateway.py PaymentRequest（4項目・frozen dataclass）",
+        "app/config/settings.py PASSWORD_HASHERS、accounts.hash_password、seeding の同一関数利用",
+        "走査結果：メールアドレス212件すべて example.com"
+      ]
+    },
+    {
+      "criterion": "error-logging",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "IT-AI-GF-048 が settings.DEBUG=False を表明したうえで、意図的な500に対する API応答・画面HTML・400/404応答のいずれにも例外メッセージ・SQL・ファイルパス・ライブラリ名が出現しないこと、error のキー集合が固定であることを表明する。IT-AI-GF-059 は SQL とファイルパスを含む例外メッセージを故意に発生させ、出力ログ全体への非出現（SR-IMPL-002 の回帰）、path にクエリ文字列を含まないこと、LOG-01〜04・06・07 の必須項目が揃うことを表明する。IT-AI-GF-077 は DB 障害時も一律 INTERNAL_ERROR で、画面に部分データが出ないことを表明する。監査ログは4種の記録と detail への個人情報非出力、追記のみが表明されている。",
+      "evidence": [
+        "結合 IT-AI-GF-048 / 052 / 053 / 059 / 077",
+        "app/shop/common/exception_handler.py・logging.py（ALLOWED_EXTRA_FIELDS、_stack_trace）",
+        "単体 test_common_logging.py / test_common_errors.py / test_web_messages.py"
+      ]
+    },
+    {
+      "criterion": "dependency-configuration",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "依存は requirements.txt 8件・requirements-dev.txt 2件のすべてが == 固定で、取得元は PyPI 公式、ベースイメージは公式イメージ。IT-AI-GF-072 が全導入ディストリビューションのライセンス解決（不明0件・AGPL 0件）を、IT-AI-GF-076 が稼働プロセス（PID1）が gunicorn かつ config.wsgi で runserver の使用が0件であることを表明する（NFR-EN-08 / VUL-08）。IT-AI-GF-058 は外部ネットワーク遮断下で全機能が動作し画面に外部URL参照が無いことを、IT-AI-GF-075 は SPA・フロントエンドビルドを用いず画面の JavaScript が1本のみであることを表明する。DEBUG 既定 false、ALLOWED_HOSTS 限定、Cookie 属性、CSRF・Security・XFrameOptions の各ミドルウェアは有効で、テスト都合での無効化は存在しない。本番環境の公開ポート限定・HTTPS 終端は本リリースの実装対象外であり残存リスク R1・R2 として整理した。",
+      "evidence": [
+        "requirements.txt / requirements-dev.txt（unpinned 0件）、Dockerfile、compose.yaml",
+        "結合 IT-AI-GF-056 / 058 / 070 / 072 / 075 / 076",
+        "app/config/settings.py（DEBUG 既定 false、MIDDLEWARE、Cookie属性）",
+        "ruff / manage.py check / makemigrations --check がいずれも exit 0"
+      ]
+    },
+    {
+      "criterion": "security-test-coverage",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "単体791件（分岐網羅率91.14%）・結合134件で、Security上重要な振る舞いの検証が揃っている。本サイクルでは NFR-SC-04 の回帰として全角数字拒否44ケースが3階層で追加され、期待値が要件本文から導出されていることも docstring で明示されている。結合では秘密情報の非固定化（074）、決済境界の構造検証（073）、起動設定（076）、ライセンス（072）、縮退運転の不在と障害時の内部情報非露出（077）、上限超過時の整合（080）が追加された。いずれも差分比較・禁止文字列の非出現・キー集合の固定・AST/プロセスの実態検証という、制御の退行を捉える形で構成されている。残る SR-UNIT-001（DRF既定拒否を設定レベルで表明する回帰テストの不在）は Advisory（LOW）で、重大な欠落には当たらない。",
+      "evidence": [
+        "単体791件（分岐91.14%）／結合134件",
+        "新規 test_fullwidth_digit_rejection.py（44件）、IT-AI-GF-070〜080",
+        "レビュー実施者の再実行：925 passed / 0 failed / 0 skipped（2回再現）",
+        "走査結果：全テストコードに skip / xfail が0件"
+      ]
+    },
+    {
+      "criterion": "cross-phase-security-consistency",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "Requirements → ARCHITECTURE → ADDR → Implementation → Unit Test → Integration Test の全工程で、Security上の意味が緩む箇所は検出されなかった。今回追加された回帰テストは、CMN-15『全角文字と半角文字の相互変換は行わない』や NFR-SC-07『秘密情報を環境変数で与える』といった要件本文の意味を、実装挙動の追認ではなく要件由来の期待値として固定しており、工程間の意味の伝播をむしろ強化している。VUL-07（FR-031 手順5 → ADDR-013 → orders.pay_order → IT-AI-GF-023/069/080＋単体回帰5件）、NFR-SC-05 / VUL-06、NFR-SC-01 / VUL-03、FR-060 手順9 / NFR-SC-23、NFR-SC-03 / VUL-01、NFR-SC-07 / VUL-08、NFR-PF-17 / NFR-SC-24 の各系統を逐条で突合し、一貫していることを確認した。",
+      "evidence": [
+        "本Report security_requirement_matrix の42項目突合",
+        "test_fullwidth_digit_rejection.py の docstring（期待値を要件本文から導出すると明記）",
+        "結合 IT-AI-GF-073 / 074 の expected が NFR-PF-17 / NFR-SC-07 の要件文言と一致",
+        "reports/loop-control/unresolved-results.json：status CLEAR"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "issue_id": "SR-IMPL-001",
+      "classification": "INPUT_VALIDATION_ISSUE",
+      "severity": "MEDIUM",
+      "source_artifact": "app/shop/web/support.py",
+      "affected_artifacts": [
+        "app/shop/web/support.py",
+        "app/shop/web/views_catalog.py",
+        "app/shop/web/views_cart.py"
+      ],
+      "requirement_reference": [
+        "NFR-SC-04",
+        "NFR-SC-21",
+        "VUL-01"
+      ],
+      "related_adr": [
+        "ADDR-002"
+      ],
+      "description": "遷移先（next / return_to / Referer）が startswith('/') のみで検証され、プロトコル相対URLで外部サイトへ誘導できるオープンリダイレクト（CWE-601）であった。safe_internal_path() による単一実装で是正済み。最終状態でも実装の存続を確認した。",
+      "evidence": [
+        "app/shop/web/support.py safe_internal_path（最終状態で存続）",
+        "単体 test_web_support.py（34件）"
+      ],
+      "recommended_route": "IMPLEMENTATION",
+      "resolved": true
+    },
+    {
+      "issue_id": "SR-IMPL-002",
+      "classification": "SENSITIVE_DATA_EXPOSURE",
+      "severity": "MEDIUM",
+      "source_artifact": "app/shop/common/logging.py",
+      "affected_artifacts": [
+        "app/shop/common/logging.py"
+      ],
+      "requirement_reference": [
+        "NFR-SC-06",
+        "NFR-SC-10",
+        "VUL-11",
+        "VUL-13"
+      ],
+      "related_adr": [
+        "ADDR-005"
+      ],
+      "description": "JSON Lines フォーマッタが例外全文（例外メッセージ行を含む）を出力しており、項目値やSQLのパラメータ値がログへ混入し得た（LOG-02 違反）。_stack_trace() によりファイル名・行番号・関数名のみを出力する方式へ是正済み。結合 IT-AI-GF-059 が SQL とファイルパスを含む例外メッセージの非出力を実測で表明する回帰テストとして存在する。",
+      "evidence": [
+        "app/shop/common/logging.py _stack_trace（最終状態で存続）",
+        "結合 IT-AI-GF-059",
+        "単体 test_common_logging.py（15件）"
+      ],
+      "recommended_route": "IMPLEMENTATION",
+      "resolved": true
+    },
+    {
+      "issue_id": "SR-IMPL-003",
+      "classification": "AUTHORIZATION_ISSUE",
+      "severity": "LOW",
+      "source_artifact": "app/config/settings.py",
+      "affected_artifacts": [
+        "app/config/settings.py",
+        "app/shop/api/permissions.py"
+      ],
+      "requirement_reference": [
+        "NFR-SC-03",
+        "NFR-SC-21",
+        "VUL-01"
+      ],
+      "related_adr": [
+        "ADDR-007"
+      ],
+      "description": "DRF の DEFAULT_PERMISSION_CLASSES が空配列で既定が許可側であった（VUL-01 の『既定は拒否』に反する）。既定拒否へ変更し、認証不要の5経路のみ明示宣言する方式へ是正済み。最終状態でも設定の存続を確認した。",
+      "evidence": [
+        "app/config/settings.py REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES（最終状態で存続）"
+      ],
+      "recommended_route": "IMPLEMENTATION",
+      "resolved": true
+    },
+    {
+      "issue_id": "SR-IT-001",
+      "classification": "SECURITY_TEST_GAP",
+      "severity": "MEDIUM",
+      "source_artifact": "reports/integration-test/required-coverage.json",
+      "affected_artifacts": [
+        "tests/integration/test_security.py",
+        "tests/integration/test_seeding_command.py",
+        "reports/integration-test/required-coverage.json"
+      ],
+      "requirement_reference": [
+        "NFR-SC-04",
+        "NFR-SC-05",
+        "NFR-SC-21",
+        "VUL-04",
+        "VUL-05",
+        "VUL-06",
+        "FR-060"
+      ],
+      "related_adr": [
+        "ADDR-002",
+        "ADDR-006",
+        "ADDR-007",
+        "ADDR-010"
+      ],
+      "description": "CSRF強制・HTMLエスケープ・SQL/OSコマンド攻撃文字列・全削除後の旧認証状態の失効の4項目が単体・結合のいずれにも存在しなかった。IT-AI-GF-012〜019 の追加と Required Coverage の導出元是正で解消済み。",
+      "evidence": [
+        "tests/integration/test_security.py / test_seeding_command.py（IT-AI-GF-012〜019）",
+        "required-coverage.json derivation.correction"
+      ],
+      "recommended_route": "INTEGRATION_TEST",
+      "resolved": true
+    },
+    {
+      "issue_id": "DEF-IT-001",
+      "classification": "CROSS_PHASE_SECURITY_CONSISTENCY_ISSUE",
+      "severity": "MEDIUM",
+      "source_artifact": "app/shop/services/orders.py",
+      "affected_artifacts": [
+        "app/shop/services/orders.py",
+        "docs/addr/ADDR-013.md",
+        "tests/integration/test_concurrency.py"
+      ],
+      "requirement_reference": [
+        "FR-031",
+        "NFR-SC-21",
+        "VUL-07",
+        "AC-UC-007-019"
+      ],
+      "related_adr": [
+        "ADDR-001",
+        "ADDR-009",
+        "ADDR-013"
+      ],
+      "description": "支払とキャンセルの同時実行で409となる試行でも決済サービスが決済要求を受信していた（VUL-07 違反）。ADDR-013 採択と実装のトランザクション境界是正で解消済み。本サイクルで IT-AI-GF-080（在庫12・24並列・支払/キャンセル同時）が追加され、負荷下でも500が0件・在庫0未満0件・金額整合であることが補強された。",
+      "evidence": [
+        "app/shop/services/orders.py pay_order",
+        "結合 IT-AI-GF-023 / 069 / 080、単体 test_orders_payment.py の ADDR-013 回帰5件"
+      ],
+      "recommended_route": "IMPLEMENTATION",
+      "resolved": true
+    },
+    {
+      "issue_id": "OBS-IT-001",
+      "classification": "INPUT_VALIDATION_ISSUE",
+      "severity": "LOW",
+      "source_artifact": "app/shop/common/validators.py",
+      "affected_artifacts": [
+        "app/shop/common/validators.py",
+        "app/shop/services/orders.py",
+        "app/shop/common/pagination.py"
+      ],
+      "requirement_reference": [
+        "NFR-SC-04",
+        "NFR-SC-21",
+        "VUL-04",
+        "CMN-15"
+      ],
+      "related_adr": [
+        "ADDR-007"
+      ],
+      "description": "正規表現が Unicode 既定の \\\\d を用いていたため、全角数字などの非ASCII十進数字が prefecture_code / postal_code 等で受理され、CMN-15 および NFR-SC-04 に反していた。機密性・認可境界の侵害には至らないため Severity は LOW。[0-9] 明示化と parse_int の半角限定で是正済みで、本サイクルで回帰テスト44ケース（test_fullwidth_digit_rejection.py）が追加され、パターン層・変換層・業務サービス層の3階層で半角受理と全角拒否が対で固定された。",
+      "evidence": [
+        "app/shop/common/validators.py（パターン13件すべて明示ASCIIクラス）",
+        "app/shop/tests/unit/test_fullwidth_digit_rejection.py（44件、単独実行で 44 passed）",
+        "走査結果：Production Code に Unicode 既定クラスは EMAIL_PATTERN の否定クラスのみ",
+        "Implementation Agent 報告の退行実証（[0-9]→\\\\d で 26 failed）"
+      ],
+      "recommended_route": "IMPLEMENTATION",
+      "resolved": true
+    },
+    {
+      "issue_id": "SR-UNIT-001",
+      "classification": "SECURITY_TEST_GAP",
+      "severity": "LOW",
+      "source_artifact": "app/shop/tests/unit/test_api_auth.py",
+      "affected_artifacts": [
+        "app/shop/tests/unit/test_api_auth.py",
+        "tests/integration/test_auth_api.py",
+        "app/config/settings.py"
+      ],
+      "requirement_reference": [
+        "NFR-SC-03",
+        "NFR-SC-21",
+        "VUL-01"
+      ],
+      "related_adr": [
+        "ADDR-002",
+        "ADDR-007"
+      ],
+      "description": "DRF の DEFAULT_PERMISSION_CLASSES が既定拒否であることを設定レベルで表明する回帰テストが、単体791件・結合134件のいずれにも存在しない。Production Code 側の既定拒否は存続しており実害は無いが、SR-IMPL-003 と同種の退行は明示宣言の無い新規Viewが追加されたときに初めて顕在化する。Advisory（LOW・非Blocking）として継続記録する。是正は test_api_auth.py に settings.REST_FRAMEWORK の既定値を表明するケースを1件追加するだけで足りる。",
+      "evidence": [
+        "走査結果：単体・結合のテストコードに DEFAULT_PERMISSION_CLASSES を参照するテストが0件",
+        "app/config/settings.py REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES（最終状態で存続）"
+      ],
+      "recommended_route": "UNIT_TEST",
+      "resolved": false
+    }
+  ],
+  "residual_risks_for_go_live": [
+    {
+      "risk_id": "R1",
+      "title": "本番の通信路暗号化（HTTPS限定・HTTP転送・TLS 1.2以上）と Cookie の Secure 属性",
+      "requirement_reference": [
+        "NFR-SC-02",
+        "NFR-SC-09",
+        "VUL-03"
+      ],
+      "current_state": "app は TLS を終端しない（ASM-ADDR011-001）。SESSION_COOKIE_SECURE / CSRF_COOKIE_SECURE は環境変数由来で既定 false。SECURE_SSL_REDIRECT・HSTS は未設定。",
+      "pre_go_live_blocking": true,
+      "required_action": "本番基盤側で HTTPS 終端・HTTP→HTTPS 転送・TLS 1.2以上を構成し、SESSION_COOKIE_SECURE=true を設定する。終端構成に応じて SECURE_PROXY_SSL_HEADER・SECURE_SSL_REDIRECT・HSTS の要否を構成・設定レビューで判断する。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R2",
+      "title": "本番での公開ポート限定（443のみ）",
+      "requirement_reference": [
+        "NFR-SC-26",
+        "VUL-08"
+      ],
+      "current_state": "compose.yaml は ENV-01 用に app:8000 と db:5432 をホストへ公開する。本番配備定義は未作成（OQ-PJ-001）。",
+      "pre_go_live_blocking": true,
+      "required_action": "本番配備定義では db:5432・app:8000 を外部公開せず、外部到達経路を HTTPS(443) のみとする。ENV-01 用 compose.yaml をそのまま本番へ流用しない。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R3",
+      "title": "DB格納領域・バックアップの保存時暗号化",
+      "requirement_reference": [
+        "NFR-SC-20",
+        "VUL-03"
+      ],
+      "current_state": "基盤機能であり app の実装対象外。本番基盤は未選定（OQ-PJ-001）。",
+      "pre_go_live_blocking": true,
+      "required_action": "本番基盤の保存時暗号化機能を有効化し、構成・設定レビューで確認する。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R4",
+      "title": "リリース前の依存ライブラリ脆弱性確認（CVSS 7.0以上 0件）",
+      "requirement_reference": [
+        "NFR-SC-11",
+        "NFR-EN-10",
+        "VUL-09",
+        "NFR-OM-14"
+      ],
+      "current_state": "requirements.txt 8件は全件バージョン固定済み。README 7章に手順を整備済み。ライセンス条件（NFR-EN-12）は IT-AI-GF-072 により自動確認されるようになった（不明0件・AGPL 0件）が、脆弱性確認そのものは未実施で、リポジトリに脆弱性スキャンツールの設定は無い（Security Review Agent はツールを追加しない）。",
+      "pre_go_live_blocking": true,
+      "required_action": "リリース前に requirements.txt の全ライブラリについて既知脆弱性（CVSS 7.0以上）0件とサポート期限内であることを確認する。稼働後は月1回確認し、重大度 高は30日以内に適用する。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R5",
+      "title": "稼働開始前の動的脆弱性診断（全画面・全API）",
+      "requirement_reference": [
+        "NFR-SC-29",
+        "NFR-SC-21",
+        "NFR-LG-07"
+      ],
+      "current_state": "未実施。結合試験の Security ケースは要件の検証方法に沿う検証であり、全画面・全APIの動的診断に代わるものではない。",
+      "pre_go_live_blocking": true,
+      "required_action": "稼働開始前に ENV-01 の全画面・全API を対象に動的診断を実施し、指摘を対処する。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R6",
+      "title": "本番初期データのパスワード個別化と、同梱サンプル定義ファイルの非転用",
+      "requirement_reference": [
+        "NFR-SC-16",
+        "NFR-SC-15",
+        "VUL-08",
+        "VUL-10"
+      ],
+      "current_state": "app/seed/initial_data.json は ENV-01 用のサンプル（架空値・パスワードは3件とも相異）で、本番イメージにも同梱される。load_initial_data は定義ファイルの既定パスを持たず明示指定が必須。",
+      "pre_go_live_blocking": true,
+      "required_action": "本番の初期データ定義ファイルは運用者が作成し、管理者ごとに NFR-SC-16 の条件を満たす個別のパスワードを設定する。同梱サンプルを本番へ投入しない。投入はサーバーにログインできる運用者のみが行う。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R7",
+      "title": "本番環境変数の確定（DJANGO_SECRET_KEY・DJANGO_DEBUG・DJANGO_ALLOWED_HOSTS）",
+      "requirement_reference": [
+        "NFR-SC-07",
+        "NFR-SC-10",
+        "NFR-OM-17",
+        "VUL-08"
+      ],
+      "current_state": "DJANGO_SECRET_KEY 未設定時はプロセス起動ごとに乱数を生成する実装で、固定値がソースに無いことは IT-AI-GF-074 が挙動として立証している。compose.yaml は :? で未設定時の起動を失敗させる。DEBUG 既定 false は IT-AI-GF-048 が表明。ALLOWED_HOSTS 既定は localhost,127.0.0.1。",
+      "pre_go_live_blocking": true,
+      "required_action": "本番では DJANGO_SECRET_KEY を明示設定する（未設定のまま複数ワーカーで起動すると鍵がワーカーごとに異なり、セッション・CSRF検証が成立しない）。DJANGO_DEBUG=false、DJANGO_ALLOWED_HOSTS を本番ホスト名に限定する。compose を用いない起動方法を採る場合は同等のガードを設ける。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R8",
+      "title": "実決済サービスへの差替え時のロック区間の再判断",
+      "requirement_reference": [
+        "NFR-PF-02",
+        "NFR-PF-17",
+        "VUL-07"
+      ],
+      "current_state": "ADDR-013 DD-005 / INV-004 によりロック保持区間に外部ネットワーク通信・スリープ・他プロセス待ちを置かないことが拘束されている。模擬実装は外部I/Oを行わず実測0.0959ms。ADDR-009 DD-003 の10秒締切は呼び出し完了後の事後判定であり強制中断しない。IT-AI-GF-073 が payments 境界の分離を AST レベルで固定しているため差替え時の影響範囲は限定される。",
+      "pre_go_live_blocking": false,
+      "required_action": "実決済サービスへ差し替える場合は ADDR-013 DD-007 に従い本ADDRを更新し、ロック保持時間の上限を実効化する手段を併せて確定する。",
+      "recommended_route": "ADDR"
+    },
+    {
+      "risk_id": "R9",
+      "title": "本番イメージへの pytest・単体テストの同梱",
+      "requirement_reference": [
+        "NFR-OM-06",
+        "NFR-SC-11",
+        "NFR-EN-10",
+        "NFR-EN-12"
+      ],
+      "current_state": "NFR-OM-06 と ADDR-004 DD-005 により pytest / pytest-django と app/shop/tests が本番イメージに同梱される。ADDR-012 により結合テストと計測専用依存は除外済み。IT-AI-GF-072 がライセンス面の確認対象に同梱ライブラリを含めている。",
+      "pre_go_live_blocking": false,
+      "required_action": "本番配備定義の確定時に、同梱資産を構成・設定レビューの確認項目へ含め、依存脆弱性確認（NFR-SC-11）の対象範囲として扱う。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "risk_id": "R10",
+      "title": "ログイン試行回数制限・要求レート制限を設けない設計",
+      "requirement_reference": [
+        "NFR-SC-14",
+        "NFR-SC-27",
+        "NFR-SC-16",
+        "VUL-02"
+      ],
+      "current_state": "NFR-SC-14 と NFR-SC-27 はいずれも要件本文で『該当なし』と定義され、FR-OUT-11 で対象外とされた承認済みの要件判断である。結合 IT-AI-GF-039 / 046 が実挙動として確定した。代償制御は NFR-SC-16 のパスワード方針で、ログイン失敗は監査ログに記録される（NFR-SC-22、IT-AI-GF-052）。",
+      "pre_go_live_blocking": false,
+      "required_action": "本リリースでは要件どおり実装しない。稼働後は監査ログのログイン失敗記録を用いて総当たり・リスト型攻撃の兆候を監視し、必要に応じて後続フェーズで要件側の再検討（基盤側のレート制限を含む）を行うことを推奨する。Security Review として新たな機能要件の追加は求めない。",
+      "recommended_route": "REQUIREMENTS"
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "SR-OBS-021",
+      "type": "COVERAGE_PRECISION",
+      "subject": "IT-AI-GF-074 の秘密情報走査は app/ 配下の同梱ソースに限られ、検出対象は『現在の稼働値と一致する文字列』である",
+      "security_assessment": "不備としない。空振り防止（走査件数50件以上・settings.py を含むことの表明）と、環境変数を除去した2回ロードによる固定値不在の挙動立証があり、形骸的ではない。リポジトリルートの compose.yaml・.env.example や tests/ 配下、および一般的な秘密情報パターンは本ケースの対象外だが、本レビューの独立走査（154ファイル・汎用パターン、検出0件）で補完されている。",
+      "note": "将来 CI を整備する場合は、リポジトリ全体を対象とする汎用的な秘密情報検出（パターンベース）を併用することを推奨する。",
+      "recommended_route": "INTEGRATION_TEST"
+    },
+    {
+      "observation_id": "SR-OBS-018",
+      "type": "TEST_STABILITY",
+      "subject": "自動テスト一式は単一の使い捨てテストDB（test_<DB_NAME>）への排他アクセスを前提とし、並行実行または異常終了した実行が残した孤立セッションがあると後続の実行が破綻する",
+      "security_assessment": "Security上の欠陥ではない。本レビュー中、他プロセスとの並行実行および強制終了の後に『database \"test_minicommerce\" is being accessed by other users』や teardown 時の DeadlockDetected が発生し、最大 12 failed / 20 errors の degraded な結果となった。孤立セッションを解消した後の完走は 925 passed / 0 failed / 0 skipped を2回再現しており、Production Code・Test Code の欠陥ではない。エラーは明示的に報告され skip のような暗黙の回避ではないため隠蔽にも当たらない。",
+      "note": "Security 回帰（VUL-07 等）を含む試験一式の信頼性に関わるため、CI では実行を直列化するか、実行ごとに一意のテストDB名を用いて隔離することを推奨する。transaction=True のテストの teardown で flush が deadlock する事象も併せて確認されたため、Test 工程での調査を推奨する。",
+      "recommended_route": "INTEGRATION_TEST"
+    },
+    {
+      "observation_id": "SR-OBS-020",
+      "type": "HOMOGLYPH",
+      "subject": "メールアドレス正規化が lower() のみであるため、一部の同形異字が既存利用者と同一の正規化値へ落ちる",
+      "security_assessment": "脆弱性ではない。衝突時は一意制約により EMAIL_ALREADY_REGISTERED となり新規アカウントは作られない（フェイルセーフ）。ログイン時も同一利用者に解決されるだけでパスワード検証は回避できず、なりすまし・権限昇格には繋がらない。",
+      "note": "正規化方式は FR-001-02 が定める正本であり、Security Review として変更は求めない（継続記録）。",
+      "recommended_route": "REQUIREMENTS"
+    },
+    {
+      "observation_id": "SR-OBS-019",
+      "type": "TEST_DATA",
+      "subject": "結合テストが、決済ブランドが検証用に公表しているテスト用カード番号を定数として保持している",
+      "security_assessment": "不備としない。実在の利用者に紐づく決済手段ではなく本番データでもない。用途は『カード情報を受理も保存も送信もしないこと』の表明（NFR-LG-05）であり、非保持の検証を強化している。",
+      "note": "値そのものは本Reportに記録しない（継続記録）。",
+      "recommended_route": "INTEGRATION_TEST"
+    },
+    {
+      "observation_id": "SR-OBS-015",
+      "type": "ARTIFACT_TRACEABILITY",
+      "subject": "required-coverage.json の derivation.sources が ADDR-001..011 までで ADDR-012・ADDR-013 を含まない",
+      "security_assessment": "Securityリスクなし。検証内容は ADDR-013 の決定を実際に検証している。",
+      "note": "参照整合は Traceability Auditor の担当領域。更新を推奨（継続）。",
+      "recommended_route": "INTEGRATION_TEST"
+    },
+    {
+      "observation_id": "SR-OBS-003",
+      "type": "DEFENSE_IN_DEPTH",
+      "subject": ".dockerignore に .env / .git の明示が無い",
+      "security_assessment": "実害なし。Dockerfile は COPY app/ のみで、本番イメージに /app/.env は存在しないことを実測で確認した。",
+      "note": "多層防御として明示を推奨（継続）。",
+      "recommended_route": "IMPLEMENTATION"
+    },
+    {
+      "observation_id": "SR-OBS-011",
+      "type": "ARTIFACT_READABILITY",
+      "subject": "reports/architecture/addr-result.json の ADDR-013 の reason が文字化けしている",
+      "security_assessment": "Securityリスクなし。正本 docs/addr/ADDR-013.md は正常なUTF-8。",
+      "note": "Report生成時のエンコーディング指定の見直しを推奨（継続）。",
+      "recommended_route": "ADDR"
+    },
+    {
+      "observation_id": "SR-OBS-017",
+      "type": "OPERATIONS_READINESS",
+      "subject": "監視ツールが未選定（NOQ-02）で、MON-04 / MON-06 / MON-09 の監視が未構成",
+      "security_assessment": "本リリースの実装欠陥ではない（VUL-11 のログ記録部分は充足）。",
+      "note": "稼働開始前に監視ツールを選定し、システムエラー・5xx応答率の監視を構成することを推奨（継続）。R10 のログイン失敗監視と併せて検討するとよい。",
+      "recommended_route": "ARCHITECTURE"
+    },
+    {
+      "observation_id": "SR-OBS-014",
+      "type": "RESOLVED",
+      "subject": "NFR-SC-24『決済要求の送信項目に個人情報を含めない』を表明する自動テストが無かった",
+      "security_assessment": "解消を確認。IT-AI-GF-055 がフィールド集合を固定し、IT-AI-GF-073 が AST 解析で payments から業務パッケージへの参照0件と決済要求の各値が str | int であることまで表明している。",
+      "note": "対応不要（クローズ）。",
+      "recommended_route": "INTEGRATION_TEST"
+    },
+    {
+      "observation_id": "SR-OBS-013",
+      "type": "RESOLVED",
+      "subject": "NFR-SC-05 / NFR-SC-04 の『全画面・全入力項目』に対する自動試験が代表標本であった",
+      "security_assessment": "改善を確認。全角数字拒否の44ケースが3階層で追加され、入力面の検証が大きく拡充された。全画面・全APIの網羅確認は引き続き NFR-SC-29 の動的診断（R5）で担保する。",
+      "note": "残りは R5 に集約（クローズ）。",
+      "recommended_route": "ARCHITECTURE"
+    }
+  ],
+  "summary": {
+    "criteria_total": 8,
+    "criteria_pass": 8,
+    "criteria_not_applicable": 0,
+    "criteria_fail": 0,
+    "issues_total": 7,
+    "blocking_issues": 0
+  },
+  "severity_breakdown": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 4,
+    "LOW": 3
+  },
+  "issue_status_breakdown": {
+    "resolved": 6,
+    "unresolved": 1,
+    "unresolved_blocking": 0
+  },
+  "residual_risk_breakdown": {
+    "total": 10,
+    "pre_go_live_blocking": 7,
+    "advisory": 3
+  },
+  "reports": {
+    "json": "reports/security-review/security-review-report.json",
+    "markdown": "reports/security-review/security-review-report.md"
+  },
+  "recommended_route": "NONE",
+  "summary_message": "audit_scope=FULL の最終Security Review（再検査#2）の結果は PASS。前回の FULL PASS は流用せず、最終成果物に対して8Criterionを再評価し、NFR-SC-01〜29 と VUL-01〜13 の計42項目を再突合した。本リリースの実装範囲に属するSecurity必須要件はすべて充足しており、未解決の Blocking Issue は0件である。全角数字拒否の回帰テスト（単体44ケース）は、期待値を要件本文（CMN-15 ほか）から導出し、パターン層・変換層・業務サービス層の3階層で半角受理と全角拒否を対で固定しており、NFR-SC-04 の回帰テストとして十分である。Production Code 側も re.compile パターン13件がすべて明示的ASCIIクラス、unicodedata / normalize は0件、外部入力を扱う int() 2箇所はパターン検証後であることを独立に確認し、Unicode 正規化・同形異字を含む残存脆弱性は認められなかった。IT-AI-GF-074 は、稼働中の秘密値による同梱ソース全件走査（走査件数50件以上と settings.py を含むことの表明による空振り防止つき）と、環境変数を除去した設定モジュールの2回ロードによる『固定値が書かれていないこと』の挙動立証を行っており、形骸的ではなく実効的な退行検知手段である（走査範囲の限界は SR-OBS-021 として記録）。レビュー実施者自身が排他的な環境で 925 passed / 0 failed / 0 skipped を2回再現し、ruff / manage.py check / makemigrations --check の exit 0、154ファイル走査での本番資格情報ハードコード0件・危険構成0件・skip/xfail 0件を確認した。残る Issue は SR-UNIT-001（LOW・Advisory、route=UNIT_TEST）1件のみ。ただし本PASSは『成果物が直ちに go-live 可能である』ことを意味しない。NFR-SC-02・NFR-SC-26・NFR-SC-20・NFR-SC-11/VUL-09・NFR-SC-29・VUL-08 の本番設定・本番初期データのパスワード個別化は、要件・設計段階で本リリースの実装対象外（OQ-PJ-001 / OQ-PJ-003 / NOQ-02 未決）として明示されており、go-live 前に満たすべき条件 R1〜R7（Blocking 7件）として整理した。これらを満たさないままインターネットへ公開してはならない。"
+}

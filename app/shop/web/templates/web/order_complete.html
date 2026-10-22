@@ -1,0 +1,13 @@
+{# trace: ADDR-001 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+<p>注文を受け付けました。</p>
+<p>注文番号：{{ order.order_number }}</p>
+<p>合計：{{ order.amounts.total|yen }}</p>
+<p>
+  <a href="/purchase-orders/{{ order.purchase_order_id }}/pay">支払へ進む</a>
+  ｜
+  <a href="/purchase-orders/{{ order.purchase_order_id }}">注文詳細を見る</a>
+</p>
+{% endblock %}

@@ -1,0 +1,14 @@
+{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/it-payment-cancel-resolved",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr/ADDR-009.md",
+    "requirement_reference": "FR-031",
+    "test_case": "IT-AI-GF-023",
+    "stable_error_type": "INTEGRATION_TEST_FAILURE"
+  },
+  "repair": "ADDR-013（ACTIVE）を採択し、支払では注文行のロックを手順5の状態判定の前に取得して状態判定→決済要求送信→結果反映を同一トランザクション・同一ロック区間で確定する方式へ決定（ADDR-009 DD-005・INV-006、ADDR-001 DD-007・INV-004 を更新）。Implementation が app/shop/services/orders.py の pay_order を是正し、ロック取得後に CREATED 以外ならゲートウェイ未呼び出しで InvalidStatusTransitionError を送出。IT-AI-GF-023 を3回単独再実行して全てPASS、結合82件PASS、全体824 passed / 0 failed を確認。",
+  "validation_result": "reports/integration-test/validation-result.json"
+}

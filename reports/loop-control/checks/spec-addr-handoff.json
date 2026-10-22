@@ -1,0 +1,1 @@
+﻿{"check_id":"handoff","command":["python",".github/skills/addr/scripts/validate_addr.py","--write-handoff"],"result_path":"reports/loop-control/checks/ADDR-handoff.json","timeout_seconds":300}

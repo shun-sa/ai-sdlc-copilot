@@ -1,0 +1,20 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/it-payment-cancel-cycle0",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr/ADDR-009.md",
+    "requirement_reference": "FR-031",
+    "test_case": "IT-AI-GF-023",
+    "stable_error_type": "INTEGRATION_TEST_FAILURE"
+  },
+  "impact": "支払とキャンセルの同時実行で、キャンセルが先に確定し支払が E-031-05（INVALID_STATUS_TRANSITION）となる試行でも決済サービスへ決済要求が送信される。FR-031 手順5 の「決済要求を送信しない」と AC-UC-007-019 (a) を満たさず、承認された決済要求がどの決済記録にも残らない。ADDR-009 DD-005・INV-006 が現実装を定めているため、ADRを変更せずに是正方法を確定できない。",
+  "recommended_route": "ADDR",
+  "errors": [
+    "IT-AI-GF-023: final AUTOMATABLE case result is 'FAIL', expected PASS.",
+    "DEF-IT-001: defect is unresolved."
+  ],
+  "validation_result": "reports/integration-test/validation-result.json"
+}

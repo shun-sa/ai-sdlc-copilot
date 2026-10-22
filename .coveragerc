@@ -1,0 +1,12 @@
+[run]
+branch = True
+source = app
+omit =
+    app/manage.py
+    app/config/wsgi.py
+    app/shop/migrations/*
+    app/shop/tests/*
+    app/shop/tests/**/*
+
+[json]
+pretty_print = True

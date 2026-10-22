@@ -1,0 +1,17 @@
+﻿{
+  "action": "FAILURE",
+  "cycle": 1,
+  "run_id": "RUN-20261022-MC/full-c10-cycle1",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "TEST_TRACEABILITY_MISSING",
+    "artifact": "docs/requirements/functional_requirements.md",
+    "requirement_reference": "FR-OUT-01",
+    "test_case": "",
+    "stable_error_type": "TRACE_C10_REQUIREMENT_WITHOUT_TEST"
+  },
+  "repair": "結合試験へ41ケース（IT-AI-GF-029〜069）を追加しFR-OUT 16件とNFR 34件を検証。C10は124件→74件へ改善。残り74件は要件本文の検証方法が自動テスト以外のものとしてnon-automatable-requirementsへ分類記録",
+  "impact": "FULL ScopeのC10で74件（NFR群）が要件を確かめるテストなしと判定され、Final AssuranceのTraceabilityがFAIL",
+  "recommended_route": "INTEGRATION_TEST",
+  "validation_result": "reports/traceability/validation-result.json"
+}

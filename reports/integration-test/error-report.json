@@ -1,0 +1,142 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "summary": {
+    "total_errors": 0,
+    "errors_by_origin": {
+      "AI_GENERATED": 0,
+      "EXTERNAL": 0
+    },
+    "errors_by_generation_stage": {
+      "INITIAL": 0,
+      "GAP_FILL": 0
+    },
+    "errors_by_cause": {},
+    "unique_defects": 1,
+    "unresolved_defects": 0,
+    "defects_by_detection_source": {
+      "COMMON_DEFECT": 0,
+      "AI_ONLY_DEFECT": 1,
+      "EXTERNAL_ONLY_DEFECT": 0
+    },
+    "test_spec_conflicts": 0,
+    "automation_blocked": 0
+  },
+  "errors": [],
+  "defects": [
+    {
+      "defect_id": "DEF-IT-001",
+      "classification": "ADR_REQUIRED",
+      "title": "同時キャンセル時に E-031-05 となる支払でも決済サービスへ決済要求が送信される",
+      "detected_by_cases": [
+        "IT-AI-GF-023"
+      ],
+      "detection_source": "AI_ONLY_DEFECT",
+      "requirement_id": "FR-031",
+      "related_requirements": [
+        "FR-031 6.16.4 手順5",
+        "AC-UC-007-019",
+        "NFR-SC-21/VUL-07（二重決済防止）"
+      ],
+      "related_adr": [
+        "ADDR-009",
+        "ADDR-001",
+        "ADDR-013"
+      ],
+      "expected": "注文受付以外の状態で支払が E-031-05（INVALID_STATUS_TRANSITION）となる場合、決済サービス（模擬）へ決済要求を送信しない（FR-031 手順5）。AC-UC-007-019 (a) は 409 の試行で決済サービスが当該注文の決済要求を受けていないことを求める。",
+      "actual": "10試行の1試行目で、キャンセルが先に確定し支払が 409 INVALID_STATUS_TRANSITION（current_status=cancelled）となったが、決済サービス（模擬）は当該注文（例: PO-00000001）の決済要求を受信済みだった。決済記録は登録されないため、承認された決済要求がシステム上どこにも記録されない。",
+      "root_cause": "ADDR-009 DD-005・INV-006 が『承認の反映は注文行のロックと状態再確認の後に行う』と定め、決済要求の送信はトランザクション外・ロック取得前に行う設計になっている。このため、送信後にキャンセルが確定した場合、FR-031 手順5 の『決済要求を送信しない』を満たせない。実装は Accepted ADR のとおりであり、ADR を変更せずに要件を満たす修正方法が確定できない。",
+      "error_location": "app/shop/services/orders.py pay_order（状態判定→決済要求→行ロック再判定の順序）／docs/addr/ADDR-009.md DD-005・INV-006",
+      "error_location_identifiable": true,
+      "decision_needed": "同時キャンセル時に決済要求の送信を避ける方式（注文行ロックの保持範囲に決済要求を含める／事前の予約状態を設ける／送信済みの決済要求を打ち消す記録と取消要求を定義する 等）の選択と、ADDR-009 DD-005・INV-006 および ADDR-001 への反映。Integration Test Agent では確定できない。",
+      "reproducibility": "決定的（単独実行3回すべて1試行目で再現。flaky ではない）",
+      "resolved": true,
+      "rerun": {
+        "target_cases": "PASS",
+        "related_cases": "PASS",
+        "full_suite": "PASS",
+        "detail": {
+          "target_cases": "IT-AI-GF-023 を3回単独再実行し3回とも PASS（1回目 1.59s / 2回目 1.53s / 3回目 1.59s、各10試行）",
+          "related_cases": "test_concurrency.py（10件）・test_orders_api.py・test_e2e_flow.py・test_admin_api.py の計29ケースが PASS",
+          "full_suite": "docker compose exec -T app pytest：824 passed / 0 failed（単体742件・結合82件）。結合のみの再実行（tests/integration）も 82 passed"
+        }
+      },
+      "resolved_at": "2026-10-22T16:05:00+09:00",
+      "resolution": "ADDR-013（ACTIVE）を採択し、支払では注文行のロックを手順5の状態判定の前に取得して、状態判定→決済要求送信→結果反映を同一トランザクション・同一ロック区間で確定する方式へ決定した（ADDR-009 DD-005・INV-006、ADDR-001 DD-007・INV-004 を更新し、ロック保持中の禁止対象を外部ネットワーク通信・スリープ・他プロセス待ちに限定）。Implementation 工程が ADDR-013 に従って app/shop/services/orders.py の pay_order を是正し、ロック取得後に CREATED 以外であれば決済ゲートウェイを呼び出さずに InvalidStatusTransitionError を送出する実装とした（_authorize_locked_order を新設、否認・連携エラーは決済記録を同一トランザクションで登録しコミット後に例外送出、_record_payment の独立トランザクションを廃止）。Integration Test Agent は Production Code・ADDR・要件を変更していない。",
+      "resolution_route": "ADDR（ADDR-013 採択）→ IMPLEMENTATION（app/shop/services/orders.py 是正）",
+      "fixed_by": {
+        "addr": "ADDR-013（支払における決済要求送信の排他単位とトランザクション境界。status: ACTIVE）",
+        "implementation": "app/shop/services/orders.py（pay_order / _authorize_locked_order / _record_payment）のみ変更",
+        "integration_test_changes": "なし（Test Case・期待結果・アサーションは変更していない）"
+      },
+      "regression_test": "IT-AI-GF-023（tests/integration/test_concurrency.py::test_concurrent_payment_and_cancel_matches_sequential_result）",
+      "verification": "Production Code 変更後に全ケースを再実行して確認した。IT-AI-GF-023（AC-UC-007-019、各10試行）を単独で3回再実行し3回とも PASS。関連ケース（tests/integration/test_concurrency.py 10件、test_orders_api.py・test_e2e_flow.py・test_admin_api.py 計29件）PASS。結合試験 82ケース全件 PASS（junit.xml 再生成）。全体（単体742件＋結合82件）は docker compose exec -T app pytest で 824 passed / 0 failed。",
+      "repair_cycle": {
+        "initial_failure_cycle": 0,
+        "repair_attempts": 1,
+        "state": "RESOLVED",
+        "note": "共通3回ループの1回目の修正（ADDR-013 採択＋実装是正）で解消。4回目の修正ループは発生していない。"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "OBS-IT-001",
+      "title": "全角数字の都道府県コード・郵便番号が入力エラーにならず保存される",
+      "classification": "POSSIBLE_IMPLEMENTATION_ERROR（本サイクルの Test Case では判定していない）",
+      "requirement_id": "FR-030, NFR-SC-04",
+      "requirement_text": "機能要件定義書 FR-030 の入力条件は、都道府県コードを「2桁の半角数字で \"01\" 以上 \"47\" 以下」、郵便番号を「半角数字7桁」または「半角数字3桁・ハイフン・半角数字4桁」と定める。",
+      "observed": "prefecture_code=\"１３\"、postal_code=\"１２３４５６７\"（いずれも全角数字）を含む注文確定が 201 で受理され、配送先に全角数字のまま保存された（ShippingAddress.prefecture_code='１３'、postal_code='１２３４５６７'）。原因は、都道府県コードの判定が str.isdigit()＋int() で全角数字を数字として扱うこと、郵便番号・電話番号・日付の正規表現が \\d（Unicode 数字）で半角に限定していないこと。",
+      "how_observed": "C10 是正の作業中に、NFR-LG-09（JIS X 0401）のケース設計のため一時的な確認用テストで実測した（確認後に削除済み。コミットした Test Case には含めていない）。",
+      "impact": "注文の配送先に半角・全角が混在して保存されうる。出荷は手作業で行うため直ちに業務が停止する種類の問題ではないが、検索・集計・外部帳票との突合で不一致が生じうる。NFR-SC-04（型・桁数・値域・形式のサーバー側検証）の観点でも不足である。",
+      "handling": "本サイクルの差し戻し範囲（C10 のテスト追加）の外であり、Integration Test Agent は Production Code を変更できないため、期待結果に含めず観測事項として記録した。Test Case 化すると現状の実装では FAIL となるため、是正方針の決定後にケースを追加する。",
+      "recommended_route": "IMPLEMENTATION（半角限定の検証へ是正）。要件の意図の確認が必要な場合は REQUIREMENTS"
+    }
+  ],
+  "regression": {
+    "rerun_failed_cases": "NOT_REQUIRED（今回のサイクルで Failed / Error Case は0件。開発中に検出した2件の TEST_ERROR は Test Code を是正して再実行し PASS）",
+    "rerun_related_cases": "PASS（既存134ケースを含む結合試験全ケースを再実行）",
+    "rerun_full_suite": "PASS（単体791件＋結合138件＝929 passed / 0 failed）",
+    "full_suite_command": "docker compose exec -T app pytest",
+    "integration_suite_command": "docker compose exec -T app pytest tests/integration --junitxml=reports/integration-test/junit.xml",
+    "executed_at": "2026-10-22T20:25+09:00",
+    "detail": {
+      "previous_cases": "既存の134ケース（IT-AI-001〜054、IT-AI-GF-001〜080）を再実行し全件 PASS",
+      "added_cases": "C10 最終精査で追加した4ケース（IT-AI-GF-081〜084）を実行し全件 PASS",
+      "stability_check": "tests/integration/test_operations_contract.py を含む結合試験全体を2回連続実行し、いずれも 138 passed（偶発失敗なし）"
+    }
+  },
+  "test_spec_conflicts": [],
+  "automation_blocked": [],
+  "resolved_test_errors": [
+    {
+      "case_id": "IT-AI-GF-081",
+      "classification": "TEST_ERROR",
+      "cause": "pytest-django が実行時に settings.DATABASES の NAME をテストDB名へ置き換えるため、「接続中のDB名が設定値と異なること」という Test Code 側の照合条件が成立しなかった。",
+      "fix": "環境変数 DB_NAME を基準に `test_<DB_NAME>` と一致することを照合する条件へ是正した。要件（本番データ・本番DBを使わない）に対する期待結果は変更していない。",
+      "result": "再実行して PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-082",
+      "classification": "TEST_ERROR",
+      "cause": "環境固有の値がソースに書かれていないことの照合で、真偽値（true / false）まで対象にしたため、設定ソース内の真偽値の読み取り定義（{\"1\", \"true\", \"yes\", \"on\"}）に一致して失敗した。",
+      "fix": "照合対象を環境固有の値（接続先・利用者名・パスワード・秘密鍵・ホスト名）に限定し、真偽値は設定の反映（DEBUG / SESSION_COOKIE_SECURE の値）で判定する条件へ是正した。",
+      "result": "再実行して PASS"
+    }
+  ],
+  "unresolved_carry_forward": {
+    "issue_id": "UNRESOLVED-698b995280f60801",
+    "classification": "TEST_TRACEABILITY_MISSING",
+    "origin_phase": "INTEGRATION_TEST",
+    "cycle_after_this_repair": 3,
+    "state": "UNRESOLVED",
+    "count": 59,
+    "impact": "Traceability Audit（FULL Scope）C10 が 59 件 FAIL のまま残る。影響は「要件の検証が自動テストで行われていない」ことであり、結合試験の品質（全ケース PASS）・Coverage（最終100%）には影響しない。当該要件の充足は人が実施する検証（性能試験・脆弱性診断・移行リハーサル・互換性/操作性テスト・運用テスト・構成設定レビュー・運用時の測定）で確認する必要がある。",
+    "evidence": [
+      "reports/integration-test/non-automatable-requirements.json",
+      "reports/integration-test/non-automatable-requirements.md",
+      "reports/traceability/traceability-report.json"
+    ],
+    "recommended_route": "ACCEPTANCE_TEST / 運用準備（人手検証）"
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "report_id": "QR-FULL-20261022-003",
+  "run_id": "RUN-20261022-MC",
+  "review_cycle": "FULL scope final assurance re-review (QR-FULL-002/003 対応・C10 修正2回目の後)",
+  "previous_reports": [
+    "QR-UT-20261022-003 (UNIT_TEST / PASS)",
+    "QR-ADDR-20261022-004 (ADDR / PASS)",
+    "QR-IT-20261022-002 (INTEGRATION_TEST / PASS)",
+    "QR-FULL-20261022-001 (FULL / PASS。成果物変更で無効化)",
+    "QR-FULL-20261022-002 (FULL / FAIL。Blocking 2件)"
+  ],
+  "generated_at": "2026-10-22T19:50:00+09:00",
+  "status": "PASS",
+  "audit_scope": "FULL",
+  "source_baseline_sha256": "2b6347ba4d4fa89cb00733f4a27f8760e043f593fb4a0f56a97081731b88a19d",
+  "source_baseline_path": "reports/integration-test/junit.xml",
+  "source_baseline_note": "FULL Scope の baseline 規定が無いため最下流の実行証跡（結合 junit）を採用した。関連：unit junit a475e7f5…（19:18:01 生成）、ai-initial-cases 94f1d865…（不変）。",
+  "policy": ".github/skills/quality-review/policy/quality-review-policy.yaml",
+  "reuse_note": "前回の FULL 判定（FAIL）および各Phase の PASS は流用していない。追加された単体44ケース・結合11ケース、非自動化分類（63件）、証跡の再生成状況、Production Code の最終状態を実査し、コンテナ内で全件実行・静的解析・DBセッション調査を自ら行って判定した。",
+  "final_state_verification": {
+    "full_suite": "docker compose exec -T -e DB_NAME=qrexec1 app pytest → 925 passed / 0 failed / 0 skipped（単体791＋結合134、110秒）。NFR-OM-06 が定めるコマンド形態（コンテナ内で pytest をパス引数なし1回）で全件が収集・実行され失敗0件であることを実機で再現した。",
+    "static_checks": "docker compose exec -T app ruff check . → All checks passed!、python manage.py check → 0 issues、makemigrations --check → No changes detected。",
+    "code_identity": "コンテナ内コードとホスト現物の MD5 が一致（validators.py 2c81fe9a… / seeding.py 48ee9819… / orders.py 6f8eb420… / pagination.py 26d066fe…）。これらの値は当方が前サイクル（18時台）に記録した値と同一であり、19:09 の一時改変→復元が完全復元であったことを独立に確認した。",
+    "failure_hiding": "単体・結合いずれにも pytest.mark.skip / skipif / xfail は0件、junit の skipped も0件。テスト定義数は単体482（パラメータ化後791）・結合134で、結合はケースIDマーカー134件と1:1。削除・無効化による取り繕いは検出されなかった。",
+    "origin_integrity": "ai-initial-cases.json は 94f1d86597cc… で不変。GAP_FILL は区別管理され、Initial Metrics（required 70 / missing 11 / 84.29%）は initial_metrics_as_first_measured として保持されている。結合は required 139 に対し final 100%。"
+  },
+  "resolution_verification": {
+    "QR-FULL-002": {
+      "verdict": "RESOLVED",
+      "detail": "app/shop/tests/unit/test_fullwidth_digit_rejection.py（21関数／44ケース）を実査した。(1) 期待値が要件本文（FR-030 6.15.3 の半角数字、FR-021/022 の整数、FR-040/041・CMN-35 のページ番号、FR-041 の日付と注文番号、FR-043 の配送伝票番号、FR-060 の日時、CMN-15 の変換禁止）から導出され Docstring に明記されている、(2) 半角受理と全角拒否を対で検証している（POSTAL_CODE・DIGITS・INTEGER・DATE・ORDER_NUMBER・PHONE・TRACKING_NUMBER の各パターン、parse_int、parse_page）、(3) 単体の境界だけでなく services 経由の振る舞い（checkout で ValidationError かつ注文0件・配送先0件・在庫不変・カート OPEN 維持、add_line/update_line の入力エラーと明細不変、admin_orders の検索条件、seeding の日時）まで確認している、(4) 半角値が『変換されずそのまま』登録されることも確認している（CMN-15 の裏返しの検証）。形骸的ではなく、[0-9] を \\\\d へ戻せば失敗する設計である。"
+    },
+    "QR-FULL-003": {
+      "verdict": "RESOLVED",
+      "detail": "単体証跡は junit（testsuite timestamp 19:18:01、ファイル 19:18:35）・coverage（19:18:36、分岐 658/722＝91.14%）・evidence/trace/validation（19:18:42〜）が、Production Code の最終更新（19:09:22）より後に再生成されている。結合証跡（junit 18:54:50）は 19:09 の mtime より前だが、19:09 の書き込みは退行検出実証のための一時改変と復元であり、当方が 18時台に記録した MD5 と現在値が完全一致することから、結合試験が実行した内容と現在のコード内容は同一であると独立に確認した。したがって両証跡とも最終成果物に対応している。"
+    },
+    "QR-UT-006": {
+      "verdict": "RESOLVED",
+      "detail": "app/shop/tests/unit と reports/unit-test 配下の DQ-10 参照は0件となり、UT-DEF-001 の根拠IDも訂正されている。Evidence には UT-DEF-017（OBS-IT-001 の回帰テスト追加）が記録されている。"
+    }
+  },
+  "added_cases_substance_assessment": {
+    "question": "追加11ケース（IT-AI-GF-070〜080）が形骸的でないか（特に静的解析系）",
+    "verdict": "形骸的ではない",
+    "detail": [
+      "IT-AI-GF-070（NFR-OM-07）は ruff を結合試験の中で実際に実行し、--show-files で解析対象の一覧を取得して『50件以上』『shop/services/orders.py・shop/api/views_orders.py・config/settings.py を含む』『/app/tests を含まない』ことを先に確認したうえで、--output-format json の指摘が空であることを判定している。解析対象が空のまま素通りする経路が塞がれている。",
+      "IT-AI-GF-071（NFR-EN-11）は URLconf を再帰的に走査して25経路以上を収集し代表経路の存在を確認、API を一巡して JSON 項目名を40種以上収集し代表項目（purchase_order_id・discounted_subtotal 等）の存在を確認したうえで snake_case 判定を行う。テストファイル名規約も20件以上の収集を確認してから判定している。",
+      "IT-AI-GF-072（NFR-EN-12）は importlib.metadata で実際に導入済みの配布物のライセンスを解決し、License-Expression／License／Classifier のいずれからも判明しない場合を失敗とし、requirements.txt で固定した7製品が実際に導入されていることを確認したうえで AGPL を検出する。",
+      "IT-AI-GF-073（NFR-PF-17）は payments 配下のモジュールを3件以上収集し、import 文の AST 解析で業務パッケージ（models・services 等）への参照が無いことを確認している。",
+      "IT-AI-GF-074（NFR-SC-07）は秘密情報がソースツリーに平文で存在しないことと、環境変数なしでの設定読み込み挙動を確認している。IT-AI-GF-075（NFR-EN-09）は SPA・フロントエンドビルドの不在とサーバーサイドレンダリングを、IT-AI-GF-076（NFR-EN-08）は実行中プロセスのコマンドラインが Gunicorn であることを確認している。",
+      "IT-AI-GF-080 相当（NFR-PF-11）は在庫12個に対する24並列要求＋支払・キャンセルの同時実行で、在庫が0未満にならず金額整合が崩れないことを確認している。",
+      "いずれのケースも『収集件数の下限』と『既知の代表要素の包含』を先にアサートしており、空集合・収集失敗での素通りが構造的に排除されている。"
+    ]
+  },
+  "c10_classification_assessment": {
+    "question": "C10 残存63件の自動テスト対象外分類が妥当か",
+    "verdict": "妥当",
+    "detail": "non-automatable-requirements.json の not_automatable_requirements 63件について、(1) 各行が引用する『検証方法（要件本文の記載）』が非機能要件定義書に逐語で存在することを63/63で確認、(2) 付与された区分（OPERATIONAL_MEASUREMENT 22／COMPATIBILITY_TEST 9／PERFORMANCE_TEST 8／CONFIG_REVIEW 7／MIGRATION_REHEARSAL 5／OPERATION_TEST 4／VULNERABILITY_SCAN 4／NOT_APPLICABLE 4）が引用文中のキーワードと整合することを63/63で確認した。修正2回目の再検討（reexamination_round2）では判定基準（要件本文の検証方法を正本とする／コンテナ内に対象が存在するか／形骸的でない判定ができるか／測定値そのもの・ブラウザ操作・移行リハーサル・脆弱性診断は対象外）が明示され、NFR-OM-07・NFR-EN-11・NFR-EN-12・NFR-PF-17 等を自動化へ移した根拠と、残存する定性的確認（命名の意味の妥当性など）も記録されている。自動検証可能な要件を対象外へ逃がした形跡は無い。"
+  },
+  "ac_conformance": {
+    "total": "UC-001〜UC-013 の AC は計249件（必須216・推奨33）。",
+    "covered": "単体791件＋結合134件で、機能・データ・セキュリティ系に加え、対象外機能の不実装（FR-OUT-01〜16）、自動検証可能な非機能要件（静的解析・ライセンス・秘密情報・ログ・要求ID・ページング・JIS 文字・同時実行・上限超過時の整合）、および今回是正した半角数字条件（FR-030・CMN-15）まで検証されている。",
+    "not_covered": "応答時間AC 8件（必須。性能テスト領域）と画面の確認ダイアログを前提とするAC 6件（必須4件。ブラウザ操作を伴う受入試験領域）は本run でも未検証。要件側の検証方法が自動テスト以外であり、Final Assurance の適用範囲外として明示する。",
+    "verdict": "自動テストで検証可能な範囲のACは充足。残る14件は性能試験・受入試験の実施要否を Orchestrator が判断すること。"
+  },
+  "criteria_results": [
+    {
+      "criterion": "requirements-quality",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "FR・CMN・ERR・D・NFR・UC-AC を最終状態で再確認し、曖昧表現・内部矛盾・テスト不能な要求は検出されなかった。今回追加された回帰テスト・契約テストの期待値もすべて要件本文から導出可能であり、要件側へ戻すべき事項は無い。"
+    },
+    {
+      "criterion": "architecture-quality",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "ADDR-001〜013 と最終実装・テストの整合を再確認した。ADDR-013 は実装・単体回帰テスト・結合試験で到達済み、ADDR-012 はテスト実行方式として機能している（925件の単一コマンド実行を確認）。残存は記述の正確性に関する LOW 2件（QR-ADDR-003/004）のみ。"
+    },
+    {
+      "criterion": "implementation-quality",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "26機能の実装・Out of Scope 不実装・業務定数の一致・ADDR 遵守に加え、OBS-IT-001 の是正（半角限定）が最終コードで有効であることを確認した。ruff 指摘0件・manage.py check 0 issues・マイグレーション整合も最終コードで確認済み。退行検出の実証で一時改変された4ファイルも MD5 照合で完全復元を確認した。"
+    },
+    {
+      "criterion": "unit-test-quality",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "791件が全PASS（skip/xfail 0）。OBS-IT-001 の回帰テスト44ケースは要件本文由来の期待値で半角受理と全角拒否を対で検証し、services 経由の副作用（注文0件・在庫不変・カート状態）まで確認している。分岐網羅率 91.14%（658/722）。証跡は最終コードより後に再生成済み。"
+    },
+    {
+      "criterion": "integration-test-quality",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "134件が全PASS。追加11ケースは収集件数の下限と代表要素の包含を先に確認する構造で形骸化を排除しており、静的解析・ライセンス・秘密情報・決済境界の AST 解析など実質的な判定を行っている。required 139 に対し final Coverage 100%、Initial Metrics 保持、AI INITIAL 54件は不変。残存は体裁・堅牢性に関する LOW 2件（QR-IT-003・QR-FULL-004）。"
+    },
+    {
+      "criterion": "cross-phase-consistency",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "業務定数・判定順序・排他単位・実行方式の意味が要件⇄設計⇄ADDR⇄実装⇄テストで一貫している。前回 Blocking とした証跡と最終コードの不一致は、単体証跡の再生成と、結合証跡が参照したコード内容が現在と同一である（MD5 継続一致）ことの確認により解消した。"
+    }
+  ],
+  "issues": [
+    {
+      "issue_id": "QR-FULL-002",
+      "classification": "MISSING_BEHAVIOR_COVERAGE",
+      "severity": "MEDIUM",
+      "source_artifact": "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+      "affected_artifacts": [
+        "app/shop/tests/unit/test_fullwidth_digit_rejection.py",
+        "app/shop/common/validators.py"
+      ],
+      "requirement_reference": [
+        "FR-030",
+        "FR-021",
+        "FR-022",
+        "FR-040",
+        "FR-041",
+        "FR-043",
+        "FR-060",
+        "CMN-15"
+      ],
+      "related_adr": [
+        "ADDR-007"
+      ],
+      "description": "OBS-IT-001（全角数字の受理）の是正に対する回帰テストが存在しなかった。",
+      "evidence": "21関数／44ケースの回帰テストが追加され、半角受理と全角拒否を対で検証している。パターン単体に加え、checkout・add_line・update_line・admin_orders の検索・seeding の日時まで services 経由で確認し、注文0件・配送先0件・在庫不変・カート OPEN 維持といった副作用の不在も検証している。期待値は要件本文から導出され Docstring に明記されている。",
+      "recommended_route": "UNIT_TEST",
+      "resolved": true,
+      "expected_resolution": "解消済み（本Reviewで実査）。"
+    },
+    {
+      "issue_id": "QR-FULL-003",
+      "classification": "CROSS_PHASE_CONSISTENCY_ISSUE",
+      "severity": "MEDIUM",
+      "source_artifact": "reports/unit-test/, reports/integration-test/",
+      "affected_artifacts": [
+        "reports/unit-test/junit.xml",
+        "reports/unit-test/coverage-summary.json",
+        "reports/unit-test/unit-test-evidence.json",
+        "reports/integration-test/junit.xml"
+      ],
+      "requirement_reference": [
+        "NFR-OM-06"
+      ],
+      "related_adr": [
+        "ADDR-012"
+      ],
+      "description": "証跡が最終 Production Code より古く、両工程の Validator PASS が最終成果物を保証していなかった。",
+      "evidence": "単体証跡は 19:18:01〜19:18:42 に再生成され、Production Code の最終更新（19:09:22）より新しい。結合証跡（18:54:50）は 19:09 の mtime より前だが、19:09 の書き込みは退行検出実証の一時改変と復元であり、当方が 18時台に記録した MD5（validators.py 2c81fe9a… ほか）と現在値が一致することから内容同一を独立に確認した。",
+      "recommended_route": "IMPLEMENTATION",
+      "resolved": true,
+      "expected_resolution": "解消済み（本Reviewで実査）。今後も Production Code を変更した場合は証跡を再生成してから Final Assurance を行うこと。"
+    },
+    {
+      "issue_id": "QR-UT-006",
+      "classification": "UNIT_TEST_QUALITY_ISSUE",
+      "severity": "LOW",
+      "source_artifact": "app/shop/tests/unit/test_web_messages.py, reports/unit-test/unit-test-evidence.json",
+      "affected_artifacts": [
+        "app/shop/tests/unit/test_web_messages.py",
+        "reports/unit-test/unit-test-evidence.json"
+      ],
+      "requirement_reference": [
+        "D-09-04",
+        "DQ-10",
+        "DQ-19"
+      ],
+      "related_adr": [
+        "ADDR-007"
+      ],
+      "description": "カート明細数量1〜10の根拠IDを DQ-10 と記載していた（正しくは D-09-04／DQ-19）。",
+      "evidence": "app/shop/tests/unit と reports/unit-test 配下の DQ-10 参照は0件へ訂正済み。Evidence に UT-DEF-017 の記録も追加されている。",
+      "recommended_route": "UNIT_TEST",
+      "resolved": true,
+      "expected_resolution": "解消済み。"
+    },
+    {
+      "issue_id": "QR-IT-003",
+      "classification": "INTEGRATION_TEST_QUALITY_ISSUE",
+      "severity": "LOW",
+      "source_artifact": "tests/integration/test_checkout_api.py, tests/integration/test_admin_api.py, tests/integration/test_out_of_scope.py, tests/integration/test_resilience_contract.py",
+      "affected_artifacts": [
+        "tests/integration/test_checkout_api.py",
+        "tests/integration/test_admin_api.py",
+        "tests/integration/test_out_of_scope.py",
+        "tests/integration/test_resilience_contract.py"
+      ],
+      "requirement_reference": [
+        "D-09-04",
+        "DQ-10",
+        "DQ-19",
+        "NFR-OM-07"
+      ],
+      "related_adr": [
+        "ADDR-007",
+        "ADDR-012"
+      ],
+      "description": "（未解消・最終判断）①tests/integration/test_checkout_api.py:267 の Docstring が数量上限の根拠を DQ-10 としている（正しくは D-09-04／DQ-19）。単体側は訂正されたが結合側に同じ誤記が残り、Orchestrator 報告の『リポジトリ全体で DQ-10 の残存0件』とは一致しない。②プロジェクト標準の行長（120）を超える行が5件へ増加した（前回4件）。app/pyproject.toml の ruff exclude に ./tests があるため標準コマンドでは検出されない。NFR-OM-07 の対象は『app の全 Python ソースコード』であり要件違反ではないが、追加のたびに逸脱が増えている。",
+      "evidence": "リポジトリ全体検索で DQ-10 の残存は tests/integration/test_checkout_api.py:267 の1件。docker compose exec -T app ruff check tests/integration → E501 5件（test_admin_api.py:75・144、test_out_of_scope.py:301・343、test_resilience_contract.py:190）。docker compose exec -T app ruff check . は All checks passed。",
+      "recommended_route": "INTEGRATION_TEST",
+      "resolved": false,
+      "expected_resolution": "①根拠IDを D-09-04／DQ-19 へ訂正する（1行）。②該当5行を120桁以内へ折り返すか、tests を標準の静的解析対象へ含める方針を ADDR／IMPLEMENTATION で判断する。いずれも要件違反ではなく Blocking ではない。"
+    },
+    {
+      "issue_id": "QR-FULL-004",
+      "classification": "INTEGRATION_TEST_QUALITY_ISSUE",
+      "severity": "LOW",
+      "source_artifact": "tests/integration/test_concurrency.py, tests/integration/test_resilience_contract.py",
+      "affected_artifacts": [
+        "tests/integration/test_concurrency.py",
+        "tests/integration/test_resilience_contract.py",
+        "tests/integration/conftest.py"
+      ],
+      "requirement_reference": [
+        "NFR-OM-06"
+      ],
+      "related_adr": [
+        "ADDR-012"
+      ],
+      "description": "スレッドを用いる同時実行ケースの実行後、テストDBに『idle in transaction』の接続が残ることがあり、その状態で次回 docker compose exec app pytest を実行すると、テストDBの再作成・TRUNCATE が阻害されて大量の失敗・エラーになる。本Reviewでは当該セッションが残存した状態での実行が3回連続で失敗（3 failed/2 errors、101 failed/37 errors、102 failed/25 errors）した一方、テストDB名を変えて実行すると 925 passed（失敗0）となり、製品コードではなくテスト基盤の後始末に起因することを切り分けた。NFR-OM-06 の『コマンド1回・失敗0件』は清浄な状態からは成立するが、実行の再現性を損なう恐れがある。",
+      "evidence": "pg_stat_activity 照会で datname=test_minicommerce・state='idle in transaction'・query='SELECT ... FROM \"user\" WHERE \"user\".\"email\" = ...' のセッションを確認（同時実行ケースのスレッド由来）。当該セッション停止後も既定DB名での実行は失敗したが、docker compose exec -T -e DB_NAME=qrexec1 app pytest では 925 passed / 110秒。使い捨てDB名での結合のみの実行（test_concurrency.py）は 11 passed。teardown 時の PytestWarning『test_minicommerce is being accessed by other users』も複数回観測した。",
+      "recommended_route": "INTEGRATION_TEST",
+      "resolved": false,
+      "expected_resolution": "スレッド内で開いた接続を確実に閉じる（例：各スレッドの finally での close_all に加え、barrier 待機中の例外経路でも閉じる）か、conftest のセッション終了時に残存接続を検出・解放する。NFR-OM-06 の検証を行う際は、実行前にテストDBへの残存セッションが無いことを確認する運用を推奨する。Blocking ではない（清浄な状態から 925 passed を実機確認済み）。"
+    },
+    {
+      "issue_id": "QR-ADDR-003",
+      "classification": "ADDR_QUALITY_ISSUE",
+      "severity": "LOW",
+      "source_artifact": "docs/addr/ADDR-012.md",
+      "affected_artifacts": [
+        "docs/addr/ADDR-012.md",
+        ".github/project-context/project-ai-steering.md"
+      ],
+      "requirement_reference": [
+        "NFR-OM-06"
+      ],
+      "related_adr": [
+        "ADDR-004",
+        "ADDR-012"
+      ],
+      "description": "（未解消）ADDR-012 が結合テストの正本配置を tests/integration/ に固定する一方、Project AI Steering 4.1『API・画面・業務ロジック・テストは app/ 配下に置く』からの逸脱を記録・正当化していない。",
+      "evidence": "docs/addr/ADDR-012.md は最終更新 14:12:14 のまま未更新で、Steering 4.1・逸脱に言及する記述は0件。",
+      "recommended_route": "ADDR",
+      "resolved": false,
+      "expected_resolution": "ADDR-012 の3.2 または4.4 へ逸脱・理由・Steering 更新要否の申し送りを明記する。Blocking ではない。"
+    },
+    {
+      "issue_id": "QR-ADDR-004",
+      "classification": "ADDR_QUALITY_ISSUE",
+      "severity": "LOW",
+      "source_artifact": "docs/addr/ADDR-013.md",
+      "affected_artifacts": [
+        "docs/addr/ADDR-013.md"
+      ],
+      "requirement_reference": [
+        "NFR-PF-02",
+        "IF-01-PRF-05"
+      ],
+      "related_adr": [
+        "ADDR-009",
+        "ADDR-013"
+      ],
+      "description": "（未解消）ADDR-013 4.3 の『締切10秒が注文行ロック保持時間の上限として機能する』という記述は、締切が呼び出し後の経過時間計測（事後判定）であり呼び出しを中断しないため不正確。",
+      "evidence": "docs/addr/ADDR-013.md 89行目に当該記述が残存（最終更新 15:37:38、未更新）。",
+      "recommended_route": "ADDR",
+      "resolved": false,
+      "expected_resolution": "4.3・6章の表現を事実に即した記述へ是正する。Blocking ではない。"
+    }
+  ],
+  "verified_strengths": [
+    "OBS-IT-001 の回帰テスト44ケースが、要件本文由来の期待値で半角受理と全角拒否を対で検証し、services 経由の副作用の不在まで確認している。",
+    "追加11ケースが『収集件数の下限』『代表要素の包含』を先に確認する構造で、空集合での素通りを構造的に排除している（ruff 実行・ライセンス解決・AST による決済境界確認・秘密情報走査）。",
+    "C10 残存63件の分類が、要件本文の検証方法の逐語引用と区分キーワードの両面で63/63一致しており、自動検証可能な要件を対象外へ逃がしていない。",
+    "単体証跡が最終コードより後に再生成され、結合証跡についても内容同一性を MD5 の継続一致で確認できる状態にある。",
+    "925件（単体791＋結合134）が単一コマンドで全PASS、skip/xfail 0、AI INITIAL 54件不変、Initial Metrics 保持、結合 Coverage 100%。",
+    "退行検出の実証（[0-9]→\\\\d の一時置換で26 failed）を行ったうえで、Production Code を完全復元していることを MD5 で独立確認できた。"
+  ],
+  "observations": [
+    "IT-AI-GF-076（Gunicorn で起動していること）は、実行中プロセスのコマンドラインを判定するため docker compose run の使い捨てコンテナでは成立しない（当方の切り分け実行で唯一失敗した）。NFR-OM-06 が定める docker compose exec app pytest では成立するため問題ではないが、実行方法に依存するケースである点を記録する。",
+    "応答時間AC 8件（必須）と確認ダイアログ前提AC 6件（必須4件）は本run でも未検証で、性能試験・受入試験の領域である。リリース判断前の取り扱いを Orchestrator が決定すること。",
+    "reports/traceability・security-review の validation-result は audit_scope=INTEGRATION_TEST のままである。Final Assurance として他の独立監査を FULL で実施するかは Orchestrator の判断事項。",
+    "本Reviewの検証行為の開示：(1) コンテナ内で全件実行・静的解析・validators の直接呼び出しを実施、(2) 切り分けのため使い捨てのテストDB名（qrfullcheck／qrfull2／qrexec1）での実行を実施、(3) 原因特定のためテストDB（使い捨て）に残存していた idle in transaction セッションを1件停止した。成果物（要件・設計・ADDR・Production Code・Test Code・ケース定義）は一切変更していない。",
+    "当方の docker compose exec 実行により reports/integration-test/case-run-results.json が再生成された（最終状態は134件すべて PASS、exit_status=0）。validate_integration_test.py を再実行し PASS（exit 0）であることを確認済み。"
+  ],
+  "summary": {
+    "criteria_total": 6,
+    "criteria_pass": 6,
+    "criteria_not_applicable": 0,
+    "criteria_fail": 0,
+    "issues_total": 7,
+    "blocking_issues": 0
+  },
+  "issue_severity_breakdown": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 2,
+    "LOW": 5,
+    "unresolved_medium_or_higher": 0
+  },
+  "reports": {
+    "json": "reports/quality-review/quality-review-report.json",
+    "markdown": "reports/quality-review/quality-review-report.md"
+  },
+  "recommended_route": "INTEGRATION_TEST",
+  "summary_message": "FULL Scope の Final Assurance は PASS（未解決Blocking 0件）。前回 Blocking とした2件はいずれも解消を独立に確認した（OBS-IT-001 の回帰テスト44ケースは要件本文由来で半角受理と全角拒否を対で検証し、単体証跡は最終コードより後に再生成、結合証跡も MD5 継続一致により内容同一を確認）。追加11ケースは収集件数の下限と代表要素の包含を先に確認する構造で形骸化を排除しており、C10 残存63件の分類も要件本文の逐語引用・区分キーワードの両面で63/63一致した。925件（単体791＋結合134）が単一コマンドで全PASS・skip/xfail 0・静的解析指摘0件を実機確認した。残存は LOW 4件：結合側に残る根拠ID誤記と E501 5件（QR-IT-003／route=INTEGRATION_TEST。Orchestrator 報告の『DQ-10 残存0件』は結合側が未訂正で不一致）、同時実行ケースが残す idle in transaction 接続により次回実行が阻害される再現性の問題（QR-FULL-004／route=INTEGRATION_TEST。清浄な状態からは 925 passed を確認済み）、ADDR-012 の Steering 逸脱未記録（QR-ADDR-003）、ADDR-013 の締切記述（QR-ADDR-004）。応答時間AC 8件と確認ダイアログAC 6件は性能試験・受入試験の領域として未検証のまま残る。"
+}

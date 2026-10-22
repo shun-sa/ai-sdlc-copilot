@@ -1,0 +1,29 @@
+{
+  "total": {
+    "statements": {
+      "total": 2839,
+      "covered": 2743,
+      "pct": 96.62
+    },
+    "branches": {
+      "total": 722,
+      "covered": 658,
+      "pct": 91.14
+    },
+    "functions": {
+      "total": 329,
+      "covered": 313,
+      "pct": 95.14
+    },
+    "lines": {
+      "total": 2839,
+      "covered": 2743,
+      "pct": 96.62
+    }
+  },
+  "source": {
+    "format": "coverage.py",
+    "version": "7.16.2",
+    "generated_at": "2026-10-22T19:18:36.055411"
+  }
+}

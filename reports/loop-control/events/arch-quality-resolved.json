@@ -1,0 +1,14 @@
+{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/arch-quality-resolved",
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "ARCHITECTURE_QUALITY_ISSUE",
+    "artifact": "docs/architecture/implementation-task-list.md",
+    "requirement_reference": "NFR-EN-08",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "BLK-011 web-application-server-selection をADDR引渡しへ追加、7章Coverage拡充、TASK-005のCMN帰属訂正",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

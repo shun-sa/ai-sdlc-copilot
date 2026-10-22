@@ -1,0 +1,28 @@
+{
+  "source_baseline_sha256": "6e097b8f0238e561c3165a48102cca3361135d3fb0e7852794cfb13df760b669",
+  "status": "FAIL",
+  "audit_scope": "UNIT_TEST",
+  "criteria": {
+    "discovered": [
+      "architecture-quality",
+      "cross-phase-consistency",
+      "implementation-quality",
+      "integration-test-quality",
+      "requirements-quality",
+      "unit-test-quality"
+    ],
+    "total": 6,
+    "pass": 4,
+    "not_applicable": 1,
+    "fail": 1
+  },
+  "issues": {
+    "total": 5,
+    "unresolved": 1,
+    "blocking": 1
+  },
+  "errors": [
+    "Applicable criterion is not PASS: unit-test-quality",
+    "Unresolved blocking Quality Review Issue(s): 1"
+  ]
+}

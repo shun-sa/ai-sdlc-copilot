@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/addr-trace-cycle0",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "INVALID_REFERENCE",
+    "artifact": "docs/addr/ADDR-010.md",
+    "requirement_reference": "FR-060",
+    "test_case": "",
+    "stable_error_type": "TRACE_C01_UNDEFINED_ID"
+  },
+  "impact": "ADDR-010の2章が未定義ID FILE-DEF-001 を参照しており、ADDR Scope Traceability監査がFAIL。実装引渡しGateを固定できない",
+  "recommended_route": "ADDR",
+  "validation_result": "reports/traceability/validation-result.json"
+}

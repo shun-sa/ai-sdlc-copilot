@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/it-concurrency-resolved",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "MISSING_BEHAVIOR_COVERAGE",
+    "artifact": "tests/integration",
+    "requirement_reference": "AC-UC-012-009",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "同時実行AC9件をRequired Coverageへ追加しIT-AI-GF-020〜028を各10試行で実装。実不具合DEF-IT-001を検出しADDR-013採択と実装是正で解消、全PASS",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

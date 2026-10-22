@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/unit-messages-resolved",
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "MISSING_BEHAVIOR_COVERAGE",
+    "artifact": "app/shop/web/messages.py",
+    "requirement_reference": "SCR-005-OP03",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "SCR-005-OP01/OP03・SCR-006-OP01の成功失敗文言とUI-29/32/34の検証を23件追加し、messages.pyの分岐網羅を44/44=100%にした",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

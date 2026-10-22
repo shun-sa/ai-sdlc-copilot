@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/arch-quality-cycle0",
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "ARCHITECTURE_QUALITY_ISSUE",
+    "artifact": "docs/architecture/implementation-task-list.md",
+    "requirement_reference": "NFR-EN-08",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "NFR-EN-08 が設計へ委譲したWeb/APサーバー選定の重要判断がADDR引渡し候補から欠落し、Coverage表と要件帰属にも不整合があるため、ADDR工程で判断漏れが発生する",
+  "recommended_route": "ARCHITECTURE",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

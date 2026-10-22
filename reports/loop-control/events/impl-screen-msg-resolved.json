@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/impl-screen-msg-resolved",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app/shop/web/views_cart.py",
+    "requirement_reference": "SCR-002-OP01",
+    "test_case": "test_cart_add_line_screen_shows_insufficient_stock_message_of_scr_002",
+    "stable_error_type": "SCREEN_MESSAGE_MISMATCH"
+  },
+  "repair": "web/messages.pyを新設して業務例外のcontextをSCR文言へ変換し、SCR-002/005/006/008/010/103/901の文言・表示位置・入力値保持・SCR-008アクセス条件を要件どおりに実装",
+  "validation_result": "reports/unit-test/validation-result.json"
+}

@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/impl-quality-cycle0",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_QUALITY_ISSUE",
+    "artifact": "app/shop",
+    "requirement_reference": "SCR-005-IN01",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "画面の数量・規格入力が要件と不一致でQUANTITY_LIMIT_EXCEEDED表示へ到達不能、権限判定がADDR-004指定の単一実装をバイパスして3層重複、FR-060手順6の分類名重複判定が未実装で違反全件出力が行われない",
+  "recommended_route": "IMPLEMENTATION",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

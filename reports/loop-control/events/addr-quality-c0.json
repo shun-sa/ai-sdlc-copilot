@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/addr-quality-cycle0",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADDR_QUALITY_ISSUE",
+    "artifact": "docs/addr/ADDR-002.md",
+    "requirement_reference": "FR-060",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "ADDR-002が導入した認証トークン/セッションの新規永続状態について、FR-060手順9（削除した利用者の認証トークン・セッション無効化）の扱いが未記録で、AC-UC-013-004不成立または認証状態残存という相反する実装が選ばれ得る",
+  "recommended_route": "ADDR",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

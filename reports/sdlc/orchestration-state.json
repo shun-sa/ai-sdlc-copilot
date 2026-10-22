@@ -1,0 +1,43 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "current_phase": "FULL",
+  "phase_status": "CONTINUE_WITH_UNRESOLVED",
+  "last_successful_phase": "INTEGRATION_TEST",
+  "invalidated_phases": [],
+  "waiting_for_user": false,
+  "failure_count": 16,
+  "unresolved_issue_ids": ["UNRESOLVED-698b995280f60801"],
+  "repair_cycles_by_signature": {
+    "UNRESOLVED-698b995280f60801": 3
+  },
+  "resume_from": null,
+  "phase_decisions": {
+    "ARCHITECTURE": "PASS",
+    "ADDR": "PASS",
+    "IMPLEMENTATION": "PASS",
+    "UNIT_TEST": "PASS",
+    "INTEGRATION_TEST": "PASS",
+    "FULL": "CONTINUE_WITH_UNRESOLVED"
+  },
+  "final_assurance": {
+    "quality": "PASS",
+    "security": "PASS",
+    "traceability": "FAIL (C10 59件のみ。C01〜C09・C11はPASS)"
+  },
+  "test_results": {
+    "unit": {"total": 791, "passed": 791, "failed": 0, "skipped": 0},
+    "integration": {"total": 138, "passed": 138, "failed": 0, "blocked": 0,
+                    "ai_initial": 54, "ai_gap_fill": 84, "external": 0},
+    "combined_command": "docker compose exec -T app pytest",
+    "combined_total": 929,
+    "combined_passed": 929
+  },
+  "external_test_input": {
+    "provided": false,
+    "user_confirmed_without_external_cases": true,
+    "confirmed_at": "2026-10-22T13:15+09:00",
+    "ai_initial_frozen_before_check": true,
+    "ai_initial_sha256": "94f1d86597cc4dc3733b091b63ee16634c12996f3341e2f49ad0f9020d5a5d63"
+  },
+  "note": "Runtime State。RequirementsやADDRのSource of Truthではない"
+}

@@ -1,0 +1,21 @@
+# trace: ADDR-011
+# MiniCommerce 依存定義ファイル
+# すべてのライブラリはバージョンを固定し、取得元は Python パッケージの公式リポジトリ（PyPI）に限る。
+# 本ファイルはリリース前の脆弱性確認（NFR-SC-11）・サポート期限確認（NFR-EN-10）・
+# ライセンス確認（NFR-EN-12）の対象一覧として参照する。
+#
+# Django==5.2.x          : BSD-3-Clause / LTS（サポート期限内）
+# djangorestframework    : BSD-3-Clause
+# psycopg[binary]        : LGPL-3.0（ライブラリとしての利用は可）
+# gunicorn               : MIT（ADDR-011 DD-001）
+# whitenoise             : MIT（ADDR-011 DD-003）
+# pytest / pytest-django : MIT / BSD-3-Clause
+# ruff                   : MIT
+Django==5.2.7
+djangorestframework==3.15.2
+psycopg[binary]==3.2.3
+gunicorn==23.0.0
+whitenoise==6.8.2
+pytest==8.3.4
+pytest-django==4.9.0
+ruff==0.8.4

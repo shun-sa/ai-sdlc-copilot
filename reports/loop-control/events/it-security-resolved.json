@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/it-security-resolved",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "SECURITY_TEST_GAP",
+    "artifact": "tests/integration",
+    "requirement_reference": "NFR-SC-05",
+    "test_case": "",
+    "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "Required Coverageの導出元へ非機能要件を追加し、CSRF(IT-AI-GF-012/013)・HTMLエスケープ(014/015)・SQL/OSコマンド攻撃文字列(016-018)・全削除後の旧トークン拒否(019)の8ケースを追加して全PASS",
+  "validation_result": "reports/security-review/validation-result.json"
+}

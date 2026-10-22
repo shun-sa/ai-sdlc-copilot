@@ -1,0 +1,1 @@
+﻿{"check_id":"integration_test","command":["python",".github/skills/integration-test/scripts/validate_integration_test.py"],"result_path":"reports/loop-control/checks/INTEGRATION_TEST-integration_test.json","timeout_seconds":600}

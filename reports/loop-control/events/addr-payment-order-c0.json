@@ -1,0 +1,16 @@
+﻿{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/addr-payment-order-cycle0",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr/ADDR-009.md",
+    "requirement_reference": "FR-031",
+    "test_case": "IT-AI-GF-023",
+    "stable_error_type": "DECISION_CONTRADICTS_REQUIREMENT"
+  },
+  "impact": "ADDR-009 DD-005/INV-006が決済要求をロック取得前に送るため、キャンセルが先に確定した場合でも決済サービスが要求を受信し、FR-031手順5（決済要求を送信しない）とAC-UC-007-019(a)・VUL-07に反する",
+  "recommended_route": "ADDR",
+  "validation_result": "reports/integration-test/validation-result.json"
+}

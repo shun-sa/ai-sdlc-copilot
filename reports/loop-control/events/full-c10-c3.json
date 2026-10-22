@@ -1,0 +1,17 @@
+﻿{
+  "action": "FAILURE",
+  "cycle": 3,
+  "run_id": "RUN-20261022-MC/full-c10-cycle3",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "TEST_TRACEABILITY_MISSING",
+    "artifact": "docs/requirements/functional_requirements.md",
+    "requirement_reference": "FR-OUT-01",
+    "test_case": "",
+    "stable_error_type": "TRACE_C10_REQUIREMENT_WITHOUT_TEST"
+  },
+  "repair": "最終精査で4ケース（IT-AI-GF-081〜084：NFR-SC-25・NFR-OM-17・NFR-EN-07・NFR-EN-03）を追加しC10は63件→59件へ改善。残る59件は要件本文の検証方法が性能試験・脆弱性診断・移行リハーサル・互換性テスト・運用測定・構成レビューであり自動テストでは検証できないため、人が実施すべき検証としてnon-automatable-requirements.md 5章へ申し送り",
+  "impact": "FULL ScopeのC10で59件（運用時測定22・互換性9・性能負荷8・移行リハーサル5・脆弱性診断4・構成レビュー4・運用テスト3・該当なし4）が残存。結合試験の失敗や未実行ではなく、検証方法が自動テスト以外であることに起因する",
+  "recommended_route": "INTEGRATION_TEST",
+  "validation_result": "reports/traceability/validation-result.json"
+}

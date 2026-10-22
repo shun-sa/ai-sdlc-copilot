@@ -1,0 +1,30 @@
+{# trace: ADDR-002 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+<form method="post" action="/register">
+  {% csrf_token %}
+  <p>
+    <label for="email">メールアドレス</label><span class="required-label">必須</span><br>
+    <input id="email" type="text" name="email" value="{{ form.email }}" maxlength="254">
+    {% for reason in details|field_errors:"email" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </p>
+  <p>
+    <label for="password">パスワード</label><span class="required-label">必須</span><br>
+    <input id="password" type="password" name="password">
+    {% for reason in details|field_errors:"password" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </p>
+  <p>
+    <label for="password_confirmation">パスワード（確認）</label><span class="required-label">必須</span><br>
+    <input id="password_confirmation" type="password" name="password_confirmation">
+    {% for reason in details|field_errors:"password_confirmation" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </p>
+  <p>
+    <label for="full_name">氏名</label><span class="required-label">必須</span><br>
+    <input id="full_name" type="text" name="full_name" value="{{ form.full_name }}" maxlength="50">
+    {% for reason in details|field_errors:"full_name" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </p>
+  <button type="submit" data-submit-once="true">登録する</button>
+</form>
+<p><a href="/login">ログイン画面へ戻る</a></p>
+{% endblock %}

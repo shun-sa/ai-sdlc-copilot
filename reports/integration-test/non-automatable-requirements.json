@@ -1,0 +1,1267 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "purpose": "Traceability Audit（FULL Scope）の C10（TEST_TRACEABILITY_MISSING、124件）について、要件本文の検証方法を正本として自動テストの対象可否を判定し、対象外とした要件の理由と、本番稼働前に人が実施すべき検証を記録する。本書は修正3回目（最終精査）の確定版であり、残存63件を1件ずつ再確認して4件（NFR-SC-25・NFR-OM-17・NFR-EN-07・NFR-EN-03）を自動検証へ移し、59件を自動テスト対象外として確定した。",
+  "source_of_truth": [
+    "docs/requirements/non_functional_requirements.md 3.2 検証方法の区分、4〜12章の要件表",
+    "docs/requirements/functional_requirements.md 2.3 対象外機能"
+  ],
+  "summary": {
+    "c10_total": 124,
+    "covered_by_new_integration_tests": 65,
+    "not_automatable": 59,
+    "by_category": {
+      "COMPATIBILITY_TEST": 9,
+      "CONFIG_REVIEW": 4,
+      "MIGRATION_REHEARSAL": 5,
+      "NOT_APPLICABLE": 4,
+      "OPERATIONAL_MEASUREMENT": 22,
+      "OPERATION_TEST": 3,
+      "PERFORMANCE_TEST": 8,
+      "VULNERABILITY_SCAN": 4
+    }
+  },
+  "reexamination_round2": {
+    "scope": "修正1回目で自動テスト対象外とした74件すべて",
+    "criteria": [
+      "要件本文の「検証方法」（11章は「確認方法」）欄を正本とする",
+      "結合試験環境（app サービスのコンテナ）の中に解析・判定の対象が存在するか",
+      "形骸的（常に真になる・実質何も検証しない・ファイル存在確認のみ）でない検証ができるか",
+      "負荷の測定値そのもの、本番環境でのみ測定できる指標、ブラウザ操作、移行リハーサル、脆弱性診断を要するものは対象としない"
+    ],
+    "moved_to_automated": [
+      {
+        "requirement_id": "NFR-OM-07",
+        "case_id": "IT-AI-GF-070",
+        "rationale": "検証方法が指定するコマンド（ruff）を結合試験の中で実行し、指摘0件を判定できる。",
+        "residual_manual_check": null
+      },
+      {
+        "requirement_id": "NFR-EN-11",
+        "case_id": "IT-AI-GF-071",
+        "rationale": "URL・API の JSON 項目名・テストファイル名は実行時に収集でき、規約との照合を自動判定できる。",
+        "residual_manual_check": "目標値欄のうち「命名規約のレビュー」の定性的な部分（識別子の意味の妥当性）は Quality Review で確認する。IT-AI-GF-070・071 が判定したのは、PEP 8（ruff 指摘0件）と機械的に照合できる命名規約である。"
+      },
+      {
+        "requirement_id": "NFR-EN-12",
+        "case_id": "IT-AI-GF-072",
+        "rationale": "依存ライブラリの一覧とライセンスはイメージ内のメタデータから解決でき、AGPL・不明を判定できる。",
+        "residual_manual_check": null
+      },
+      {
+        "requirement_id": "NFR-PF-17",
+        "case_id": "IT-AI-GF-073",
+        "rationale": "モジュールの依存方向と境界の項目は AST で解析でき、実際の決済要求の内容も併せて判定できる。",
+        "residual_manual_check": null
+      },
+      {
+        "requirement_id": "NFR-SC-07",
+        "case_id": "IT-AI-GF-074",
+        "rationale": "app に同梱される全ソースを実行中の秘密情報の値で走査でき、既定値に固定値が無いことも読み込みで判定できる。",
+        "residual_manual_check": "対象欄の「リポジトリの履歴」と「.env がリポジトリに含まれないこと」は、app イメージへリポジトリが同梱されないため結合試験では判定できない。Quality / Security Review のリポジトリ走査で確認する。IT-AI-GF-074 が判定したのは、app に同梱される全ソース・設定への平文混入0件と、既定値に固定値が無いことである。"
+      },
+      {
+        "requirement_id": "NFR-EN-09",
+        "case_id": "IT-AI-GF-075",
+        "rationale": "ビルド設定の不存在・JavaScript の用途・サーバー描画の成立は、イメージ内の資産と実際の応答から判定できる。",
+        "residual_manual_check": null
+      },
+      {
+        "requirement_id": "NFR-EN-08",
+        "case_id": "IT-AI-GF-076",
+        "rationale": "本番と同一イメージの起動プロセスを結合試験の実行環境そのもので確認でき、開発用サーバー不使用を判定できる。",
+        "residual_manual_check": null
+      },
+      {
+        "requirement_id": "NFR-LG-03",
+        "case_id": "IT-AI-GF-079",
+        "rationale": "対応方針欄の「登録後に更新・削除しない」は実行時の振る舞いとして判定できる。確認方法欄が指す「保存期間経過データの削除手順（7年以内を削除しない条件）」は運用手順書の記載確認であり、残課題として扱う。",
+        "residual_manual_check": "確認方法欄の「保存期間経過データの削除手順が注文日から7年以内のデータを削除しない条件であること」は運用手順書の記載確認であり、構成・設定レビューで確認する。IT-AI-GF-079 が判定したのは、システムが帳簿書類を書き換えず、削除する手段も自動削除の仕組みも持たないことである。"
+      },
+      {
+        "requirement_id": "NFR-AV-10",
+        "case_id": "IT-AI-GF-077",
+        "rationale": "「縮退運転を行わない」は、DB 停止時に全機能が一律にシステムエラーとなる（部分継続が無い）ことで判定できる。",
+        "residual_manual_check": null
+      },
+      {
+        "requirement_id": "NFR-PF-12",
+        "case_id": "IT-AI-GF-078",
+        "rationale": "「定期バッチを持たない」は、定期実行の仕組み・cron 定義・管理コマンド・古い注文の残存で判定できる。",
+        "residual_manual_check": null
+      },
+      {
+        "requirement_id": "NFR-PF-11",
+        "case_id": "IT-AI-GF-080",
+        "rationale": "要件内容欄の「受け付けた要求に対しては正常応答または業務エラー応答を返し、在庫数量・注文状態・金額の不整合を発生させないこと」は負荷の大きさによらない不変条件であり、同時要求で判定できる。目標値欄の測定条件（同時310利用者を10分間、5xx 応答率1%以下）は負荷テストで与えるため、残課題として扱う。",
+        "residual_manual_check": "目標値欄の測定条件（同時310利用者・10分間でのシステムエラー応答率1%以下）は負荷テスト・耐久テストで確認する。IT-AI-GF-080 が判定したのは、負荷の大きさによらない不変条件（システムエラー0件、在庫数量0未満0件、金額整合）である。"
+      }
+    ],
+    "kept_not_automatable": [
+      {
+        "requirement_id": "NFR-EN-03",
+        "category": "CONFIG_REVIEW",
+        "verification_method_in_requirement": "構成・設定レビュー（compose.yaml のサービスが app・db の2つであることを確認する）。運用テスト（NFR-OM-05 の方法）",
+        "rationale": "検証方法欄が「構成・設定レビュー（compose.yaml のサービスが app・db の2つであることを確認する）」。compose.yaml は app イメージへ同梱されず（Dockerfile は app/ のみを COPY）、結合試験環境から内容を参照できない。サービス数を実行時の振る舞いへ置き換えると「app が起動している」ことの確認にしかならず、形骸的なテストになる。"
+      },
+      {
+        "requirement_id": "NFR-EN-07",
+        "category": "CONFIG_REVIEW",
+        "verification_method_in_requirement": "構成・設定レビュー（ホスト OS 固有の設定・パスに依存しないことを確認する）",
+        "rationale": "検証方法欄が「構成・設定レビュー（ホスト OS 固有の設定・パスに依存しないことを確認する）」。結合試験は Linux コンテナ1種類でしか実行されないため、他のホスト OS で成立することを示せない。ソース内の絶対パス検索に置き換えても常に真となり、形骸的なテストになる。"
+      },
+      {
+        "requirement_id": "NFR-EN-10",
+        "category": "CONFIG_REVIEW",
+        "verification_method_in_requirement": "構成・設定レビュー（稼働開始前に各製品のサポート期限を確認し、更新計画に記載されていることを確認する）",
+        "rationale": "検証方法欄が「構成・設定レビュー（稼働開始前に各製品のサポート期限を確認し、更新計画に記載されていることを確認する）」。判定対象はサポート期限の調査結果と更新計画の記載であり、実行環境には存在しない。採用製品の版そのものは IT-AI-GF-056（NFR-EN-01・NFR-EN-02）で確認済みで、版の確認を本要件の充足とすると要件の意味（期限管理）を置き換えてしまう。"
+      },
+      {
+        "requirement_id": "NFR-MG-05",
+        "category": "CONFIG_REVIEW",
+        "verification_method_in_requirement": "構成・設定レビュー（移行計画に実施日・実施者・在庫数量の確定時刻が記載されていることを確認する）",
+        "rationale": "検証方法欄が「構成・設定レビュー（移行計画に実施日・実施者・在庫数量の確定時刻が記載されていることを確認する）」。判定対象は移行計画書の記載であり、システムの振る舞いとして現れない。"
+      },
+      {
+        "requirement_id": "NFR-OM-12",
+        "category": "CONFIG_REVIEW",
+        "verification_method_in_requirement": "構成・設定レビュー（本番環境構築時にスケジュール設定を確認する。運用手順書に手動実行の手順が記載されていることを確認する）",
+        "rationale": "検証方法欄が「構成・設定レビュー（本番環境構築時にスケジュール設定を確認する。運用手順書に手動実行の手順が記載されていることを確認する）」。判定対象は本番基盤（未決、NOQ-01）のスケジュール設定と運用手順書の記載である。app 側に定期ジョブが無いことは IT-AI-GF-078（NFR-PF-12）で確認しているが、本要件の目標値はバックアップの起動時刻（毎日3:00）であり結合試験では判定できない。"
+      },
+      {
+        "requirement_id": "NFR-OM-19",
+        "category": "CONFIG_REVIEW",
+        "verification_method_in_requirement": "構成・設定レビュー（README.md の手順どおりに ENV-01 を構築・起動できることを確認する。本番運用手順書は本番稼働前に記載項目を確認する）",
+        "rationale": "検証方法欄が「構成・設定レビュー（README.md の手順どおりに ENV-01 を構築・起動できることを確認する。本番運用手順書は本番稼働前に記載項目を確認する）」。README.md は app イメージへ同梱されず、記載の有無を文字列照合で代替すると手順の妥当性を確認したことにならない（形骸的なテストになる）。"
+      },
+      {
+        "requirement_id": "NFR-SC-25",
+        "category": "CONFIG_REVIEW",
+        "verification_method_in_requirement": "構成・設定レビュー（12.2 の検証データの作成手順と初期データ定義ファイルの内容を確認する）",
+        "rationale": "検証方法欄が「構成・設定レビュー（12.2 の検証データの作成手順と初期データ定義ファイルの内容を確認する）」。「架空の値だけで作成されているか」は値の意味の判断であり、機械的な判定条件を要件が与えていない。本番データを使っていないことの立証は環境・運用の確認による。"
+      },
+      {
+        "requirement_id": "NFR-AV-06",
+        "category": "NOT_APPLICABLE",
+        "verification_method_in_requirement": "該当なし",
+        "rationale": "要件内容・目標値・検証方法の全欄が「該当なし」。冗長化しない構成であることは compose.yaml のサービス定義（app・db 各1）に現れるが、同ファイルは app イメージへ同梱されず結合試験環境から参照できない。実行時の振る舞いとして「冗長化していないこと」を示す観測点が無い。"
+      },
+      {
+        "requirement_id": "NFR-AV-09",
+        "category": "NOT_APPLICABLE",
+        "verification_method_in_requirement": "該当なし",
+        "rationale": "要件内容・目標値・検証方法の全欄が「該当なし」。別拠点での復旧方式を設けないことは本番基盤の構成（未決、NOQ-01）に属し、app の実行時の振る舞いに観測点が無い。「設けられていないこと」を示す対象コード・設定が存在しない。"
+      },
+      {
+        "requirement_id": "NFR-EN-13",
+        "category": "NOT_APPLICABLE",
+        "verification_method_in_requirement": "該当なし",
+        "rationale": "要件内容・目標値・検証方法の全欄が「該当なし」。機器の設置スペース・消費電力に関する制約が無く、ソフトウェア側に検証対象となる仕様・設定・振る舞いが存在しない。"
+      },
+      {
+        "requirement_id": "NFR-MG-06",
+        "category": "NOT_APPLICABLE",
+        "verification_method_in_requirement": "該当なし",
+        "rationale": "要件内容・目標値・検証方法の全欄が「該当なし」。新規システムのため移行で停止する稼働中サービスが無く、停止許容時間という判定対象そのものが存在しない。"
+      },
+      {
+        "requirement_id": "NFR-PF-01",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "性能テスト（負荷テストツールで ENV-01 に NFR-PF-05 の操作内容で負荷をかけ、API種別ごとの応答時間の95パーセンタイルを算出する）。本番環境は運用時に測定（MON-05 で継続測定）",
+        "rationale": "検証方法欄が「性能テスト（負荷テストツールで ENV-01 に NFR-PF-05 の操作内容で負荷をかけ、API種別ごとの応答時間の95パーセンタイルを算出する）」。判定対象は測定値そのもので、仕様として表明できる部分が無い。"
+      },
+      {
+        "requirement_id": "NFR-PF-02",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "性能テスト（NFR-PF-01 と同じ負荷の中で、API種別ごとの応答時間の95パーセンタイルを算出する）。本番環境は運用時に測定（MON-05 で継続測定）",
+        "rationale": "検証方法欄が「性能テスト（NFR-PF-01 と同じ負荷の中で、API種別ごとの応答時間の95パーセンタイルを算出する）」。判定対象は測定値そのもので、仕様として表明できる部分が無い。"
+      },
+      {
+        "requirement_id": "NFR-PF-03",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "性能テスト（負荷をかけた状態でブラウザの開発者ツールまたは負荷テストツールで表示完了時間を計測する）。本番環境は運用時に測定",
+        "rationale": "検証方法欄が「性能テスト（負荷をかけた状態でブラウザの開発者ツールまたは負荷テストツールで表示完了時間を計測する）」。ブラウザでの計測を要し、サーバー側の結合試験では判定できない。"
+      },
+      {
+        "requirement_id": "NFR-PF-04",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "性能テスト（60分間に成功した注文確定の件数を数え、240件以上であることを確認する。あわせて注文確定の応答時間が NFR-PF-02 を満たすことを確認する）。本番環境は運用時に測定",
+        "rationale": "検証方法欄が「性能テスト（60分間に成功した注文確定の件数を数え、240件以上であることを確認する）」。判定対象は単位時間あたりの処理件数の測定値である。"
+      },
+      {
+        "requirement_id": "NFR-PF-05",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "性能テスト（負荷テストツールで155の仮想利用者を同時に動作させ、NFR-PF-01〜NFR-PF-03・NFR-PF-09 を判定する）。本番環境は運用時に測定",
+        "rationale": "検証方法欄が「性能テスト（負荷テストツールで155の仮想利用者を同時に動作させ、NFR-PF-01〜NFR-PF-03・NFR-PF-09 を判定する）」。判定は応答時間の目標値への適合であり測定が必須である。"
+      },
+      {
+        "requirement_id": "NFR-PF-06",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "性能テスト（3年後データ量を投入した状態で NFR-PF-01〜NFR-PF-03 を測定する）。本番環境は運用時に測定",
+        "rationale": "検証方法欄が「性能テスト（3年後データ量を投入した状態で NFR-PF-01〜NFR-PF-03 を測定する）」。3年後データ量（注文11万件）の投入と応答時間の測定を要する。"
+      },
+      {
+        "requirement_id": "NFR-PF-09",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "性能テスト（NFR-PF-01 と同じ負荷の中で計測する）。本番環境は運用時に測定",
+        "rationale": "検証方法欄が「性能テスト（NFR-PF-01 と同じ負荷の中で計測する）」。判定対象は認証系APIの応答時間の測定値である。"
+      },
+      {
+        "requirement_id": "NFR-PF-15",
+        "category": "PERFORMANCE_TEST",
+        "verification_method_in_requirement": "負荷テスト・耐久テスト（2時間の連続負荷で応答時間の推移と app・db のメモリ使用量の推移を記録する）",
+        "rationale": "検証方法欄が「負荷テスト・耐久テスト（2時間の連続負荷で応答時間の推移と app・db のメモリ使用量の推移を記録する）」。2時間の連続負荷と資源使用量の記録を要する。"
+      }
+    ],
+    "not_reexamined": {
+      "categories": [
+        "OPERATIONAL_MEASUREMENT",
+        "MIGRATION_REHEARSAL",
+        "VULNERABILITY_SCAN",
+        "COMPATIBILITY_TEST",
+        "OPERATION_TEST"
+      ],
+      "reason": "いずれも本質的に自動テストの対象外（本番環境での測定、移行リハーサル、脆弱性診断、ブラウザ操作、基盤・運用手順の操作）であり、修正1回目の分類を維持した。"
+    }
+  },
+  "covered_requirements": [
+    "FR-OUT-01",
+    "FR-OUT-02",
+    "FR-OUT-03",
+    "FR-OUT-04",
+    "FR-OUT-05",
+    "FR-OUT-06",
+    "FR-OUT-07",
+    "FR-OUT-08",
+    "FR-OUT-09",
+    "FR-OUT-10",
+    "FR-OUT-11",
+    "FR-OUT-12",
+    "FR-OUT-13",
+    "FR-OUT-14",
+    "FR-OUT-15",
+    "FR-OUT-16",
+    "NFR-AV-10",
+    "NFR-EN-01",
+    "NFR-EN-02",
+    "NFR-EN-03",
+    "NFR-EN-04",
+    "NFR-EN-05",
+    "NFR-EN-07",
+    "NFR-EN-08",
+    "NFR-EN-09",
+    "NFR-EN-11",
+    "NFR-EN-12",
+    "NFR-LG-01",
+    "NFR-LG-02",
+    "NFR-LG-03",
+    "NFR-LG-04",
+    "NFR-LG-05",
+    "NFR-LG-06",
+    "NFR-LG-09",
+    "NFR-LG-10",
+    "NFR-MG-01",
+    "NFR-MG-07",
+    "NFR-OM-07",
+    "NFR-OM-11",
+    "NFR-OM-13",
+    "NFR-OM-17",
+    "NFR-OM-18",
+    "NFR-PF-07",
+    "NFR-PF-08",
+    "NFR-PF-11",
+    "NFR-PF-12",
+    "NFR-PF-16",
+    "NFR-PF-17",
+    "NFR-SC-07",
+    "NFR-SC-08",
+    "NFR-SC-10",
+    "NFR-SC-12",
+    "NFR-SC-13",
+    "NFR-SC-14",
+    "NFR-SC-15",
+    "NFR-SC-17",
+    "NFR-SC-19",
+    "NFR-SC-22",
+    "NFR-SC-23",
+    "NFR-SC-24",
+    "NFR-SC-25",
+    "NFR-SC-27",
+    "NFR-SC-28",
+    "NFR-US-03",
+    "NFR-US-04"
+  ],
+  "not_automatable_requirements": [
+    {
+      "requirement_id": "NFR-AV-01",
+      "requirement_item": "サービス提供時間",
+      "requirement_content": "来訪者・購入者・管理者向けの全画面・全APIを、NFR-AV-03 の計画停止を除き毎日終日提供すること",
+      "target_value": "毎日 00:00〜24:00（24時間365日。計画停止の時間帯を除く）",
+      "verification_method_in_requirement": "運用時に測定（月次で提供時間を集計する）。代替確認：構成・設定レビュー（計画停止以外にサービス停止を要する定期処理が無いことを確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "月次の提供時間の集計。代替確認は構成・設定レビュー。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-02",
+      "requirement_item": "サービス稼働率",
+      "requirement_content": "サービス提供時間帯（計画停止を除く）に対して、全画面・全APIが正常に応答している時間の割合を目標値以上とすること",
+      "target_value": "99.0%以上",
+      "verification_method_in_requirement": "運用時に測定（月次で MON-01 の記録から算出）。代替確認：構成・設定レビュー（NFR-AV-04・NFR-AV-05 の復旧手順が整備されていること）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "月次の稼働率（MON-01 の記録）から算出する。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-03",
+      "requirement_item": "計画停止",
+      "requirement_content": "定期保守（パッチ適用・プログラム更新）のための計画停止は、毎月第2水曜の 2:00〜4:00 に限り行い、利用者へ事前に周知すること",
+      "target_value": "月1回以内、1回2時間以内、7日前までに周知",
+      "verification_method_in_requirement": "運用時に測定（計画停止の実績時刻を記録する）。代替確認：構成・設定レビュー（運用手順書に停止時間帯・周知手順が記載されていること）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "計画停止の実績時刻の記録による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-04",
+      "requirement_item": "取得対象・頻度",
+      "requirement_content": "DBの全データ（全業務データ・監査ログ）のバックアップを、毎日 3:00 にサービスを停止せずに取得すること",
+      "target_value": "日次（毎日 3:00 開始）、7世代",
+      "verification_method_in_requirement": "運用時に測定（毎日の取得結果を MON-07 で確認する）。代替確認：構成・設定レビュー（バックアップの取得設定・保持世代を確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "日次バックアップの取得結果（MON-07）の確認による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-05",
+      "requirement_item": "目標復旧時間（RTO）",
+      "requirement_content": "障害の検知から、全画面・全APIの提供を再開するまでの時間を目標値以内とすること",
+      "target_value": "6時間以内",
+      "verification_method_in_requirement": "運用時に測定（障害発生時に検知時刻と再開時刻を記録する）。代替確認：構成・設定レビュー（復旧手順書の手順と所要時間見積りが6時間以内であることを確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "障害発生時の検知時刻・再開時刻の記録による（RTO 6時間以内）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-06",
+      "requirement_item": "単一障害点の排除",
+      "requirement_content": "該当なし",
+      "target_value": "該当なし",
+      "verification_method_in_requirement": "該当なし",
+      "category": "NOT_APPLICABLE",
+      "reason_not_automatable": "要件本文が「該当なし」（当該の機能・構成を設けない）と定め、検証方法も「該当なし」と定義されている。本リリースの構成・基盤に関する事項であり、結合試験で判定できる振る舞いが存在しない。",
+      "note": "単一構成のため冗長化を行わない（要件内容・検証方法とも該当なし）。",
+      "reexamination_round2": "要件内容・目標値・検証方法の全欄が「該当なし」。冗長化しない構成であることは compose.yaml のサービス定義（app・db 各1）に現れるが、同ファイルは app イメージへ同梱されず結合試験環境から参照できない。実行時の振る舞いとして「冗長化していないこと」を示す観測点が無い。",
+      "responsible_phase": "対応不要（要件が機能を設けないと定めている）",
+      "reexamination_round3": "最終精査でも対象外を維持する。要件本文が当該の機能・構成を設けないと定めており（全欄が「該当なし」）、確かめるべき振る舞い・設定が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-07",
+      "requirement_item": "目標復旧時点（RPO）",
+      "requirement_content": "障害からの復旧時に、NFR-AV-04 の最新のバックアップ取得時点までのデータを復元できること。それ以降のデータは失われることを許容する",
+      "target_value": "障害発生の24時間前以降",
+      "verification_method_in_requirement": "運用時に測定（本番稼働前に本番環境でリストアを1回実施し、復元されたデータの最終更新日時を確認する）。代替確認：構成・設定レビュー（日次バックアップの設定とリストア手順を確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番環境でのリストア実施による（RPO 24時間）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-08",
+      "requirement_item": "目標復旧レベル（RLO）",
+      "requirement_content": "障害からの復旧時に、障害前に提供していた全機能を再開すること（一部の機能だけを先に再開する段階的な再開は行わない）",
+      "target_value": "全業務（来訪者・購入者向けの商品閲覧・会員登録・ログイン・カート・注文確定・支払・注文照会・キャンセル、管理者向けの在庫確認・注文照会・出荷登録・配達完了登録・キャンセル、運用者の初期データ一括投入）",
+      "verification_method_in_requirement": "運用時に測定（復旧後に全機能の操作確認を行う）。代替確認：構成・設定レビュー（復旧手順書に全機能の確認手順が含まれていること）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "復旧後の全機能の操作確認による（RLO）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-09",
+      "requirement_item": "大規模災害への対応",
+      "requirement_content": "該当なし",
+      "target_value": "該当なし",
+      "verification_method_in_requirement": "該当なし",
+      "category": "NOT_APPLICABLE",
+      "reason_not_automatable": "要件本文が「該当なし」（当該の機能・構成を設けない）と定め、検証方法も「該当なし」と定義されている。本リリースの構成・基盤に関する事項であり、結合試験で判定できる振る舞いが存在しない。",
+      "note": "別拠点での復旧方式を設けない（該当なし）。",
+      "reexamination_round2": "要件内容・目標値・検証方法の全欄が「該当なし」。別拠点での復旧方式を設けないことは本番基盤の構成（未決、NOQ-01）に属し、app の実行時の振る舞いに観測点が無い。「設けられていないこと」を示す対象コード・設定が存在しない。",
+      "responsible_phase": "対応不要（要件が機能を設けないと定めている）",
+      "reexamination_round3": "最終精査でも対象外を維持する。要件本文が当該の機能・構成を設けないと定めており（全欄が「該当なし」）、確かめるべき振る舞い・設定が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-11",
+      "requirement_item": "保管",
+      "requirement_content": "NFR-AV-04 のバックアップを、DBのデータ領域とは物理的に別の記憶装置に保管すること",
+      "target_value": "7日",
+      "verification_method_in_requirement": "運用時に測定（本番環境構築時に保管先を確認する）。代替確認：構成・設定レビュー（保管先の設定が DB のデータ領域と別であることを確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番環境構築時のバックアップ保管先の確認による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-AV-12",
+      "requirement_item": "リストア",
+      "requirement_content": "NFR-AV-04 のバックアップから DB の全データを復元し、サービスを再開できること",
+      "target_value": "4時間以内",
+      "verification_method_in_requirement": "運用時に測定（本番稼働前に本番環境でリストアを1回実施し所要時間を記録する）。代替確認：構成・設定レビュー（リストア手順書の手順と所要時間見積りを確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番稼働前のリストア実施と所要時間の計測による（4時間以内）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-EN-06",
+      "requirement_item": "設置場所・データ所在",
+      "requirement_content": "本番環境のサーバー・DB・バックアップ・ログの保管先を日本国内に置くこと",
+      "target_value": "日本国内",
+      "verification_method_in_requirement": "運用時に測定（本番基盤の選定・構築時に所在地を確認する）。代替確認：構成・設定レビュー",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番基盤の選定・構築時の設置場所（日本国内）の確認による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番基盤のデータ所在地（日本国内）であり、本番基盤が未決（NOQ-01）の段階では結合試験環境に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-EN-10",
+      "requirement_item": "ソフトウェアのサポート期限",
+      "requirement_content": "採用製品をサポート期限内の版で運用すること。採用製品のサポート期限は想定運用期間（2027-04〜2032-03）より前に到来するため、期限の到来前に後継の版へ更新すること（NOQ-07）",
+      "target_value": "2028-04以降（稼働開始時点の採用製品の最短の期限：Django 5.2 LTS 2028-04、Python 3.12 2028-10、PostgreSQL 16 2028-11）",
+      "verification_method_in_requirement": "構成・設定レビュー（稼働開始前に各製品のサポート期限を確認し、更新計画に記載されていることを確認する）",
+      "category": "CONFIG_REVIEW",
+      "reason_not_automatable": "検証方法が「構成・設定レビュー」。構成ファイル・設定値・手順書の記載内容を確認する作業であり、実行時の振る舞いとして現れないため結合試験では判定できない。",
+      "note": "採用製品のサポート期限と更新計画の確認。",
+      "reexamination_round2": "検証方法欄が「構成・設定レビュー（稼働開始前に各製品のサポート期限を確認し、更新計画に記載されていることを確認する）」。判定対象はサポート期限の調査結果と更新計画の記載であり、実行環境には存在しない。採用製品の版そのものは IT-AI-GF-056（NFR-EN-01・NFR-EN-02）で確認済みで、版の確認を本要件の充足とすると要件の意味（期限管理）を置き換えてしまう。",
+      "responsible_phase": "構成・設定レビュー（設計・運用準備）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は各製品のサポート期限の調査結果と更新計画の記載であり、実行環境の中に存在しない。導入済みの版は IT-AI-GF-056 で確認済みだが、版の確認は期限管理の充足ではない。"
+    },
+    {
+      "requirement_id": "NFR-EN-13",
+      "requirement_item": "機器・消費エネルギー",
+      "requirement_content": "該当なし",
+      "target_value": "該当なし",
+      "verification_method_in_requirement": "該当なし",
+      "category": "NOT_APPLICABLE",
+      "reason_not_automatable": "要件本文が「該当なし」（当該の機能・構成を設けない）と定め、検証方法も「該当なし」と定義されている。本リリースの構成・基盤に関する事項であり、結合試験で判定できる振る舞いが存在しない。",
+      "note": "機器・消費エネルギーの制約が無い（該当なし）。",
+      "reexamination_round2": "要件内容・目標値・検証方法の全欄が「該当なし」。機器の設置スペース・消費電力に関する制約が無く、ソフトウェア側に検証対象となる仕様・設定・振る舞いが存在しない。",
+      "responsible_phase": "対応不要（要件が機能を設けないと定めている）",
+      "reexamination_round3": "最終精査でも対象外を維持する。要件本文が当該の機能・構成を設けないと定めており（全欄が「該当なし」）、確かめるべき振る舞い・設定が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-LG-07",
+      "requirement_item": "OWASP Top 10（2021年版）",
+      "requirement_content": "Web アプリケーションの代表的な脆弱性10分類への対策",
+      "target_value": "8.2 の対策方針（VUL-01〜VUL-13）を全て満たす",
+      "verification_method_in_requirement": "脆弱性診断とセキュリティテストの結果で確認する",
+      "category": "VULNERABILITY_SCAN",
+      "reason_not_automatable": "検証方法が「脆弱性診断」。診断ツールまたは診断者が実施する診断であり、結合試験の対象ではない。",
+      "note": "OWASP Top 10 への対策は脆弱性診断とセキュリティテストの結果で確認する。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "脆弱性診断（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値が「脆弱性診断とセキュリティテストの結果で確認する」であり、セキュリティテストで確かめられる範囲（VUL-01・02・04・05・06・11・13 に対応する NFR-SC-03〜06・NFR-SC-08〜10・NFR-SC-12・NFR-SC-16・NFR-SC-19・NFR-SC-22 など）は結合試験で PASS 済みだが、10分類の網羅判定は脆弱性診断（NFR-SC-29）の結果と併せてのみ行える。"
+    },
+    {
+      "requirement_id": "NFR-LG-08",
+      "requirement_item": "JIS X 8341-3:2016（ウェブコンテンツのアクセシビリティの日本産業規格）",
+      "requirement_content": "適合レベル A の達成基準への適合",
+      "target_value": "全画面を適合レベル A に適合させる（推奨）",
+      "verification_method_in_requirement": "互換性・操作性テストでチェックリストにより確認する",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "JIS X 8341-3:2016 適合レベル A のチェックリストによる確認。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。適合レベル A の達成基準はチェックリストによる全画面の確認であり、サーバー側で機械的に照合できる一部（言語指定・代替テキスト等）だけを判定して適合と見なすことはできない。"
+    },
+    {
+      "requirement_id": "NFR-MG-02",
+      "requirement_item": "移行結果の検証",
+      "requirement_content": "稼働開始時のマスタ（商品 300件・在庫単位 800件・商品分類 30件・仕入先 20件・管理者 7名）を初期データ一括投入で登録し、データ別の投入件数が定義ファイルの件数と一致すること",
+      "target_value": "0件",
+      "verification_method_in_requirement": "移行リハーサル（VDC-04 で件数照合・内容照合を行う）",
+      "category": "MIGRATION_REHEARSAL",
+      "reason_not_automatable": "検証方法が「移行リハーサル」。本番と同じ手順・コマンドで本番相当の件数（VDC-04：1,157件）を投入し、件数照合・所要時間を確認する作業であり、結合試験の対象ではない。",
+      "note": "VDC-04 の件数照合・内容照合による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "移行リハーサル（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番と同じ手順・本番相当件数（VDC-04：1,157件）での実施結果であり、該当の定義ファイルはリポジトリに存在しない（app 同梱の初期データは最小構成の見本）。"
+    },
+    {
+      "requirement_id": "NFR-MG-03",
+      "requirement_item": "移行対象（データ以外）",
+      "requirement_content": "稼働開始時に、管理者アカウント（EC運営担当3名・出荷担当4名、ロール admin）と初期パスワードを初期データ一括投入で登録すること。現行の設定・ファイル・権限情報の移行は行わない",
+      "target_value": "管理者アカウント 7件（画面・API からの作成手段は無いため初期データ一括投入でのみ作成する）",
+      "verification_method_in_requirement": "移行リハーサル（VDC-04 を投入し、管理者7名がログインできることを確認する）",
+      "category": "MIGRATION_REHEARSAL",
+      "reason_not_automatable": "検証方法が「移行リハーサル」。本番と同じ手順・コマンドで本番相当の件数（VDC-04：1,157件）を投入し、件数照合・所要時間を確認する作業であり、結合試験の対象ではない。",
+      "note": "VDC-04 投入後に管理者7名がログインできることの確認による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "移行リハーサル（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番と同じ手順・本番相当件数（VDC-04：1,157件）での実施結果であり、該当の定義ファイルはリポジトリに存在しない（app 同梱の初期データは最小構成の見本）。"
+    },
+    {
+      "requirement_id": "NFR-MG-04",
+      "requirement_item": "移行方式",
+      "requirement_content": "稼働開始前に、初期データ一括投入で全マスタ・管理者アカウントを一括で登録すること",
+      "target_value": "一括移行（初期データ一括投入を「全削除して投入」指定で1回実行）",
+      "verification_method_in_requirement": "移行リハーサル（本番と同じ手順・コマンドで VDC-04 を投入する）",
+      "category": "MIGRATION_REHEARSAL",
+      "reason_not_automatable": "検証方法が「移行リハーサル」。本番と同じ手順・コマンドで本番相当の件数（VDC-04：1,157件）を投入し、件数照合・所要時間を確認する作業であり、結合試験の対象ではない。",
+      "note": "本番と同じ手順・コマンドでの一括投入による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "移行リハーサル（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番と同じ手順・本番相当件数（VDC-04：1,157件）での実施結果であり、該当の定義ファイルはリポジトリに存在しない（app 同梱の初期データは最小構成の見本）。"
+    },
+    {
+      "requirement_id": "NFR-MG-05",
+      "requirement_item": "移行実施期間",
+      "requirement_content": "本番環境への初期データ一括投入を、稼働開始日（2027-04-01）の直前の期間に行うこと。在庫数量は投入時点の在庫管理表の値を反映すること",
+      "target_value": "2027-03-29〜2027-03-31",
+      "verification_method_in_requirement": "構成・設定レビュー（移行計画に実施日・実施者・在庫数量の確定時刻が記載されていることを確認する）",
+      "category": "CONFIG_REVIEW",
+      "reason_not_automatable": "検証方法が「構成・設定レビュー」。構成ファイル・設定値・手順書の記載内容を確認する作業であり、実行時の振る舞いとして現れないため結合試験では判定できない。",
+      "note": "移行計画の実施日・実施者・在庫数量の確定時刻の記載確認による。",
+      "reexamination_round2": "検証方法欄が「構成・設定レビュー（移行計画に実施日・実施者・在庫数量の確定時刻が記載されていることを確認する）」。判定対象は移行計画書の記載であり、システムの振る舞いとして現れない。",
+      "responsible_phase": "構成・設定レビュー（設計・運用準備）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は移行計画書の記載（実施日・実施者・在庫数量の確定時刻）であり、システムの振る舞い・設定として現れない。"
+    },
+    {
+      "requirement_id": "NFR-MG-06",
+      "requirement_item": "停止許容時間",
+      "requirement_content": "該当なし",
+      "target_value": "該当なし",
+      "verification_method_in_requirement": "該当なし",
+      "category": "NOT_APPLICABLE",
+      "reason_not_automatable": "要件本文が「該当なし」（当該の機能・構成を設けない）と定め、検証方法も「該当なし」と定義されている。本リリースの構成・基盤に関する事項であり、結合試験で判定できる振る舞いが存在しない。",
+      "note": "新規システムのため移行による停止が無い（該当なし）。",
+      "reexamination_round2": "要件内容・目標値・検証方法の全欄が「該当なし」。新規システムのため移行で停止する稼働中サービスが無く、停止許容時間という判定対象そのものが存在しない。",
+      "responsible_phase": "対応不要（要件が機能を設けないと定めている）",
+      "reexamination_round3": "最終精査でも対象外を維持する。要件本文が当該の機能・構成を設けないと定めており（全欄が「該当なし」）、確かめるべき振る舞い・設定が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-MG-08",
+      "requirement_item": "移行リハーサル",
+      "requirement_content": "本番投入の前に、本番と同じコマンド・同じ件数構成の定義ファイル（管理者のメールアドレス・氏名・パスワードを架空の値に置き換えたもの）で初期データ一括投入のリハーサルを行うこと",
+      "target_value": "1回以上",
+      "verification_method_in_requirement": "移行リハーサル（NFR-MG-02 の照合とあわせて実施する）",
+      "category": "MIGRATION_REHEARSAL",
+      "reason_not_automatable": "検証方法が「移行リハーサル」。本番と同じ手順・コマンドで本番相当の件数（VDC-04：1,157件）を投入し、件数照合・所要時間を確認する作業であり、結合試験の対象ではない。",
+      "note": "本番と同じ件数構成の定義ファイルでのリハーサル実施による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "移行リハーサル（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番と同じ手順・本番相当件数（VDC-04：1,157件）での実施結果であり、該当の定義ファイルはリポジトリに存在しない（app 同梱の初期データは最小構成の見本）。"
+    },
+    {
+      "requirement_id": "NFR-OM-02",
+      "requirement_item": "アプリケーションログの保管",
+      "requirement_content": "LOG-01〜LOG-03、LOG-05、LOG-06 を目標値の期間保管し、期間内のログを検索できること",
+      "target_value": "90日以上",
+      "verification_method_in_requirement": "運用時に測定（稼働後90日経過時点で稼働初日のログを検索できることを確認する）。代替確認：構成・設定レビュー（ログ保管先の保持期間設定を確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "90日経過後のログ検索による（保管期間）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-OM-03",
+      "requirement_item": "監査ログの保管",
+      "requirement_content": "監査ログ（LOG-04）を目標値の期間保管すること。保管期間を経過した監査ログは、運用者が年1回、運用手順書に従って削除する",
+      "target_value": "1年以上",
+      "verification_method_in_requirement": "運用時に測定（年1回の削除作業の前に、直近1年分が残っていることを確認する）。代替確認：構成・設定レビュー（削除手順が1年以内の監査ログを削除しない条件になっていることを確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "年1回の削除作業前の確認による（監査ログ1年保管）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-OM-05",
+      "requirement_item": "全サービスの起動",
+      "requirement_content": "コンテナの起動コマンド1回（`docker compose up -d`）で app・db の全サービスが起動し、app が http://localhost:8000 で要求を受け付けられること",
+      "target_value": "1回",
+      "verification_method_in_requirement": "運用テスト（コンテナを停止した状態から `docker compose up -d` を1回実行し、app・db が起動して商品一覧画面が表示されることを確認する）",
+      "category": "OPERATION_TEST",
+      "reason_not_automatable": "検証方法が「運用テスト」のうち、コンテナ基盤の起動・環境変数の変更・監視通知など、テストプロセスの外側（基盤・運用手順）を操作して確認する要件であり、結合試験では判定できない。",
+      "note": "`docker compose up -d` 1回での全サービス起動の確認。テストプロセスの外側（コンテナ基盤）の操作であり、結合試験の中では判定しない。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "運用テスト（基盤・運用手順）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は `docker compose up -d` によるコンテナ基盤の起動であり、テストプロセス（app コンテナの内側）からは実行も観測もできない。"
+    },
+    {
+      "requirement_id": "NFR-OM-06",
+      "requirement_item": "テスト容易性",
+      "requirement_content": "単体・結合の自動テスト（pytest＋pytest-django）を、コマンド1回（`docker compose exec app pytest`）で全件実行できること。自動テストは外部インターネットに接続せずに実行できること",
+      "target_value": "コマンド1回、失敗 0件",
+      "verification_method_in_requirement": "運用テスト（ENV-01 でコマンドを1回実行し、全テストが実行され失敗が0件であることを確認する）",
+      "category": "OPERATION_TEST",
+      "reason_not_automatable": "検証方法が「運用テスト」のうち、コンテナ基盤の起動・環境変数の変更・監視通知など、テストプロセスの外側（基盤・運用手順）を操作して確認する要件であり、結合試験では判定できない。",
+      "note": "`docker compose exec app pytest` 1コマンドでの全件実行と失敗0件の確認。結合試験の実行そのものが対象であり、Test Case として自己言及的に判定しない（実測値は integration-test-report.md の実行結果に記録している）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "運用テスト（基盤・運用手順）",
+      "reexamination_round3": "最終精査でも対象外を維持する。本要件の判定は自動テストの実行そのもの（1コマンドで全件実行・失敗0件）であり、自動テストが自身の実行を判定するテストは自己言及的で形骸的になる。実行結果は junit.xml とintegration-test-report.md の実行記録（単体791件＋結合138件＝929 passed / 0 failed）で確認する。"
+    },
+    {
+      "requirement_id": "NFR-OM-08",
+      "requirement_item": "有人運用時間",
+      "requirement_content": "システム運用担当（情報システム課 2名）が、監視通知・障害・問い合わせに対応する時間帯を目標値とすること。時間帯外（平日 18:00〜翌 9:00、土日祝）の対応体制は未決とする（NOQ-03）",
+      "target_value": "平日 9:00〜18:00",
+      "verification_method_in_requirement": "運用時に測定（対応記録で対応時刻を確認する）。代替確認：構成・設定レビュー（運用手順書に対応時間帯と連絡先が記載されていること）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "対応記録の対応時刻による（有人運用時間）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-OM-09",
+      "requirement_item": "監視の実施",
+      "requirement_content": "6.2 に定める監視対象・閾値で本番環境を監視すること。ENV-01 は監視の対象外とする",
+      "target_value": "6.2 の全項目（MON-01〜MON-10）",
+      "verification_method_in_requirement": "運用時に測定（本番稼働前に各監視項目の閾値超過を擬似的に発生させ、通知が届くことを確認する）。代替確認：構成・設定レビュー（監視設定の一覧が 6.2 と一致することを確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番環境での監視設定と通知到達の確認による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-OM-10",
+      "requirement_item": "異常検知から通知まで",
+      "requirement_content": "6.2 の閾値超過を検知してから、通知先（システム運用担当）に通知が届くまでの時間を目標値以内とすること",
+      "target_value": "5分以内",
+      "verification_method_in_requirement": "運用時に測定（NFR-OM-09 の確認時に検知時刻と受信時刻の差を記録する）。代替確認：構成・設定レビュー（通知設定を確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "検知から通知までの時間（5分以内）の測定による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-OM-12",
+      "requirement_item": "ジョブの実行管理",
+      "requirement_content": "定期ジョブは NFR-AV-04 のバックアップのみとし、本番基盤のスケジュール機能で毎日 3:00 に起動すること。初期データ一括投入（FR-060）と保存期間経過データの削除（年1回）は、運用者が運用手順書に従って手動で実行すること",
+      "target_value": "バックアップ：スケジュール起動（毎日 3:00）。初期データ一括投入・保存期間経過データの削除：運用者の手動実行。ジョブ間の実行順序の依存はない",
+      "verification_method_in_requirement": "構成・設定レビュー（本番環境構築時にスケジュール設定を確認する。運用手順書に手動実行の手順が記載されていることを確認する）",
+      "category": "CONFIG_REVIEW",
+      "reason_not_automatable": "検証方法が「構成・設定レビュー」。構成ファイル・設定値・手順書の記載内容を確認する作業であり、実行時の振る舞いとして現れないため結合試験では判定できない。",
+      "note": "本番基盤のスケジュール設定と運用手順書の記載確認による。",
+      "reexamination_round2": "検証方法欄が「構成・設定レビュー（本番環境構築時にスケジュール設定を確認する。運用手順書に手動実行の手順が記載されていることを確認する）」。判定対象は本番基盤（未決、NOQ-01）のスケジュール設定と運用手順書の記載である。app 側に定期ジョブが無いことは IT-AI-GF-078（NFR-PF-12）で確認しているが、本要件の目標値はバックアップの起動時刻（毎日3:00）であり結合試験では判定できない。",
+      "responsible_phase": "構成・設定レビュー（設計・運用準備）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番基盤（未決、NOQ-01）のスケジュール設定と運用手順書の記載。app 側に定期ジョブが無いことは IT-AI-GF-078 で確認済みだが、本要件が定めるスケジュール設定の確認には代えられない。"
+    },
+    {
+      "requirement_id": "NFR-OM-14",
+      "requirement_item": "セキュリティパッチ適用",
+      "requirement_content": "OS・ミドルウェア・依存ライブラリのセキュリティパッチを、NFR-AV-03 の計画停止の時間帯に適用すること。重大度の高い脆弱性（CVSS 7.0以上）の修正は、公開から目標値の期間内に本番環境へ適用すること",
+      "target_value": "重大度 高（CVSS 7.0以上）は30日以内",
+      "verification_method_in_requirement": "運用時に測定（パッチの公開日と適用日を記録する）。代替確認：構成・設定レビュー（運用手順書にパッチの確認頻度（月1回）と適用手順が記載されていること）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "パッチの公開日と適用日の記録による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-OM-15",
+      "requirement_item": "リリース作業",
+      "requirement_content": "プログラムの更新は NFR-AV-03 の計画停止の時間帯に行い、更新に失敗した場合は更新前のコンテナイメージと更新直前に取得した DB のバックアップで更新前の状態へ戻せること",
+      "target_value": "120分以内（切戻しを含む）",
+      "verification_method_in_requirement": "運用テスト（ENV-01 でコンテナイメージの再構築・DBの構造変更の適用（migrate）・起動を行い、所要時間を計測する。あわせて更新前の状態への切戻し手順を1回実施する）",
+      "category": "OPERATION_TEST",
+      "reason_not_automatable": "検証方法が「運用テスト」のうち、コンテナ基盤の起動・環境変数の変更・監視通知など、テストプロセスの外側（基盤・運用手順）を操作して確認する要件であり、結合試験では判定できない。",
+      "note": "コンテナイメージの再構築・migrate・起動と切戻しの所要時間計測（120分以内）。基盤操作であり結合試験の対象外。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "運用テスト（基盤・運用手順）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象はコンテナイメージの再構築・migrate・起動・切戻しの一連の作業時間であり、テストプロセスの外側（基盤操作）でしか測定できない。"
+    },
+    {
+      "requirement_id": "NFR-OM-16",
+      "requirement_item": "受付と一次回答",
+      "requirement_content": "購入者からの問い合わせは EC運営担当が受け付け（本システム外）、システム障害が疑われる問い合わせは EC運営担当からシステム運用担当へ連絡すること。システム運用担当は連絡の受付から目標値以内に一次回答（障害の有無と対応予定）を EC運営担当へ返すこと",
+      "target_value": "受付から4時間以内（受付時間内の経過時間で数え、18:00 で計時を中断し翌営業日 9:00 から再開する）",
+      "verification_method_in_requirement": "運用時に測定（受付時刻と一次回答時刻を記録する）。代替確認：構成・設定レビュー（運用手順書に連絡経路・受付時間・回答期限が記載されていること）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "問い合わせの受付時刻と一次回答時刻の記録による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-OM-19",
+      "requirement_item": "運用手順書の整備",
+      "requirement_content": "運用者・システム運用担当が使う手順書を整備すること。ENV-01 の手順はリポジトリの README.md に記載し、本番環境の手順は本番基盤の選定後に作成する",
+      "target_value": "README.md：環境変数ファイル（.env）の作成、コンテナの構築・起動・停止、DB の初期化（migrate）、初期データ一括投入、自動テスト、静的解析。本番運用手順書：起動・停止、計画停止と周知、バックアップの確認、リストア、障害時の復旧と全機能の確認、セキュリティパッチの適用、プログラムの更新と切戻し、保存期間経過データの削除（年1回）、問い合わせの連絡経路",
+      "verification_method_in_requirement": "構成・設定レビュー（README.md の手順どおりに ENV-01 を構築・起動できることを確認する。本番運用手順書は本番稼働前に記載項目を確認する）",
+      "category": "CONFIG_REVIEW",
+      "reason_not_automatable": "検証方法が「構成・設定レビュー」。構成ファイル・設定値・手順書の記載内容を確認する作業であり、実行時の振る舞いとして現れないため結合試験では判定できない。",
+      "note": "README.md・本番運用手順書の記載内容の確認による。",
+      "reexamination_round2": "検証方法欄が「構成・設定レビュー（README.md の手順どおりに ENV-01 を構築・起動できることを確認する。本番運用手順書は本番稼働前に記載項目を確認する）」。README.md は app イメージへ同梱されず、記載の有無を文字列照合で代替すると手順の妥当性を確認したことにならない（形骸的なテストになる）。",
+      "responsible_phase": "構成・設定レビュー（設計・運用準備）",
+      "reexamination_round3": "最終精査でも対象外を維持する。README.md・本番運用手順書は app イメージへ同梱されず、記載の有無を文字列照合に置き換えても手順の妥当性（手順どおりに構築・起動できること）の確認にならない。"
+    },
+    {
+      "requirement_id": "NFR-PF-01",
+      "requirement_item": "応答時間（参照系）",
+      "requirement_content": "照会系API（一覧・詳細・カート照会）の応答時間を目標値以内とすること。対象：商品分類一覧照会（FR-010）、商品一覧検索（FR-011）、商品詳細照会（FR-012）、カート照会（FR-020）、注文履歴一覧照会（FR-032）、注文詳細照会（購入者）（FR-033）、在庫単位一覧照会（FR-040）、注文一覧検索（管理者）（FR-041）、注文詳細照会（管理者）（FR-042）。計測区間：app がリクエストを受信してから応答の送信を完了するまで",
+      "target_value": "1.0秒以内（API種別ごとに判定）",
+      "verification_method_in_requirement": "性能テスト（負荷テストツールで ENV-01 に NFR-PF-05 の操作内容で負荷をかけ、API種別ごとの応答時間の95パーセンタイルを算出する）。本番環境は運用時に測定（MON-05 で継続測定）",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "照会系APIの応答時間95パーセンタイル 1.0秒以内の測定。",
+      "reexamination_round2": "検証方法欄が「性能テスト（負荷テストツールで ENV-01 に NFR-PF-05 の操作内容で負荷をかけ、API種別ごとの応答時間の95パーセンタイルを算出する）」。判定対象は測定値そのもので、仕様として表明できる部分が無い。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-PF-02",
+      "requirement_item": "応答時間（更新系）",
+      "requirement_content": "更新系API（カート操作・注文確定・支払・状態変更）の応答時間を目標値以内とすること。対象：カート明細追加・数量変更・削除、クーポン適用・解除（FR-021〜FR-025）、注文確定（FR-030）、支払（FR-031）、注文キャンセル（購入者）（FR-034）、出荷登録（FR-043）、配達完了登録（FR-044）、注文キャンセル（管理者）（FR-045）。計測区間：app がリクエストを受信してから応答の送信を完了するまで。支払は決済サービス（模擬）の応答時間（1秒以内）を含めて計測する",
+      "target_value": "2.0秒以内（API種別ごとに判定）",
+      "verification_method_in_requirement": "性能テスト（NFR-PF-01 と同じ負荷の中で、API種別ごとの応答時間の95パーセンタイルを算出する）。本番環境は運用時に測定（MON-05 で継続測定）",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "更新系APIの応答時間95パーセンタイル 2.0秒以内の測定。",
+      "reexamination_round2": "検証方法欄が「性能テスト（NFR-PF-01 と同じ負荷の中で、API種別ごとの応答時間の95パーセンタイルを算出する）」。判定対象は測定値そのもので、仕様として表明できる部分が無い。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-PF-03",
+      "requirement_item": "画面の表示完了時間",
+      "requirement_content": "全画面（購入者・来訪者向け SCR-001〜SCR-010、管理者向け SCR-101〜SCR-103、エラー画面 SCR-901）について、リンク・ボタンの押下（画面要求の送信）から、ブラウザが HTML・CSS・JavaScript の読込を完了して画面を表示し終えるまでの時間を目標値以内とすること",
+      "target_value": "2.0秒以内（画面ごとに判定）",
+      "verification_method_in_requirement": "性能テスト（負荷をかけた状態でブラウザの開発者ツールまたは負荷テストツールで表示完了時間を計測する）。本番環境は運用時に測定",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "画面の表示完了時間 2.0秒以内の測定（ブラウザ計測を含む）。",
+      "reexamination_round2": "検証方法欄が「性能テスト（負荷をかけた状態でブラウザの開発者ツールまたは負荷テストツールで表示完了時間を計測する）」。ブラウザでの計測を要し、サーバー側の結合試験では判定できない。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-PF-04",
+      "requirement_item": "ピーク時処理能力",
+      "requirement_content": "注文確定（FR-030）を、ピーク時間帯の注文件数 120件/時の2倍以上の件数で処理できること",
+      "target_value": "240件/時以上",
+      "verification_method_in_requirement": "性能テスト（60分間に成功した注文確定の件数を数え、240件以上であることを確認する。あわせて注文確定の応答時間が NFR-PF-02 を満たすことを確認する）。本番環境は運用時に測定",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "ピーク時処理能力 240件/時以上の測定。",
+      "reexamination_round2": "検証方法欄が「性能テスト（60分間に成功した注文確定の件数を数え、240件以上であることを確認する）」。判定対象は単位時間あたりの処理件数の測定値である。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-PF-05",
+      "requirement_item": "同時利用者数",
+      "requirement_content": "同時に操作する利用者（同時ログイン数ではなく、画面・APIを操作中の利用者の数）が目標値の人数であっても、NFR-PF-01〜NFR-PF-03・NFR-PF-09 の目標値を満たすこと",
+      "target_value": "155人以上（購入者＋来訪者 150人、管理者 5人）",
+      "verification_method_in_requirement": "性能テスト（負荷テストツールで155の仮想利用者を同時に動作させ、NFR-PF-01〜NFR-PF-03・NFR-PF-09 を判定する）。本番環境は運用時に測定",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "同時155利用者の負荷での目標値充足の判定。",
+      "reexamination_round2": "検証方法欄が「性能テスト（負荷テストツールで155の仮想利用者を同時に動作させ、NFR-PF-01〜NFR-PF-03・NFR-PF-09 を判定する）」。判定は応答時間の目標値への適合であり測定が必須である。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-PF-06",
+      "requirement_item": "将来データ量での性能",
+      "requirement_content": "想定運用期間の途中である3年後のデータ量でも、NFR-PF-01〜NFR-PF-03 の目標値を満たすこと",
+      "target_value": "照会系API 1.0秒以内、更新系API 2.0秒以内、画面表示 2.0秒以内（NFR-PF-01〜NFR-PF-03 の目標値）",
+      "verification_method_in_requirement": "性能テスト（3年後データ量を投入した状態で NFR-PF-01〜NFR-PF-03 を測定する）。本番環境は運用時に測定",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "3年後データ量での応答時間の測定。",
+      "reexamination_round2": "検証方法欄が「性能テスト（3年後データ量を投入した状態で NFR-PF-01〜NFR-PF-03 を測定する）」。3年後データ量（注文11万件）の投入と応答時間の測定を要する。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-PF-09",
+      "requirement_item": "応答時間（認証系）",
+      "requirement_content": "認証系API（会員登録（FR-001）、ログイン（FR-002）、ログアウト（FR-003）、ログイン利用者情報照会（FR-004））の応答時間を目標値以内とすること。計測区間：app がリクエストを受信してから応答の送信を完了するまで（パスワードのハッシュ計算を含む）",
+      "target_value": "2.0秒以内（API種別ごとに判定）",
+      "verification_method_in_requirement": "性能テスト（NFR-PF-01 と同じ負荷の中で計測する）。本番環境は運用時に測定",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "認証系APIの応答時間 2.0秒以内の測定。",
+      "reexamination_round2": "検証方法欄が「性能テスト（NFR-PF-01 と同じ負荷の中で計測する）」。判定対象は認証系APIの応答時間の測定値である。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-PF-10",
+      "requirement_item": "応答時間（大量処理）",
+      "requirement_content": "初期データ一括投入（FR-060）について、コマンドの実行開始から投入件数の表示を終えるまでの時間を目標値以内とすること",
+      "target_value": "60秒以内",
+      "verification_method_in_requirement": "移行リハーサル（VDC-04 を投入し所要時間を計測する）",
+      "category": "MIGRATION_REHEARSAL",
+      "reason_not_automatable": "検証方法が「移行リハーサル」。本番と同じ手順・コマンドで本番相当の件数（VDC-04：1,157件）を投入し、件数照合・所要時間を確認する作業であり、結合試験の対象ではない。",
+      "note": "初期データ一括投入の所要時間 60秒以内の計測（VDC-04）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "移行リハーサル（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番と同じ手順・本番相当件数（VDC-04：1,157件）での実施結果であり、該当の定義ファイルはリポジトリに存在しない（app 同梱の初期データは最小構成の見本）。"
+    },
+    {
+      "requirement_id": "NFR-PF-13",
+      "requirement_item": "バッチ処理時間帯",
+      "requirement_content": "定期ジョブは NFR-AV-04 のバックアップのみとし、サービスを停止せずに目標値の時間帯で実行すること。バックアップの実行中も全画面・全APIの提供を継続すること",
+      "target_value": "03:00〜04:00（1時間以内に完了）",
+      "verification_method_in_requirement": "運用時に測定（MON-07 で開始・終了時刻を記録する）。代替確認：構成・設定レビュー（バックアップの取得方式がサービス停止を伴わないことを確認）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "バックアップの開始・終了時刻（MON-07）の記録による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-PF-14",
+      "requirement_item": "ピーク時のリソース使用率",
+      "requirement_content": "ピーク負荷時の app・db それぞれの CPU使用率・メモリ使用率を目標値以下とすること",
+      "target_value": "それぞれ 80%以下（30分間の平均）",
+      "verification_method_in_requirement": "運用時に測定（MON-02 で継続測定）。代替確認：性能テスト（ENV-01 で NFR-PF-01 の測定時に app・db のコンテナの CPU・メモリ使用率を記録し参考値とする）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "ピーク負荷時の CPU・メモリ使用率（MON-02）の測定による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。検証方法が「運用時に測定」で、判定対象は本番環境（ENV-02）の稼働実績・監視記録・構築時の設定であり、結合試験環境（ENV-01 の app コンテナ）の中に判定対象が存在しない。"
+    },
+    {
+      "requirement_id": "NFR-PF-15",
+      "requirement_item": "長時間稼働",
+      "requirement_content": "ピーク時間帯（1時間）とその前後各30分を含む2時間の連続負荷で、応答時間が劣化せず、エラー応答が増加しないこと",
+      "target_value": "開始時比 20%以内（最初の10分間と最後の10分間の95パーセンタイルの差）、かつシステムエラー（HTTP 500）0件",
+      "verification_method_in_requirement": "負荷テスト・耐久テスト（2時間の連続負荷で応答時間の推移と app・db のメモリ使用量の推移を記録する）",
+      "category": "PERFORMANCE_TEST",
+      "reason_not_automatable": "検証方法が「性能テスト」または「負荷テスト・耐久テスト」。ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）を与えて応答時間・スループット・資源使用率を測定する試験であり、機能の正否を確かめる結合試験とは測定条件・判定基準が異なる。",
+      "note": "2時間の連続負荷での応答時間推移・メモリ推移の記録による。",
+      "reexamination_round2": "検証方法欄が「負荷テスト・耐久テスト（2時間の連続負荷で応答時間の推移と app・db のメモリ使用量の推移を記録する）」。2時間の連続負荷と資源使用量の記録を要する。",
+      "responsible_phase": "性能・負荷試験（ENV-01、別工程）",
+      "reexamination_round3": "最終精査でも対象外を維持する。目標値は測定条件（ピーク負荷 同時155利用者・3年後データ量 VDC-01〜03・2時間連続負荷）のもとで測定した値そのものであり、結合試験では測定条件を与えられない。"
+    },
+    {
+      "requirement_id": "NFR-SC-02",
+      "requirement_item": "通信の暗号化",
+      "requirement_content": "本番環境では、利用者端末（ブラウザ・API の利用者）と本システムの間の通信を HTTPS のみとすること。HTTP での要求は HTTPS へ転送し、HTTP で業務データを送受信しないこと。ENV-01 は HTTP を許容する。app と db の間は外部から到達できないネットワークに限ること（NFR-SC-26）",
+      "target_value": "TLS 1.2 以上（ENV-02）",
+      "verification_method_in_requirement": "運用時に測定（本番環境の構築時に、TLS 1.1 以下での接続が失敗し、TLS 1.2 以上で接続できることを確認する）。代替確認：構成・設定レビュー（HTTPS の終端方式・設定を確認する）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番環境の TLS 1.2 以上での接続確認による（ENV-01 は HTTP を許容）。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。ENV-01 は HTTP を許容すると要件自身が定めており、TLS 版数・HTTPS 終端は本番環境（ENV-02）の構築時にしか確認できない。"
+    },
+    {
+      "requirement_id": "NFR-SC-11",
+      "requirement_item": "依存ライブラリの脆弱性",
+      "requirement_content": "app が利用する全ての依存ライブラリに、既知の重大な脆弱性が無いこと。リリース前に確認すること",
+      "target_value": "CVSS 7.0以上 0件",
+      "verification_method_in_requirement": "脆弱性診断（リリース前に依存ライブラリの脆弱性確認ツールで全依存ライブラリを公開脆弱性情報と照合する）",
+      "category": "VULNERABILITY_SCAN",
+      "reason_not_automatable": "検証方法が「脆弱性診断」。診断ツールまたは診断者が実施する診断であり、結合試験の対象ではない。",
+      "note": "依存ライブラリの既知脆弱性（CVSS 7.0以上 0件）の照合。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "脆弱性診断（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定には公開脆弱性情報との照合（外部情報）が必要で、結合試験は外部インターネットへ接続せずに実行する（NFR-OM-06）ため実施できない。導入ライブラリの一覧・ライセンス・版は IT-AI-GF-072・056 で確認済みである。"
+    },
+    {
+      "requirement_id": "NFR-SC-20",
+      "requirement_item": "保存データの暗号化",
+      "requirement_content": "アプリケーションで項目単位の暗号化は行わない（パスワードは NFR-SC-01 のハッシュで保存する）。本番環境では、DB の格納領域とバックアップの保管先を、基盤の保存時暗号化機能で暗号化すること",
+      "target_value": "対象：ENV-02 の DB 格納領域・バックアップ（NFR-AV-11）。方式：基盤の保存時暗号化（AES 256ビット）",
+      "verification_method_in_requirement": "運用時に測定（本番環境の構築時に暗号化の設定を確認する）。代替確認：構成・設定レビュー",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番環境の保存時暗号化設定の確認による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番基盤の保存時暗号化設定であり、アプリケーション側は項目単位の暗号化を行わないと要件が定めている。"
+    },
+    {
+      "requirement_id": "NFR-SC-21",
+      "requirement_item": "脆弱性対策基準",
+      "requirement_content": "8.2 に定める対策方針を全て満たすこと",
+      "target_value": "8.2 の全項目（VUL-01〜VUL-13）",
+      "verification_method_in_requirement": "脆弱性診断（NFR-SC-29）。セキュリティテスト（VUL-01〜VUL-13 の検証方法による）",
+      "category": "VULNERABILITY_SCAN",
+      "reason_not_automatable": "検証方法が「脆弱性診断」。診断ツールまたは診断者が実施する診断であり、結合試験の対象ではない。",
+      "note": "8.2 の VUL-01〜VUL-13 全項目の充足確認。うち VUL-04（入力値検証）・VUL-05（XSS）・VUL-06（CSRF）は IT-AI-GF-012〜019 で確認済みだが、全項目の判定は脆弱性診断による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "脆弱性診断（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。8.2 の全項目（VUL-01〜13）の充足判定には脆弱性診断（NFR-SC-29）と、構成・設定レビュー（VUL-03 の保存時暗号化・VUL-08 の本番設定）が含まれる。セキュリティテストで確かめられる項目は IT-AI-GF-012〜019 ほかで PASS 済みである。"
+    },
+    {
+      "requirement_id": "NFR-SC-26",
+      "requirement_item": "通信制御",
+      "requirement_content": "本番環境で外部（インターネット）から到達できる経路を HTTPS（443番ポート）のみとし、db の待受ポート（5432）と app の待受ポート（8000）を外部へ公開しないこと。運用者のサーバーへのログインは当社の社内ネットワークからに限ること",
+      "target_value": "外部から：HTTPS（443番ポート）のみ。サーバーへのログイン：当社の社内ネットワークからのみ",
+      "verification_method_in_requirement": "運用時に測定（本番環境の構築時に外部からポートの到達性を確認する）。代替確認：構成・設定レビュー（ネットワーク設定を確認する）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "reason_not_automatable": "検証方法が「運用時に測定」。本番環境（ENV-02）の稼働実績・監視記録でのみ測定できる指標であり、ENV-01 の結合試験では測定できない（代替確認として構成・設定レビューが定められている）。",
+      "note": "本番環境での外部からのポート到達性の確認による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "本番稼働後の運用（ENV-02）",
+      "reexamination_round3": "最終精査でも対象外を維持する。判定対象は本番環境の公開ポート・到達性・社内ネットワークからのログイン制限であり、ENV-01 のコンテナ内からは観測できない。"
+    },
+    {
+      "requirement_id": "NFR-SC-29",
+      "requirement_item": "診断の要否・時期",
+      "requirement_content": "稼働開始前に、ENV-01 の全画面・全API を対象に脆弱性診断ツール（動的診断）で診断を行い、指摘を対処すること",
+      "target_value": "重大度 高以上 0件",
+      "verification_method_in_requirement": "脆弱性診断（稼働開始前に1回実施し、指摘の対処後に再診断する）",
+      "category": "VULNERABILITY_SCAN",
+      "reason_not_automatable": "検証方法が「脆弱性診断」。診断ツールまたは診断者が実施する診断であり、結合試験の対象ではない。",
+      "note": "稼働開始前の動的診断の実施による。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "脆弱性診断（稼働開始前）",
+      "reexamination_round3": "最終精査でも対象外を維持する。診断ツール（動的診断）による稼働開始前の診断と再診断が判定対象である。"
+    },
+    {
+      "requirement_id": "NFR-US-01",
+      "requirement_item": "対応ブラウザ",
+      "requirement_content": "来訪者・購入者・管理者が、目標値のブラウザで全画面の全操作を行えること",
+      "target_value": "Google Chrome 最新版、Microsoft Edge 最新版（PC版）",
+      "verification_method_in_requirement": "互換性・操作性テスト（2種のブラウザで全画面（SCR-001〜SCR-010、SCR-101〜SCR-103、SCR-901）を表示し、全操作を行う）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "Chrome・Edge 最新版での全画面・全操作の確認。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    },
+    {
+      "requirement_id": "NFR-US-02",
+      "requirement_item": "画面解像度",
+      "requirement_content": "目標値以上の表示領域で、全画面が横スクロールなく表示され、表示崩れ（要素の重なり・欠け）が無いこと",
+      "target_value": "幅 1280px × 高さ 720px 以上",
+      "verification_method_in_requirement": "互換性・操作性テスト（ブラウザの表示領域を幅 1280px・高さ 720px にして全画面を表示し、横スクロールバーが出ないことを確認する）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "幅1280px×高さ720px での表示崩れ・横スクロールの確認。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    },
+    {
+      "requirement_id": "NFR-US-05",
+      "requirement_item": "準拠規格・レベル",
+      "requirement_content": "全画面を、目標値の規格・適合レベルに適合させること",
+      "target_value": "JIS X 8341-3:2016 適合レベル A",
+      "verification_method_in_requirement": "互換性・操作性テスト（適合レベル A の達成基準のチェックリストで全画面を確認する）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "JIS X 8341-3:2016 適合レベル A のチェックリストによる確認。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    },
+    {
+      "requirement_id": "NFR-US-06",
+      "requirement_item": "対応デバイス・OS",
+      "requirement_content": "PC で利用できること。スマートフォン・タブレットは対象外とすること",
+      "target_value": "PC（Windows 11）",
+      "verification_method_in_requirement": "互換性・操作性テスト（Windows 11 の PC で NFR-US-01 の確認を行う）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "Windows 11 の PC での確認。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    },
+    {
+      "requirement_id": "NFR-US-07",
+      "requirement_item": "キーボード操作",
+      "requirement_content": "マウスを使わず、キーボード（Tab・Shift+Tab・Enter・Space・矢印キー）だけで全画面の全操作を行えること",
+      "target_value": "全画面の全操作",
+      "verification_method_in_requirement": "互換性・操作性テスト（キーボードだけで会員登録から支払まで、管理者のログインから出荷登録までを操作する）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "キーボードだけでの全操作の確認。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    },
+    {
+      "requirement_id": "NFR-US-08",
+      "requirement_item": "主要操作の手順数",
+      "requirement_content": "ログイン済みの購入者が、商品一覧から支払を完了するまでの画面数を目標値以内とすること",
+      "target_value": "7画面以内（商品一覧 SCR-001→商品詳細 SCR-002→カート SCR-005→注文手続き SCR-006→注文完了 SCR-007→支払 SCR-008→注文詳細 SCR-010）",
+      "verification_method_in_requirement": "互換性・操作性テスト（左記の手順で操作し、経由した画面数を数える）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "商品一覧から支払完了までの画面数（7画面以内）の確認。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    },
+    {
+      "requirement_id": "NFR-US-09",
+      "requirement_item": "誤操作防止",
+      "requirement_content": "取消できない操作（注文確定、注文キャンセル、出荷登録、配達完了登録、カート明細の削除）の実行前に確認ダイアログを表示し、利用者が承諾した場合のみ実行すること",
+      "target_value": "対象操作の全件で確認が表示される（承諾しない場合のデータ変更 0件）",
+      "verification_method_in_requirement": "互換性・操作性テスト（対象の5操作で確認ダイアログを表示し、取消を選んだ場合にデータが変更されないことを確認する）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "確認ダイアログの表示と取消時にデータが変更されないことの確認。ブラウザの JavaScript 実行と利用者操作を伴うため結合試験では判定しない。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    },
+    {
+      "requirement_id": "NFR-US-10",
+      "requirement_item": "二重送信の防止",
+      "requirement_content": "画面の更新操作のボタンは、押下後に処理が完了するまで再押下できないこと",
+      "target_value": "処理完了前の再押下による要求の送信 0件",
+      "verification_method_in_requirement": "互換性・操作性テスト（注文確定・支払のボタンを連続して押下し、要求が1回だけ送信されることを確認する）",
+      "category": "COMPATIBILITY_TEST",
+      "reason_not_automatable": "検証方法が「互換性・操作性テスト」。対象ブラウザでの表示・解像度・キーボード操作・アクセシビリティ基準の適合など、ブラウザを操作して確認する試験であり、サーバー側の結合試験では判定できない。",
+      "note": "ボタン連続押下時に要求が1回だけ送信されることの確認。ブラウザ操作を伴うため結合試験では判定しない。",
+      "reexamination_round2": "修正1回目の分類を維持（再精査の対象区分外）。",
+      "responsible_phase": "互換性・操作性テスト（受入試験）",
+      "reexamination_round3": "最終精査でも対象外を維持する。対象ブラウザでの描画・解像度・キーボード操作・アクセシビリティ達成基準のチェックリスト判定が必要で、サーバー側の応答からは適合可否を決められない。"
+    }
+  ],
+  "status": "FINAL",
+  "finalized_at": "2026-10-22T20:10:00+09:00",
+  "reexamination_round3": {
+    "scope": "修正2回目の後に残った C10 不合格 63件すべて",
+    "criteria": [
+      "要件本文の「検証方法」（11章は「確認方法」）欄を正本とする",
+      "結合試験環境（app サービスのコンテナ）の中に判定対象が存在するか",
+      "形骸的（常に真になる・実質何も検証しない・ファイル存在確認のみ・自己言及）でない判定ができるか",
+      "件数の削減を目的としない。判定できない要件は対象外のまま残し、人が実施する検証として申し送る"
+    ],
+    "moved_to_automated": [
+      {
+        "requirement_id": "NFR-SC-25",
+        "case_id": "IT-AI-GF-081",
+        "verification_method_in_requirement": "構成・設定レビュー（12.2 の検証データの作成手順と初期データ定義ファイルの内容を確認する）",
+        "rationale": "要件本文の検証方法「構成・設定レビュー（12.2 の検証データの作成手順と初期データ定義ファイルの内容を確認する）」のうち、判定対象である初期データ定義ファイルは app イメージへ同梱されており、12.2 VDC-01 が「メールアドレスのドメインは example.com」という機械的に照合できる条件を与えている。接続先が使い捨てテストDBであることも実行時に観測できる。修正2回目は「架空の値かどうかは値の意味の判断で機械的な判定条件が無い」としたが、12.2 の記載が判定条件を与えているため判断を改めた。",
+        "residual_manual_check": "12.2 の「検証データの作成手順」そのもの（生成スクリプトの運用・本番バックアップを ENV-01 へリストアしない運用）と、本番環境の記憶媒体・バックアップの扱いは構成・設定レビューおよび運用で確認する。IT-AI-GF-081 が判定したのは、app に同梱された初期データ定義ファイルの内容と、結合試験の接続先が使い捨てテストDBであることである。"
+      },
+      {
+        "requirement_id": "NFR-OM-17",
+        "case_id": "IT-AI-GF-082",
+        "verification_method_in_requirement": "運用テスト（ENV-01 で環境変数を変更して app を再起動し、設定が反映されることを確認する）。構成・設定レビュー（設定項目の一覧と記入例のファイル（.env.example）を確認する）",
+        "rationale": "要件の目標値「環境変数の変更と app の再起動のみ」は、設定モジュールを与えた環境変数だけで読み込み直す（＝再起動と同じ入力→設定の関係を再現する）ことで機械的に判定できる。判定対象（config/settings.py と環境変数）は結合試験環境の中にあり、既存の IT-AI-GF-074 でも同じ読み込み方式を用いている。修正2回目は「プロセス再起動を伴うため判定しない」としたが、再起動で再現したい性質（プログラム変更なしに値が切り替わること）は読み込み直しで判定できるため判断を改めた。",
+        "residual_manual_check": "実際に `docker compose up -d` で app を再起動して反映を確認する運用テストと、設定項目の一覧・記入例ファイル（.env.example。リポジトリ直下にあり app イメージへ同梱されない）の確認は、運用テスト・構成・設定レビューで実施する。IT-AI-GF-082 が判定したのは、列挙された設定項目が環境変数だけで切り替わり、ソースの変更を要しないことである。"
+      },
+      {
+        "requirement_id": "NFR-EN-07",
+        "case_id": "IT-AI-GF-083",
+        "verification_method_in_requirement": "構成・設定レビュー（ホスト OS 固有の設定・パスに依存しないことを確認する）",
+        "rationale": "要件本文の検証方法「構成・設定レビュー（ホスト OS 固有の設定・パスに依存しないことを確認する）」が定める確認内容は、app イメージの中にあるソース・設定を対象に機械的に判定できる。単なる絶対パス検索ではなく、文字コード既定値への依存・実行環境による分岐・パス区切りの直書きという、実際に移植性を壊す記述を検出する。修正2回目は「常に真になる」としたが、テキスト入出力の文字コード明示などは回帰し得る条件であるため判断を改めた。",
+        "residual_manual_check": "他のホスト OS（Windows / macOS）上の Docker で実際に起動して全機能を操作する確認は、結合試験環境（Linux コンテナ1種類）では行えないため、運用テスト・構成・設定レビューで実施する。IT-AI-GF-083 が判定したのは、app のソース・設定がホスト OS 固有の設定・パス・文字コード既定値に依存しないことである。"
+      },
+      {
+        "requirement_id": "NFR-EN-03",
+        "case_id": "IT-AI-GF-084",
+        "verification_method_in_requirement": "構成・設定レビュー（compose.yaml のサービスが app・db の2つであることを確認する）。運用テスト（NFR-OM-05 の方法）",
+        "rationale": "要件内容のうち「app（Web画面・API・業務ロジック・模擬決済）と db の2つのサービス」「本リリースの実装は本番基盤に依存しない」という性質は、実行中の app が要求する基盤サービス（DB 1系統のみ・外部キャッシュやメッセージ基盤を持たない）と、導入製品・ソースの参照（クラウド固有 SDK 0件）として観測できる。修正2回目は「app が起動していることの確認にしかならない」としたが、第3のサービス・本番基盤固有 SDK の不在は回帰し得る条件であり形骸的ではないため判断を改めた。",
+        "residual_manual_check": "compose.yaml のサービス定義が app・db の2つであることの目視確認（同ファイルは app イメージへ同梱されない）と、`docker compose up -d` による起動確認（NFR-OM-05 の運用テスト）は、構成・設定レビュー・運用テストで実施する。IT-AI-GF-084 が判定したのは、実行中の app が app・db 以外の実行基盤サービス・本番基盤固有の製品に依存しないことである。"
+      }
+    ],
+    "revised_round2_judgements": [
+      {
+        "requirement_id": "NFR-SC-25",
+        "round2_judgement": "自動テスト対象外（形骸的になる／判定対象が無いと判断）",
+        "round3_judgement": "自動検証へ移す",
+        "reason_for_change": "要件本文の検証方法「構成・設定レビュー（12.2 の検証データの作成手順と初期データ定義ファイルの内容を確認する）」のうち、判定対象である初期データ定義ファイルは app イメージへ同梱されており、12.2 VDC-01 が「メールアドレスのドメインは example.com」という機械的に照合できる条件を与えている。接続先が使い捨てテストDBであることも実行時に観測できる。修正2回目は「架空の値かどうかは値の意味の判断で機械的な判定条件が無い」としたが、12.2 の記載が判定条件を与えているため判断を改めた。"
+      },
+      {
+        "requirement_id": "NFR-EN-07",
+        "round2_judgement": "自動テスト対象外（形骸的になる／判定対象が無いと判断）",
+        "round3_judgement": "自動検証へ移す",
+        "reason_for_change": "要件本文の検証方法「構成・設定レビュー（ホスト OS 固有の設定・パスに依存しないことを確認する）」が定める確認内容は、app イメージの中にあるソース・設定を対象に機械的に判定できる。単なる絶対パス検索ではなく、文字コード既定値への依存・実行環境による分岐・パス区切りの直書きという、実際に移植性を壊す記述を検出する。修正2回目は「常に真になる」としたが、テキスト入出力の文字コード明示などは回帰し得る条件であるため判断を改めた。"
+      },
+      {
+        "requirement_id": "NFR-EN-03",
+        "round2_judgement": "自動テスト対象外（形骸的になる／判定対象が無いと判断）",
+        "round3_judgement": "自動検証へ移す",
+        "reason_for_change": "要件内容のうち「app（Web画面・API・業務ロジック・模擬決済）と db の2つのサービス」「本リリースの実装は本番基盤に依存しない」という性質は、実行中の app が要求する基盤サービス（DB 1系統のみ・外部キャッシュやメッセージ基盤を持たない）と、導入製品・ソースの参照（クラウド固有 SDK 0件）として観測できる。修正2回目は「app が起動していることの確認にしかならない」としたが、第3のサービス・本番基盤固有 SDK の不在は回帰し得る条件であり形骸的ではないため判断を改めた。"
+      }
+    ],
+    "kept_not_automatable": 59,
+    "conclusion": "残る59件は、検証方法が本質的に自動テストの対象外（運用時に測定22／互換性・操作性テスト9／性能・負荷テスト8／脆弱性診断4／移行リハーサル5／運用テスト3／構成・設定レビュー4／該当なし4）であり、結合試験ケースを追加しない。これらは Traceability Audit の C10 で UNRESOLVED として継続記録し、受入試験・運用準備へ申し送る。"
+  },
+  "manual_verification_handover": [
+    {
+      "verification": "性能テスト・負荷テスト・耐久テスト",
+      "category": "PERFORMANCE_TEST",
+      "when": "稼働開始前（ENV-01）／稼働後は本番環境で継続測定",
+      "who": "開発・検証担当（負荷テストツール）",
+      "scope": "ピーク負荷（同時155利用者）と3年後データ量（VDC-01〜VDC-03）で、照会系1.0秒以内・更新系2.0秒以内・画面表示2.0秒以内（各95パーセンタイル）、注文確定240件/時以上、2時間連続負荷での劣化20%以内・HTTP 500 0件を測定する。",
+      "requirements": [
+        "NFR-PF-01",
+        "NFR-PF-02",
+        "NFR-PF-03",
+        "NFR-PF-04",
+        "NFR-PF-05",
+        "NFR-PF-06",
+        "NFR-PF-09",
+        "NFR-PF-15"
+      ],
+      "count": 8
+    },
+    {
+      "verification": "脆弱性診断（動的診断・依存ライブラリ）",
+      "category": "VULNERABILITY_SCAN",
+      "when": "稼働開始前（指摘対処後に再診断）／リリース前および稼働後は月1回",
+      "who": "診断ツールまたは診断者、システム運用担当",
+      "scope": "全画面（SCR-001〜010・101〜103・901）・全API を対象に動的診断を行い重大度 高以上 0件とする。依存ライブラリは CVSS 7.0以上 0件を確認し、OWASP Top 10（VUL-01〜13）の網羅判定を診断結果と結合試験のセキュリティテスト結果で行う。",
+      "requirements": [
+        "NFR-LG-07",
+        "NFR-SC-11",
+        "NFR-SC-21",
+        "NFR-SC-29"
+      ],
+      "count": 4
+    },
+    {
+      "verification": "移行リハーサル",
+      "category": "MIGRATION_REHEARSAL",
+      "when": "本番投入前（2027-03-29〜03-31 の前）",
+      "who": "運用者・EC運営担当",
+      "scope": "本番と同じコマンド・同じ件数構成（VDC-04：管理者7・仕入先20・商品分類30・商品300・在庫単位800＝1,157件）の定義ファイルで一括投入を試行し、件数照合・業務キーの内容照合・所要時間（60秒以内）・管理者7名のログインを確認する。",
+      "requirements": [
+        "NFR-MG-02",
+        "NFR-MG-03",
+        "NFR-MG-04",
+        "NFR-MG-08",
+        "NFR-PF-10"
+      ],
+      "count": 5
+    },
+    {
+      "verification": "互換性・操作性テスト（アクセシビリティを含む）",
+      "category": "COMPATIBILITY_TEST",
+      "when": "受入試験",
+      "who": "受入試験担当（EC運営担当・システム運用担当）",
+      "scope": "Google Chrome / Microsoft Edge 最新版（Windows 11 PC、幅1280×高さ720以上）で全画面の全操作、JIS X 8341-3:2016 適合レベル A のチェックリスト確認、キーボードのみでの操作、確認ダイアログと二重送信防止の動作、購入導線7画面以内を確認する。",
+      "requirements": [
+        "NFR-LG-08",
+        "NFR-US-01",
+        "NFR-US-02",
+        "NFR-US-05",
+        "NFR-US-06",
+        "NFR-US-07",
+        "NFR-US-08",
+        "NFR-US-09",
+        "NFR-US-10"
+      ],
+      "count": 9
+    },
+    {
+      "verification": "運用テスト",
+      "category": "OPERATION_TEST",
+      "when": "稼働開始前（ENV-01）",
+      "who": "システム運用担当・開発担当",
+      "scope": "`docker compose up -d` 1回での全サービス起動と商品一覧の表示、`docker compose exec app pytest` 1コマンドでの全自動テスト実行（失敗0件）、コンテナイメージ再構築・migrate・起動と切戻しの所要時間（120分以内）、環境変数変更後の app 再起動での設定反映を確認する。",
+      "requirements": [
+        "NFR-OM-05",
+        "NFR-OM-06",
+        "NFR-OM-15"
+      ],
+      "count": 3
+    },
+    {
+      "verification": "構成・設定レビュー",
+      "category": "CONFIG_REVIEW",
+      "when": "稼働開始前（本番基盤の選定・構築時）",
+      "who": "システム運用担当・設計担当",
+      "scope": "採用製品のサポート期限と更新計画、移行計画（実施日・実施者・在庫数量の確定時刻）、定期ジョブのスケジュール設定と手動実行手順、README.md と本番運用手順書の記載内容、compose.yaml のサービス構成（app・db の2つ）、.env.example の設定項目一覧を確認する。",
+      "requirements": [
+        "NFR-EN-10",
+        "NFR-MG-05",
+        "NFR-OM-12",
+        "NFR-OM-19"
+      ],
+      "count": 4
+    },
+    {
+      "verification": "運用時の測定（稼働後の運用）",
+      "category": "OPERATIONAL_MEASUREMENT",
+      "when": "本番稼働後（月次・障害時・年次）",
+      "who": "システム運用担当",
+      "scope": "提供時間・稼働率（99.0%以上）・計画停止の実績、バックアップ取得とリストア（RTO 6時間・RPO 24時間・リストア4時間以内）、ログ保管（アプリ90日・監査1年）、監視通知（検知から5分以内）、パッチ適用（CVSS 7.0以上 30日以内）、問い合わせ一次回答（4時間以内）、ピーク時資源使用率（80%以下）、本番環境の通信暗号化（TLS 1.2 以上）・通信制御（443のみ）・保存時暗号化・データ所在（日本国内）を測定・確認する。",
+      "requirements": [
+        "NFR-AV-01",
+        "NFR-AV-02",
+        "NFR-AV-03",
+        "NFR-AV-04",
+        "NFR-AV-05",
+        "NFR-AV-07",
+        "NFR-AV-08",
+        "NFR-AV-11",
+        "NFR-AV-12",
+        "NFR-EN-06",
+        "NFR-OM-02",
+        "NFR-OM-03",
+        "NFR-OM-08",
+        "NFR-OM-09",
+        "NFR-OM-10",
+        "NFR-OM-14",
+        "NFR-OM-16",
+        "NFR-PF-13",
+        "NFR-PF-14",
+        "NFR-SC-02",
+        "NFR-SC-20",
+        "NFR-SC-26"
+      ],
+      "count": 22
+    },
+    {
+      "verification": "対応不要（要件が機能を設けないと定めているもの）",
+      "category": "NOT_APPLICABLE",
+      "when": "—",
+      "who": "—",
+      "scope": "冗長化・大規模災害対応・移行時の停止許容時間・機器の消費エネルギーは、要件本文が「該当なし」と定めており、実施すべき検証は無い。構成が要件のとおり（単一構成・新規導入）であることは構成・設定レビューで確認する。",
+      "requirements": [
+        "NFR-AV-06",
+        "NFR-AV-09",
+        "NFR-EN-13",
+        "NFR-MG-06"
+      ],
+      "count": 4
+    }
+  ]
+}

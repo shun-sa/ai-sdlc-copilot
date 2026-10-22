@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "audit_scope": "FULL",
+  "source_baseline_sha256": "527f5ac135479a9c42545b794ea866802f8687aa2b35e7049c59f34ceac7cc14",
+  "criteria": {
+    "discovered": [
+      "authentication-authorization",
+      "cross-phase-security-consistency",
+      "data-protection",
+      "dependency-configuration",
+      "error-logging",
+      "input-validation-injection",
+      "secret-credentials",
+      "security-test-coverage"
+    ],
+    "total": 8,
+    "pass": 8,
+    "not_applicable": 0,
+    "fail": 0
+  },
+  "issues": {
+    "total": 7,
+    "unresolved": 1,
+    "blocking": 0
+  },
+  "errors": []
+}

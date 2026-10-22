@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "events": [
+    {
+      "event_id": "dispatch-back-impl-1",
+      "timestamp": "2026-10-22T02:14:46.885070+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "UNIT_TEST",
+      "to_phase": "IMPLEMENTATION",
+      "classification": "IMPLEMENTATION_ERROR",
+      "reason": "単体テストで画面エラーメッセージのSCR不一致を検出",
+      "trigger_agent": "UnitTest",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-impl-2",
+      "timestamp": "2026-10-22T02:41:03.207660+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "UNIT_TEST",
+      "to_phase": "IMPLEMENTATION",
+      "classification": "IMPLEMENTATION_ERROR",
+      "reason": "SCR-008-OP01/SCR-005-OP03/SCR-103-OP01の画面文言・遷移が要件未達",
+      "trigger_agent": "UnitTest",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-addr-1",
+      "timestamp": "2026-10-22T05:03:32.687514+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "INTEGRATION_TEST",
+      "to_phase": "ADDR",
+      "classification": "CROSS_PHASE_CONSISTENCY_ISSUE",
+      "reason": "結合試験の配置・実行方法の判断がADDR-004に無くNFR-OM-06が不成立",
+      "trigger_agent": "QualityReview",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-addr-2",
+      "timestamp": "2026-10-22T06:28:14.467960+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "INTEGRATION_TEST",
+      "to_phase": "ADDR",
+      "classification": "ADR_REQUIRED",
+      "reason": "結合試験で決済要求送信順序がFR-031手順5に反することを検出",
+      "trigger_agent": "IntegrationTest",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-unit-refresh",
+      "timestamp": "2026-10-22T07:53:00.148294+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "FINAL_ASSURANCE",
+      "to_phase": "UNIT_TEST",
+      "classification": "STALE_TEST_EVIDENCE",
+      "reason": "ADDR-013実装後の単体テスト証跡が未更新（FULL Traceability S-18）",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-impl-3",
+      "timestamp": "2026-10-22T08:59:27.876497+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "INTEGRATION_TEST",
+      "to_phase": "IMPLEMENTATION",
+      "classification": "INPUT_VALIDATION_ISSUE",
+      "reason": "全角数字の都道府県コード・郵便番号が受理される",
+      "trigger_agent": "IntegrationTest",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-it-c10-2",
+      "timestamp": "2026-10-22T09:21:17.555674+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "FINAL_ASSURANCE",
+      "to_phase": "INTEGRATION_TEST",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "reason": "C10残り74件の再精査（修正2回目）",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-unit-regression",
+      "timestamp": "2026-10-22T10:01:00.940846+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "INTEGRATION_TEST",
+      "to_phase": "UNIT_TEST",
+      "classification": "MISSING_BEHAVIOR_COVERAGE",
+      "reason": "OBS-IT-001の回帰テスト欠落と単体証跡の鮮度",
+      "trigger_agent": "QualityReview",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-it-c10-3",
+      "timestamp": "2026-10-22T10:51:28.324336+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "FINAL_ASSURANCE",
+      "to_phase": "INTEGRATION_TEST",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "reason": "C10残り63件の最終精査（修正3回目）",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    }
+  ]
+}

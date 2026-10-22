@@ -606,3 +606,113 @@ RequirementsからFinal AssuranceまでのAI SDLCを
 旧来の停止条件は品質PASSの判定として維持し、工程継続では共通3回方針を優先します。
 検査FAILは変更しません。最終結果もCOMPLETE_WITH_UNRESOLVEDとして正常完了と区別します。
 詳細は [共通3回ループ](docs/ai-sdlc/bounded-repair-loop.md) を参照してください。
+
+---
+
+# MiniCommerce 起動・運用手順
+
+本節は MiniCommerce（`app/`、`compose.yaml`）の運用者（ACT-005）と開発者向けの手順です。
+対象の要件は NFR-OM-19、NFR-OM-04、NFR-OM-05、NFR-OM-14、NFR-OM-15、NFR-SC-07、NFR-SC-11 です。
+
+## 1. 前提
+
+| 項目 | 内容 |
+| --- | --- |
+| 実行基盤 | Docker Compose（サービスは `app`・`db` の2つ） |
+| 言語・FW | Python 3.12 / Django 5.2 LTS / Django REST Framework 3.15 以上 |
+| データベース | PostgreSQL 16（`db` サービス、ポート 5432） |
+| APサーバー | Gunicorn（WSGI・同期ワーカー）。静的ファイルは WhiteNoise が `app` プロセスから配信 |
+| 作業ディレクトリ | リポジトリルート（`compose.yaml` のある場所） |
+
+Django 付属の開発用サーバー（`manage.py runserver`）は本番・検証のいずれでも使用しません（NFR-EN-08）。
+
+## 2. 環境変数の設定（NFR-SC-07、NFR-OM-17）
+
+1. `.env.example` を `.env` へ複写します。`.env` はリポジトリに含めません。
+2. 次の値を環境ごとに設定します。実値は本書・ソースコードに記載しません。
+   - `DJANGO_SECRET_KEY`：秘密鍵（必須）
+   - `DB_PASSWORD`：データベースのパスワード（必須）
+   - `DJANGO_ALLOWED_HOSTS`：接続を受け付けるホスト名
+   - `SESSION_COOKIE_SECURE`：本番環境（HTTPS）は `true`、検証環境（HTTP）は `false`
+   - `GUNICORN_WORKERS` ほかの起動設定（ワーカー数・タイムアウト・ログ水準）
+3. 設定変更はコード変更を伴いません。`.env` を変更して `docker compose up -d` を再実行します。
+
+## 3. 起動・停止
+
+| 目的 | コマンド |
+| --- | --- |
+| 依存取得・ビルド | `docker compose build` |
+| 起動（全サービス） | `docker compose up -d` |
+| 停止 | `docker compose down` |
+| 停止（データ削除を伴う） | `docker compose down -v`（検証環境のみ。DBのデータを削除します） |
+
+起動後、画面は `http://localhost:8000`、Web API は `http://localhost:8000/api` で受け付けます。
+
+## 4. マイグレーション
+
+```
+docker compose exec app python manage.py migrate
+```
+
+## 5. 初期データ一括投入（FR-060、NFR-OM-04）
+
+定義ファイルは運用者がサーバー上へ配置します（Web 画面・Web API からは受け付けません）。
+リポジトリの `app/seed/initial_data.json` は、`app` コンテナからは `seed/initial_data.json` として参照します。
+
+| 目的 | コマンド |
+| --- | --- |
+| 追加投入（既存データを残す） | `docker compose exec app python manage.py load_initial_data seed/initial_data.json` |
+| 全削除して投入（検証環境の初期化専用） | `docker compose exec app python manage.py load_initial_data seed/initial_data.json --reset` |
+
+- 成功時：標準出力にデータ別の投入件数（利用者・仕入先・商品分類・商品・商品分類所属・在庫単位・クーポン）を表示し、終了コードは `0` です。件数が定義ファイルの行数と一致することを確認します（NFR-MG-02）。
+- 失敗時：標準エラー出力に、データ名・行番号・項目名・理由を違反の全件分表示し、終了コードは `0` 以外です。削除も登録も行いません。
+- 成功・失敗のいずれも監査ログ（`initial_data_load`）を1件記録します。
+- **本番環境で `--reset` を実行しないでください**（監査ログ以外の全データを削除します。検証環境の初期化専用）。
+- 定義ファイルの構造（キー名・参照項目名・日時表記）は `docs/addr/ADDR-010.md` と `docs/architecture/files/FILE-001.md` に従います。
+
+## 6. テスト・静的解析
+
+| 目的 | コマンド |
+| --- | --- |
+| テスト（単体・結合） | `docker compose exec -T app pytest` |
+| 静的解析 | `docker compose exec app ruff check .` |
+
+ENV-01 の自動テストは上記の **コマンド1回**（`docker compose exec -T app pytest`、パス引数なし）で
+単体テスト（`app/shop/tests/unit/`）と結合テスト（`tests/integration/`）の全件を実行します（NFR-OM-06）。
+テスト種別ごとに分けて実行する必要はありません。
+
+- 結合テストの正本はリポジトリ直下の `tests/` です。`compose.yaml` の `app` サービスが
+  `./tests` を `/app/tests` へ**読取り専用**で、`./reports` を `/app/reports` へ読み書き可で
+  マウントし、コンテナ内から収集できるようにしています（ADDR-012）。
+- `compose.yaml` を変更した直後は、マウントを反映するためコンテナを再作成します
+  （`docker compose up -d --build app`）。
+- **本番環境（ENV-02）ではこのテスト用マウントを適用しません。** 本番イメージには
+  テストコード（リポジトリ直下 `tests/`）もテスト専用依存（`requirements-dev.txt`）も含めず、
+  検証環境と同一のイメージをそのまま使用します（NFR-OM-17、NFR-SC-11）。
+- 実行証跡（`reports/` 配下）は `/app/reports` のマウント経由でホストへ出力されます。
+
+テストは `db` サービス上に使い捨てのテストデータベース（`test_<DB_NAME>`）を自動作成・破棄します。
+接続先は環境変数（`DB_HOST`・`DB_PORT` ほか）だけで切り替わり、本番DB・本番資格情報は使用しません。
+本番・検証用のデータベースの内容には影響しません。静的解析の指摘は0件を保ちます（NFR-OM-07）。
+
+## 7. 依存ライブラリの脆弱性確認とパッチ適用（NFR-SC-11、NFR-OM-14）
+
+- 確認対象は `requirements.txt`（全ライブラリをバージョン固定、取得元は公式の配布元）です。
+- **リリース前**：`requirements.txt` の全ライブラリについて既知の脆弱性を確認し、CVSS 7.0 以上の既知の重大な脆弱性が0件であることを確認します。
+- **稼働後**：月1回、同じ対象で脆弱性情報を確認します。該当がある場合は、`requirements.txt` の版を更新し、`docker compose build` → `docker compose up -d` → `docker compose exec app pytest` の順で検証してから反映します。
+- 併せて、採用している版がサポート期限内であること（NFR-EN-10）とライセンス条件（NFR-EN-12）を確認します。
+
+## 8. リリース・切戻し（NFR-OM-15）
+
+1. リリース前に7章の脆弱性確認を実施します。
+2. `docker compose build` でイメージを作成し、`docker compose up -d` で起動します。
+3. `docker compose exec app python manage.py migrate` を実行します。
+4. 画面（`/`）と Web API（`/api/collections`）の応答を確認します。
+5. 切戻しは、直前のリリース時点のリポジトリ状態で `docker compose build` と `docker compose up -d` を再実行します。
+
+## 9. 障害調査（NFR-OM-18）
+
+- アプリケーションログは標準出力へ JSON Lines（1行1イベント）で出力します。`docker compose logs app` で参照します。
+- 各要求には `X-Request-ID`（要求ヘッダーで受領、無ければ生成）を付与し、応答ヘッダーとログの `request_id` に出力します。調査は `request_id` で突き合わせます。
+- ログにはパスワード・認証トークン・メールアドレス・氏名・住所・電話番号を出力しません。`path` にクエリ文字列を含めません。
+

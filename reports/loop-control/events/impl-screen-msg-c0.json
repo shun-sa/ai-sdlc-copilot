@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/impl-screen-message-cycle0",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app/shop/web/views_cart.py",
+    "requirement_reference": "SCR-002-OP01",
+    "test_case": "test_cart_add_line_screen_shows_insufficient_stock_message_of_scr_002",
+    "stable_error_type": "SCREEN_MESSAGE_MISMATCH"
+  },
+  "impact": "画面が業務例外の共通messageをそのまま表示し、SCR-002-OP01/SCR-005-OP01が必須とする現在の在庫数量・カート内数量を表示しないため、単体テスト2件がFAILしている",
+  "recommended_route": "IMPLEMENTATION",
+  "validation_result": "reports/unit-test/validation-result.json"
+}

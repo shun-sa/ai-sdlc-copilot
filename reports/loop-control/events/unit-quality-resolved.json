@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/unit-quality-resolved",
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "UNIT_TEST_QUALITY_ISSUE",
+    "artifact": "tests/unit",
+    "requirement_reference": "NFR-OM-06",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "単体テストをapp/shop/tests/unitへ移してdocker compose exec app pytestで実行可能にし、AC-UC-013-003/007と手順6後段の回帰テストを追加、画面Assertionを強化、Evidenceを実態へ更新",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

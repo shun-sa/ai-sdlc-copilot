@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "junit": {
+    "total": 138,
+    "passed": 138,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "criteria": [
+    "api",
+    "authentication",
+    "database",
+    "end-to-end-flow",
+    "error-handling",
+    "state-transition"
+  ],
+  "coverage": {
+    "required": 143,
+    "common": 0,
+    "ai_only": 59,
+    "external_only": 0,
+    "missing": 84,
+    "ai_initial_coverage_rate": 41.26,
+    "external_coverage_rate": null,
+    "combined_initial_coverage_rate": 41.26,
+    "final_covered": 143,
+    "final_missing": 0,
+    "final_coverage_rate": 100.0
+  },
+  "case_counts": {
+    "total": 138,
+    "ai_initial": 54,
+    "ai_gap_fill": 84,
+    "external": 0
+  },
+  "errors": []
+}

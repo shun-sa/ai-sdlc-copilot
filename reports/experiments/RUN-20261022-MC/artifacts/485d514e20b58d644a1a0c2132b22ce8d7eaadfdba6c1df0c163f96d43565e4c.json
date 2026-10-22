@@ -1,0 +1,1966 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "generated_from": {
+    "plan": "reports/integration-test/integration-test-plan.json",
+    "junit": "reports/integration-test/junit.xml",
+    "case_run_results": "reports/integration-test/case-run-results.json",
+    "trace_execution": "reports/integration-test/trace-execution.json"
+  },
+  "external_input": {
+    "provided": false,
+    "user_confirmed_without_external_cases": true,
+    "standard_location": "external-tests/integration-test/",
+    "confirmed_at": "2026-10-22T13:15+09:00",
+    "confirmed_via": "SDLC Orchestrator（ユーザーの明示確認 external_cases_confirmed_absent: true）",
+    "note": "AI INITIAL Case を固定（snapshot initial-1）した後に標準配置先を確認し、未配置であったため EXTERNAL_TEST_INPUT_REQUIRED を返却した。ユーザーが External Case なしで続行することを明示的に選択したため、--allow-none 相当として External Case 0件で継続した。"
+  },
+  "external_case_integrity": [],
+  "environment": {
+    "production_environment_used": false,
+    "description": "ローカル検証環境。Web API は Django のテストクライアントで URLルーティング・ミドルウェア・認証・権限判定・例外ハンドラ・Service・ORM を通して実行し、DB は Docker（postgres:16）上の使い捨てテストDBへ接続する。",
+    "reproducible": true,
+    "disposable": true,
+    "components": [
+      "Web API（Django 5.2 / DRF）",
+      "Service 層（shop.services）",
+      "ORM / PostgreSQL 16（Docker コンテナ、使い捨てテストDB）",
+      "決済サービス（模擬実装 MockPaymentGateway。外部ネットワークへ接続しない）",
+      "管理コマンド（load_initial_data）"
+    ]
+  },
+  "database": {
+    "used": true,
+    "engine": "PostgreSQL 16（Docker コンテナ）",
+    "test_database": "test_<DB_NAME>（pytest-django が作成・破棄する使い捨てテストDB）",
+    "production_database_used": false,
+    "shared_database_used": false,
+    "production_credentials_used": false,
+    "production_data_used": false,
+    "schema_reproducible": true,
+    "schema_source": "Django マイグレーション（shop/migrations）",
+    "isolated_test_data": true
+  },
+  "external_services": {
+    "production_service_used": false,
+    "strategy": "MOCK（shop.payments.mock.MockPaymentGateway。異常系は応答不正・締切超過を模擬）"
+  },
+  "criteria_coverage": [
+    {
+      "criterion": "api",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "FR-001〜FR-004・FR-010〜FR-012・FR-020〜FR-025・FR-032・FR-033・FR-040〜FR-042 の Web API について、HTTP要求からルーティング・認証・権限判定・Service・ORM・PostgreSQL までを 通した応答（ステータス・項目・ページング・金額内訳）を api-contract と各FRの出力仕様で確認した。"
+    },
+    {
+      "criterion": "authentication",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "認証トークンの発行・多重ログイン・ログアウトによる無効化・期限切れ・未認証・ロール別権限（CMN-02、CMN-03、CMN-09、CMN-11、CMN-12）を、実際のAuthorizationヘッダーと認証クラス経由で確認した。"
+    },
+    {
+      "criterion": "database",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "使い捨てテストDB（pytest-django が作成・破棄する test_<DB_NAME>）に対し、永続化内容・一意制約・在庫引当のトランザクション・行ロックによる同時実行制御・初期データ投入の全件ロールバックを確認した。"
+    },
+    {
+      "criterion": "end-to-end-flow",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "会員登録→ログイン→検索→カート→クーポン→注文確定→支払→出荷→配達完了の業務フロー、キャンセル後の在庫復元と再購入、否認後の再支払までを複数FR跨ぎで確認した。"
+    },
+    {
+      "criterion": "error-handling",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "入力エラー・業務エラー・対象なし・認証/権限エラー・決済サービスの応答不正と締切超過・共通エラー構造と判定順序（CMN-14、CMN-16、MSG-04）を連携経路全体で確認した。"
+    },
+    {
+      "criterion": "state-transition",
+      "applicable": true,
+      "result": "PASS",
+      "reason": "注文の状態遷移（ST-PO-01〜ST-PO-06）とカートの状態遷移（ST-CART-01、ST-CART-02）について、許可された遷移と不正遷移（INVALID_STATUS_TRANSITION）、履歴記録・在庫戻しを確認した。"
+    }
+  ],
+  "case_results": [
+    {
+      "case_id": "IT-AI-001",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007, ADDR-008",
+      "coverage_keys": [
+        "CK-FR001-01",
+        "CK-FR001-02"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "201が返り、user_id・email（buyer1@example.com）・full_name（前後空白除去後）・role=buyer・registered_at を返す。応答に token を含まない。DBの利用者が1件増え、password_hash は平文ではなくPBKDF2形式のハッシュで保存されている",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.301,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_register_persists_buyer_without_auto_login",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-002",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR001-03"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "400 VALIDATION_ERROR が返り、details に email・password・password_confirmation・full_name の全項目の項目名と理由が含まれる。利用者は登録されない（E-001-01, CMN-16）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.011,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_register_reports_all_invalid_fields",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-003",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR001-04"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "409 EMAIL_ALREADY_REGISTERED が返り、利用者件数は増えない（E-001-02）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.292,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_register_rejects_duplicated_email_after_normalization",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-004",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-008",
+      "coverage_keys": [
+        "CK-FR002-01"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200が返り token・expires_at（発行時刻＋24時間）・user（user_id, email, full_name, role=buyer）を含む。認証トークンはハッシュで保存され平文は保存されない。監査ログにログイン成功が1件記録される。取得した token で /api/auth/me が200を返す",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.586,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_login_issues_token_and_records_audit_log",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-005",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-007",
+      "coverage_keys": [
+        "CK-FR002-02"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも 401 INVALID_CREDENTIALS が返り、どちらが誤りかを区別しない。監査ログにログイン失敗が各1件記録され（未登録時は利用者ID空）、メールアドレス・パスワードは記録されない（E-002-02, CMN-25）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.598,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_login_failure_is_indistinguishable_and_audited",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-006",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR002-03"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "400 VALIDATION_ERROR が返り details に未入力の全項目を含む。監査ログは記録されない（E-002-01）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.017,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_login_without_input_is_validation_error_and_not_audited",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-007",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002, FR-003",
+      "related_adr": "ADDR-002",
+      "coverage_keys": [
+        "CK-FR002-04",
+        "CK-FR003-01"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "ログアウトは204を返す。トークンAでの要求は401 AUTHENTICATION_REQUIRED、トークンBでの要求は200となる（CMN-11, CMN-12）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.916,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_logout_revokes_only_the_used_token",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-008",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004, FR-020",
+      "related_adr": "ADDR-002, ADDR-007",
+      "coverage_keys": [
+        "CK-CMN02-01"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "すべて401 AUTHENTICATION_REQUIRED が返り、業務処理は実行されない（CMN-02, ERR-04）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.338,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_authentication_required_apis_reject_missing_and_invalid_token",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-009",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-002",
+      "coverage_keys": [
+        "CK-CMN02-02"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "401 AUTHENTICATION_REQUIRED が返る（CMN-09, ADDR-002 DD-003）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.643,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_expired_token_is_rejected",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-010",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-002",
+      "coverage_keys": [
+        "CK-FR004-01"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で本人の user_id・email・full_name・role を返す",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.579,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_me_returns_own_profile",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-011",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-020, FR-040",
+      "related_adr": "ADDR-002, ADDR-007",
+      "coverage_keys": [
+        "CK-CMN03-01",
+        "CK-CMN03-02"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも 403 PERMISSION_DENIED が返り、業務処理は実行されない（CMN-03, ERR-03）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.219,
+      "error_message": null,
+      "test": "tests/integration/test_auth_api.py::test_role_restricted_apis_return_permission_denied",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-012",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-010",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR010-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で全分類が親→子の木構造順（同階層は表示順）で全件返り、ページング情報を持たない",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.015,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_collection_list_returns_tree_order_without_auth",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-013",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR011-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で公開かつ在庫単位を1件以上持つ商品のみが新着順（登録日時降順・商品ID降順）で20件返る。非公開商品と在庫単位なし商品は含まれない。min_price・min_price_incl_tax（税抜×110÷100切り捨て）・in_stock・collections とページング情報を含み、page=2 で21件目以降が返る",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.119,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_item_search_returns_public_items_with_stock_units_in_new_order",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-014",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR011-02"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "親分類指定時は配下分類に所属する商品も返る。キーワード併用時は商品名または商品説明に部分一致（英大小文字区別なし）する商品のみが返り、両条件のANDとなる",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.098,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_item_search_combines_collection_and_keyword",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-015",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR011-03"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "新着順＝登録日時降順（同値は商品ID降順）、価格の安い順＝最低税抜価格昇順（同値は商品ID昇順）、価格の高い順＝最低税抜価格降順（同値は商品ID昇順）、商品名順＝商品名昇順（同値は商品ID昇順）で返る",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.251,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_item_search_applies_four_sort_orders",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-016",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR011-04"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "400 VALIDATION_ERROR が返り、条件を満たさない全項目の項目名と理由が details に含まれる（E-011-01）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.046,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_item_search_rejects_invalid_conditions",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-017",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR012-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で商品説明・所属分類と、SKU昇順の stock_units（stock_unit_id, sku, variant_name, price, price_incl_tax, quantity, in_stock）を返す。price_incl_tax は税抜×110÷100の切り捨て",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.042,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_item_detail_returns_stock_units_in_sku_order",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-018",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR012-02"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも 404 NOT_FOUND が返り、非公開と不存在を区別しない（CMN-18, ERR-06）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.043,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_item_detail_hides_existence_of_private_and_unknown_items",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-019",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-020",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR020-01"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で lines=[]・coupon=null・amounts がすべて0のカート表現を返し、利用中カートが1件作成される。再照会しても利用中カートは1件のまま（ST-CART-01）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.721,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_view_creates_open_cart_once",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-020",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001, ADDR-004",
+      "coverage_keys": [
+        "CK-FR021-01"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも200で更新後のカート表現を返す。カート明細は1件で数量5、DBの明細数量も5、amounts.subtotal は 1,000×5＝5,000 となる",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.754,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_merges_same_stock_unit",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-021",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR021-02"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "409 QUANTITY_LIMIT_EXCEEDED が返り、context に stock_unit_id・limit=10・current_quantity=8・requested_quantity=11 を含む。カート明細の数量は8のまま",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.637,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_rejects_quantity_over_limit",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-022",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001, ADDR-007",
+      "coverage_keys": [
+        "CK-FR021-03"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "409 INSUFFICIENT_STOCK が返り、context.shortages に stock_unit_id・sku・requested_quantity=3・available_quantity=2 を1件含む。在庫数量・カートは変化しない",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.654,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_rejects_insufficient_stock",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-023",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-022",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR022-01"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で更新後のカート表現を返し、明細の数量が4、subtotal が4,000となる。DBの明細数量も4である",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.677,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_line_quantity_change_updates_amounts",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-024",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-022",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR022-02"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "順に 409 QUANTITY_LIMIT_EXCEEDED、409 INSUFFICIENT_STOCK、404 NOT_FOUND が返り、いずれの場合もカート明細は変更されない",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.252,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_line_quantity_change_rejects_invalid_targets",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-025",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-023",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR023-01"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で残り1件のカート表現を返し、DBから当該明細が削除され金額内訳が再計算される。削除済み明細への再操作は404 NOT_FOUND となる",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.621,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_line_delete_removes_line_and_recalculates",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-026",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR024-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で coupon に code・name・discount_type・discount_value・min_spend・valid_from・valid_until・is_applicable=true を含み、amounts.discount_amount=1,000、discounted_subtotal=5,000、shipping_fee=0、tax_amount=500、total=5,500 となる",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.672,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_apply_coupon_reflects_discount",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-027",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR024-02"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "順に 409 COUPON_NOT_FOUND / COUPON_ALREADY_APPLIED / COUPON_NOT_YET_VALID（context に valid_from・valid_until）/ COUPON_EXPIRED（同）/ COUPON_MIN_SPEND_NOT_MET（context に min_spend・subtotal）/ CART_EMPTY が返る。カートのクーポン適用状態は変化しない",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.607,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_apply_coupon_business_errors",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-028",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-025",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR025-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で coupon=null を返し、discount_amount=0・discounted_subtotal=6,000 で金額が再計算される。DBのカートのクーポン参照も解除される",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.675,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_remove_coupon_restores_amounts",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-029",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "coverage_keys": [
+        "CK-FR026-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "①送料500・消費税549（5,499×10÷100の切り捨て）・合計6,048 ②送料0・消費税500・合計5,500 となる（FR-026 計算例1・2, CMN-30, CMN-31）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.475,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_shipping_and_tax_boundary_at_5000",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-030",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "coverage_keys": [
+        "CK-FR026-02"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "①割引額299（299.85の切り捨て）・割引後小計1,700・送料500・消費税220・合計2,420 ②割引額800（min(1,000,800)）・割引後小計0・送料500・消費税50・合計550 となる（FR-026 計算例5・6）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.251,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_discount_amount_for_percentage_and_fixed_coupons",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-031",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001, ADDR-003",
+      "coverage_keys": [
+        "CK-FR030-01"
+      ],
+      "criterion": "end-to-end-flow",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "201で注文詳細を返し、status=注文受付、order_number が PO-＋8桁ゼロ埋め。在庫数量が10→8、注文明細1件（数量2・税抜単価・明細金額）、配送先1件（郵便番号・電話番号はハイフン除去後）、注文状態履歴1件（なし→注文受付、実行者＝購入者）が登録され、カートが注文済になり利用中カートが存在しない（ST-PO-01, ST-CART-02）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.83,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_checkout_commits_stock_order_address_history_and_cart",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-032",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR030-02"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "400 VALIDATION_ERROR が返り、details に受取人氏名・郵便番号・都道府県コード・住所1・電話番号の全項目を含む。在庫数量・カート・注文は変化しない（E-030-03）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.637,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_checkout_reports_all_invalid_address_fields",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-033",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR030-03"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも 409 CART_EMPTY が返り（E-030-04）、二重送信でも注文は1件だけ作成される（CMN-23）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.367,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_checkout_rejects_empty_cart_and_double_submission",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-034",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR030-04"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "409 ITEM_NOT_AVAILABLE が返り、context.stock_unit_ids に該当明細の在庫単位IDを明細追加日時昇順で含む。在庫数量・カート・注文は変化しない（E-030-05）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.657,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_checkout_rejects_private_item",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-035",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001, ADDR-007",
+      "coverage_keys": [
+        "CK-FR030-05"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "409 INSUFFICIENT_STOCK が返り、shortages に明細B・Cが明細追加日時昇順で含まれる。在庫数量は5・1・0のまま変化せず、注文関連データは1件も作成されない（E-030-10, CMN-21）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.764,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_checkout_allocates_nothing_when_any_line_is_short",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-036",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR030-06"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "順に 409 COUPON_EXPIRED（context に valid_from・valid_until）、409 COUPON_MIN_SPEND_NOT_MET（context に min_spend・subtotal）が返る。在庫・カート・注文は変化せず、クーポンは自動で外れない（E-030-08, E-030-09）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.62,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_checkout_revalidates_coupon_without_removing_it",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-037",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "coverage_keys": [
+        "CK-FR031-01"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で更新後の注文詳細を返す。status=支払済・支払日時が設定され、承認の決済記録が1件（金額＝注文の合計、transaction_ref が MOCK-＋英数字16桁）、注文状態履歴（注文受付→支払済、実行者＝購入者）が1件追加される。在庫数量は変化しない（ST-PO-02）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.782,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_payment_approved_moves_order_to_paid",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-038",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009, ADDR-007",
+      "coverage_keys": [
+        "CK-FR031-02"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "409 PAYMENT_DECLINED が返る。注文は注文受付のまま、支払日時は未設定、履歴・在庫は変化せず、否認の決済記録が1件登録されている（E-031-06, CMN-21）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.613,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_payment_declined_keeps_order_created",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-039",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "coverage_keys": [
+        "CK-FR031-03"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "502 PAYMENT_SERVICE_ERROR が返る。連携エラーの決済記録が1件残り、注文は注文受付のまま、支払日時・履歴・在庫は変化しない。自動再送は行われない（E-031-07, ADDR-009 DD-004）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.743,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_payment_gateway_error_records_error_without_retry",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-040",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR031-04"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも 409 INVALID_STATUS_TRANSITION が返り、context.current_status に現在の状態（paid / cancelled）を含む。決済記録は増えず注文状態も変化しない（E-031-05）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.441,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_payment_rejected_for_non_created_orders",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-041",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR031-05"
+      ],
+      "criterion": "authentication",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "404 NOT_FOUND が返り、注文の存在有無を明かさない。決済要求は送信されず決済記録も増えない（CMN-04, PRM-01）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.415,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_payment_for_other_buyers_order_is_not_found",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-042",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-032",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR032-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で自分の注文のみが注文日時の新しい順に返り、他の購入者の注文は含まれない。1ページ20件のページング情報を含む",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.276,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_order_list_returns_only_own_orders_newest_first",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-043",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-033",
+      "related_adr": "ADDR-004, ADDR-007",
+      "coverage_keys": [
+        "CK-FR033-01",
+        "CK-FR033-02"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "自分の注文は200で lines・amounts・coupon・shipping_address・status_history（from_status, to_status, changed_at, actor_role）を返し、決済記録は含まない。他人の注文・存在しないIDはいずれも404 NOT_FOUND（PRM-01, MSG-04）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.242,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_order_detail_for_buyer_hides_payment_records_and_other_orders",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-044",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR034-01"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも200で status=キャンセル済・キャンセル日時が設定され、在庫数量が明細数量分戻り、注文状態履歴が1件追加される。決済記録は変更されない（ST-PO-03, ST-PO-04, FCN-05）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.513,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_buyer_cancel_restores_stock_from_created_and_paid",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-045",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR034-02"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも 409 INVALID_STATUS_TRANSITION（context.current_status）が返り、在庫数量・注文状態・履歴は変化しない（同じ注文の在庫を2回戻さない）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.249,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_buyer_cancel_rejected_after_shipment",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-046",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-040",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR040-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で非公開商品の在庫単位も含む全在庫単位が1ページ50件で返り、stock_quantity・is_low_stock・item_name・item_is_public・supplier_name とページング情報を含む",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.506,
+      "error_message": null,
+      "test": "tests/integration/test_admin_api.py::test_admin_stock_unit_list_includes_private_items",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-047",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-041",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR041-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で条件に一致する全購入者の注文が1ページ20件で返り、buyer_email・buyer_name を含む。status の複数指定はOR、他条件とはANDで評価され、注文日範囲はJSTの日付境界で判定される（ADDR-006 DD-004）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 2.055,
+      "error_message": null,
+      "test": "tests/integration/test_admin_api.py::test_admin_order_search_filters",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-048",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-042",
+      "related_adr": "ADDR-004",
+      "coverage_keys": [
+        "CK-FR042-01"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "200で lines・amounts・shipping_address に加え、buyer（user_id, email, full_name）・payment_records（result, amount, transaction_ref, processed_at）・status_history（actor_user_id を含む）を返す",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.367,
+      "error_message": null,
+      "test": "tests/integration/test_admin_api.py::test_admin_order_detail_includes_buyer_and_payment_records",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-049",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-043",
+      "related_adr": "ADDR-001, ADDR-007",
+      "coverage_keys": [
+        "CK-FR043-01",
+        "CK-FR043-02"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "支払済からは200で status=出荷済、出荷日時・配送伝票番号が記録され、履歴（支払済→出荷済、実行者＝管理者）が1件追加される。注文受付・キャンセル済からは409 INVALID_STATUS_TRANSITION で変化しない（ST-PO-05）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 2.722,
+      "error_message": null,
+      "test": "tests/integration/test_admin_api.py::test_admin_ship_only_from_paid",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-050",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-044",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR044-01"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "出荷済からは200で status=配達完了・配達完了日時が設定され履歴が1件追加される。支払済からは409 INVALID_STATUS_TRANSITION で変化しない（ST-PO-06）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.349,
+      "error_message": null,
+      "test": "tests/integration/test_admin_api.py::test_admin_deliver_only_from_shipped",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-051",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-045",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR045-01"
+      ],
+      "criterion": "state-transition",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "注文受付・支払済からは200で status=キャンセル済、在庫数量が戻り、履歴（実行者＝管理者）が追加される。出荷済からは409 INVALID_STATUS_TRANSITION で変化しない（ST-PO-03, ST-PO-04）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 2.618,
+      "error_message": null,
+      "test": "tests/integration/test_admin_api.py::test_admin_cancel_restores_stock_before_shipment",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-052",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001, FR-002, FR-011, FR-012, FR-021, FR-024, FR-030, FR-031, FR-043, FR-044",
+      "related_adr": "ADDR-002, ADDR-003, ADDR-009",
+      "coverage_keys": [
+        "CK-E2E-01"
+      ],
+      "criterion": "end-to-end-flow",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "各段階のデータが後続へ引き継がれ、最終的に注文状態＝配達完了、注文状態履歴が4件（なし→注文受付→支払済→出荷済→配達完了）、在庫数量は注文数量分だけ減算されたまま、注文金額は注文確定時の値から変化しない",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.516,
+      "error_message": null,
+      "test": "tests/integration/test_e2e_flow.py::test_register_to_delivered_flow",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-053",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030, FR-031, FR-034, FR-012",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-E2E-02"
+      ],
+      "criterion": "end-to-end-flow",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "注文確定後は在庫0・in_stock=false、キャンセル後は在庫1・in_stock=true に戻り、同じ在庫単位で再度注文確定が成功する",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.729,
+      "error_message": null,
+      "test": "tests/integration/test_e2e_flow.py::test_cancel_restores_stock_and_allows_repurchase",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-054",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010, ADDR-008",
+      "coverage_keys": [
+        "CK-FR060-01"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "定義どおりの件数・内容で各データが登録され、利用者のパスワードは平文ではなくハッシュで保存される。監査ログに投入結果が記録される（CMN-24, ADDR-008 DD-003）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.618,
+      "error_message": null,
+      "test": "tests/integration/test_seeding_command.py::test_initial_data_load_registers_all_data_with_hashed_password",
+      "generation_stage": "INITIAL"
+    },
+    {
+      "case_id": "IT-AI-GF-001",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "coverage_keys": [
+        "CK-FR011-05"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも200で results=[] を返す。総ページ数超過時は total_count=1・total_pages=1、該当0件時は total_count=0・total_pages=0 となる（FR-011 手順8、CMN-35）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.017,
+      "error_message": null,
+      "test": "tests/integration/test_catalog_api.py::test_item_search_page_over_total_and_zero_hit_are_not_errors",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-002",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR021-04"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "①②は 404 NOT_FOUND を返し、存在有無・非公開を区別しない（E-021-04、CMN-18）。③は 400 VALIDATION_ERROR（details に stock_unit_id）を返す（E-021-03、CMN-14 の入力判定）。いずれもカート明細は作成されない",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.68,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_hides_unknown_and_private_stock_units",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-003",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "coverage_keys": [
+        "CK-FR026-03"
+      ],
+      "criterion": "api",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれも割引額0で金額を返しつつ coupon.is_applicable=false、not_applicable_reason が順に COUPON_MIN_SPEND_NOT_MET / COUPON_EXPIRED / CART_EMPTY となる。明細0件時は金額がすべて0。カートのクーポン適用は解除されない（FR-026 手順1・3、MSG-07）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.692,
+      "error_message": null,
+      "test": "tests/integration/test_cart_api.py::test_inapplicable_coupon_stays_applied_with_reason",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-004",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR030-07"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "409 QUANTITY_LIMIT_EXCEEDED を返し、context に stock_unit_id・limit=10・current_quantity=11・requested_quantity=11 を含む。在庫数量は変化せず注文も作成されない（E-030-06）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.614,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_checkout_rejects_line_quantity_over_limit",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-005",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-003",
+      "coverage_keys": [
+        "CK-FR030-08"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "いずれの注文番号も ^PO-[0-9]{8}$ に一致し、重複せず、2件目が1件目より大きい（FR-030 手順12、ADDR-003）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.697,
+      "error_message": null,
+      "test": "tests/integration/test_checkout_api.py::test_order_numbers_are_unique_and_increasing",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-006",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-FR031-06"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "400 VALIDATION_ERROR（details に mock_result）を返す。決済記録は作成されず、注文は注文受付のまま、支払日時は未設定、在庫数量も変化しない（E-031-03、FR-031 手順3）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.764,
+      "error_message": null,
+      "test": "tests/integration/test_orders_api.py::test_payment_rejects_invalid_mock_result",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-007",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "coverage_keys": [
+        "CK-E2E-03"
+      ],
+      "criterion": "end-to-end-flow",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "否認時は409 PAYMENT_DECLINED で注文は注文受付のまま（can_pay=true）。再支払で200・支払済となる。管理者向け注文詳細の payment_records に否認・承認の2件が処理日時順に含まれ、注文状態履歴は2件（なし→注文受付、注文受付→支払済）である（FR-031 手順10、FR-042）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.362,
+      "error_message": null,
+      "test": "tests/integration/test_e2e_flow.py::test_declined_payment_can_be_retried_and_is_visible_to_admin",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-008",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010",
+      "coverage_keys": [
+        "CK-FR060-02"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "終了コードは0以外で、標準エラー出力に違反（データ名・項目名）と何も投入しなかった旨を出力する。利用者・仕入先・商品分類・商品・在庫単位・クーポンはいずれも0件のまま（全件ロールバック）で、監査ログに結果＝失敗が1件記録される（E-060-04、CMN-21）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 0.075,
+      "error_message": null,
+      "test": "tests/integration/test_seeding_command.py::test_initial_data_load_rolls_back_all_rows_on_violation",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-009",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-005, ADDR-007",
+      "coverage_keys": [
+        "CK-CMN-ERR-01"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "すべて {error: {code, message, details, context}} の共通構造で、HTTPステータスは api-contract 6.2 のとおり。応答本文にスタックトレース・SQL・内部パス・認証情報・パスワードを含まない。システムエラーは INTERNAL_ERROR の定型文のみを返す（MSG-04、NFR-SC-10、ADDR-005 DD-007）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.063,
+      "error_message": null,
+      "test": "tests/integration/test_common_error_contract.py::test_error_responses_share_structure_without_internal_details",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-010",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "coverage_keys": [
+        "CK-CMN-ERR-02"
+      ],
+      "criterion": "error-handling",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "順に 401 AUTHENTICATION_REQUIRED / 403 PERMISSION_DENIED / 403 PERMISSION_DENIED / 400 VALIDATION_ERROR / 404 NOT_FOUND / 409 INVALID_STATUS_TRANSITION（context.current_status=cancelled）を返す。CMN-14 の順序（認証→権限→入力→対象→状態→業務ルール）で先に該当したエラーのみを通知する",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 2.058,
+      "error_message": null,
+      "test": "tests/integration/test_common_error_contract.py::test_error_precedence_follows_common_rule",
+      "generation_stage": "GAP_FILL"
+    },
+    {
+      "case_id": "IT-AI-GF-011",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001",
+      "coverage_keys": [
+        "CK-FR030-09"
+      ],
+      "criterion": "database",
+      "execution_type": "AUTOMATABLE",
+      "expected_result": "一方が201で注文確定し、他方は409 INSUFFICIENT_STOCK（shortages に available_quantity=0）となる。注文は1件のみ、在庫数量は0で0未満にならない（CMN-19、CMN-20、ADDR-001）",
+      "actual_result": "期待結果のとおり（全アサーション成功）",
+      "result": "PASS",
+      "classification": null,
+      "execution_time_sec": 1.462,
+      "error_message": null,
+      "test": "tests/integration/test_concurrency.py::test_concurrent_checkout_on_single_stock_is_serialized",
+      "generation_stage": "GAP_FILL"
+    }
+  ],
+  "defects": [],
+  "flaky_tests": [],
+  "regression": {
+    "rerun_failed_cases": "NOT_REQUIRED（Failed Case 0件）",
+    "rerun_related_cases": "NOT_REQUIRED（Failed Case 0件）",
+    "rerun_full_suite": "PASS",
+    "full_suite_command": "pytest tests/integration --junitxml=reports/integration-test/junit.xml"
+  },
+  "junit_summary": {
+    "total": 65,
+    "passed": 65,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "summary": {
+    "ai_initial": {
+      "total": 54,
+      "passed": 54,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    },
+    "ai_gap_fill": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    },
+    "external": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    },
+    "total": {
+      "total": 65,
+      "passed": 65,
+      "failed": 0,
+      "error": 0,
+      "blocked": 0
+    }
+  },
+  "coverage": {
+    "required": 70,
+    "final_covered": 70,
+    "final_missing": 0,
+    "final_coverage_rate": 100.0
+  },
+  "traceability": [
+    {
+      "case_id": "IT-AI-001",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007, ADDR-008",
+      "integration_point": "POST /api/auth/register → services.accounts → PostgreSQL（永続化内容）; POST /api/auth/register → services.accounts → User(D-01) → PostgreSQL",
+      "test": "tests/integration/test_auth_api.py::test_register_persists_buyer_without_auto_login",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-002",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/auth/register → common.validators → exception_handler",
+      "test": "tests/integration/test_auth_api.py::test_register_reports_all_invalid_fields",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-003",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/auth/register → services.accounts → User一意制約",
+      "test": "tests/integration/test_auth_api.py::test_register_rejects_duplicated_email_after_normalization",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-004",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-008",
+      "integration_point": "POST /api/auth/login → services.accounts → ApiToken(D-16)・AuditLog(D-15)",
+      "test": "tests/integration/test_auth_api.py::test_login_issues_token_and_records_audit_log",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-005",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-007",
+      "integration_point": "POST /api/auth/login → services.accounts → AuditLog",
+      "test": "tests/integration/test_auth_api.py::test_login_failure_is_indistinguishable_and_audited",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-006",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/auth/login → common.validators",
+      "test": "tests/integration/test_auth_api.py::test_login_without_input_is_validation_error_and_not_audited",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-007",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-002, FR-003",
+      "related_adr": "ADDR-002",
+      "integration_point": "POST /api/auth/login（複数回）→ ApiToken → 認証付きAPI; POST /api/auth/logout → ApiToken無効化 → 認証付きAPI",
+      "test": "tests/integration/test_auth_api.py::test_logout_revokes_only_the_used_token",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-008",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004, FR-020",
+      "related_adr": "ADDR-002, ADDR-007",
+      "integration_point": "認証必須API（/api/auth/me, /api/cart, /api/admin/* 等）→ 認証クラス",
+      "test": "tests/integration/test_auth_api.py::test_authentication_required_apis_reject_missing_and_invalid_token",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-009",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-002",
+      "integration_point": "期限切れトークン → 認証クラス → API",
+      "test": "tests/integration/test_auth_api.py::test_expired_token_is_rejected",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-010",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-002",
+      "integration_point": "GET /api/auth/me → authentication → Service",
+      "test": "tests/integration/test_auth_api.py::test_me_returns_own_profile",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-011",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-020, FR-040",
+      "related_adr": "ADDR-002, ADDR-007",
+      "integration_point": "管理者トークン → 購入者専用API（/api/cart, /api/checkout 等）→ 権限クラス; 購入者トークン → 管理者専用API（/api/admin/*）→ 権限クラス",
+      "test": "tests/integration/test_auth_api.py::test_role_restricted_apis_return_permission_denied",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-012",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-010",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/collections → services.catalog → Collection(D-03)",
+      "test": "tests/integration/test_catalog_api.py::test_collection_list_returns_tree_order_without_auth",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-013",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/items → services.catalog → Item/StockUnit → PostgreSQL",
+      "test": "tests/integration/test_catalog_api.py::test_item_search_returns_public_items_with_stock_units_in_new_order",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-014",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/items?collection_id=&keyword= → services.catalog → 複数表結合",
+      "test": "tests/integration/test_catalog_api.py::test_item_search_combines_collection_and_keyword",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-015",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/items?sort= → services.catalog → 並べ替え",
+      "test": "tests/integration/test_catalog_api.py::test_item_search_applies_four_sort_orders",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-016",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-007",
+      "integration_point": "GET /api/items → common.validators → exception_handler",
+      "test": "tests/integration/test_catalog_api.py::test_item_search_rejects_invalid_conditions",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-017",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/items/{item_id} → services.catalog → Item/StockUnit/Collection",
+      "test": "tests/integration/test_catalog_api.py::test_item_detail_returns_stock_units_in_sku_order",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-018",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-007",
+      "integration_point": "GET /api/items/{item_id} → services.catalog → exception_handler",
+      "test": "tests/integration/test_catalog_api.py::test_item_detail_hides_existence_of_private_and_unknown_items",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-019",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-020",
+      "related_adr": "ADDR-001",
+      "integration_point": "GET /api/cart → services.carts → Cart(D-07) → PostgreSQL",
+      "test": "tests/integration/test_cart_api.py::test_cart_view_creates_open_cart_once",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-020",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001, ADDR-004",
+      "integration_point": "POST /api/cart/lines → services.carts → CartLine(D-08) → PostgreSQL",
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_merges_same_stock_unit",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-021",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/cart/lines → services.carts → exception_handler",
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_rejects_quantity_over_limit",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-022",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001, ADDR-007",
+      "integration_point": "POST /api/cart/lines → services.carts → StockUnit参照",
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_rejects_insufficient_stock",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-023",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-022",
+      "related_adr": "ADDR-001",
+      "integration_point": "PATCH /api/cart/lines/{cart_line_id} → services.carts → CartLine → PostgreSQL",
+      "test": "tests/integration/test_cart_api.py::test_cart_line_quantity_change_updates_amounts",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-024",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-022",
+      "related_adr": "ADDR-007",
+      "integration_point": "PATCH /api/cart/lines/{cart_line_id} → services.carts → exception_handler",
+      "test": "tests/integration/test_cart_api.py::test_cart_line_quantity_change_rejects_invalid_targets",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-025",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-023",
+      "related_adr": "ADDR-001",
+      "integration_point": "DELETE /api/cart/lines/{cart_line_id} → services.carts → PostgreSQL",
+      "test": "tests/integration/test_cart_api.py::test_cart_line_delete_removes_line_and_recalculates",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-026",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-001",
+      "integration_point": "POST /api/cart/apply-coupon → services.carts/amounts → Cart.coupon",
+      "test": "tests/integration/test_cart_api.py::test_apply_coupon_reflects_discount",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-027",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/cart/apply-coupon → services.carts → exception_handler",
+      "test": "tests/integration/test_cart_api.py::test_apply_coupon_business_errors",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-028",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-025",
+      "related_adr": "ADDR-001",
+      "integration_point": "POST /api/cart/remove-coupon → services.carts → Cart.coupon",
+      "test": "tests/integration/test_cart_api.py::test_remove_coupon_restores_amounts",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-029",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "integration_point": "カートAPI → services.amounts → 金額内訳",
+      "test": "tests/integration/test_cart_api.py::test_shipping_and_tax_boundary_at_5000",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-030",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "integration_point": "カートAPI（クーポン適用中）→ services.amounts",
+      "test": "tests/integration/test_cart_api.py::test_discount_amount_for_percentage_and_fixed_coupons",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-031",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001, ADDR-003",
+      "integration_point": "POST /api/checkout → services.orders → 在庫/注文/明細/配送先/履歴/カート → PostgreSQL",
+      "test": "tests/integration/test_checkout_api.py::test_checkout_commits_stock_order_address_history_and_cart",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-032",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/checkout → common.validators",
+      "test": "tests/integration/test_checkout_api.py::test_checkout_reports_all_invalid_address_fields",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-033",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/checkout → services.orders → exception_handler",
+      "test": "tests/integration/test_checkout_api.py::test_checkout_rejects_empty_cart_and_double_submission",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-034",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/checkout → services.orders → Item.is_public判定",
+      "test": "tests/integration/test_checkout_api.py::test_checkout_rejects_private_item",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-035",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001, ADDR-007",
+      "integration_point": "POST /api/checkout → services.orders → 在庫引当判定",
+      "test": "tests/integration/test_checkout_api.py::test_checkout_allocates_nothing_when_any_line_is_short",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-036",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/checkout → services.orders → クーポン再判定",
+      "test": "tests/integration/test_checkout_api.py::test_checkout_revalidates_coupon_without_removing_it",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-037",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "integration_point": "POST /api/purchase-orders/{id}/pay → services.orders → payments（模擬）→ 注文/決済記録/履歴",
+      "test": "tests/integration/test_orders_api.py::test_payment_approved_moves_order_to_paid",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-038",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009, ADDR-007",
+      "integration_point": "POST /api/purchase-orders/{id}/pay → payments（否認）→ 決済記録",
+      "test": "tests/integration/test_orders_api.py::test_payment_declined_keeps_order_created",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-039",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "integration_point": "services.orders → payments（タイムアウト/応答不正）→ 決済記録",
+      "test": "tests/integration/test_orders_api.py::test_payment_gateway_error_records_error_without_retry",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-040",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/purchase-orders/{id}/pay → 状態判定",
+      "test": "tests/integration/test_orders_api.py::test_payment_rejected_for_non_created_orders",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-041",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/purchase-orders/{id}/pay → 所有判定（PRM-01）",
+      "test": "tests/integration/test_orders_api.py::test_payment_for_other_buyers_order_is_not_found",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-042",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-032",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/purchase-orders → services.orders → PurchaseOrder",
+      "test": "tests/integration/test_orders_api.py::test_order_list_returns_only_own_orders_newest_first",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-043",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-033",
+      "related_adr": "ADDR-004, ADDR-007",
+      "integration_point": "GET /api/purchase-orders/{id} → services.representations → 複数表; GET /api/purchase-orders/{id} → 所有判定",
+      "test": "tests/integration/test_orders_api.py::test_order_detail_for_buyer_hides_payment_records_and_other_orders",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-044",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-001",
+      "integration_point": "POST /api/purchase-orders/{id}/cancel → services.orders → 在庫戻し/履歴",
+      "test": "tests/integration/test_orders_api.py::test_buyer_cancel_restores_stock_from_created_and_paid",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-045",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/purchase-orders/{id}/cancel → 状態判定",
+      "test": "tests/integration/test_orders_api.py::test_buyer_cancel_rejected_after_shipment",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-046",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-040",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/admin/stock-units → services → StockUnit/Item/Supplier",
+      "test": "tests/integration/test_admin_api.py::test_admin_stock_unit_list_includes_private_items",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-047",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-041",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/admin/purchase-orders → services.admin_orders → 複合条件検索",
+      "test": "tests/integration/test_admin_api.py::test_admin_order_search_filters",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-048",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-042",
+      "related_adr": "ADDR-004",
+      "integration_point": "GET /api/admin/purchase-orders/{id} → services.representations",
+      "test": "tests/integration/test_admin_api.py::test_admin_order_detail_includes_buyer_and_payment_records",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-049",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-043",
+      "related_adr": "ADDR-001, ADDR-007",
+      "integration_point": "POST /api/admin/purchase-orders/{id}/ship → services.admin_orders → 注文/履歴; POST /api/admin/purchase-orders/{id}/ship → 状態判定",
+      "test": "tests/integration/test_admin_api.py::test_admin_ship_only_from_paid",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-050",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-044",
+      "related_adr": "ADDR-001",
+      "integration_point": "POST /api/admin/purchase-orders/{id}/deliver → services.admin_orders",
+      "test": "tests/integration/test_admin_api.py::test_admin_deliver_only_from_shipped",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-051",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-045",
+      "related_adr": "ADDR-001",
+      "integration_point": "POST /api/admin/purchase-orders/{id}/cancel → services.admin_orders → 在庫戻し",
+      "test": "tests/integration/test_admin_api.py::test_admin_cancel_restores_stock_before_shipment",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-052",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-001, FR-002, FR-011, FR-012, FR-021, FR-024, FR-030, FR-031, FR-043, FR-044",
+      "related_adr": "ADDR-002, ADDR-003, ADDR-009",
+      "integration_point": "FR-001→FR-002→FR-011/FR-012→FR-021→FR-024→FR-030→FR-031→FR-043→FR-044",
+      "test": "tests/integration/test_e2e_flow.py::test_register_to_delivered_flow",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-053",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030, FR-031, FR-034, FR-012",
+      "related_adr": "ADDR-001",
+      "integration_point": "FR-030→FR-031→FR-034→FR-011/FR-012（在庫表示）",
+      "test": "tests/integration/test_e2e_flow.py::test_cancel_restores_stock_and_allows_repurchase",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-054",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010, ADDR-008",
+      "integration_point": "管理コマンド load_initial_data → services.seeding → 複数表 → PostgreSQL",
+      "test": "tests/integration/test_seeding_command.py::test_initial_data_load_registers_all_data_with_hashed_password",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-001",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "integration_point": "GET /api/items?page= → services.catalog → ページング",
+      "test": "tests/integration/test_catalog_api.py::test_item_search_page_over_total_and_zero_hit_are_not_errors",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-002",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/cart/lines → services.carts → exception_handler",
+      "test": "tests/integration/test_cart_api.py::test_cart_line_add_hides_unknown_and_private_stock_units",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-003",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "integration_point": "カートAPI → services.amounts → is_applicable/not_applicable_reason",
+      "test": "tests/integration/test_cart_api.py::test_inapplicable_coupon_stays_applied_with_reason",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-004",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/checkout → services.orders → 数量上限判定",
+      "test": "tests/integration/test_checkout_api.py::test_checkout_rejects_line_quantity_over_limit",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-005",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-003",
+      "integration_point": "POST /api/checkout（複数回）→ services.order_numbers → 採番シーケンス",
+      "test": "tests/integration/test_checkout_api.py::test_order_numbers_are_unique_and_increasing",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-006",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "integration_point": "POST /api/purchase-orders/{id}/pay → 入力判定",
+      "test": "tests/integration/test_orders_api.py::test_payment_rejects_invalid_mock_result",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-007",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "integration_point": "FR-031（否認）→ FR-031（再実行・承認）→ FR-042（決済記録）",
+      "test": "tests/integration/test_e2e_flow.py::test_declined_payment_can_be_retried_and_is_visible_to_admin",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-008",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010",
+      "integration_point": "管理コマンド load_initial_data → トランザクション境界",
+      "test": "tests/integration/test_seeding_command.py::test_initial_data_load_rolls_back_all_rows_on_violation",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-009",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-005, ADDR-007",
+      "integration_point": "全API → exception_handler → 応答本文",
+      "test": "tests/integration/test_common_error_contract.py::test_error_responses_share_structure_without_internal_details",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-010",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "integration_point": "API → 判定順序（認証→権限→入力→対象→状態→業務ルール）",
+      "test": "tests/integration/test_common_error_contract.py::test_error_precedence_follows_common_rule",
+      "result": "PASS"
+    },
+    {
+      "case_id": "IT-AI-GF-011",
+      "origin": "AI_GENERATED",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001",
+      "integration_point": "同一在庫単位への同時注文確定 → 行ロック → 在庫数量",
+      "test": "tests/integration/test_concurrency.py::test_concurrent_checkout_on_single_stock_is_serialized",
+      "result": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "action": "RESOLVED",
+  "run_id": "RUN-20261022-MC/addr-it-placement-resolved",
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "CROSS_PHASE_CONSISTENCY_ISSUE",
+    "artifact": "docs/addr/ADDR-004.md",
+    "requirement_reference": "NFR-OM-06",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "repair": "ADDR-012を新規採択し、tests/を読取り専用マウントしてtestpathsを拡張。docker compose exec -T app pytestで824件を1コマンド実行可能にした",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

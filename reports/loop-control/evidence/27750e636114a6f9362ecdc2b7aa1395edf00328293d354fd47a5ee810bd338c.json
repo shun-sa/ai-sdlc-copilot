@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "test_summary": {
+    "total": 742,
+    "passed": 742,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "skipped_tests": []
+  },
+  "coverage": {
+    "statements": 96.55,
+    "branches": 90.86,
+    "functions": 95.12,
+    "lines": 96.55
+  },
+  "criteria": [
+    "boundary-value",
+    "database",
+    "exception",
+    "invalid-input",
+    "normal-case",
+    "security"
+  ],
+  "errors": []
+}

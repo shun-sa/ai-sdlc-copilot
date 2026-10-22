@@ -1,0 +1,137 @@
+{
+  "suppliers": [
+    { "supplier_code": "SUP-AOBA", "name": "あおば商事（架空）" },
+    { "supplier_code": "SUP-MIDORI", "name": "みどり物産（架空）" }
+  ],
+  "collections": [
+    { "collection_code": "living", "name": "リビング", "sort_order": 10 },
+    { "collection_code": "kitchen", "name": "キッチン", "sort_order": 20 },
+    { "collection_code": "kitchen-cup", "name": "カップ", "parent_collection_code": "kitchen", "sort_order": 10 },
+    { "collection_code": "kitchen-cup-mug", "name": "マグカップ", "parent_collection_code": "kitchen-cup", "sort_order": 10 },
+    { "collection_code": "stationery", "name": "ステーショナリー", "sort_order": 30 }
+  ],
+  "items": [
+    {
+      "item_code": "ITEM-MUG01",
+      "name": "あおばマグカップ",
+      "description": "毎日使いやすい容量320mlのマグカップです。\n電子レンジ・食器洗い乾燥機に対応します。",
+      "is_public": true,
+      "collection_codes": ["kitchen-cup-mug"],
+      "created_at": "2027-03-01T10:00:00+09:00"
+    },
+    {
+      "item_code": "ITEM-TOWEL01",
+      "name": "やわらかフェイスタオル",
+      "description": "綿100%のフェイスタオルです。",
+      "is_public": true,
+      "collection_codes": ["living"],
+      "created_at": "2027-03-05T10:00:00+09:00"
+    },
+    {
+      "item_code": "ITEM-NOTE01",
+      "name": "方眼ノート A5",
+      "description": "5mm方眼のノートです。",
+      "is_public": true,
+      "collection_codes": ["stationery"],
+      "created_at": "2027-03-10T10:00:00+09:00"
+    },
+    {
+      "item_code": "ITEM-HIDDEN01",
+      "name": "販売準備中のカトラリーセット",
+      "description": "公開前の商品です。",
+      "is_public": false,
+      "collection_codes": ["kitchen"],
+      "created_at": "2027-03-12T10:00:00+09:00"
+    }
+  ],
+  "stock_units": [
+    {
+      "sku": "MUG01-BL",
+      "item_code": "ITEM-MUG01",
+      "supplier_code": "SUP-AOBA",
+      "variant_name": "ブルー／320ml",
+      "price": 1200,
+      "quantity": 25
+    },
+    {
+      "sku": "MUG01-WH",
+      "item_code": "ITEM-MUG01",
+      "supplier_code": "SUP-AOBA",
+      "variant_name": "ホワイト／320ml",
+      "price": 1200,
+      "quantity": 3
+    },
+    {
+      "sku": "TOWEL01-GR",
+      "item_code": "ITEM-TOWEL01",
+      "supplier_code": "SUP-MIDORI",
+      "variant_name": "グレー／34×80cm",
+      "price": 880,
+      "quantity": 40
+    },
+    {
+      "sku": "TOWEL01-IV",
+      "item_code": "ITEM-TOWEL01",
+      "supplier_code": "SUP-MIDORI",
+      "variant_name": "アイボリー／34×80cm",
+      "price": 880,
+      "quantity": 0
+    },
+    {
+      "sku": "NOTE01-A5",
+      "item_code": "ITEM-NOTE01",
+      "supplier_code": "SUP-MIDORI",
+      "variant_name": "A5／80枚",
+      "price": 460,
+      "quantity": 120
+    },
+    {
+      "sku": "HIDDEN01-SET",
+      "item_code": "ITEM-HIDDEN01",
+      "supplier_code": "SUP-AOBA",
+      "variant_name": "4本セット",
+      "price": 3200,
+      "quantity": 10
+    }
+  ],
+  "coupons": [
+    {
+      "code": "SPRING10",
+      "name": "春の10%オフ",
+      "discount_type": "percentage",
+      "discount_value": 10,
+      "min_spend": 3000,
+      "valid_from": "2027-04-01T00:00:00+09:00",
+      "valid_until": "2027-04-30T23:59:59+09:00"
+    },
+    {
+      "code": "FIXED500",
+      "name": "500円引き",
+      "discount_type": "fixed",
+      "discount_value": 500,
+      "min_spend": 2000,
+      "valid_from": "2027-04-01T00:00:00+09:00",
+      "valid_until": "2027-12-31T23:59:59+09:00"
+    }
+  ],
+  "users": [
+    {
+      "email": "admin@example.com",
+      "password": "AdminPass2027",
+      "full_name": "管理 太郎",
+      "role": "admin"
+    },
+    {
+      "email": "buyer1@example.com",
+      "password": "BuyerPass2027",
+      "full_name": "購入 花子",
+      "role": "buyer"
+    },
+    {
+      "email": "buyer2@example.com",
+      "password": "BuyerPass2028",
+      "full_name": "購入 次郎",
+      "role": "buyer"
+    }
+  ]
+}

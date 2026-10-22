@@ -1,0 +1,30 @@
+{
+  "status": "FAIL",
+  "audit_scope": "ARCHITECTURE",
+  "source_baseline_sha256": "c8a43045320d792be8e773e10390e672d221b41fb16dd98e7111f9a2a04da10f",
+  "criteria": {
+    "discovered": [
+      "authentication-authorization",
+      "cross-phase-security-consistency",
+      "data-protection",
+      "dependency-configuration",
+      "error-logging",
+      "input-validation-injection",
+      "secret-credentials",
+      "security-test-coverage"
+    ],
+    "total": 8,
+    "pass": 6,
+    "not_applicable": 1,
+    "fail": 1
+  },
+  "issues": {
+    "total": 3,
+    "unresolved": 3,
+    "blocking": 1
+  },
+  "errors": [
+    "Applicable criterion is not PASS: dependency-configuration",
+    "Unresolved blocking Security Review Issue(s): 1"
+  ]
+}

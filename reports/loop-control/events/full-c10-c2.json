@@ -1,0 +1,17 @@
+﻿{
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "RUN-20261022-MC/full-c10-cycle2",
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "TEST_TRACEABILITY_MISSING",
+    "artifact": "docs/requirements/functional_requirements.md",
+    "requirement_reference": "FR-OUT-01",
+    "test_case": "",
+    "stable_error_type": "TRACE_C10_REQUIREMENT_WITHOUT_TEST"
+  },
+  "repair": "残存74件を個別再精査し、正当に自動検証可能な11件（IT-AI-GF-070〜080：静的解析6件・該当なし2件・構成設定2件・上限超過時整合1件）を追加。C10は74件→63件へ改善。19件は検証方法が測定値・計画書確認・他OS前提のため追加せず根拠を記録",
+  "impact": "FULL ScopeのC10で63件（運用測定22・互換性9・性能8・構成7・移行5・該当なし4・運用4・脆弱性診断4）が残存",
+  "recommended_route": "INTEGRATION_TEST",
+  "validation_result": "reports/traceability/validation-result.json"
+}

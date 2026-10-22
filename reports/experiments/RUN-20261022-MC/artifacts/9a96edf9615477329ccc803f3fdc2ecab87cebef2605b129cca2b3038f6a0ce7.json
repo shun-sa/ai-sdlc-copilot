@@ -1,0 +1,1208 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "generated_from": {
+    "required_coverage": "reports/integration-test/required-coverage.json",
+    "ai_initial_cases": "reports/integration-test/ai-initial-cases.json",
+    "ai_gap_fill_cases": "reports/integration-test/ai-gap-fill-cases.json",
+    "external_cases": null
+  },
+  "external_input": {
+    "provided": false,
+    "user_confirmed_without_external_cases": true
+  },
+  "case_counts": {
+    "ai_initial": 54,
+    "ai_gap_fill": 11,
+    "external": 0,
+    "total": 65
+  },
+  "cases": [
+    {
+      "case_id": "IT-AI-001",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "会員登録が成功し利用者が永続化される（自動ログインしない）",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007, ADDR-008",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR001-01",
+        "CK-FR001-02"
+      ],
+      "precondition": "同一メールアドレスの利用者が未登録である",
+      "input": "{email: ' Buyer1@Example.com ', password: 'Passw0rd1', password_confirmation: 'Passw0rd1', full_name: ' 山田 太郎 '}",
+      "steps": "1. POST /api/auth/register へ会員情報を送信する\n2. 応答本文と応答ヘッダーを確認する\n3. DBの利用者行（メールアドレス・利用者区分・パスワード）を確認する",
+      "expected_result": "201が返り、user_id・email（buyer1@example.com）・full_name（前後空白除去後）・role=buyer・registered_at を返す。応答に token を含まない。DBの利用者が1件増え、password_hash は平文ではなくPBKDF2形式のハッシュで保存されている",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-002",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "会員登録の入力エラーは全項目分をまとめて通知する",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007",
+      "test_category": "入力エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR001-03"
+      ],
+      "precondition": "特になし",
+      "input": "{email: 'not-an-email', password: 'short', password_confirmation: 'mismatch', full_name: ''}",
+      "steps": "1. 条件を満たさない複数項目で POST /api/auth/register を要求する\n2. 応答と利用者件数を確認する",
+      "expected_result": "400 VALIDATION_ERROR が返り、details に email・password・password_confirmation・full_name の全項目の項目名と理由が含まれる。利用者は登録されない（E-001-01, CMN-16）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-003",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "正規化後に重複するメールアドレスの会員登録は業務エラーとなる",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR001-04"
+      ],
+      "precondition": "buyer@example.com の利用者が登録済み",
+      "input": "{email: ' BUYER@Example.com ', password: 'Passw0rd1', password_confirmation: 'Passw0rd1', full_name: '別人'}",
+      "steps": "1. 既存利用者と正規化後に同一となるメールアドレスで POST /api/auth/register を要求する\n2. 応答と利用者件数を確認する",
+      "expected_result": "409 EMAIL_ALREADY_REGISTERED が返り、利用者件数は増えない（E-001-02）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-004",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "ログイン成功で認証トークンと利用者情報を返し監査ログを記録する",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-008",
+      "test_category": "正常系",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-FR002-01"
+      ],
+      "precondition": "buyer@example.com / Passw0rd1 の購入者が登録済み",
+      "input": "{email: 'BUYER@example.com ', password: 'Passw0rd1'}",
+      "steps": "1. POST /api/auth/login を要求する\n2. 応答本文を確認する\n3. 監査ログ（D-15）と認証トークン（D-16）の保存内容を確認する\n4. 取得した token で GET /api/auth/me を要求する",
+      "expected_result": "200が返り token・expires_at（発行時刻＋24時間）・user（user_id, email, full_name, role=buyer）を含む。認証トークンはハッシュで保存され平文は保存されない。監査ログにログイン成功が1件記録される。取得した token で /api/auth/me が200を返す",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-005",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "認証失敗はメールアドレスとパスワードの誤りを区別せず監査ログへ失敗を記録する",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-007",
+      "test_category": "認証失敗",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-FR002-02"
+      ],
+      "precondition": "buyer@example.com の購入者が登録済み",
+      "input": "①{email: 'buyer@example.com', password: 'WrongPass1'} ②{email: 'nobody@example.com', password: 'Passw0rd1'}",
+      "steps": "1. パスワード誤りで POST /api/auth/login を要求する\n2. 未登録メールアドレスで POST /api/auth/login を要求する\n3. 応答と監査ログを確認する",
+      "expected_result": "いずれも 401 INVALID_CREDENTIALS が返り、どちらが誤りかを区別しない。監査ログにログイン失敗が各1件記録され（未登録時は利用者ID空）、メールアドレス・パスワードは記録されない（E-002-02, CMN-25）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-006",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "ログインの未入力は入力エラーとし監査ログを記録しない",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-007",
+      "test_category": "入力エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR002-03"
+      ],
+      "precondition": "特になし",
+      "input": "{email: '   ', password: ''}",
+      "steps": "1. メールアドレス・パスワードが未入力の状態で POST /api/auth/login を要求する\n2. 応答と監査ログ件数を確認する",
+      "expected_result": "400 VALIDATION_ERROR が返り details に未入力の全項目を含む。監査ログは記録されない（E-002-01）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-007",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "多重ログインの各トークンは独立し、ログアウトは要求に使ったトークンのみ無効化する",
+      "requirement_id": "FR-002, FR-003",
+      "related_adr": "ADDR-002",
+      "test_category": "正常系",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-FR002-04",
+        "CK-FR003-01"
+      ],
+      "precondition": "購入者が登録済み",
+      "input": "同一利用者で2回ログインして取得したトークンA・B",
+      "steps": "1. 同一利用者で2回ログインし、トークンA・Bを取得する\n2. トークンAで POST /api/auth/logout を要求する\n3. トークンAで GET /api/auth/me を要求する\n4. トークンBで GET /api/auth/me を要求する",
+      "expected_result": "ログアウトは204を返す。トークンAでの要求は401 AUTHENTICATION_REQUIRED、トークンBでの要求は200となる（CMN-11, CMN-12）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-008",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "認証必須APIは未認証・不正トークンの要求を処理しない",
+      "requirement_id": "FR-004, FR-020",
+      "related_adr": "ADDR-002, ADDR-007",
+      "test_category": "認証エラー",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-CMN02-01"
+      ],
+      "precondition": "購入者のカートに明細が存在する",
+      "input": "Authorizationヘッダーなし／不正な値のトークン",
+      "steps": "1. トークンなしで GET /api/auth/me・GET /api/cart・GET /api/admin/stock-units を要求する\n2. 不正な値のトークンで同じAPIを要求する\n3. データが変化していないことを確認する",
+      "expected_result": "すべて401 AUTHENTICATION_REQUIRED が返り、業務処理は実行されない（CMN-02, ERR-04）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-009",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "有効期限を過ぎた認証トークンは認証エラーとなる",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-002",
+      "test_category": "境界値/認証",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-CMN02-02"
+      ],
+      "precondition": "有効期限日時が過去の認証トークンが存在する",
+      "input": "期限切れトークン",
+      "steps": "1. 有効期限日時を過去にした認証トークンで GET /api/auth/me を要求する\n2. 応答を確認する",
+      "expected_result": "401 AUTHENTICATION_REQUIRED が返る（CMN-09, ADDR-002 DD-003）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-010",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "ログイン利用者情報照会は本人の情報を返す",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-002",
+      "test_category": "正常系",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-FR004-01"
+      ],
+      "precondition": "購入者がログイン済み",
+      "input": "購入者トークン",
+      "steps": "1. 有効なトークンで GET /api/auth/me を要求する\n2. 応答本文を確認する",
+      "expected_result": "200で本人の user_id・email・full_name・role を返す",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-011",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "ロールに許可されていないAPIは権限エラーとなる",
+      "requirement_id": "FR-020, FR-040",
+      "related_adr": "ADDR-002, ADDR-007",
+      "test_category": "権限エラー",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-CMN03-01",
+        "CK-CMN03-02"
+      ],
+      "precondition": "購入者と管理者がそれぞれログイン済み",
+      "input": "購入者トークン／管理者トークン",
+      "steps": "1. 購入者トークンで GET /api/admin/stock-units・GET /api/admin/purchase-orders を要求する\n2. 管理者トークンで GET /api/cart・POST /api/checkout を要求する",
+      "expected_result": "いずれも 403 PERMISSION_DENIED が返り、業務処理は実行されない（CMN-03, ERR-03）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-012",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "商品分類一覧は認証不要で全分類を親子順に返す",
+      "requirement_id": "FR-010",
+      "related_adr": "ADDR-006",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR010-01"
+      ],
+      "precondition": "親分類と子分類が登録済み",
+      "input": "認証なし",
+      "steps": "1. 認証なしで GET /api/collections を要求する\n2. 応答の並び順と件数を確認する",
+      "expected_result": "200で全分類が親→子の木構造順（同階層は表示順）で全件返り、ページング情報を持たない",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-013",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "商品一覧検索は公開かつ在庫単位を持つ商品のみを新着順・20件単位で返す",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR011-01"
+      ],
+      "precondition": "公開商品・非公開商品・在庫単位を持たない公開商品が混在し、公開商品が21件以上ある",
+      "input": "条件指定なし",
+      "steps": "1. GET /api/items を要求する\n2. 返却件数・並び順・各項目を確認する\n3. page=2 を指定して要求する",
+      "expected_result": "200で公開かつ在庫単位を1件以上持つ商品のみが新着順（登録日時降順・商品ID降順）で20件返る。非公開商品と在庫単位なし商品は含まれない。min_price・min_price_incl_tax（税抜×110÷100切り捨て）・in_stock・collections とページング情報を含み、page=2 で21件目以降が返る",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-014",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "分類IDとキーワードのAND検索が配下分類と部分一致で機能する",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "test_category": "検索条件",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR011-02"
+      ],
+      "precondition": "親分類配下に子分類があり、それぞれに公開商品が所属している",
+      "input": "collection_id=（親分類）, keyword='sample'（商品名・商品説明の一部、大小文字混在）",
+      "steps": "1. 親分類の分類IDのみを指定して GET /api/items を要求する\n2. 親分類＋キーワードを指定して要求する",
+      "expected_result": "親分類指定時は配下分類に所属する商品も返る。キーワード併用時は商品名または商品説明に部分一致（英大小文字区別なし）する商品のみが返り、両条件のANDとなる",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-015",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "商品一覧の並び順4種が要件どおりに適用される",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "test_category": "並び順",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR011-03"
+      ],
+      "precondition": "最低税抜価格・商品名・登録日時が異なる公開商品が複数登録済み",
+      "input": "sort=new / price_asc / price_desc / name",
+      "steps": "1. sort を4種類それぞれ指定して GET /api/items を要求する\n2. 返却順序を確認する",
+      "expected_result": "新着順＝登録日時降順（同値は商品ID降順）、価格の安い順＝最低税抜価格昇順（同値は商品ID昇順）、価格の高い順＝最低税抜価格降順（同値は商品ID昇順）、商品名順＝商品名昇順（同値は商品ID昇順）で返る",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-016",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "商品一覧検索の不正な検索条件は入力エラーとなる",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-007",
+      "test_category": "入力エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR011-04"
+      ],
+      "precondition": "特になし",
+      "input": "collection_id=存在しない値, keyword=51文字, sort='unknown', page='0'",
+      "steps": "1. 不正な検索条件で GET /api/items を要求する\n2. 応答の details を確認する",
+      "expected_result": "400 VALIDATION_ERROR が返り、条件を満たさない全項目の項目名と理由が details に含まれる（E-011-01）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-017",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "商品詳細は在庫単位をSKU昇順で税込価格つきで返す",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-006",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR012-01"
+      ],
+      "precondition": "公開商品に複数の在庫単位（SKU順不同）が登録済み",
+      "input": "公開商品の item_id",
+      "steps": "1. GET /api/items/{item_id} を要求する\n2. 応答の stock_units と collections を確認する",
+      "expected_result": "200で商品説明・所属分類と、SKU昇順の stock_units（stock_unit_id, sku, variant_name, price, price_incl_tax, quantity, in_stock）を返す。price_incl_tax は税抜×110÷100の切り捨て",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-018",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "非公開商品・存在しない商品IDの詳細照会は対象なしエラーとなる",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-007",
+      "test_category": "対象なし",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR012-02"
+      ],
+      "precondition": "非公開商品が1件登録済み",
+      "input": "非公開商品のID／存在しないID／解釈できない値",
+      "steps": "1. 非公開商品のIDで GET /api/items/{item_id} を要求する\n2. 存在しないID・解釈できない値でも要求する",
+      "expected_result": "いずれも 404 NOT_FOUND が返り、非公開と不存在を区別しない（CMN-18, ERR-06）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-019",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "カート照会で利用中カートが無い場合は空のカートが作成される",
+      "requirement_id": "FR-020",
+      "related_adr": "ADDR-001",
+      "test_category": "状態遷移",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR020-01"
+      ],
+      "precondition": "購入者が利用中カートを持たない",
+      "input": "購入者トークン",
+      "steps": "1. GET /api/cart を要求する\n2. 応答とDBのカート件数を確認する\n3. もう一度 GET /api/cart を要求する",
+      "expected_result": "200で lines=[]・coupon=null・amounts がすべて0のカート表現を返し、利用中カートが1件作成される。再照会しても利用中カートは1件のまま（ST-CART-01）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-020",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "カート明細追加は同一在庫単位を1明細へ合算して永続化する",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001, ADDR-004",
+      "test_category": "正常系",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR021-01"
+      ],
+      "precondition": "在庫10・税抜1,000円の在庫単位が存在し、購入者がログイン済み",
+      "input": "①{stock_unit_id, quantity: 2} ②{stock_unit_id（同一）, quantity: 3}",
+      "steps": "1. POST /api/cart/lines で数量2を追加する\n2. 同じ在庫単位で数量3を追加する\n3. 応答のカート表現とDBのカート明細を確認する",
+      "expected_result": "いずれも200で更新後のカート表現を返す。カート明細は1件で数量5、DBの明細数量も5、amounts.subtotal は 1,000×5＝5,000 となる",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-021",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "カート明細追加で合算数量が10を超える場合は数量上限エラーとなる",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー（境界値）",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR021-02"
+      ],
+      "precondition": "在庫20の在庫単位がカートに数量8で入っている",
+      "input": "{stock_unit_id, quantity: 3}",
+      "steps": "1. 合算後に11となる数量で POST /api/cart/lines を要求する\n2. 応答の context とDBのカート明細を確認する",
+      "expected_result": "409 QUANTITY_LIMIT_EXCEEDED が返り、context に stock_unit_id・limit=10・current_quantity=8・requested_quantity=11 を含む。カート明細の数量は8のまま",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-022",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "在庫数量を超えるカート明細追加は在庫不足エラーとなる",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001, ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR021-03"
+      ],
+      "precondition": "在庫2の在庫単位が存在する",
+      "input": "{stock_unit_id, quantity: 3}",
+      "steps": "1. 在庫数量を超える数量で POST /api/cart/lines を要求する\n2. 応答の context とDBの在庫数量・カートを確認する",
+      "expected_result": "409 INSUFFICIENT_STOCK が返り、context.shortages に stock_unit_id・sku・requested_quantity=3・available_quantity=2 を1件含む。在庫数量・カートは変化しない",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-023",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "カート明細の数量変更が金額内訳へ反映される",
+      "requirement_id": "FR-022",
+      "related_adr": "ADDR-001",
+      "test_category": "正常系",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR022-01"
+      ],
+      "precondition": "自分のカートに在庫単位（税抜1,000円・在庫10）の明細が数量2で存在する",
+      "input": "{quantity: 4}",
+      "steps": "1. PATCH /api/cart/lines/{cart_line_id} で数量を4へ変更する\n2. 応答のカート表現・金額内訳とDBの明細を確認する",
+      "expected_result": "200で更新後のカート表現を返し、明細の数量が4、subtotal が4,000となる。DBの明細数量も4である",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-024",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "カート明細数量変更の上限超過・在庫超過・他人の明細指定が拒否される",
+      "requirement_id": "FR-022",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー/対象なし",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR022-02"
+      ],
+      "precondition": "自分のカート明細と他の購入者のカート明細が存在する",
+      "input": "①{quantity: 11} ②{quantity: 在庫数量+1} ③他の購入者の cart_line_id",
+      "steps": "1. 数量11へ変更要求する\n2. 在庫数量を超える数量へ変更要求する\n3. 他の購入者のカート明細IDへ変更要求する\n4. それぞれの応答とDBの明細を確認する",
+      "expected_result": "順に 409 QUANTITY_LIMIT_EXCEEDED、409 INSUFFICIENT_STOCK、404 NOT_FOUND が返り、いずれの場合もカート明細は変更されない",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-025",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "カート明細削除で明細が消え金額が再計算される",
+      "requirement_id": "FR-023",
+      "related_adr": "ADDR-001",
+      "test_category": "正常系",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR023-01"
+      ],
+      "precondition": "自分のカートに2件の明細が存在する",
+      "input": "削除対象の cart_line_id",
+      "steps": "1. DELETE /api/cart/lines/{cart_line_id} を要求する\n2. 応答のカート表現とDBの明細を確認する\n3. 同じ cart_line_id へ再度 DELETE を要求する",
+      "expected_result": "200で残り1件のカート表現を返し、DBから当該明細が削除され金額内訳が再計算される。削除済み明細への再操作は404 NOT_FOUND となる",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-026",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "有効なクーポンの適用で割引額が金額内訳へ反映される",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-001",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR024-01"
+      ],
+      "precondition": "小計6,000円のカートと、有効期間内・最低購入金額3,000円・定額1,000円のクーポンが存在する",
+      "input": "{code: 'SAVE1000'}",
+      "steps": "1. POST /api/cart/apply-coupon を要求する\n2. 応答の coupon と amounts を確認する",
+      "expected_result": "200で coupon に code・name・discount_type・discount_value・min_spend・valid_from・valid_until・is_applicable=true を含み、amounts.discount_amount=1,000、discounted_subtotal=5,000、shipping_fee=0、tax_amount=500、total=5,500 となる",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-027",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "クーポン適用の業務エラーが条件ごとに正しいコードで返る",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR024-02"
+      ],
+      "precondition": "有効期間前・有効期間終了・最低購入金額が高いクーポンと、明細のあるカート／空のカートを用意する",
+      "input": "①未登録コード ②適用済み状態で再適用 ③有効期間前コード ④有効期間終了コード ⑤最低購入金額未満 ⑥空カートでの適用",
+      "steps": "1. 各条件で POST /api/cart/apply-coupon を要求する\n2. 応答コード・context・カートの適用状態を確認する",
+      "expected_result": "順に 409 COUPON_NOT_FOUND / COUPON_ALREADY_APPLIED / COUPON_NOT_YET_VALID（context に valid_from・valid_until）/ COUPON_EXPIRED（同）/ COUPON_MIN_SPEND_NOT_MET（context に min_spend・subtotal）/ CART_EMPTY が返る。カートのクーポン適用状態は変化しない",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-028",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "クーポン解除で割引が取り消され金額が再計算される",
+      "requirement_id": "FR-025",
+      "related_adr": "ADDR-001",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR025-01"
+      ],
+      "precondition": "クーポン適用中で小計6,000円のカートが存在する",
+      "input": "なし",
+      "steps": "1. POST /api/cart/remove-coupon を要求する\n2. 応答の coupon と amounts、DBのカートを確認する",
+      "expected_result": "200で coupon=null を返し、discount_amount=0・discounted_subtotal=6,000 で金額が再計算される。DBのカートのクーポン参照も解除される",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-029",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "送料と消費税の境界（割引後小計5,000円）が要件どおり計算される",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "test_category": "計算/境界値",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR026-01"
+      ],
+      "precondition": "税抜4,999円・5,000円となるカートを作れる在庫単位が存在する",
+      "input": "①小計4,999円 ②小計5,000円",
+      "steps": "1. 小計4,999円のカートで GET /api/cart を要求する\n2. 小計5,000円のカートで GET /api/cart を要求する\n3. amounts を確認する",
+      "expected_result": "①送料500・消費税549（5,499×10÷100の切り捨て）・合計6,048 ②送料0・消費税500・合計5,500 となる（FR-026 計算例1・2, CMN-30, CMN-31）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-030",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "定率・定額クーポンの割引額が切り捨て・min規則で算出される",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "test_category": "計算/境界値",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR026-02"
+      ],
+      "precondition": "定率15%クーポン・定額1,000円クーポン（最低購入金額0円）が存在する",
+      "input": "①小計1,999円＋定率15% ②小計800円＋定額1,000円",
+      "steps": "1. 定率クーポンを適用したカートを照会する\n2. 定額クーポン（割引値が小計を超える）を適用したカートを照会する",
+      "expected_result": "①割引額299（299.85の切り捨て）・割引後小計1,700・送料500・消費税220・合計2,420 ②割引額800（min(1,000,800)）・割引後小計0・送料500・消費税50・合計550 となる（FR-026 計算例5・6）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-031",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "注文確定で在庫引当・注文/明細/配送先/履歴登録・カート注文済が一括で成立する",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001, ADDR-003",
+      "test_category": "正常系",
+      "criterion": "end-to-end-flow",
+      "coverage_keys": [
+        "CK-FR030-01"
+      ],
+      "precondition": "在庫10の在庫単位を数量2で含むカートが存在する",
+      "input": "{recipient_name:'佐藤 花子', postal_code:'123-4567', prefecture_code:'13', address_line1:'千代田区一番町1-1', address_line2:'サンプルビル101', phone_number:'090-1234-5678'}",
+      "steps": "1. POST /api/checkout を要求する\n2. 応答の注文詳細を確認する\n3. DBの在庫数量・注文・注文明細・配送先・注文状態履歴・カート状態を確認する",
+      "expected_result": "201で注文詳細を返し、status=注文受付、order_number が PO-＋8桁ゼロ埋め。在庫数量が10→8、注文明細1件（数量2・税抜単価・明細金額）、配送先1件（郵便番号・電話番号はハイフン除去後）、注文状態履歴1件（なし→注文受付、実行者＝購入者）が登録され、カートが注文済になり利用中カートが存在しない（ST-PO-01, ST-CART-02）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-032",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "注文確定の配送先入力エラーは全項目を通知しデータを変更しない",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "test_category": "入力エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR030-02"
+      ],
+      "precondition": "明細のあるカートが存在する",
+      "input": "{recipient_name:'', postal_code:'12345', prefecture_code:'99', address_line1:'', phone_number:'03-12'}",
+      "steps": "1. 条件を満たさない配送先で POST /api/checkout を要求する\n2. 応答の details とDB（在庫・注文・カート）を確認する",
+      "expected_result": "400 VALIDATION_ERROR が返り、details に受取人氏名・郵便番号・都道府県コード・住所1・電話番号の全項目を含む。在庫数量・カート・注文は変化しない（E-030-03）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-033",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "空カートおよび同一カートの二重確定は CART_EMPTY となり注文は1件だけ作成される",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR030-03"
+      ],
+      "precondition": "①明細のない利用中カート ②明細のあるカート",
+      "input": "有効な配送先",
+      "steps": "1. 空カートで POST /api/checkout を要求する\n2. 明細のあるカートで注文確定した直後に、同じ内容で再度 POST /api/checkout を要求する\n3. 注文件数を確認する",
+      "expected_result": "いずれも 409 CART_EMPTY が返り（E-030-04）、二重送信でも注文は1件だけ作成される（CMN-23）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-034",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "非公開商品を含むカートの注文確定は ITEM_NOT_AVAILABLE となる",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR030-04"
+      ],
+      "precondition": "カートに明細を追加した後、その商品を非公開へ変更する",
+      "input": "有効な配送先",
+      "steps": "1. カートへ明細を追加する\n2. 当該商品を非公開にする\n3. POST /api/checkout を要求する\n4. 応答の context とDBを確認する",
+      "expected_result": "409 ITEM_NOT_AVAILABLE が返り、context.stock_unit_ids に該当明細の在庫単位IDを明細追加日時昇順で含む。在庫数量・カート・注文は変化しない（E-030-05）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-035",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "一部明細の在庫不足で注文確定が失敗し、どの在庫も引き当てられない",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001, ADDR-007",
+      "test_category": "業務エラー/トランザクション",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR030-05"
+      ],
+      "precondition": "明細A（数量3・在庫5）、明細B（数量2・在庫1）、明細C（数量4・在庫0）のカートが存在する",
+      "input": "有効な配送先",
+      "steps": "1. POST /api/checkout を要求する\n2. 応答の context.shortages を確認する\n3. 3つの在庫単位の在庫数量と、注文・明細・配送先・履歴の件数を確認する",
+      "expected_result": "409 INSUFFICIENT_STOCK が返り、shortages に明細B・Cが明細追加日時昇順で含まれる。在庫数量は5・1・0のまま変化せず、注文関連データは1件も作成されない（E-030-10, CMN-21）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-036",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "確定時にクーポン条件を満たさない場合は注文確定が業務エラーとなりクーポンも外れない",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR030-06"
+      ],
+      "precondition": "①有効期間が終了したクーポンを適用中のカート ②最低購入金額に満たないカート",
+      "input": "有効な配送先",
+      "steps": "1. 期間終了クーポン適用中のカートで POST /api/checkout を要求する\n2. 最低購入金額未満のカートで POST /api/checkout を要求する\n3. 応答とDB（在庫・カート・クーポン適用状態）を確認する",
+      "expected_result": "順に 409 COUPON_EXPIRED（context に valid_from・valid_until）、409 COUPON_MIN_SPEND_NOT_MET（context に min_spend・subtotal）が返る。在庫・カート・注文は変化せず、クーポンは自動で外れない（E-030-08, E-030-09）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-037",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "支払（承認）で注文が支払済になり決済記録と履歴が登録される",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "test_category": "正常系/状態遷移",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR031-01"
+      ],
+      "precondition": "自分の注文受付の注文が存在する",
+      "input": "{mock_result: 'approve'}",
+      "steps": "1. POST /api/purchase-orders/{id}/pay を要求する\n2. 応答の注文詳細を確認する\n3. DBの注文状態・支払日時・決済記録・注文状態履歴・在庫数量を確認する",
+      "expected_result": "200で更新後の注文詳細を返す。status=支払済・支払日時が設定され、承認の決済記録が1件（金額＝注文の合計、transaction_ref が MOCK-＋英数字16桁）、注文状態履歴（注文受付→支払済、実行者＝購入者）が1件追加される。在庫数量は変化しない（ST-PO-02）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-038",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "支払が否認された場合は注文受付のままで否認の決済記録が残る",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009, ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR031-02"
+      ],
+      "precondition": "自分の注文受付の注文が存在する",
+      "input": "{mock_result: 'decline'}",
+      "steps": "1. POST /api/purchase-orders/{id}/pay を要求する\n2. 応答を確認する\n3. DBの注文状態・支払日時・決済記録・履歴・在庫を確認する",
+      "expected_result": "409 PAYMENT_DECLINED が返る。注文は注文受付のまま、支払日時は未設定、履歴・在庫は変化せず、否認の決済記録が1件登録されている（E-031-06, CMN-21）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-039",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "決済サービスの連携エラーでは連携エラーの決済記録を残し注文は変化しない",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "test_category": "外部連携エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR031-03"
+      ],
+      "precondition": "自分の注文受付の注文が存在し、決済サービス（模擬）が応答不正またはタイムアウトを返すよう構成する",
+      "input": "{mock_result: 'approve'}（決済サービス側が異常応答）",
+      "steps": "1. 決済ゲートウェイが応答不正・タイムアウトとなる構成で POST /api/purchase-orders/{id}/pay を要求する\n2. 応答を確認する\n3. DBの決済記録・注文状態・履歴・在庫を確認する",
+      "expected_result": "502 PAYMENT_SERVICE_ERROR が返る。連携エラーの決済記録が1件残り、注文は注文受付のまま、支払日時・履歴・在庫は変化しない。自動再送は行われない（E-031-07, ADDR-009 DD-004）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-040",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "注文受付以外の注文への支払は状態遷移エラーとなり決済要求を送らない",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "test_category": "状態遷移（不正）",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR031-04"
+      ],
+      "precondition": "支払済の注文とキャンセル済の注文が存在する",
+      "input": "{mock_result: 'approve'}",
+      "steps": "1. 支払済の注文へ支払を要求する\n2. キャンセル済の注文へ支払を要求する\n3. 応答の context と決済記録件数を確認する",
+      "expected_result": "いずれも 409 INVALID_STATUS_TRANSITION が返り、context.current_status に現在の状態（paid / cancelled）を含む。決済記録は増えず注文状態も変化しない（E-031-05）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-041",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "他の購入者の注文への支払は対象なしエラーとなる",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "test_category": "対象なし",
+      "criterion": "authentication",
+      "coverage_keys": [
+        "CK-FR031-05"
+      ],
+      "precondition": "他の購入者の注文受付の注文が存在する",
+      "input": "他の購入者の purchase_order_id",
+      "steps": "1. 自分のトークンで他の購入者の注文へ POST /api/purchase-orders/{id}/pay を要求する\n2. 応答と決済記録を確認する",
+      "expected_result": "404 NOT_FOUND が返り、注文の存在有無を明かさない。決済要求は送信されず決済記録も増えない（CMN-04, PRM-01）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-042",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "注文履歴一覧は本人の注文のみを新しい順に返す",
+      "requirement_id": "FR-032",
+      "related_adr": "ADDR-006",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR032-01"
+      ],
+      "precondition": "自分の注文が複数件、他の購入者の注文が1件以上存在する",
+      "input": "購入者トークン",
+      "steps": "1. GET /api/purchase-orders を要求する\n2. 返却件数・並び順・含まれる注文を確認する",
+      "expected_result": "200で自分の注文のみが注文日時の新しい順に返り、他の購入者の注文は含まれない。1ページ20件のページング情報を含む",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-043",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "注文詳細（購入者）は明細・金額・配送先・状態履歴を返し他人の注文は対象なしとなる",
+      "requirement_id": "FR-033",
+      "related_adr": "ADDR-004, ADDR-007",
+      "test_category": "正常系/対象なし",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR033-01",
+        "CK-FR033-02"
+      ],
+      "precondition": "自分の注文と他の購入者の注文が存在する",
+      "input": "自分の purchase_order_id ／ 他人の purchase_order_id ／ 存在しないID",
+      "steps": "1. 自分の注文詳細を照会する\n2. 他の購入者の注文詳細を照会する\n3. 存在しないIDで照会する",
+      "expected_result": "自分の注文は200で lines・amounts・coupon・shipping_address・status_history（from_status, to_status, changed_at, actor_role）を返し、決済記録は含まない。他人の注文・存在しないIDはいずれも404 NOT_FOUND（PRM-01, MSG-04）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-044",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "購入者キャンセルで在庫が戻り状態がキャンセル済になる",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-001",
+      "test_category": "状態遷移",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR034-01"
+      ],
+      "precondition": "注文受付の注文と支払済の注文（いずれも数量2）が存在する",
+      "input": "なし",
+      "steps": "1. 注文受付の注文へ POST /api/purchase-orders/{id}/cancel を要求する\n2. 支払済の注文へ同様に要求する\n3. 応答・在庫数量・注文状態履歴・決済記録を確認する",
+      "expected_result": "いずれも200で status=キャンセル済・キャンセル日時が設定され、在庫数量が明細数量分戻り、注文状態履歴が1件追加される。決済記録は変更されない（ST-PO-03, ST-PO-04, FCN-05）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-045",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "出荷済以降・キャンセル済の注文はキャンセルできず在庫も二重に戻らない",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-007",
+      "test_category": "状態遷移（不正）",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR034-02"
+      ],
+      "precondition": "出荷済・配達完了・キャンセル済の注文が存在する",
+      "input": "なし",
+      "steps": "1. 出荷済・配達完了・キャンセル済の各注文へキャンセルを要求する\n2. 応答の context と在庫数量・注文状態・履歴件数を確認する",
+      "expected_result": "いずれも 409 INVALID_STATUS_TRANSITION（context.current_status）が返り、在庫数量・注文状態・履歴は変化しない（同じ注文の在庫を2回戻さない）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-046",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "在庫単位一覧（管理者）は非公開商品を含めて在庫情報を返す",
+      "requirement_id": "FR-040",
+      "related_adr": "ADDR-006",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR040-01"
+      ],
+      "precondition": "公開商品・非公開商品の在庫単位、低在庫の在庫単位が登録済み。管理者がログイン済み",
+      "input": "管理者トークン",
+      "steps": "1. GET /api/admin/stock-units を要求する\n2. 返却項目・件数・ページングを確認する",
+      "expected_result": "200で非公開商品の在庫単位も含む全在庫単位が1ページ50件で返り、stock_quantity・is_low_stock・item_name・item_is_public・supplier_name とページング情報を含む",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-047",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "注文一覧検索（管理者）が注文番号・状態複数指定・注文日・購入者メールで絞り込める",
+      "requirement_id": "FR-041",
+      "related_adr": "ADDR-006",
+      "test_category": "検索条件",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR041-01"
+      ],
+      "precondition": "複数購入者の注文が状態・注文日違いで存在する",
+      "input": "order_number / status=created&status=paid / ordered_from・ordered_to / buyer_email",
+      "steps": "1. 注文番号で検索する\n2. status を複数指定して検索する\n3. 注文日範囲で検索する\n4. 購入者メールアドレスで検索する",
+      "expected_result": "200で条件に一致する全購入者の注文が1ページ20件で返り、buyer_email・buyer_name を含む。status の複数指定はOR、他条件とはANDで評価され、注文日範囲はJSTの日付境界で判定される（ADDR-006 DD-004）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-048",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "注文詳細（管理者）は購入者情報と決済記録を含めて返す",
+      "requirement_id": "FR-042",
+      "related_adr": "ADDR-004",
+      "test_category": "正常系",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR042-01"
+      ],
+      "precondition": "決済記録を持つ他の購入者の注文が存在する。管理者がログイン済み",
+      "input": "管理者トークン、purchase_order_id",
+      "steps": "1. GET /api/admin/purchase-orders/{id} を要求する\n2. 応答項目を確認する",
+      "expected_result": "200で lines・amounts・shipping_address に加え、buyer（user_id, email, full_name）・payment_records（result, amount, transaction_ref, processed_at）・status_history（actor_user_id を含む）を返す",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-049",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "出荷登録は支払済からのみ成功し、それ以外は状態遷移エラーとなる",
+      "requirement_id": "FR-043",
+      "related_adr": "ADDR-001, ADDR-007",
+      "test_category": "状態遷移",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR043-01",
+        "CK-FR043-02"
+      ],
+      "precondition": "支払済の注文と、注文受付・キャンセル済の注文が存在する",
+      "input": "{tracking_number: 'TRK-0001'}",
+      "steps": "1. 支払済の注文へ POST /api/admin/purchase-orders/{id}/ship を要求する\n2. 注文受付・キャンセル済の注文へ同様に要求する\n3. 応答・注文状態・履歴を確認する",
+      "expected_result": "支払済からは200で status=出荷済、出荷日時・配送伝票番号が記録され、履歴（支払済→出荷済、実行者＝管理者）が1件追加される。注文受付・キャンセル済からは409 INVALID_STATUS_TRANSITION で変化しない（ST-PO-05）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-050",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "配達完了登録は出荷済からのみ成功する",
+      "requirement_id": "FR-044",
+      "related_adr": "ADDR-001",
+      "test_category": "状態遷移",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR044-01"
+      ],
+      "precondition": "出荷済の注文と支払済の注文が存在する",
+      "input": "なし",
+      "steps": "1. 出荷済の注文へ POST /api/admin/purchase-orders/{id}/deliver を要求する\n2. 支払済の注文へ同様に要求する\n3. 応答・注文状態・履歴を確認する",
+      "expected_result": "出荷済からは200で status=配達完了・配達完了日時が設定され履歴が1件追加される。支払済からは409 INVALID_STATUS_TRANSITION で変化しない（ST-PO-06）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-051",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "管理者キャンセルは注文受付・支払済から成功し在庫を戻す",
+      "requirement_id": "FR-045",
+      "related_adr": "ADDR-001",
+      "test_category": "状態遷移",
+      "criterion": "state-transition",
+      "coverage_keys": [
+        "CK-FR045-01"
+      ],
+      "precondition": "他の購入者の注文受付・支払済・出荷済の注文が存在する。管理者がログイン済み",
+      "input": "管理者トークン",
+      "steps": "1. 注文受付の注文へ POST /api/admin/purchase-orders/{id}/cancel を要求する\n2. 支払済の注文へ同様に要求する\n3. 出荷済の注文へ同様に要求する\n4. 在庫数量・注文状態・履歴を確認する",
+      "expected_result": "注文受付・支払済からは200で status=キャンセル済、在庫数量が戻り、履歴（実行者＝管理者）が追加される。出荷済からは409 INVALID_STATUS_TRANSITION で変化しない（ST-PO-03, ST-PO-04）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-052",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "会員登録から配達完了までの業務フローが一連で成立する",
+      "requirement_id": "FR-001, FR-002, FR-011, FR-012, FR-021, FR-024, FR-030, FR-031, FR-043, FR-044",
+      "related_adr": "ADDR-002, ADDR-003, ADDR-009",
+      "test_category": "E2E",
+      "criterion": "end-to-end-flow",
+      "coverage_keys": [
+        "CK-E2E-01"
+      ],
+      "precondition": "公開商品・在庫単位・有効なクーポン・管理者が登録済み",
+      "input": "会員情報、検索条件、カート明細、クーポンコード、配送先、mock_result=approve、配送伝票番号",
+      "steps": "1. 会員登録しログインする\n2. 商品一覧検索と商品詳細照会を行う\n3. カートへ明細を追加しクーポンを適用する\n4. 注文確定する\n5. 支払（承認）を行う\n6. 管理者でログインし出荷登録・配達完了登録を行う\n7. 購入者の注文詳細を照会する",
+      "expected_result": "各段階のデータが後続へ引き継がれ、最終的に注文状態＝配達完了、注文状態履歴が4件（なし→注文受付→支払済→出荷済→配達完了）、在庫数量は注文数量分だけ減算されたまま、注文金額は注文確定時の値から変化しない",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-053",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "キャンセル後に在庫が復元され同じ在庫単位を再度購入できる",
+      "requirement_id": "FR-030, FR-031, FR-034, FR-012",
+      "related_adr": "ADDR-001",
+      "test_category": "E2E",
+      "criterion": "end-to-end-flow",
+      "coverage_keys": [
+        "CK-E2E-02"
+      ],
+      "precondition": "在庫1の在庫単位が存在する",
+      "input": "数量1のカート、配送先、mock_result=approve",
+      "steps": "1. 注文確定し支払（承認）する\n2. 商品詳細で在庫数量を確認する\n3. 購入者キャンセルを行う\n4. 商品詳細・商品一覧で在庫を再確認する\n5. 同じ在庫単位で再度カート追加・注文確定する",
+      "expected_result": "注文確定後は在庫0・in_stock=false、キャンセル後は在庫1・in_stock=true に戻り、同じ在庫単位で再度注文確定が成功する",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-054",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "title": "初期データ一括投入コマンドで各データが登録されパスワードがハッシュ化される",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010, ADDR-008",
+      "test_category": "正常系",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR060-01"
+      ],
+      "precondition": "使い捨てテストDBが空で、架空値のみの定義ファイルを用意する",
+      "input": "定義ファイル（利用者・仕入先・商品分類・商品・在庫単位・クーポン）",
+      "steps": "1. load_initial_data コマンドを定義ファイル指定で実行する\n2. 各データの登録件数と内容を確認する\n3. 利用者のパスワード保存値を確認する",
+      "expected_result": "定義どおりの件数・内容で各データが登録され、利用者のパスワードは平文ではなくハッシュで保存される。監査ログに投入結果が記録される（CMN-24, ADDR-008 DD-003）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-001",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-001",
+      "title": "商品一覧検索の総ページ数超過・該当0件はエラーにならない",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-006",
+      "test_category": "境界値",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR011-05"
+      ],
+      "precondition": "公開かつ在庫単位を持つ商品が1件だけ登録されている",
+      "input": "①page=5 ②keyword='該当しないキーワード'",
+      "steps": "1. 総ページ数を超えるページ番号で GET /api/items を要求する\n2. 該当0件となるキーワードで GET /api/items を要求する\n3. 応答の results・total_count・total_pages を確認する",
+      "expected_result": "いずれも200で results=[] を返す。総ページ数超過時は total_count=1・total_pages=1、該当0件時は total_count=0・total_pages=0 となる（FR-011 手順8、CMN-35）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-002",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-002",
+      "title": "存在しない・非公開の在庫単位へのカート明細追加は対象なしエラーとなる",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-007",
+      "test_category": "対象なし",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR021-04"
+      ],
+      "precondition": "購入者がログイン済みで、非公開商品の在庫単位が1件存在する",
+      "input": "①存在しない stock_unit_id ②非公開商品の stock_unit_id ③整数として解釈できない値",
+      "steps": "1. 存在しない在庫単位IDで POST /api/cart/lines を要求する\n2. 非公開商品の在庫単位IDで要求する\n3. 整数として解釈できない値で要求する\n4. 応答とカート明細件数を確認する",
+      "expected_result": "①②は 404 NOT_FOUND を返し、存在有無・非公開を区別しない（E-021-04、CMN-18）。③は 400 VALIDATION_ERROR（details に stock_unit_id）を返す（E-021-03、CMN-14 の入力判定）。いずれもカート明細は作成されない",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-003",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-003",
+      "title": "適用不可となったクーポンは自動で外れず適用不可理由を返す",
+      "requirement_id": "FR-026",
+      "related_adr": "ADDR-004",
+      "test_category": "判定",
+      "criterion": "api",
+      "coverage_keys": [
+        "CK-FR026-03"
+      ],
+      "precondition": "クーポンを適用済みの明細ありカートが存在する",
+      "input": "①最低購入金額を小計超へ変更 ②有効期間を過去へ変更 ③明細を削除して0件にする",
+      "steps": "1. クーポンを適用する\n2. 最低購入金額を小計超へ変更して GET /api/cart を要求する\n3. 有効期間を過去へ変更して GET /api/cart を要求する\n4. 明細を削除して GET /api/cart を要求する\n5. 各応答の coupon と amounts、DBのクーポン適用状態を確認する",
+      "expected_result": "いずれも割引額0で金額を返しつつ coupon.is_applicable=false、not_applicable_reason が順に COUPON_MIN_SPEND_NOT_MET / COUPON_EXPIRED / CART_EMPTY となる。明細0件時は金額がすべて0。カートのクーポン適用は解除されない（FR-026 手順1・3、MSG-07）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-004",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-004",
+      "title": "数量が10を超える明細を含むカートの注文確定は数量上限エラーとなる",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "test_category": "業務エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR030-07"
+      ],
+      "precondition": "在庫20の在庫単位の明細を持つカートがあり、使い捨てテストDBで数量上限の表制約のみを一時的に外して数量11の明細を作る",
+      "input": "有効な配送先",
+      "steps": "1. カートへ明細を追加する\n2. 使い捨てテストDBの cart_line_quantity_range 制約を外し、明細の数量を11にする\n3. POST /api/checkout を要求する\n4. 応答の context と在庫数量・注文件数を確認する",
+      "expected_result": "409 QUANTITY_LIMIT_EXCEEDED を返し、context に stock_unit_id・limit=10・current_quantity=11・requested_quantity=11 を含む。在庫数量は変化せず注文も作成されない（E-030-06）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-005",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-005",
+      "title": "注文番号は PO-＋8桁ゼロ埋めで一意かつ確定順に大きくなる",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-003",
+      "test_category": "一意性",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR030-08"
+      ],
+      "precondition": "購入者が2件の注文を連続して確定できる在庫単位が存在する",
+      "input": "有効な配送先",
+      "steps": "1. 1件目の注文を確定する\n2. 新しい利用中カートへ明細を追加し2件目の注文を確定する\n3. 2件の注文番号の形式・一意性・大小関係を確認する",
+      "expected_result": "いずれの注文番号も ^PO-[0-9]{8}$ に一致し、重複せず、2件目が1件目より大きい（FR-030 手順12、ADDR-003）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-006",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-006",
+      "title": "模擬決済指示の不正値は入力エラーとなり決済要求を送らない",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-007",
+      "test_category": "入力エラー",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-FR031-06"
+      ],
+      "precondition": "自分の注文受付の注文が存在する",
+      "input": "{mock_result: 'APPROVE'}（approve/decline と完全一致しない値）",
+      "steps": "1. mock_result に approve/decline 以外の値を指定して POST /api/purchase-orders/{id}/pay を要求する\n2. 応答と決済記録・注文状態・在庫数量を確認する",
+      "expected_result": "400 VALIDATION_ERROR（details に mock_result）を返す。決済記録は作成されず、注文は注文受付のまま、支払日時は未設定、在庫数量も変化しない（E-031-03、FR-031 手順3）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-007",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-007",
+      "title": "否認後に再支払でき、管理者が否認・承認の決済記録を確認できる",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-009",
+      "test_category": "E2E/回復",
+      "criterion": "end-to-end-flow",
+      "coverage_keys": [
+        "CK-E2E-03"
+      ],
+      "precondition": "購入者の注文受付の注文と管理者が存在する",
+      "input": "①{mock_result: 'decline'} ②{mock_result: 'approve'}",
+      "steps": "1. 否認で支払を要求する\n2. 注文詳細で状態を確認する\n3. 同じ注文へ承認で再度支払を要求する\n4. 管理者で注文詳細（FR-042）を照会する",
+      "expected_result": "否認時は409 PAYMENT_DECLINED で注文は注文受付のまま（can_pay=true）。再支払で200・支払済となる。管理者向け注文詳細の payment_records に否認・承認の2件が処理日時順に含まれ、注文状態履歴は2件（なし→注文受付、注文受付→支払済）である（FR-031 手順10、FR-042）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-008",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-008",
+      "title": "違反を含む定義ファイルの初期データ投入は1件も投入せず異常終了する",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010",
+      "test_category": "トランザクション",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR060-02"
+      ],
+      "precondition": "使い捨てテストDBが空で、違反を1件含む架空値の定義ファイルを用意する",
+      "input": "クーポンの割引方式に不正値を含む定義ファイル",
+      "steps": "1. 違反を含む定義ファイルで load_initial_data コマンドを実行する\n2. 終了コードと標準エラー出力を確認する\n3. 各データの登録件数と監査ログを確認する",
+      "expected_result": "終了コードは0以外で、標準エラー出力に違反（データ名・項目名）と何も投入しなかった旨を出力する。利用者・仕入先・商品分類・商品・在庫単位・クーポンはいずれも0件のまま（全件ロールバック）で、監査ログに結果＝失敗が1件記録される（E-060-04、CMN-21）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-009",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-009",
+      "title": "全エラー応答が共通構造で内部情報を露出しない",
+      "requirement_id": "FR-004",
+      "related_adr": "ADDR-005, ADDR-007",
+      "test_category": "セキュリティ",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-CMN-ERR-01"
+      ],
+      "precondition": "購入者・管理者・注文が存在し、内部障害を再現できる状態である",
+      "input": "認証エラー・権限エラー・対象なし・入力エラー・業務エラー・システムエラーを発生させる各要求",
+      "steps": "1. 認証エラー・権限エラー・対象なし・入力エラー・業務エラーの各応答を取得する\n2. 内部障害（例外）を発生させてシステムエラー応答を取得する\n3. 各応答本文の構造と含まれる文字列を確認する",
+      "expected_result": "すべて {error: {code, message, details, context}} の共通構造で、HTTPステータスは api-contract 6.2 のとおり。応答本文にスタックトレース・SQL・内部パス・認証情報・パスワードを含まない。システムエラーは INTERNAL_ERROR の定型文のみを返す（MSG-04、NFR-SC-10、ADDR-005 DD-007）",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-010",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-010",
+      "title": "複数のエラー要因が同時に成立する場合の判定順序",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-007",
+      "test_category": "判定順序",
+      "criterion": "error-handling",
+      "coverage_keys": [
+        "CK-CMN-ERR-02"
+      ],
+      "precondition": "購入者・管理者・自分の注文・他の購入者の注文が存在する",
+      "input": "未認証かつ入力不正／権限なしかつ対象なし／入力不正かつ対象なし／他人の注文／状態不正かつ否認指定",
+      "steps": "1. 未認証かつ入力不正の要求を送る\n2. 購入者トークンで管理者APIの存在しない注文を要求する\n3. 管理者トークンで購入者APIへ入力不正の要求を送る\n4. 入力不正かつ存在しない注文IDで支払を要求する\n5. 他の購入者の注文へ支払を要求する\n6. キャンセル済の注文へ否認指定で支払を要求する",
+      "expected_result": "順に 401 AUTHENTICATION_REQUIRED / 403 PERMISSION_DENIED / 403 PERMISSION_DENIED / 400 VALIDATION_ERROR / 404 NOT_FOUND / 409 INVALID_STATUS_TRANSITION（context.current_status=cancelled）を返す。CMN-14 の順序（認証→権限→入力→対象→状態→業務ルール）で先に該当したエラーのみを通知する",
+      "execution_type": "AUTOMATABLE"
+    },
+    {
+      "case_id": "IT-AI-GF-011",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "gap_id": "GAP-011",
+      "title": "同一在庫単位への同時注文確定が逐次実行と同じ結果になる",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001",
+      "test_category": "同時実行",
+      "criterion": "database",
+      "coverage_keys": [
+        "CK-FR030-09"
+      ],
+      "precondition": "在庫数量1の在庫単位を数量1で含むカートを持つ購入者が2名存在する（トランザクションを確定する使い捨てテストDBを使用）",
+      "input": "有効な配送先（2要求とも同一在庫単位）",
+      "steps": "1. 2つの接続から同時に POST /api/checkout を要求する\n2. 2つの応答を確認する\n3. 在庫数量と注文件数を確認する",
+      "expected_result": "一方が201で注文確定し、他方は409 INSUFFICIENT_STOCK（shortages に available_quantity=0）となる。注文は1件のみ、在庫数量は0で0未満にならない（CMN-19、CMN-20、ADDR-001）",
+      "execution_type": "AUTOMATABLE"
+    }
+  ]
+}

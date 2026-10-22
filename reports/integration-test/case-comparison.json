@@ -1,0 +1,1743 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "phase": "INTEGRATION_TEST",
+  "comparison_basis": "Required Coverage（reports/integration-test/required-coverage.json）と AI INITIAL Case / External Case の突合",
+  "external_cases_provided": false,
+  "summary": {
+    "required": 143,
+    "common": 0,
+    "ai_only": 59,
+    "external_only": 0,
+    "missing": 84
+  },
+  "summary_as_first_measured": {
+    "required": 70,
+    "common": 0,
+    "ai_only": 59,
+    "external_only": 0,
+    "missing": 11,
+    "ai_initial_coverage_rate": 84.29,
+    "external_coverage_rate": null,
+    "combined_initial_coverage_rate": 84.29,
+    "note": "Gap Fill 前に確定した測定値。GAP_FILL Case の追加では書き換えない。"
+  },
+  "summary_note": "repair cycle 1 で Required Coverage の導出元（NFR-SC の検証方法・UC の同時実行受入基準）を是正して ICOV-071〜ICOV-087 の17件を追加し、repair cycle 3（Traceability Audit C10 の是正）で対象外機能（FR-OUT-01〜16）と結合試験で検証できる非機能要件を導出元へ加えて ICOV-088〜ICOV-128 の41件を追加した。初回測定時の値は reports/integration-test/initial-coverage-metrics.json に凍結しており書き換えていない。 repair cycle 3（最終精査）で ICOV-140〜ICOV-143 の4件を追加した（いずれも AI INITIAL / External のいずれにも存在しない MISSING。AI INITIAL Case と初回測定値 summary_as_first_measured は変更していない）。",
+  "items": [
+    {
+      "coverage_key": "CK-CMN-ERR-01",
+      "coverage_id": "ICOV-069",
+      "requirement_id": "FR-004",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-009"
+      ]
+    },
+    {
+      "coverage_key": "CK-CMN-ERR-02",
+      "coverage_id": "ICOV-070",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-010"
+      ]
+    },
+    {
+      "coverage_key": "CK-CMN02-01",
+      "coverage_id": "ICOV-011",
+      "requirement_id": "FR-004",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-008"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-CMN02-02",
+      "coverage_id": "ICOV-012",
+      "requirement_id": "FR-004",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-009"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-CMN03-01",
+      "coverage_id": "ICOV-013",
+      "requirement_id": "FR-040",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-011"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-CMN03-02",
+      "coverage_id": "ICOV-014",
+      "requirement_id": "FR-020",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-011"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-E2E-01",
+      "coverage_id": "ICOV-066",
+      "requirement_id": "FR-030",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-052"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-E2E-02",
+      "coverage_id": "ICOV-067",
+      "requirement_id": "FR-034",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-053"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-E2E-03",
+      "coverage_id": "ICOV-068",
+      "requirement_id": "FR-031",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-007"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR001-01",
+      "coverage_id": "ICOV-001",
+      "requirement_id": "FR-001",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-001"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR001-02",
+      "coverage_id": "ICOV-002",
+      "requirement_id": "FR-001",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-001"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR001-03",
+      "coverage_id": "ICOV-003",
+      "requirement_id": "FR-001",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-002"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR001-04",
+      "coverage_id": "ICOV-004",
+      "requirement_id": "FR-001",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-003"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR001-05",
+      "coverage_id": "ICOV-079",
+      "requirement_id": "FR-001",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-020"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR002-01",
+      "coverage_id": "ICOV-005",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-004"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR002-02",
+      "coverage_id": "ICOV-006",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-005"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR002-03",
+      "coverage_id": "ICOV-007",
+      "requirement_id": "FR-002",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-006"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR002-04",
+      "coverage_id": "ICOV-008",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-007"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR003-01",
+      "coverage_id": "ICOV-009",
+      "requirement_id": "FR-003",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-007"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR004-01",
+      "coverage_id": "ICOV-010",
+      "requirement_id": "FR-004",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-010"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR010-01",
+      "coverage_id": "ICOV-015",
+      "requirement_id": "FR-010",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-012"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR011-01",
+      "coverage_id": "ICOV-016",
+      "requirement_id": "FR-011",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-013"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR011-02",
+      "coverage_id": "ICOV-017",
+      "requirement_id": "FR-011",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-014"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR011-03",
+      "coverage_id": "ICOV-018",
+      "requirement_id": "FR-011",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-015"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR011-04",
+      "coverage_id": "ICOV-019",
+      "requirement_id": "FR-011",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-016"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR011-05",
+      "coverage_id": "ICOV-020",
+      "requirement_id": "FR-011",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-001"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR012-01",
+      "coverage_id": "ICOV-021",
+      "requirement_id": "FR-012",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-017"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR012-02",
+      "coverage_id": "ICOV-022",
+      "requirement_id": "FR-012",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-018"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR020-01",
+      "coverage_id": "ICOV-023",
+      "requirement_id": "FR-020",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-019"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR021-01",
+      "coverage_id": "ICOV-024",
+      "requirement_id": "FR-021",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-020"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR021-02",
+      "coverage_id": "ICOV-025",
+      "requirement_id": "FR-021",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-021"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR021-03",
+      "coverage_id": "ICOV-026",
+      "requirement_id": "FR-021",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-022"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR021-04",
+      "coverage_id": "ICOV-027",
+      "requirement_id": "FR-021",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-002"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR021-05",
+      "coverage_id": "ICOV-080",
+      "requirement_id": "FR-021",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-021"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR022-01",
+      "coverage_id": "ICOV-028",
+      "requirement_id": "FR-022",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-023"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR022-02",
+      "coverage_id": "ICOV-029",
+      "requirement_id": "FR-022",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-024"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR023-01",
+      "coverage_id": "ICOV-030",
+      "requirement_id": "FR-023",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-025"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR024-01",
+      "coverage_id": "ICOV-031",
+      "requirement_id": "FR-024",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-026"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR024-02",
+      "coverage_id": "ICOV-032",
+      "requirement_id": "FR-024",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-027"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR025-01",
+      "coverage_id": "ICOV-033",
+      "requirement_id": "FR-025",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-028"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR026-01",
+      "coverage_id": "ICOV-034",
+      "requirement_id": "FR-026",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-029"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR026-02",
+      "coverage_id": "ICOV-035",
+      "requirement_id": "FR-026",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-030"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR026-03",
+      "coverage_id": "ICOV-036",
+      "requirement_id": "FR-026",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-003"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR030-01",
+      "coverage_id": "ICOV-037",
+      "requirement_id": "FR-030",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-031"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR030-02",
+      "coverage_id": "ICOV-038",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-032"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR030-03",
+      "coverage_id": "ICOV-039",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-033"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR030-04",
+      "coverage_id": "ICOV-040",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-034"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR030-05",
+      "coverage_id": "ICOV-041",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-035"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR030-06",
+      "coverage_id": "ICOV-042",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-036"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR030-07",
+      "coverage_id": "ICOV-043",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-004"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR030-08",
+      "coverage_id": "ICOV-044",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-005"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR030-09",
+      "coverage_id": "ICOV-045",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-011"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR031-01",
+      "coverage_id": "ICOV-046",
+      "requirement_id": "FR-031",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-037"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR031-02",
+      "coverage_id": "ICOV-047",
+      "requirement_id": "FR-031",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-038"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR031-03",
+      "coverage_id": "ICOV-048",
+      "requirement_id": "FR-031",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-039"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR031-04",
+      "coverage_id": "ICOV-049",
+      "requirement_id": "FR-031",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-040"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR031-05",
+      "coverage_id": "ICOV-050",
+      "requirement_id": "FR-031",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-041"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR031-06",
+      "coverage_id": "ICOV-051",
+      "requirement_id": "FR-031",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-006"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR031-07",
+      "coverage_id": "ICOV-081",
+      "requirement_id": "FR-031",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-022"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR031-08",
+      "coverage_id": "ICOV-082",
+      "requirement_id": "FR-031",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-023"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR032-01",
+      "coverage_id": "ICOV-052",
+      "requirement_id": "FR-032",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-042"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR033-01",
+      "coverage_id": "ICOV-053",
+      "requirement_id": "FR-033",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-043"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR033-02",
+      "coverage_id": "ICOV-054",
+      "requirement_id": "FR-033",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-043"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR034-01",
+      "coverage_id": "ICOV-055",
+      "requirement_id": "FR-034",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-044"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR034-02",
+      "coverage_id": "ICOV-056",
+      "requirement_id": "FR-034",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-045"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR034-03",
+      "coverage_id": "ICOV-083",
+      "requirement_id": "FR-034",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-024"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR040-01",
+      "coverage_id": "ICOV-057",
+      "requirement_id": "FR-040",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-046"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR041-01",
+      "coverage_id": "ICOV-058",
+      "requirement_id": "FR-041",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-047"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR042-01",
+      "coverage_id": "ICOV-059",
+      "requirement_id": "FR-042",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-048"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR043-01",
+      "coverage_id": "ICOV-060",
+      "requirement_id": "FR-043",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-049"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR043-02",
+      "coverage_id": "ICOV-061",
+      "requirement_id": "FR-043",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-049"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR043-03",
+      "coverage_id": "ICOV-084",
+      "requirement_id": "FR-043",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-025"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR044-01",
+      "coverage_id": "ICOV-062",
+      "requirement_id": "FR-044",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-050"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR045-01",
+      "coverage_id": "ICOV-063",
+      "requirement_id": "FR-045",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-051"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR045-02",
+      "coverage_id": "ICOV-085",
+      "requirement_id": "FR-045",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-026"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR045-03",
+      "coverage_id": "ICOV-086",
+      "requirement_id": "FR-045",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-027"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR045-04",
+      "coverage_id": "ICOV-087",
+      "requirement_id": "FR-045",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-028"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR060-01",
+      "coverage_id": "ICOV-064",
+      "requirement_id": "FR-060",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-AI-054"
+      ],
+      "external_cases": [],
+      "ai_gap_fill_cases": []
+    },
+    {
+      "coverage_key": "CK-FR060-02",
+      "coverage_id": "ICOV-065",
+      "requirement_id": "FR-060",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-008"
+      ]
+    },
+    {
+      "coverage_key": "CK-FR060-03",
+      "coverage_id": "ICOV-078",
+      "requirement_id": "FR-060",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-019"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT01-01",
+      "coverage_id": "ICOV-088",
+      "requirement_id": "FR-OUT-01",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-029"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT02-01",
+      "coverage_id": "ICOV-089",
+      "requirement_id": "FR-OUT-02",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-030"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT03-01",
+      "coverage_id": "ICOV-090",
+      "requirement_id": "FR-OUT-03",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-031"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT04-01",
+      "coverage_id": "ICOV-091",
+      "requirement_id": "FR-OUT-04",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-032"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT05-01",
+      "coverage_id": "ICOV-092",
+      "requirement_id": "FR-OUT-05",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-033"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT06-01",
+      "coverage_id": "ICOV-093",
+      "requirement_id": "FR-OUT-06",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-034"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT07-01",
+      "coverage_id": "ICOV-094",
+      "requirement_id": "FR-OUT-07",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-035"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT08-01",
+      "coverage_id": "ICOV-095",
+      "requirement_id": "FR-OUT-08",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-036"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT09-01",
+      "coverage_id": "ICOV-096",
+      "requirement_id": "FR-OUT-09, NFR-SC-17",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-037"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT10-01",
+      "coverage_id": "ICOV-097",
+      "requirement_id": "FR-OUT-10",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-038"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT11-01",
+      "coverage_id": "ICOV-098",
+      "requirement_id": "FR-OUT-11, NFR-SC-14",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-039"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT12-01",
+      "coverage_id": "ICOV-099",
+      "requirement_id": "FR-OUT-12",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-040"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT13-01",
+      "coverage_id": "ICOV-100",
+      "requirement_id": "FR-OUT-13, NFR-SC-28",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-041"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT14-01",
+      "coverage_id": "ICOV-101",
+      "requirement_id": "FR-OUT-14",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-042"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT15-01",
+      "coverage_id": "ICOV-102",
+      "requirement_id": "FR-OUT-15",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-043"
+      ]
+    },
+    {
+      "coverage_key": "CK-FROUT16-01",
+      "coverage_id": "ICOV-103",
+      "requirement_id": "FR-OUT-16, NFR-LG-04",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-044"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRAV10-01",
+      "coverage_id": "ICOV-137",
+      "requirement_id": "NFR-AV-10",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-077"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN01-01",
+      "coverage_id": "ICOV-115",
+      "requirement_id": "NFR-EN-01, NFR-EN-02",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-056"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN04-01",
+      "coverage_id": "ICOV-116",
+      "requirement_id": "NFR-EN-04",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-057"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN05-01",
+      "coverage_id": "ICOV-117",
+      "requirement_id": "NFR-EN-05, NFR-LG-10",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-058"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN08-01",
+      "coverage_id": "ICOV-135",
+      "requirement_id": "NFR-EN-08",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-076"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN09-01",
+      "coverage_id": "ICOV-134",
+      "requirement_id": "NFR-EN-09",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-075"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN11-01",
+      "coverage_id": "ICOV-130",
+      "requirement_id": "NFR-EN-11",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-071"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN12-01",
+      "coverage_id": "ICOV-131",
+      "requirement_id": "NFR-EN-12",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-072"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRLG02-01",
+      "coverage_id": "ICOV-124",
+      "requirement_id": "NFR-LG-02",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-065"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRLG03-01",
+      "coverage_id": "ICOV-136",
+      "requirement_id": "NFR-LG-03",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-079"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRLG05-01",
+      "coverage_id": "ICOV-114",
+      "requirement_id": "NFR-LG-05",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-055"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRLG09-01",
+      "coverage_id": "ICOV-125",
+      "requirement_id": "NFR-LG-09",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-066"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRMG01-01",
+      "coverage_id": "ICOV-126",
+      "requirement_id": "NFR-MG-01",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-067"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFROM07-01",
+      "coverage_id": "ICOV-129",
+      "requirement_id": "NFR-OM-07",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-070"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFROM11-01",
+      "coverage_id": "ICOV-118",
+      "requirement_id": "NFR-OM-11",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-059"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFROM13-01",
+      "coverage_id": "ICOV-127",
+      "requirement_id": "NFR-OM-13, NFR-MG-07",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-068"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFROM18-01",
+      "coverage_id": "ICOV-119",
+      "requirement_id": "NFR-OM-18",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-060"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRPF07-01",
+      "coverage_id": "ICOV-128",
+      "requirement_id": "NFR-PF-07, NFR-LG-06",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-069"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRPF08-01",
+      "coverage_id": "ICOV-120",
+      "requirement_id": "NFR-PF-08",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-061"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRPF11-01",
+      "coverage_id": "ICOV-139",
+      "requirement_id": "NFR-PF-11",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-080"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRPF12-01",
+      "coverage_id": "ICOV-138",
+      "requirement_id": "NFR-PF-12",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-078"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRPF16-01",
+      "coverage_id": "ICOV-121",
+      "requirement_id": "NFR-PF-16",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-062"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRPF17-01",
+      "coverage_id": "ICOV-132",
+      "requirement_id": "NFR-PF-17",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-073"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC04-01",
+      "coverage_id": "ICOV-075",
+      "requirement_id": "NFR-SC-04",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-016"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC04-02",
+      "coverage_id": "ICOV-076",
+      "requirement_id": "NFR-SC-04",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-017"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC04-03",
+      "coverage_id": "ICOV-077",
+      "requirement_id": "NFR-SC-04",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-018"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC05-01",
+      "coverage_id": "ICOV-071",
+      "requirement_id": "NFR-SC-05",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-012"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC05-02",
+      "coverage_id": "ICOV-072",
+      "requirement_id": "NFR-SC-05",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-013"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC05-03",
+      "coverage_id": "ICOV-073",
+      "requirement_id": "NFR-SC-05",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-014"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC05-04",
+      "coverage_id": "ICOV-074",
+      "requirement_id": "NFR-SC-05",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-015"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC07-01",
+      "coverage_id": "ICOV-133",
+      "requirement_id": "NFR-SC-07",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-074"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC08-01",
+      "coverage_id": "ICOV-106",
+      "requirement_id": "NFR-SC-08",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-047"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC10-01",
+      "coverage_id": "ICOV-107",
+      "requirement_id": "NFR-SC-10",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-048"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC12-01",
+      "coverage_id": "ICOV-108",
+      "requirement_id": "NFR-SC-12",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-049"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC13-01",
+      "coverage_id": "ICOV-104",
+      "requirement_id": "NFR-SC-13",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-045"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC15-01",
+      "coverage_id": "ICOV-109",
+      "requirement_id": "NFR-SC-15",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-050"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC19-01",
+      "coverage_id": "ICOV-110",
+      "requirement_id": "NFR-SC-19",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-051"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC22-01",
+      "coverage_id": "ICOV-111",
+      "requirement_id": "NFR-SC-22",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-052"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC23-01",
+      "coverage_id": "ICOV-112",
+      "requirement_id": "NFR-SC-23",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-053"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC24-01",
+      "coverage_id": "ICOV-113",
+      "requirement_id": "NFR-SC-24, NFR-LG-01",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-054"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC27-01",
+      "coverage_id": "ICOV-105",
+      "requirement_id": "NFR-SC-27",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-046"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRUS03-01",
+      "coverage_id": "ICOV-122",
+      "requirement_id": "NFR-US-03",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-063"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRUS04-01",
+      "coverage_id": "ICOV-123",
+      "requirement_id": "NFR-US-04",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-064"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFRSC25-01",
+      "coverage_id": "ICOV-140",
+      "requirement_id": "NFR-SC-25",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-081"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFROM17-01",
+      "coverage_id": "ICOV-141",
+      "requirement_id": "NFR-OM-17",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-082"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN07-01",
+      "coverage_id": "ICOV-142",
+      "requirement_id": "NFR-EN-07",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-083"
+      ]
+    },
+    {
+      "coverage_key": "CK-NFREN03-01",
+      "coverage_id": "ICOV-143",
+      "requirement_id": "NFR-EN-03",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "ai_gap_fill_cases": [
+        "IT-AI-GF-084"
+      ]
+    }
+  ]
+}

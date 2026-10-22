@@ -1,0 +1,528 @@
+{
+  "version": 3,
+  "status": "FAIL",
+  "audit_scope": "FULL",
+  "method": "inline-annotation",
+  "source_baseline_sha256": "80819e003e82f370820af8c2365b8cc4755efa57a905c09f3a084c653a720b32",
+  "trace_map": {
+    "path": "reports/traceability/trace-map.json",
+    "version": 3
+  },
+  "coverage": {
+    "requirement_to_addr": {
+      "covered": 67,
+      "total": 173,
+      "rate": 38.7
+    },
+    "requirement_to_implementation": {
+      "covered": 69,
+      "total": 173,
+      "rate": 39.9
+    },
+    "requirement_to_unit_test": {
+      "covered": 35,
+      "total": 173,
+      "rate": 20.2
+    },
+    "requirement_to_integration_test": {
+      "covered": 93,
+      "total": 173,
+      "rate": 53.8
+    }
+  },
+  "annotation_stats": {
+    "code": {
+      "files": 83,
+      "annotated_files": 83,
+      "trace_lines": 397,
+      "symbol_annotations": 279
+    },
+    "unit_test": {
+      "files": 22,
+      "annotated_files": 22,
+      "trace_lines": 529,
+      "symbol_annotations": 504
+    },
+    "integration_test": {
+      "files": 17,
+      "annotated_files": 17,
+      "trace_lines": 239,
+      "symbol_annotations": 199
+    }
+  },
+  "issues": [
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:101",
+      "message": "NFR-AV-01 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:103",
+      "message": "NFR-AV-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:102",
+      "message": "NFR-AV-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:110",
+      "message": "NFR-AV-04 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:105",
+      "message": "NFR-AV-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:104",
+      "message": "NFR-AV-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:106",
+      "message": "NFR-AV-07 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:107",
+      "message": "NFR-AV-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:108",
+      "message": "NFR-AV-09 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:111",
+      "message": "NFR-AV-11 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:112",
+      "message": "NFR-AV-12 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:289",
+      "message": "NFR-EN-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:295",
+      "message": "NFR-EN-10 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:299",
+      "message": "NFR-EN-13 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:312",
+      "message": "NFR-LG-07 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:313",
+      "message": "NFR-LG-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:206",
+      "message": "NFR-MG-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:202",
+      "message": "NFR-MG-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:203",
+      "message": "NFR-MG-04 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:204",
+      "message": "NFR-MG-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:205",
+      "message": "NFR-MG-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:208",
+      "message": "NFR-MG-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:149",
+      "message": "NFR-OM-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:150",
+      "message": "NFR-OM-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:156",
+      "message": "NFR-OM-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:158",
+      "message": "NFR-OM-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:144",
+      "message": "NFR-OM-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:145",
+      "message": "NFR-OM-09 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:146",
+      "message": "NFR-OM-10 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:151",
+      "message": "NFR-OM-12 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:154",
+      "message": "NFR-OM-14 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:155",
+      "message": "NFR-OM-15 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:157",
+      "message": "NFR-OM-16 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:162",
+      "message": "NFR-OM-19 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:120",
+      "message": "NFR-PF-01 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:121",
+      "message": "NFR-PF-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:122",
+      "message": "NFR-PF-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:125",
+      "message": "NFR-PF-04 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:126",
+      "message": "NFR-PF-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:133",
+      "message": "NFR-PF-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:123",
+      "message": "NFR-PF-09 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:124",
+      "message": "NFR-PF-10 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:130",
+      "message": "NFR-PF-13 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:131",
+      "message": "NFR-PF-14 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:132",
+      "message": "NFR-PF-15 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:230",
+      "message": "NFR-SC-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:246",
+      "message": "NFR-SC-11 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:231",
+      "message": "NFR-SC-20 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:236",
+      "message": "NFR-SC-21 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:242",
+      "message": "NFR-SC-26 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:245",
+      "message": "NFR-SC-29 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:272",
+      "message": "NFR-US-01 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:274",
+      "message": "NFR-US-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:275",
+      "message": "NFR-US-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:273",
+      "message": "NFR-US-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:276",
+      "message": "NFR-US-07 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:277",
+      "message": "NFR-US-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:278",
+      "message": "NFR-US-09 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:279",
+      "message": "NFR-US-10 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    }
+  ],
+  "workflow_unresolved": []
+}

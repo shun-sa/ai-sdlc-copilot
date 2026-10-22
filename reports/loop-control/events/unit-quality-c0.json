@@ -1,0 +1,16 @@
+{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/unit-quality-cycle0",
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "UNIT_TEST_QUALITY_ISSUE",
+    "artifact": "tests/unit",
+    "requirement_reference": "NFR-OM-06",
+    "test_case": "",
+    "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+  },
+  "impact": "テスト配置がADDR-004 DD-005に反しdocker compose exec app pytestでスイートを実行できない（NFR-OM-06未達）。加えてFR-060/UC-013のAC-UC-013-003・AC-UC-013-007・手順6後段の回帰テストが欠落している",
+  "recommended_route": "UNIT_TEST",
+  "validation_result": "reports/quality-review/validation-result.json"
+}

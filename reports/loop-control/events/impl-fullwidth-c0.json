@@ -1,0 +1,16 @@
+﻿{
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "RUN-20261022-MC/impl-fullwidth-cycle0",
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "INPUT_VALIDATION_ISSUE",
+    "artifact": "app/shop/services/orders.py",
+    "requirement_reference": "FR-030",
+    "test_case": "OBS-IT-001",
+    "stable_error_type": "FULLWIDTH_DIGIT_ACCEPTED"
+  },
+  "impact": "prefecture_code/postal_codeに全角数字を与えた注文確定が201で受理され全角のまま保存される。FR-030の入力条件（半角数字）およびNFR-SC-04に反する",
+  "recommended_route": "IMPLEMENTATION",
+  "validation_result": "reports/traceability/validation-result.json"
+}

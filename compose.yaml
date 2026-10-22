@@ -1,0 +1,63 @@
+# trace: ADDR-011, ADDR-012
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - gunicorn
+      - config.wsgi:application
+      - --bind
+      - ${GUNICORN_BIND:-0.0.0.0:8000}
+      - --workers
+      - ${GUNICORN_WORKERS:-3}
+      - --timeout
+      - ${GUNICORN_TIMEOUT:-30}
+      - --log-level
+      - ${GUNICORN_LOG_LEVEL:-info}
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?set DJANGO_SECRET_KEY in .env}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-false}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
+      DJANGO_LOG_LEVEL: ${DJANGO_LOG_LEVEL:-INFO}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-false}
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-minicommerce}
+      DB_USER: ${DB_USER:-minicommerce}
+      DB_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      PAYMENT_GATEWAY: ${PAYMENT_GATEWAY:-mock}
+      TZ: Asia/Tokyo
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    # ENV-01 限定のテスト用マウント（ADDR-012 DD-001）。
+    # 結合テストの正本はリポジトリ直下 tests/ のままとし、コンテナ内へは読取り専用の写しとして与える。
+    # app/ のアプリケーションソースは上書きしない（ADDR-012 INV-005）。
+    # 本番環境（ENV-02）では本マウントを適用せず、同一イメージをそのまま用いる（NFR-OM-17）。
+    volumes:
+      - ./tests:/app/tests:ro
+      - ./reports:/app/reports
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${DB_NAME:-minicommerce}
+      POSTGRES_USER: ${DB_USER:-minicommerce}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+      TZ: Asia/Tokyo
+    ports:
+      - "${DB_PUBLISHED_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-minicommerce} -d ${DB_NAME:-minicommerce}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db-data:

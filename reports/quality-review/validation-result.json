@@ -1,0 +1,25 @@
+{
+  "source_baseline_sha256": "2b6347ba4d4fa89cb00733f4a27f8760e043f593fb4a0f56a97081731b88a19d",
+  "status": "PASS",
+  "audit_scope": "FULL",
+  "criteria": {
+    "discovered": [
+      "architecture-quality",
+      "cross-phase-consistency",
+      "implementation-quality",
+      "integration-test-quality",
+      "requirements-quality",
+      "unit-test-quality"
+    ],
+    "total": 6,
+    "pass": 6,
+    "not_applicable": 0,
+    "fail": 0
+  },
+  "issues": {
+    "total": 7,
+    "unresolved": 4,
+    "blocking": 0
+  },
+  "errors": []
+}

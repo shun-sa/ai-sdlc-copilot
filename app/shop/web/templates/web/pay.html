@@ -1,0 +1,25 @@
+{# trace: ADDR-009 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+<p>注文番号：{{ order.order_number }}</p>
+<p>合計：{{ order.amounts.total|yen }}</p>
+<p>注文状態：{{ order.status|order_status }}</p>
+<p>本リリースの支払は模擬決済です。実際の決済・請求は行われません。</p>
+<form method="post" action="/purchase-orders/{{ order.purchase_order_id }}/pay">
+  {% csrf_token %}
+  <fieldset>
+    <legend>模擬決済の結果</legend>
+    {% for value in mock_results %}
+      <label for="mock-{{ value }}">
+        <input id="mock-{{ value }}" type="radio" name="mock_result" value="{{ value }}"
+               {% if value == mock_result %}checked{% endif %}>
+        {% if value == "approve" %}承認{% else %}否認{% endif %}
+      </label>
+    {% endfor %}
+    {% for reason in details|field_errors:"mock_result" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </fieldset>
+  <button type="submit" data-submit-once="true">支払う</button>
+</form>
+<p><a href="/purchase-orders/{{ order.purchase_order_id }}">注文詳細へ戻る</a></p>
+{% endblock %}

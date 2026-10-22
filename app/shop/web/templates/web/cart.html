@@ -1,0 +1,77 @@
+{# trace: ADDR-001 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+{% if cart.lines %}
+  <table>
+    <caption>カートの内容（合計 {{ cart.total_quantity }}点）</caption>
+    <thead>
+      <tr><th>商品名</th><th>規格名</th><th>SKU</th><th>単価</th><th>数量</th><th>明細金額</th><th>在庫数量</th><th>操作</th></tr>
+    </thead>
+    <tbody>
+      {% for line in cart.lines %}
+      <tr>
+        <td><a href="/items/{{ line.item_id }}">{{ line.item_name }}</a></td>
+        <td>{{ line.variant_name }}</td>
+        <td>{{ line.sku }}</td>
+        <td>{{ line.unit_price|tax_included }}（税込）／{{ line.unit_price|yen }}（税抜）</td>
+        <td>
+          <form method="post" action="/cart/lines/{{ line.cart_line_id }}/update" class="inline-form">
+            {% csrf_token %}
+            <label for="quantity-{{ line.cart_line_id }}" class="sr-only">数量</label>
+            <input id="quantity-{{ line.cart_line_id }}" type="number" name="quantity" inputmode="numeric"
+                   min="1" max="99" step="1" size="2"
+                   value="{% if error_line_id == line.cart_line_id|stringformat:'s' %}{{ error_quantity }}{% else %}{{ line.quantity }}{% endif %}">
+            <button type="submit" data-submit-once="true">数量を変更</button>
+            {% if error_line_id == line.cart_line_id|stringformat:'s' %}
+              {% for reason in details|field_errors:"quantity" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+            {% endif %}
+          </form>
+        </td>
+        <td>{{ line.line_amount|yen }}（税抜）</td>
+        <td>{{ line.stock_quantity }}個</td>
+        <td>
+          <form method="post" action="/cart/lines/{{ line.cart_line_id }}/delete"
+                data-confirm="{{ line.item_name }}（{{ line.variant_name }}）をカートから削除します。よろしいですか？">
+            {% csrf_token %}
+            <button type="submit" data-submit-once="true">削除</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>カートに商品がありません。</p>
+{% endif %}
+
+<section>
+  <h2>クーポン</h2>
+  {% if cart.coupon %}
+    <p>{{ cart.coupon.code }}：{{ cart.coupon.name }}（{{ cart.coupon.discount_type|discount_type }}
+      {% if cart.coupon.discount_type == "percentage" %}{{ cart.coupon.discount_value }}%{% else %}{{ cart.coupon.discount_value|yen }}{% endif %}）</p>
+    <p>有効期間：{{ cart.coupon.valid_from|date:"Y/m/d H:i" }}〜{{ cart.coupon.valid_until|date:"Y/m/d H:i" }}</p>
+    <p>最低購入金額：{{ cart.coupon.min_spend|yen }}</p>
+    <p>適用可否：{% if cart.coupon.is_applicable %}適用できます{% else %}適用できません（理由：{{ cart.coupon.not_applicable_reason }}）{% endif %}</p>
+    <form method="post" action="/cart/remove-coupon">
+      {% csrf_token %}
+      <button type="submit" data-submit-once="true">解除する</button>
+    </form>
+  {% else %}
+    <form method="post" action="/cart/apply-coupon" class="inline-form">
+      {% csrf_token %}
+      <label for="code">クーポンコード</label>
+      <input id="code" type="text" name="code" maxlength="20" value="{{ coupon_code }}">
+      {% for reason in details|field_errors:"code" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+      <button type="submit" data-submit-once="true">適用する</button>
+    </form>
+  {% endif %}
+</section>
+
+{% with amounts=cart.amounts %}{% include "web/_amounts.html" %}{% endwith %}
+
+{% if cart.lines %}
+  <p><a href="/checkout">注文手続きへ進む</a></p>
+{% endif %}
+<p><a href="/">商品一覧へ戻る</a></p>
+{% endblock %}

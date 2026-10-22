@@ -1,0 +1,7 @@
+﻿{
+  "producer": "reports/loop-control/checks/IMPLEMENTATION-producer.json",
+  "build": "reports/loop-control/checks/IMPLEMENTATION-build.json",
+  "quality": "reports/quality-review/validation-result.json",
+  "security": "reports/security-review/validation-result.json",
+  "traceability": "reports/traceability/validation-result.json"
+}

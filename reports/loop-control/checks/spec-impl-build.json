@@ -1,0 +1,1 @@
+﻿{"check_id":"build","command":["docker","compose","exec","-T","app","sh","-c","ruff check . && python manage.py check && python manage.py makemigrations --check --dry-run"],"result_path":"reports/loop-control/checks/IMPLEMENTATION-build.json","timeout_seconds":600}

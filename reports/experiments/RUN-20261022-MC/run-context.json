@@ -1,0 +1,15 @@
+{
+  "run_id": "RUN-20261022-MC",
+  "sdlc_completed_at": "2026-10-22T11:35:30.847323+00:00",
+  "status": "COMPLETE_WITH_UNRESOLVED",
+  "measurement_window": {
+    "start": "2026-10-21T21:32:52.692041+00:00",
+    "end": "2026-10-22T11:26:32.014124+00:00",
+    "elapsed_seconds": 50019.322083,
+    "integration_result": "PASS",
+    "quality_pass_elapsed_seconds": 50019.322083,
+    "finalized": true,
+    "unallocated_seconds": 6.665069,
+    "clock_anomalies": []
+  }
+}

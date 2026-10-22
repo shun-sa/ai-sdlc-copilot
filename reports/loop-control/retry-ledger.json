@@ -1,0 +1,1172 @@
+{
+  "version": 1,
+  "issues": {
+    "UNRESOLVED-9525051a7ce32b7d": {
+      "issue_id": "UNRESOLVED-9525051a7ce32b7d",
+      "signature": {
+        "origin_phase": "ARCHITECTURE",
+        "classification": "ARCHITECTURE_QUALITY_ISSUE",
+        "artifact": "docs/architecture/implementation-task-list.md",
+        "requirement_reference": "NFR-EN-08",
+        "test_case": "",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "NFR-EN-08 が設計へ委譲したWeb/APサーバー選定の重要判断がADDR引渡し候補から欠落し、Coverage表と要件帰属にも不整合があるため、ADDR工程で判断漏れが発生する",
+      "recommended_route": "ARCHITECTURE",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/arch-quality-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: architecture-quality",
+            "Unresolved blocking Quality Review Issue(s): 1"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/7eedef9202ccae3793c63e35d209194a04a796c58a0b63ce2849c1aee3236bec.json",
+            "sha256": "7eedef9202ccae3793c63e35d209194a04a796c58a0b63ce2849c1aee3236bec"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/arch-quality-resolved",
+          "repair": "BLK-011 web-application-server-selection をADDR引渡しへ追加、7章Coverage拡充、TASK-005のCMN帰属訂正",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/3a80d60668e854ed2f6fe336b51f3033a9a9c7a8142fc468c36b1af46f959d24.json",
+            "sha256": "3a80d60668e854ed2f6fe336b51f3033a9a9c7a8142fc468c36b1af46f959d24"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-5dc68d029754f051": {
+      "issue_id": "UNRESOLVED-5dc68d029754f051",
+      "signature": {
+        "origin_phase": "ARCHITECTURE",
+        "classification": "DEPENDENCY_CONFIGURATION_ISSUE",
+        "artifact": "docs/architecture/implementation-task-list.md",
+        "requirement_reference": "NFR-SC-11",
+        "test_case": "",
+        "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "依存ライブラリの供給網セキュリティ要件（NFR-SC-11 / NFR-EN-10 / VUL-09 / VUL-10）がTASKのScope・DoD・Coverage表のいずれにも割り当てられず、後工程で欠落が検知されない",
+      "recommended_route": "ARCHITECTURE",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/arch-security-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: dependency-configuration",
+            "Unresolved blocking Security Review Issue(s): 1"
+          ],
+          "evidence": {
+            "source": "reports/security-review/validation-result.json",
+            "path": "reports/loop-control/evidence/87d36658ff7d99bd4b5adaecd41df83b0b46fef6085a37726c71eca557ed7ae6.json",
+            "sha256": "87d36658ff7d99bd4b5adaecd41df83b0b46fef6085a37726c71eca557ed7ae6"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/arch-security-resolved",
+          "repair": "TASK-001にバージョン固定・公式配布元限定・サポート期限内の版・ライセンスの制約とDoDを追加し、確認手順をTASK-016へ割当、7章Coverageへ記載",
+          "errors": [],
+          "evidence": {
+            "source": "reports/security-review/validation-result.json",
+            "path": "reports/loop-control/evidence/eb0dc8354468e0af44b5abe4daee1961bd9f1417b360296137f3de31daa93f32.json",
+            "sha256": "eb0dc8354468e0af44b5abe4daee1961bd9f1417b360296137f3de31daa93f32"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-d86b6374a1e9e7c0": {
+      "issue_id": "UNRESOLVED-d86b6374a1e9e7c0",
+      "signature": {
+        "origin_phase": "ADDR",
+        "classification": "INVALID_REFERENCE",
+        "artifact": "docs/addr/ADDR-010.md",
+        "requirement_reference": "FR-060",
+        "test_case": "",
+        "stable_error_type": "TRACE_C01_UNDEFINED_ID"
+      },
+      "impact": "ADDR-010の2章が未定義ID FILE-DEF-001 を参照しており、ADDR Scope Traceability監査がFAIL。実装引渡しGateを固定できない",
+      "recommended_route": "ADDR",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-trace-cycle0",
+          "repair": "",
+          "errors": [
+            "[C01] docs/addr/ADDR-010.md:38: FILE-DEF-001 はどの成果物にも定義されていません。（差し戻し先: ADDR）"
+          ],
+          "evidence": {
+            "source": "reports/traceability/validation-result.json",
+            "path": "reports/loop-control/evidence/6bf4213aeb9b9299fc0fb847c5d81c6e1bc447a75924bc9953a744fa4310c897.json",
+            "sha256": "6bf4213aeb9b9299fc0fb847c5d81c6e1bc447a75924bc9953a744fa4310c897"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-trace-resolved",
+          "repair": "ADDR-010 2章の FILE-DEF-001 を実在ID FILE-001 へ訂正し、PLAN-001/TASK-014 の参照行を追加",
+          "errors": [],
+          "evidence": {
+            "source": "reports/traceability/validation-result.json",
+            "path": "reports/loop-control/evidence/208a98bc7a8ceba64e5957ff5650157259aa1ea05c09fd80ec1a03e4ad58d3ee.json",
+            "sha256": "208a98bc7a8ceba64e5957ff5650157259aa1ea05c09fd80ec1a03e4ad58d3ee"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-e67ff949214da899": {
+      "issue_id": "UNRESOLVED-e67ff949214da899",
+      "signature": {
+        "origin_phase": "ADDR",
+        "classification": "ADDR_QUALITY_ISSUE",
+        "artifact": "docs/addr/ADDR-002.md",
+        "requirement_reference": "FR-060",
+        "test_case": "",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "ADDR-002が導入した認証トークン/セッションの新規永続状態について、FR-060手順9（削除した利用者の認証トークン・セッション無効化）の扱いが未記録で、AC-UC-013-004不成立または認証状態残存という相反する実装が選ばれ得る",
+      "recommended_route": "ADDR",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-quality-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: architecture-quality",
+            "Unresolved blocking Quality Review Issue(s): 1"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/109582078d7bd7bee478a0cc29f7ff3e49f932fdf7ab10bbe5a5c82727490db8.json",
+            "sha256": "109582078d7bd7bee478a0cc29f7ff3e49f932fdf7ab10bbe5a5c82727490db8"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-quality-resolved",
+          "repair": "ADDR-002へDC-006/DD-009〜DD-012/INV-007/INV-008を追加しFR-060手順9とAC-UC-013-004の扱いを確定、永続オブジェクトの実装先をTASK-002へ統一",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/125130c2c479a03f75a7f740ee3df42f6b6f428bec2604df865ceff768b80dc4.json",
+            "sha256": "125130c2c479a03f75a7f740ee3df42f6b6f428bec2604df865ceff768b80dc4"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-d9a4274bf3b9d838": {
+      "issue_id": "UNRESOLVED-d9a4274bf3b9d838",
+      "signature": {
+        "origin_phase": "IMPLEMENTATION",
+        "classification": "SECURITY_IMPLEMENTATION_ISSUE",
+        "artifact": "app/shop/web",
+        "requirement_reference": "NFR-SC-04",
+        "test_case": "",
+        "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "オープンリダイレクト（next_path/return_toの検証不足）と例外メッセージ全文のstack_trace出力により、認証直後の外部サイト誘導とログへの項目値混入が発生しうる",
+      "recommended_route": "IMPLEMENTATION",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-security-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: data-protection",
+            "Applicable criterion is not PASS: error-logging",
+            "Applicable criterion is not PASS: input-validation-injection",
+            "Unresolved blocking Security Review Issue(s): 2"
+          ],
+          "evidence": {
+            "source": "reports/security-review/validation-result.json",
+            "path": "reports/loop-control/evidence/7f30a894b37b85c981f0e9f11236e242453a280b9ba71859a1f098e37111e418.json",
+            "sha256": "7f30a894b37b85c981f0e9f11236e242453a280b9ba71859a1f098e37111e418"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-security-resolved",
+          "repair": "safe_internal_path()による遷移先検証をlogin/add_line/login_return_pathへ適用、stack_traceをファイル名・行番号・関数名に限定、DRF既定権限を拒否側へ変更",
+          "errors": [],
+          "evidence": {
+            "source": "reports/security-review/validation-result.json",
+            "path": "reports/loop-control/evidence/6a7a5ba53e37ca384a7a55a45db7a1fa64c78939d9d6bd43e0ae72e388e499d9.json",
+            "sha256": "6a7a5ba53e37ca384a7a55a45db7a1fa64c78939d9d6bd43e0ae72e388e499d9"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-b9cfb46e931d6bf3": {
+      "issue_id": "UNRESOLVED-b9cfb46e931d6bf3",
+      "signature": {
+        "origin_phase": "IMPLEMENTATION",
+        "classification": "IMPLEMENTATION_QUALITY_ISSUE",
+        "artifact": "app/shop",
+        "requirement_reference": "SCR-005-IN01",
+        "test_case": "",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "画面の数量・規格入力が要件と不一致でQUANTITY_LIMIT_EXCEEDED表示へ到達不能、権限判定がADDR-004指定の単一実装をバイパスして3層重複、FR-060手順6の分類名重複判定が未実装で違反全件出力が行われない",
+      "recommended_route": "IMPLEMENTATION",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-quality-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: implementation-quality",
+            "Unresolved blocking Quality Review Issue(s): 3"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/0c3df0f724dece0691ba856cd1fc3b7c12be639e59fc8ebf02ed3ef0189c350a.json",
+            "sha256": "0c3df0f724dece0691ba856cd1fc3b7c12be639e59fc8ebf02ed3ef0189c350a"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-quality-resolved",
+          "repair": "画面の数量を数値入力・規格をradio単一選択へ変更し画面側の上限重複実装を全廃、権限判定をservices.accountsへ集約しweb/apiからのmodels直接参照を解消、FR-060手順6の分類名重複判定を追加、ログtimestampを+09:00表記へ修正",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/62d673b8291fce8e45adf824b73a5dab5ae5b5556ea7b88f0a1cb77e4f119fc2.json",
+            "sha256": "62d673b8291fce8e45adf824b73a5dab5ae5b5556ea7b88f0a1cb77e4f119fc2"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-1628b60a2b22d384": {
+      "issue_id": "UNRESOLVED-1628b60a2b22d384",
+      "signature": {
+        "origin_phase": "UNIT_TEST",
+        "classification": "UNIT_TEST_QUALITY_ISSUE",
+        "artifact": "tests/unit",
+        "requirement_reference": "NFR-OM-06",
+        "test_case": "",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "テスト配置がADDR-004 DD-005に反しdocker compose exec app pytestでスイートを実行できない（NFR-OM-06未達）。加えてFR-060/UC-013のAC-UC-013-003・AC-UC-013-007・手順6後段の回帰テストが欠落している",
+      "recommended_route": "UNIT_TEST",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/unit-quality-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: unit-test-quality",
+            "Unresolved blocking Quality Review Issue(s): 2"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/fa10e4395e3a3099c8e5391b13d0da43403c18f2997a8a872d7f1d5a2a701589.json",
+            "sha256": "fa10e4395e3a3099c8e5391b13d0da43403c18f2997a8a872d7f1d5a2a701589"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/unit-quality-resolved",
+          "repair": "単体テストをapp/shop/tests/unitへ移してdocker compose exec app pytestで実行可能にし、AC-UC-013-003/007と手順6後段の回帰テストを追加、画面Assertionを強化、Evidenceを実態へ更新",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/e128fcfb3d38f14642f9d2dbed75f60f9b7917b7738821133a0e80544ead408d.json",
+            "sha256": "e128fcfb3d38f14642f9d2dbed75f60f9b7917b7738821133a0e80544ead408d"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-3662bfd64695fc22": {
+      "issue_id": "UNRESOLVED-3662bfd64695fc22",
+      "signature": {
+        "origin_phase": "IMPLEMENTATION",
+        "classification": "IMPLEMENTATION_ERROR",
+        "artifact": "app/shop/web/views_cart.py",
+        "requirement_reference": "SCR-002-OP01",
+        "test_case": "test_cart_add_line_screen_shows_insufficient_stock_message_of_scr_002",
+        "stable_error_type": "SCREEN_MESSAGE_MISMATCH"
+      },
+      "impact": "画面が業務例外の共通messageをそのまま表示し、SCR-002-OP01/SCR-005-OP01が必須とする現在の在庫数量・カート内数量を表示しないため、単体テスト2件がFAILしている",
+      "recommended_route": "IMPLEMENTATION",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-screen-message-cycle0",
+          "repair": "",
+          "errors": [
+            "Failed tests: 2, allowed: 0.",
+            "Test pass rate is 99.72%, required >= 100.00%.",
+            "UT-DEF-007: Regression rerun 'full_suite' is not PASS.",
+            "UT-DEF-007: Regression rerun 'target_test' is not PASS.",
+            "UT-DEF-007: defect is unresolved."
+          ],
+          "evidence": {
+            "source": "reports/unit-test/validation-result.json",
+            "path": "reports/loop-control/evidence/0d87c0875c243a6f67439b7156e0add2afba4d8bab1f9480a9ff663217d33db7.json",
+            "sha256": "0d87c0875c243a6f67439b7156e0add2afba4d8bab1f9480a9ff663217d33db7"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-screen-msg-resolved",
+          "repair": "web/messages.pyを新設して業務例外のcontextをSCR文言へ変換し、SCR-002/005/006/008/010/103/901の文言・表示位置・入力値保持・SCR-008アクセス条件を要件どおりに実装",
+          "errors": [],
+          "evidence": {
+            "source": "reports/unit-test/validation-result.json",
+            "path": "reports/loop-control/evidence/27750e636114a6f9362ecdc2b7aa1395edf00328293d354fd47a5ee810bd338c.json",
+            "sha256": "27750e636114a6f9362ecdc2b7aa1395edf00328293d354fd47a5ee810bd338c"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-e2fb241513f0e677": {
+      "issue_id": "UNRESOLVED-e2fb241513f0e677",
+      "signature": {
+        "origin_phase": "UNIT_TEST",
+        "classification": "MISSING_BEHAVIOR_COVERAGE",
+        "artifact": "app/shop/web/messages.py",
+        "requirement_reference": "SCR-005-OP03",
+        "test_case": "",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "新設されたweb/messages.pyの要件文言分岐（SCR-005-OP01成功/SCR-005-OP03成功・失敗4種/SCR-006-OP01失敗3種）が未検証で、文言を退行させても719件すべてPASSしてしまう",
+      "recommended_route": "UNIT_TEST",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/unit-messages-coverage-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: unit-test-quality",
+            "Unresolved blocking Quality Review Issue(s): 1"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/bd9c512d6ef7a3647735c989c820e6241445662672fa3a403b8936a18fb49234.json",
+            "sha256": "bd9c512d6ef7a3647735c989c820e6241445662672fa3a403b8936a18fb49234"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/unit-messages-resolved",
+          "repair": "SCR-005-OP01/OP03・SCR-006-OP01の成功失敗文言とUI-29/32/34の検証を23件追加し、messages.pyの分岐網羅を44/44=100%にした",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/e128fcfb3d38f14642f9d2dbed75f60f9b7917b7738821133a0e80544ead408d.json",
+            "sha256": "e128fcfb3d38f14642f9d2dbed75f60f9b7917b7738821133a0e80544ead408d"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-2554fc8af54b8fc3": {
+      "issue_id": "UNRESOLVED-2554fc8af54b8fc3",
+      "signature": {
+        "origin_phase": "INTEGRATION_TEST",
+        "classification": "EXTERNAL_TEST_INPUT_REQUIRED",
+        "artifact": "external-tests/integration-test",
+        "requirement_reference": "",
+        "test_case": "",
+        "stable_error_type": "EXTERNAL_TEST_INPUT_MISSING"
+      },
+      "impact": "External Test Caseが未配置のため、外部ケースの取込・Coverage比較・GAP_FILL生成・結合試験の実行が開始できない。ユーザーの明示確認が必要",
+      "recommended_route": "INTEGRATION_TEST",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-external-input-cycle0",
+          "repair": "",
+          "errors": [
+            "status=EXTERNAL_TEST_INPUT_REQUIRED"
+          ],
+          "evidence": {
+            "source": "reports/integration-test/external-input-status.json",
+            "path": "reports/loop-control/evidence/a58e20e26c27c19980f8b81deeee80f28937f590de4e2ba409f3c653d27b4505.json",
+            "sha256": "a58e20e26c27c19980f8b81deeee80f28937f590de4e2ba409f3c653d27b4505"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-external-resolved",
+          "repair": "ユーザーがExternal Caseなしでの続行を明示確認（2026-10-22T13:15 JST）。external_cases_confirmed_absent=trueを親から渡し、provided=false / user_confirmed_without_external_cases=true として記録のうえ結合試験を完了",
+          "errors": [],
+          "evidence": {
+            "source": "reports/integration-test/validation-result.json",
+            "path": "reports/loop-control/evidence/e213274a3d02902e6f70f793a5bd20e26d952b10426ebc490c4d249fe2a302e6.json",
+            "sha256": "e213274a3d02902e6f70f793a5bd20e26d952b10426ebc490c4d249fe2a302e6"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-e06038a88ef0d1b0": {
+      "issue_id": "UNRESOLVED-e06038a88ef0d1b0",
+      "signature": {
+        "origin_phase": "INTEGRATION_TEST",
+        "classification": "SECURITY_TEST_GAP",
+        "artifact": "tests/integration",
+        "requirement_reference": "NFR-SC-05",
+        "test_case": "",
+        "stable_error_type": "SECURITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "CSRFトークン欠落時の拒否、画面出力のHTMLエスケープ、SQL/OSコマンド攻撃文字列の投入、全削除後の旧トークン拒否の4項目が単体742件・結合65件のいずれにも存在せず、1行の変更で制御が静かに失われても検知できない",
+      "recommended_route": "INTEGRATION_TEST",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-security-gap-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: security-test-coverage",
+            "Unresolved blocking Security Review Issue(s): 1"
+          ],
+          "evidence": {
+            "source": "reports/security-review/validation-result.json",
+            "path": "reports/loop-control/evidence/cdd7e1cd5c42d2f9ad3eaa7d0092e270599aaeec4948e3e0b473468fd05dac19.json",
+            "sha256": "cdd7e1cd5c42d2f9ad3eaa7d0092e270599aaeec4948e3e0b473468fd05dac19"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-security-resolved",
+          "repair": "Required Coverageの導出元へ非機能要件を追加し、CSRF(IT-AI-GF-012/013)・HTMLエスケープ(014/015)・SQL/OSコマンド攻撃文字列(016-018)・全削除後の旧トークン拒否(019)の8ケースを追加して全PASS",
+          "errors": [],
+          "evidence": {
+            "source": "reports/security-review/validation-result.json",
+            "path": "reports/loop-control/evidence/efd33991fa3020948d78d8685a050f2026214a252aee3f33b75861bba2f98df5.json",
+            "sha256": "efd33991fa3020948d78d8685a050f2026214a252aee3f33b75861bba2f98df5"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-82256cdd679fb305": {
+      "issue_id": "UNRESOLVED-82256cdd679fb305",
+      "signature": {
+        "origin_phase": "INTEGRATION_TEST",
+        "classification": "MISSING_BEHAVIOR_COVERAGE",
+        "artifact": "tests/integration",
+        "requirement_reference": "AC-UC-012-009",
+        "test_case": "",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "同時実行の必須AC8件のうち7件が未検証で、在庫の二重戻し・決済記録の二重登録を検出できない。Required Coverageの同時実行キーもCK-FR030-09の1件のみ",
+      "recommended_route": "INTEGRATION_TEST",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-concurrency-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: cross-phase-consistency",
+            "Applicable criterion is not PASS: integration-test-quality",
+            "Unresolved blocking Quality Review Issue(s): 2"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/c77cba86f7c66b1e58da8f7ef4c2083bf1e2634497d482c62b99adf37d4af5a1.json",
+            "sha256": "c77cba86f7c66b1e58da8f7ef4c2083bf1e2634497d482c62b99adf37d4af5a1"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-concurrency-resolved",
+          "repair": "同時実行AC9件をRequired Coverageへ追加しIT-AI-GF-020〜028を各10試行で実装。実不具合DEF-IT-001を検出しADDR-013採択と実装是正で解消、全PASS",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/6797d84097d860569b2f761d3927c091c37ee2912ad9ab4f588977aa3d6376b9.json",
+            "sha256": "6797d84097d860569b2f761d3927c091c37ee2912ad9ab4f588977aa3d6376b9"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-1165b319c8ecf87f": {
+      "issue_id": "UNRESOLVED-1165b319c8ecf87f",
+      "signature": {
+        "origin_phase": "ADDR",
+        "classification": "CROSS_PHASE_CONSISTENCY_ISSUE",
+        "artifact": "docs/addr/ADDR-004.md",
+        "requirement_reference": "NFR-OM-06",
+        "test_case": "",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "ADDR-004 DD-005に結合試験の配置・実行方法の判断がなく、docker compose exec app pytestでは単体742件のみ収集され結合試験が実行できない。NFR-OM-06のコマンド1回実行が不成立",
+      "recommended_route": "ADDR",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-it-placement-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: cross-phase-consistency",
+            "Applicable criterion is not PASS: integration-test-quality",
+            "Unresolved blocking Quality Review Issue(s): 2"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/c77cba86f7c66b1e58da8f7ef4c2083bf1e2634497d482c62b99adf37d4af5a1.json",
+            "sha256": "c77cba86f7c66b1e58da8f7ef4c2083bf1e2634497d482c62b99adf37d4af5a1"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-it-placement-resolved",
+          "repair": "ADDR-012を新規採択し、tests/を読取り専用マウントしてtestpathsを拡張。docker compose exec -T app pytestで824件を1コマンド実行可能にした",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/6797d84097d860569b2f761d3927c091c37ee2912ad9ab4f588977aa3d6376b9.json",
+            "sha256": "6797d84097d860569b2f761d3927c091c37ee2912ad9ab4f588977aa3d6376b9"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-49476f92d9fa53d1": {
+      "issue_id": "UNRESOLVED-49476f92d9fa53d1",
+      "signature": {
+        "origin_phase": "ADDR",
+        "classification": "ADR_REQUIRED",
+        "artifact": "docs/addr/ADDR-009.md",
+        "requirement_reference": "FR-031",
+        "test_case": "IT-AI-GF-023",
+        "stable_error_type": "INTEGRATION_TEST_FAILURE"
+      },
+      "impact": "支払とキャンセルの同時実行で、キャンセルが先に確定し支払が E-031-05（INVALID_STATUS_TRANSITION）となる試行でも決済サービスへ決済要求が送信される。FR-031 手順5 の「決済要求を送信しない」と AC-UC-007-019 (a) を満たさず、承認された決済要求がどの決済記録にも残らない。ADDR-009 DD-005・INV-006 が現実装を定めているため、ADRを変更せずに是正方法を確定できない。",
+      "recommended_route": "ADDR",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-payment-cancel-cycle0",
+          "repair": "",
+          "errors": [
+            "DEF-IT-001: defect is unresolved.",
+            "IT-AI-GF-023: final AUTOMATABLE case result is 'FAIL', expected PASS."
+          ],
+          "evidence": {
+            "source": "reports/integration-test/validation-result.json",
+            "path": "reports/loop-control/evidence/5fb7bebb5b4e53b05a8727751a76825d8d3446c9e3ef74af15b06cd686bfb01a.json",
+            "sha256": "5fb7bebb5b4e53b05a8727751a76825d8d3446c9e3ef74af15b06cd686bfb01a"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/it-payment-cancel-resolved",
+          "repair": "ADDR-013（ACTIVE）を採択し、支払では注文行のロックを手順5の状態判定の前に取得して状態判定→決済要求送信→結果反映を同一トランザクション・同一ロック区間で確定する方式へ決定（ADDR-009 DD-005・INV-006、ADDR-001 DD-007・INV-004 を更新）。Implementation が app/shop/services/orders.py の pay_order を是正し、ロック取得後に CREATED 以外ならゲートウェイ未呼び出しで InvalidStatusTransitionError を送出。IT-AI-GF-023 を3回単独再実行して全てPASS、結合82件PASS、全体824 passed / 0 failed を確認。",
+          "errors": [],
+          "evidence": {
+            "source": "reports/integration-test/validation-result.json",
+            "path": "reports/loop-control/evidence/e213274a3d02902e6f70f793a5bd20e26d952b10426ebc490c4d249fe2a302e6.json",
+            "sha256": "e213274a3d02902e6f70f793a5bd20e26d952b10426ebc490c4d249fe2a302e6"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-aeb6357760066a54": {
+      "issue_id": "UNRESOLVED-aeb6357760066a54",
+      "signature": {
+        "origin_phase": "ADDR",
+        "classification": "ADR_REQUIRED",
+        "artifact": "docs/addr/ADDR-009.md",
+        "requirement_reference": "FR-031",
+        "test_case": "IT-AI-GF-023",
+        "stable_error_type": "DECISION_CONTRADICTS_REQUIREMENT"
+      },
+      "impact": "ADDR-009 DD-005/INV-006が決済要求をロック取得前に送るため、キャンセルが先に確定した場合でも決済サービスが要求を受信し、FR-031手順5（決済要求を送信しない）とAC-UC-007-019(a)・VUL-07に反する",
+      "recommended_route": "ADDR",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-payment-order-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: state-transition",
+            "DEF-IT-001: defect is unresolved.",
+            "DEF-IT-001: rerun.full_suite must be PASS.",
+            "DEF-IT-001: rerun.target_cases must be PASS.",
+            "IT-AI-GF-023: error-report contains unresolved error.",
+            "IT-AI-GF-023: final AUTOMATABLE case result is 'FAIL', expected PASS.",
+            "JUnit failed tests 1 > allowed 0.",
+            "JUnit pass rate 98.78% < required 100.00%."
+          ],
+          "evidence": {
+            "source": "reports/integration-test/validation-result.json",
+            "path": "reports/loop-control/evidence/5fb7bebb5b4e53b05a8727751a76825d8d3446c9e3ef74af15b06cd686bfb01a.json",
+            "sha256": "5fb7bebb5b4e53b05a8727751a76825d8d3446c9e3ef74af15b06cd686bfb01a"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/addr-payment-order-resolved",
+          "repair": "ADDR-013（支払における決済要求送信の排他単位とトランザクション境界）を採択し、ADDR-009 DD-005・INV-006 と ADDR-001 DD-007・INV-004 を更新（ロック保持中の禁止対象を外部ネットワーク通信・スリープ・他プロセス待ちに限定）。実装是正後に Integration Test を全件再実行し、FR-031 手順5・AC-UC-007-019(a)・VUL-07 を満たすことを IT-AI-GF-023 で確認（結合82件PASS、validate_integration_test.py PASS）。",
+          "errors": [],
+          "evidence": {
+            "source": "reports/integration-test/validation-result.json",
+            "path": "reports/loop-control/evidence/e213274a3d02902e6f70f793a5bd20e26d952b10426ebc490c4d249fe2a302e6.json",
+            "sha256": "e213274a3d02902e6f70f793a5bd20e26d952b10426ebc490c4d249fe2a302e6"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-698b995280f60801": {
+      "issue_id": "UNRESOLVED-698b995280f60801",
+      "signature": {
+        "origin_phase": "INTEGRATION_TEST",
+        "classification": "TEST_TRACEABILITY_MISSING",
+        "artifact": "docs/requirements/functional_requirements.md",
+        "requirement_reference": "FR-OUT-01",
+        "test_case": "",
+        "stable_error_type": "TRACE_C10_REQUIREMENT_WITHOUT_TEST"
+      },
+      "impact": "FULL ScopeのC10で124件（FR-OUT 16件・NFR群108件）が要件を確かめるテストなしと判定され、Final AssuranceのTraceabilityがFAIL",
+      "recommended_route": "INTEGRATION_TEST",
+      "cycle": 3,
+      "state": "UNRESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/full-c10-cycle0",
+          "repair": "",
+          "errors": [
+            "[C10] docs/requirements/functional_requirements.md:66: FR-OUT-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:67: FR-OUT-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:68: FR-OUT-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:69: FR-OUT-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:70: FR-OUT-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:71: FR-OUT-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:72: FR-OUT-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:73: FR-OUT-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:74: FR-OUT-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:75: FR-OUT-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:76: FR-OUT-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:77: FR-OUT-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:78: FR-OUT-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:79: FR-OUT-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:80: FR-OUT-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/functional_requirements.md:81: FR-OUT-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:101: NFR-AV-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:102: NFR-AV-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:103: NFR-AV-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:104: NFR-AV-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:105: NFR-AV-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:106: NFR-AV-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:107: NFR-AV-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:108: NFR-AV-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:109: NFR-AV-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:110: NFR-AV-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:111: NFR-AV-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:112: NFR-AV-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:120: NFR-PF-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:121: NFR-PF-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:122: NFR-PF-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:123: NFR-PF-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:124: NFR-PF-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:125: NFR-PF-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:126: NFR-PF-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:127: NFR-PF-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:128: NFR-PF-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:129: NFR-PF-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:130: NFR-PF-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:131: NFR-PF-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:132: NFR-PF-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:133: NFR-PF-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:134: NFR-PF-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:135: NFR-PF-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:136: NFR-PF-17 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:144: NFR-OM-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:145: NFR-OM-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:146: NFR-OM-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:147: NFR-OM-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:149: NFR-OM-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:150: NFR-OM-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:151: NFR-OM-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:152: NFR-OM-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:154: NFR-OM-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:155: NFR-OM-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:156: NFR-OM-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:157: NFR-OM-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:158: NFR-OM-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:159: NFR-OM-17 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:160: NFR-OM-18 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:161: NFR-OM-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:162: NFR-OM-19 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:201: NFR-MG-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:202: NFR-MG-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:203: NFR-MG-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:204: NFR-MG-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:205: NFR-MG-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:206: NFR-MG-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:207: NFR-MG-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:208: NFR-MG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:218: NFR-SC-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:219: NFR-SC-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:220: NFR-SC-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:222: NFR-SC-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:225: NFR-SC-17 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:228: NFR-SC-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:229: NFR-SC-19 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:230: NFR-SC-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:231: NFR-SC-20 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:232: NFR-SC-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:235: NFR-SC-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:236: NFR-SC-21 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:237: NFR-SC-22 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:238: NFR-SC-23 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:239: NFR-SC-24 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:241: NFR-SC-25 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:242: NFR-SC-26 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:243: NFR-SC-27 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:244: NFR-SC-28 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:245: NFR-SC-29 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:246: NFR-SC-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:272: NFR-US-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:273: NFR-US-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:274: NFR-US-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:275: NFR-US-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:276: NFR-US-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:277: NFR-US-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:278: NFR-US-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:279: NFR-US-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:280: NFR-US-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:281: NFR-US-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:287: NFR-EN-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:288: NFR-EN-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:289: NFR-EN-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:290: NFR-EN-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:291: NFR-EN-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:292: NFR-EN-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:293: NFR-EN-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:294: NFR-EN-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:295: NFR-EN-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:296: NFR-EN-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:297: NFR-EN-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:298: NFR-EN-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:299: NFR-EN-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:305: NFR-LG-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:306: NFR-LG-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:307: NFR-LG-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:308: NFR-LG-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:309: NFR-LG-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:310: NFR-LG-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:311: NFR-LG-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:312: NFR-LG-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:313: NFR-LG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:314: NFR-LG-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）"
+          ],
+          "evidence": {
+            "source": "reports/traceability/validation-result.json",
+            "path": "reports/loop-control/evidence/7e9cb4a31e72437de48da22d36f00c9bd6c330a026f0f8232251802a10cde46a.json",
+            "sha256": "7e9cb4a31e72437de48da22d36f00c9bd6c330a026f0f8232251802a10cde46a"
+          }
+        },
+        {
+          "action": "FAILURE",
+          "cycle": 1,
+          "run_id": "RUN-20261022-MC/full-c10-cycle1",
+          "repair": "結合試験へ41ケース（IT-AI-GF-029〜069）を追加しFR-OUT 16件とNFR 34件を検証。C10は124件→74件へ改善。残り74件は要件本文の検証方法が自動テスト以外のものとしてnon-automatable-requirementsへ分類記録",
+          "errors": [
+            "[C10] docs/requirements/non_functional_requirements.md:101: NFR-AV-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:102: NFR-AV-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:103: NFR-AV-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:104: NFR-AV-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:105: NFR-AV-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:106: NFR-AV-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:107: NFR-AV-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:108: NFR-AV-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:109: NFR-AV-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:110: NFR-AV-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:111: NFR-AV-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:112: NFR-AV-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:120: NFR-PF-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:121: NFR-PF-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:122: NFR-PF-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:123: NFR-PF-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:124: NFR-PF-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:125: NFR-PF-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:126: NFR-PF-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:128: NFR-PF-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:129: NFR-PF-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:130: NFR-PF-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:131: NFR-PF-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:132: NFR-PF-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:133: NFR-PF-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:136: NFR-PF-17 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:144: NFR-OM-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:145: NFR-OM-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:146: NFR-OM-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:149: NFR-OM-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:150: NFR-OM-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:151: NFR-OM-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:154: NFR-OM-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:155: NFR-OM-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:156: NFR-OM-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:157: NFR-OM-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:158: NFR-OM-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:159: NFR-OM-17 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:161: NFR-OM-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:162: NFR-OM-19 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:202: NFR-MG-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:203: NFR-MG-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:204: NFR-MG-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:205: NFR-MG-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:206: NFR-MG-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:208: NFR-MG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:230: NFR-SC-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:231: NFR-SC-20 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:232: NFR-SC-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:236: NFR-SC-21 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:241: NFR-SC-25 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:242: NFR-SC-26 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:245: NFR-SC-29 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:246: NFR-SC-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:272: NFR-US-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:273: NFR-US-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:274: NFR-US-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:275: NFR-US-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:276: NFR-US-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:277: NFR-US-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:278: NFR-US-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:279: NFR-US-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:287: NFR-EN-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:289: NFR-EN-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:290: NFR-EN-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:291: NFR-EN-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:293: NFR-EN-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:295: NFR-EN-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:296: NFR-EN-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:297: NFR-EN-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:299: NFR-EN-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:308: NFR-LG-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:312: NFR-LG-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:313: NFR-LG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）"
+          ],
+          "evidence": {
+            "source": "reports/traceability/validation-result.json",
+            "path": "reports/loop-control/evidence/d36acf9d72e7b9e5084ef02a6a504686044dddc22420e0b130c997389a2e8713.json",
+            "sha256": "d36acf9d72e7b9e5084ef02a6a504686044dddc22420e0b130c997389a2e8713"
+          }
+        },
+        {
+          "action": "FAILURE",
+          "cycle": 2,
+          "run_id": "RUN-20261022-MC/full-c10-cycle2",
+          "repair": "残存74件を個別再精査し、正当に自動検証可能な11件（IT-AI-GF-070〜080：静的解析6件・該当なし2件・構成設定2件・上限超過時整合1件）を追加。C10は74件→63件へ改善。19件は検証方法が測定値・計画書確認・他OS前提のため追加せず根拠を記録",
+          "errors": [
+            "[C10] docs/requirements/non_functional_requirements.md:101: NFR-AV-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:102: NFR-AV-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:103: NFR-AV-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:104: NFR-AV-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:105: NFR-AV-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:106: NFR-AV-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:107: NFR-AV-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:108: NFR-AV-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:109: NFR-AV-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:110: NFR-AV-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:111: NFR-AV-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:112: NFR-AV-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:120: NFR-PF-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:121: NFR-PF-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:122: NFR-PF-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:123: NFR-PF-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:124: NFR-PF-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:125: NFR-PF-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:126: NFR-PF-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:128: NFR-PF-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:129: NFR-PF-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:130: NFR-PF-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:131: NFR-PF-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:132: NFR-PF-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:133: NFR-PF-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:136: NFR-PF-17 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:144: NFR-OM-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:145: NFR-OM-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:146: NFR-OM-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:149: NFR-OM-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:150: NFR-OM-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:151: NFR-OM-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:154: NFR-OM-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:155: NFR-OM-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:156: NFR-OM-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:157: NFR-OM-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:158: NFR-OM-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:159: NFR-OM-17 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:161: NFR-OM-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:162: NFR-OM-19 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:202: NFR-MG-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:203: NFR-MG-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:204: NFR-MG-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:205: NFR-MG-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:206: NFR-MG-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:208: NFR-MG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:230: NFR-SC-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:231: NFR-SC-20 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:232: NFR-SC-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:236: NFR-SC-21 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:241: NFR-SC-25 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:242: NFR-SC-26 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:245: NFR-SC-29 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:246: NFR-SC-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:272: NFR-US-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:273: NFR-US-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:274: NFR-US-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:275: NFR-US-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:276: NFR-US-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:277: NFR-US-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:278: NFR-US-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:279: NFR-US-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:287: NFR-EN-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:289: NFR-EN-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:290: NFR-EN-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:291: NFR-EN-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:293: NFR-EN-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:295: NFR-EN-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:296: NFR-EN-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:297: NFR-EN-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:299: NFR-EN-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:308: NFR-LG-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:312: NFR-LG-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:313: NFR-LG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）"
+          ],
+          "evidence": {
+            "source": "reports/traceability/validation-result.json",
+            "path": "reports/loop-control/evidence/d36acf9d72e7b9e5084ef02a6a504686044dddc22420e0b130c997389a2e8713.json",
+            "sha256": "d36acf9d72e7b9e5084ef02a6a504686044dddc22420e0b130c997389a2e8713"
+          }
+        },
+        {
+          "action": "FAILURE",
+          "cycle": 3,
+          "run_id": "RUN-20261022-MC/full-c10-cycle3",
+          "repair": "最終精査で4ケース（IT-AI-GF-081〜084：NFR-SC-25・NFR-OM-17・NFR-EN-07・NFR-EN-03）を追加しC10は63件→59件へ改善。残る59件は要件本文の検証方法が性能試験・脆弱性診断・移行リハーサル・互換性テスト・運用測定・構成レビューであり自動テストでは検証できないため、人が実施すべき検証としてnon-automatable-requirements.md 5章へ申し送り",
+          "errors": [
+            "[C10] docs/requirements/non_functional_requirements.md:101: NFR-AV-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:102: NFR-AV-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:103: NFR-AV-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:104: NFR-AV-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:105: NFR-AV-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:106: NFR-AV-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:107: NFR-AV-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:108: NFR-AV-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:110: NFR-AV-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:111: NFR-AV-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:112: NFR-AV-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:120: NFR-PF-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:121: NFR-PF-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:122: NFR-PF-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:123: NFR-PF-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:124: NFR-PF-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:125: NFR-PF-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:126: NFR-PF-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:130: NFR-PF-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:131: NFR-PF-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:132: NFR-PF-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:133: NFR-PF-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:144: NFR-OM-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:145: NFR-OM-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:146: NFR-OM-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:149: NFR-OM-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:150: NFR-OM-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:151: NFR-OM-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:154: NFR-OM-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:155: NFR-OM-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:156: NFR-OM-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:157: NFR-OM-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:158: NFR-OM-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:162: NFR-OM-19 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:202: NFR-MG-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:203: NFR-MG-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:204: NFR-MG-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:205: NFR-MG-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:206: NFR-MG-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:208: NFR-MG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:230: NFR-SC-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:231: NFR-SC-20 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:236: NFR-SC-21 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:242: NFR-SC-26 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:245: NFR-SC-29 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:246: NFR-SC-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:272: NFR-US-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:273: NFR-US-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:274: NFR-US-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:275: NFR-US-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:276: NFR-US-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:277: NFR-US-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:278: NFR-US-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:279: NFR-US-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:289: NFR-EN-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:295: NFR-EN-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:299: NFR-EN-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:312: NFR-LG-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+            "[C10] docs/requirements/non_functional_requirements.md:313: NFR-LG-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）"
+          ],
+          "evidence": {
+            "source": "reports/traceability/validation-result.json",
+            "path": "reports/loop-control/evidence/b691f8ec511f30f7a608728490f16cd88faab749f11a5fa625da75859dc824e7.json",
+            "sha256": "b691f8ec511f30f7a608728490f16cd88faab749f11a5fa625da75859dc824e7"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-8c3e8f49cdc5ae66": {
+      "issue_id": "UNRESOLVED-8c3e8f49cdc5ae66",
+      "signature": {
+        "origin_phase": "IMPLEMENTATION",
+        "classification": "INPUT_VALIDATION_ISSUE",
+        "artifact": "app/shop/services/orders.py",
+        "requirement_reference": "FR-030",
+        "test_case": "OBS-IT-001",
+        "stable_error_type": "FULLWIDTH_DIGIT_ACCEPTED"
+      },
+      "impact": "prefecture_code/postal_codeに全角数字を与えた注文確定が201で受理され全角のまま保存される。FR-030の入力条件（半角数字）およびNFR-SC-04に反する",
+      "recommended_route": "IMPLEMENTATION",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-fullwidth-cycle0",
+          "repair": "",
+          "errors": [
+            "[C11] reports/traceability/addr-index.csv: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/addr-index.md: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/requirements-traceability-check.csv: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/requirements-traceability-check.md: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/requirements-traceability-matrix.csv: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/requirements-traceability-matrix.md: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/trace-map.json: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/traceability-report.json: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+            "[C11] reports/traceability/traceability-report.md: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）"
+          ],
+          "evidence": {
+            "source": "reports/traceability/validation-result.json",
+            "path": "reports/loop-control/evidence/a2d5cddafd9876694509916988fe32a32964a785d60f094c7d554f2b5e661306.json",
+            "sha256": "a2d5cddafd9876694509916988fe32a32964a785d60f094c7d554f2b5e661306"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/impl-fullwidth-resolved",
+          "repair": "validators.pyのPOSTAL_CODE_PATTERN/DATE_PATTERNの\\dを[0-9]へ変更しDIGITS/INTEGER_PATTERNを追加、parse_intを半角限定化。orders.pyの_is_prefecture_code等も是正。単体44ケースの回帰テストで\\d復帰時に26件失敗することを実証",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/377d03a5cdba04659d6f64f81fdce157eb84b92a52bdeb972fe8d16f4640f385.json",
+            "sha256": "377d03a5cdba04659d6f64f81fdce157eb84b92a52bdeb972fe8d16f4640f385"
+          }
+        }
+      ]
+    },
+    "UNRESOLVED-57aabf8b51f3c50b": {
+      "issue_id": "UNRESOLVED-57aabf8b51f3c50b",
+      "signature": {
+        "origin_phase": "UNIT_TEST",
+        "classification": "MISSING_BEHAVIOR_COVERAGE",
+        "artifact": "app/shop/tests/unit",
+        "requirement_reference": "FR-030",
+        "test_case": "OBS-IT-001",
+        "stable_error_type": "QUALITY_REVIEW_BLOCKING_ISSUE"
+      },
+      "impact": "OBS-IT-001（全角数字受理）の是正に対する回帰テストが単体・結合のいずれにも無く、[0-9]を\\dへ戻しても全件PASSのまま要件違反が再発する。加えて単体証跡が最終コードより古い",
+      "recommended_route": "UNIT_TEST",
+      "cycle": 0,
+      "state": "RESOLVED",
+      "history": [
+        {
+          "action": "FAILURE",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/full-regression-cycle0",
+          "repair": "",
+          "errors": [
+            "Applicable criterion is not PASS: cross-phase-consistency",
+            "Applicable criterion is not PASS: unit-test-quality",
+            "Unresolved blocking Quality Review Issue(s): 2"
+          ],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/b186dca75c8d433c4fcc06263588e0c61eb1011bb651c195a56ab012eed58cc8.json",
+            "sha256": "b186dca75c8d433c4fcc06263588e0c61eb1011bb651c195a56ab012eed58cc8"
+          }
+        },
+        {
+          "action": "RESOLVED",
+          "cycle": 0,
+          "run_id": "RUN-20261022-MC/full-regression-resolved",
+          "repair": "test_fullwidth_digit_rejection.py（21関数44ケース）を追加し半角受理と全角拒否を対で検証。単体証跡（junit/coverage/trace-execution/evidence）を最終コードに対して再生成し分岐網羅率91.14%を再実測",
+          "errors": [],
+          "evidence": {
+            "source": "reports/quality-review/validation-result.json",
+            "path": "reports/loop-control/evidence/377d03a5cdba04659d6f64f81fdce157eb84b92a52bdeb972fe8d16f4640f385.json",
+            "sha256": "377d03a5cdba04659d6f64f81fdce157eb84b92a52bdeb972fe8d16f4640f385"
+          }
+        }
+      ]
+    }
+  }
+}

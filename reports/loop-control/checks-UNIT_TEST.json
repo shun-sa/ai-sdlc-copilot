@@ -1,0 +1,7 @@
+﻿{
+  "producer": "reports/loop-control/checks/UNIT_TEST-producer.json",
+  "unit_test": "reports/loop-control/checks/UNIT_TEST-unit_test.json",
+  "quality": "reports/quality-review/validation-result.json",
+  "security": "reports/security-review/validation-result.json",
+  "traceability": "reports/traceability/validation-result.json"
+}

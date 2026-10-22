@@ -1,0 +1,65 @@
+{# trace: ADDR-006 #}
+{% extends "web/base.html" %}
+{% load display %}
+{% block content %}
+<form method="get" action="/admin/stock-units" class="search-form">
+  <span>
+    <label for="sku">SKU（前方一致）</label><br>
+    <input id="sku" type="text" name="sku" value="{{ form.sku }}" maxlength="32">
+    {% for reason in details|field_errors:"sku" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </span>
+  <span>
+    <label for="item_name">商品名（部分一致）</label><br>
+    <input id="item_name" type="text" name="item_name" value="{{ form.item_name }}" maxlength="100">
+    {% for reason in details|field_errors:"item_name" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </span>
+  <span>
+    <label for="supplier_id">仕入先</label><br>
+    <select id="supplier_id" name="supplier_id">
+      <option value="">すべて</option>
+      {% for supplier in suppliers %}
+        <option value="{{ supplier.supplier_id }}"
+          {% if form.supplier_id == supplier.supplier_id|stringformat:"s" %}selected{% endif %}>
+          {{ supplier.supplier_code }}：{{ supplier.name }}
+        </option>
+      {% endfor %}
+    </select>
+    {% for reason in details|field_errors:"supplier_id" %}<span class="field-error">{{ reason }}</span>{% endfor %}
+  </span>
+  <span>
+    <label for="low_stock_only">
+      <input id="low_stock_only" type="checkbox" name="low_stock_only" value="true"
+             {% if form.low_stock_only == "true" %}checked{% endif %}>
+      低在庫のみ（在庫数量5以下）
+    </label>
+  </span>
+  <button type="submit">検索</button>
+</form>
+
+{% if page_data.results %}
+  <table>
+    <caption>在庫単位一覧（{{ page_data.total_count }}件）</caption>
+    <thead>
+      <tr><th>SKU</th><th>商品コード</th><th>商品名</th><th>規格名</th><th>公開状態</th><th>仕入先</th><th>税抜価格</th><th>在庫数量</th><th>低在庫</th></tr>
+    </thead>
+    <tbody>
+      {% for unit in page_data.results %}
+      <tr>
+        <td>{{ unit.sku }}</td>
+        <td>{{ unit.item_code }}</td>
+        <td>{{ unit.item_name }}</td>
+        <td>{{ unit.variant_name }}</td>
+        <td>{% if unit.item_is_public %}公開{% else %}非公開{% endif %}</td>
+        <td>{{ unit.supplier_name }}</td>
+        <td>{{ unit.price|yen }}</td>
+        <td>{{ unit.quantity }}個</td>
+        <td>{% if unit.is_low_stock %}低在庫{% else %}－{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "web/_pagination.html" %}
+{% else %}
+  <p>該当する在庫単位はありません。</p>
+{% endif %}
+{% endblock %}
