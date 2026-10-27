@@ -198,7 +198,8 @@ Architectureは設計資料作成だけを担当します。ADDRは次の独立�
 docs/ai-sdlc/independent-architecture-addr.md を責務・引渡し・旧版互換の正とします。
 
 1. Architecture Agentへ分割要件・UC/AC・Steering・準備済み仕様・既存判断を渡します。
-   ファイル定義（該当時）・成果物間整合性分析・実装タスク一覧を既存テンプレートで依頼します。
+   論理DB設計（DB管理データがある場合）・ファイル定義（該当時）・成果物間整合性分析・実装タスク一覧を既存テンプレートで依頼します。
+   論理DB設計はdocs/architecture/db-logical-design.mdまたは同名ディレクトリへ出力させ、不要時は理由を分析資料に残します。
    方式の比較・採否は依頼せず、判断が必要な所在と根拠だけを後続ADDRへ渡します。
 2. version=2 / stage=FINALのreports/architecture/design-manifest.jsonを受け取り、
    validate_design.py --stage final を実行します。DRAFT/PREPARE/FINALIZEは新規Runでは使いません。
@@ -217,9 +218,9 @@ ADDR AgentはArchitectureと対等な独立Producerです。直接呼出しは�
 
 1. validate_design.py --check-design-gate とvalidate_addr.py --prepare-requestを実行し、
    FINAL manifest・設計資料・要件・UC/AC・予約ID契約をADDR Agentへ渡します。
-2. ADDR Agentは重要判断だけを正本ADDRへ記録し、全対象の要否、明示的FILE/TASK参照、
+2. ADDR Agentは重要判断だけを正本ADDRへ記録し、全対象の要否、明示的ENT/DBD/FILE/TASK参照、
    artifact_link_updates、必要時のdesign_change_requestsを返します。
-   ファイル項目表・全体分析・実装タスク・設計manifestを再作成/直接編集させません。
+   論理DBモデル・ファイル項目表・全体分析・実装タスク・設計manifestを再作成/直接編集させません。
 3. validate_addr.py --finalを実行します。ADDR不要は正常終了であり、空文書を強制作成しません。
    参照追加だけならArchitectureへ戻しません。本文/Taskの変更が必要な場合だけ、
    根拠付き要求でARCHITECTUREへ実際に差し戻し、設計・Assurance・Gateを更新してADDRへ戻します。

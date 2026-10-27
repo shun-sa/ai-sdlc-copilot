@@ -33,7 +33,7 @@ SDLC Orchestratorのみが担当する。
 # Phase Order
 
 ArchitectureとADDRは独立した対等な工程とする。
-Architectureはファイル定義・成果物間整合性分析・実装タスク等の設計資料作成に限定する。
+Architectureは論理DB設計・ファイル定義・成果物間整合性分析・実装タスク等の設計資料作成に限定する。
 ADDRは重要判断・選択理由・判断から生じる差分/拘束だけを担当し、設計資料を再作成しない。
 通常経路にArchitectureのFINALIZE再呼出しを置かない。本文修正が必要なときだけ差し戻す。
 現行契約は docs/ai-sdlc/independent-architecture-addr.md を正とする。
@@ -114,6 +114,9 @@ Implementation/Test/AssuranceはFINAL manifestと派生handoffの設計・計画
 
 新規の重要なArchitecture DecisionはADDR AgentだけがADDRへ記録する。
 Architecture Agentは設計資料を作成し、重要判断の比較・採否を重複して行わない。
+論理DB設計は `.github/skills/architecture/templates/logical-database-design.template.md` を正本に、
+`docs/architecture/db-logical-design.md`（分割時は同名ディレクトリ内）へ出力する。
+ADDRはEntity/属性/関連等のモデル定義を再作成せず、重要判断と設計参照を記録する。
 
 Accepted ADRのDecisionおよび
 AI Guardrailsを後続工程で遵守する。
@@ -291,7 +294,7 @@ AST/FQN/Call解析や手編集Mapは使いません。詳細は
 - 要件本文・UC/ACを読む。派生requirements.md、旧features、背景・用語・SteeringをID定義に数えない。
 - ADDRの2章「要件」行へ実在要件IDを記入する。設計/TASKの既存参照欄を維持する。
 - Production先頭: `# trace: ADDR-001, FILE-001`。Djangoは `{# trace: ADDR-001 #}`。
-  通常はADDR/DBD/FILEのみ。TASKを根拠にしない。
+  通常はADDR/ENT/DBD/FILEのみ。TASKを根拠にしない。
 - Test先頭: `# trace: FR-001, ADDR-001`。要件参照を必須とする。
 - 先頭ID>=2かつトップレベル定義>=2なら、private/helperも含め各定義直前
   （decoratorより前）に先頭の部分集合となるtraceを付ける。

@@ -25,6 +25,7 @@ Sensitive Dataが必要以上に
 - LogへSensitive Dataを含めない
 - Production Sensitive DataをTestで使用しない
 - Data AccessがAuthorization Boundaryと一致する
+- 論理DB設計書13章の機密区分・アクセス要件と、履歴・保持・外部Mappingがデータ要件および有効な判断と一致する
 
 ## Pass Conditions
 

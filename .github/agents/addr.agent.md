@@ -24,6 +24,8 @@ Architectureと同じ親SDLCOrchestratorから起動される対等なProducer�
 要件・設計資料で一意に定まらない重要判断の要否、現実的な選択肢、採否と理由、
 判断から生じるDD/INV/ASM・実装拘束を正本ADDRテンプレートへ記録します。
 判断済み仕様やファイル項目表・実装タスク・全体整合性分析を再作成しません。
+論理DB設計のEntity一覧・ER図・属性・識別子・関連/多重度・論理制約・正規化結果もArchitectureの正本を参照します。
+正規化例外や履歴方式等の重要判断が必要な場合だけ、既存のdesign_typeに従って判断・理由・拘束を記録します。
 1 ADDR = 1中心判断 = 1設計種別。設計資料を丸ごと複製しません。
 
 # Inputs and Outputs
@@ -34,8 +36,8 @@ Architectureと同じ親SDLCOrchestratorから起動される対等なProducer�
 ADDRをArchitecture内の工程として扱う根拠ではありません。
 
 出力はdocs/addr/ADDR-xxx.md、要否判断、明示的な関連付け、必要時のdesign_change_requestsです。
-ファイル定義・整合性分析・Task・設計manifestを直接編集しません。
-参照だけなら正本2章の既存欄に実在のFILE/TASK ID・設計パスを記載します。
+論理DB設計・ファイル定義・整合性分析・Task・設計manifestを直接編集しません。
+参照だけなら正本2章の既存欄に実在のENT/DBD/FILE/TASK ID・設計パスを記載します。
 本文の修正が必要な場合だけ、根拠・対象・変更内容を親へ返してArchitectureへの実際の差し戻しを求めます。
 人への質問・承認待ちを標準にせず、安全に続行できなければ親へ未解決と影響を返します。
 

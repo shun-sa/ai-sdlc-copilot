@@ -32,7 +32,7 @@
 | Requirements | `<path>` | `<APPROVED / version>` | Scope / Requirement |
 | Use Case | `<path>` | `<APPROVED / version>` | Behavior / AC |
 | ADR | `<ADR-xxx>` | `ACCEPTED` | Architecture Decision |
-| Detailed Design | `<FILE-xxx / Other / None>` | `<APPROVED>` | Implementation Detail |
+| Detailed Design | `<ENT-xxx / DBD-xxx / FILE-xxx / path / None>` | `<APPROVED>` | Implementation Detail |
 | Project AI Steering | `<path>` | `<APPROVED / version>` | PJ-specific Environment / Commands |
 
 ## 3. Task Decomposition Rules
@@ -87,7 +87,7 @@ Cycleが存在してはならない。
 | Requirement | `<FR-xxx>` | `<対象要求>` |
 | Use Case / AC | `<UC-xxx / AC-...>` | `<対象振る舞い>` |
 | ADR | `<ADR-xxx / None>` | `<設計制約>` |
-| Detailed Design | `<FILE-xxx / path / None>` | `<詳細仕様>` |
+| Detailed Design | `<ENT-xxx / DBD-xxx / FILE-xxx / path / None>` | `<論理DB設計等の詳細仕様>` |
 
 #### Objective
 

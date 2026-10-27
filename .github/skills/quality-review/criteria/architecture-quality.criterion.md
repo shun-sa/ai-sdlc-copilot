@@ -19,6 +19,9 @@ Architecture DecisionがRequirementに対して
 設計書・実装タスク・ADDRの3種を対象とする。ADDRの判断基準、選択肢、決定理由、
 DD/INV/ASM、設計種別、旧Accepted ADRとの整合と、Taskの依存・網羅性を確認する。
 ADDRが不要な対象であることと、設計書が不要であることを混同しない。
+DB管理データがある対象はArchitectureの論理DB設計書を確認し、対象外なら根拠を確認する。
+Entity/属性/識別子/関連・多重度/論理制約/正規化結果とデータ要件・UC/AC・Taskの整合を検査する。
+ADDRへのモデル定義の重複、Architectureによる重要判断の先取り、物理型・DDL等の論理設計への混入がないことを確認する。
 Architectureが作成したcross-artifact-consistency分析を読取り、独立した所見をQuality Reportへ記録する。
 ARCHITECTUREはADDR引渡し品質、ADDRは判断と設計資料/Taskの最終整合を検査する。
 本文修正が必要な不整合はArchitecture、判断の不備はADDRへ戻す。未解決を品質PASSにしない。

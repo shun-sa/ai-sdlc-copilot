@@ -41,6 +41,7 @@
 | Requirements | `<path>` | `<version>` | Source of Truth |
 | Use Case | `<path / set>` | `<version>` | Flow / Acceptance Criteria |
 | ADR | `<ADR-xxx>` | `ACCEPTED` | Architecture Decision |
+| Logical Database Design | `<docs/architecture/db-logical-design.md / 分割設計パス / None>` | `<version / 対象外理由>` | Logical Data Model |
 | File Definition | `<FILE-xxx / None>` | `<status>` | Detailed Interface Design |
 | Implementation Task List | `<path>` | `<version>` | Implementation Handoff |
 | Other | `<path>` | `<version>` | `<role>` |
@@ -121,6 +122,7 @@ Recommended Routeは問題のSourceを修正すべき工程を示す。
 | Blocking Requirement ambiguity resolved | `YES / NO / BLOCKED` | `<...>` |
 | Required ADRs Accepted | `YES / NO / N/A` | `<...>` |
 | Required detailed interface/file definitions available | `YES / NO / N/A` | `<...>` |
+| Required logical database design available | `YES / NO / N/A` | `<設計パス / 対象外理由>` |
 | Implementation tasks cover intended scope | `YES / NO / BLOCKED` | `<...>` |
 | No unresolved CRITICAL/HIGH consistency issue | `YES / NO` | `<...>` |
 

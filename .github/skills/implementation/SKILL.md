@@ -489,7 +489,7 @@ Step 3で作成したRequirement Coverageを更新してください。
 ## Step 20. 作成時に参照を記入する
 
 成果物作成と同時に先頭へ `# trace: ADDR-001, FILE-001`（実在IDのみ）を付けます。
-Djangoは `{# trace: ADDR-001 #}`。通常のProduction注釈はADDR/DBD/FILEのみで、TASKを根拠にしません。
+Djangoは `{# trace: ADDR-001 #}`。通常のProduction注釈はADDR/ENT/DBD/FILEのみで、TASKを根拠にしません。
 先頭ID>=2かつトップレベル定義>=2ならprivate/helperも含め、各定義直前・decoratorより前へ
 先頭の部分集合のtraceを付けます。詳細はTraceability Audit SkillとPolicyに従います。
 要件への直接参照は、現在のArchitecture GateがADDR不要として承認した対象のbasis_idsに限ります。

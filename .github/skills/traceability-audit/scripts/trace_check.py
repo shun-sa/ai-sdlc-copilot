@@ -964,7 +964,7 @@ class Auditor:
                 path = artifacts[binding["artifact_id"]]["path"]
                 for identifier in binding["element_ids"]:
                     element = self.elements.get(identifier)
-                    if element is None or element.file != path or element.kind not in ("task", "file_definition"):
+                    if element is None or element.file != path or element.kind not in ("entity", "task", "file_definition"):
                         self.report("C01", "ADDR_BINDING_INVALID", HANDOFF, f"Binding has no matching source definition: {identifier}", "ADDR")
                     else:
                         element.refs.add(binding["related_addr_id"])

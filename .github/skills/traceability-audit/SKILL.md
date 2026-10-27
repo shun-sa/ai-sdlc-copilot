@@ -19,16 +19,17 @@ Auditorは元成果物・注釈・テスト結果を修正しません。生成�
 要件の正本は分割された要件本文・UC・ACです。requirements.mdは派生索引なので定義から除外します。
 旧features、業務背景、用語集、品質チェックリスト、Steeringはグラフ対象外ですが設計の入力として保持します。
 正本テンプレート・要件再構成を維持し、通常順序はRequirements→Architecture→ADDR→Implementationです。
-新しい設計参照はADDR正本2章の明示的FILE/TASK参照を使い、検証済み派生handoffから関連付けます。
+新しい設計参照はADDR正本2章の明示的ENT/DBD/FILE/TASK参照を使い、検証済み派生handoffから関連付けます。
+論理DB設計はdocs/architecture/db-logical-design.mdまたは同名ディレクトリを読み、ENTをEntity IDとして扱います。既存DBDも引き続き読みます。
 将来ADDRのために凍結済み設計書へ自動追記せず、推測した参照も作りません。
-FILEは既存テンプレートの「File Interface ID」欄を読みます。DBDは既存入力がある場合のみ使い、
-未提供の設計テンプレートを作りません。配置・接頭辞はpolicy/traceability-policy.yamlで指定します。
+FILEは既存テンプレートの「File Interface ID」欄、ENT/DBDはArchitectureの論理DB設計書を読みます。
+Auditorは設計書や設計テンプレートを作成しません。配置・接頭辞はpolicy/traceability-policy.yamlで指定します。
 
 ## 作成時の参照
 
 - ADDR: 正本の2章「関連要件・参照成果物」の「要件」行に実在要件IDを記入します。
   他種成果物行のIDは要件リンクに代用しません。ACだけでは関連要件を満たしません。
-- 設計・TASK: 要件・ADDR・DBDへの参照を既存欄で維持します。TASKだけを実装根拠にしません。
+- 設計・TASK: 要件・ADDR・ENT/DBDへの参照を既存欄で維持します。TASKだけを実装根拠にしません。
 - Production: ファイル先頭、docstring/importより前に `# trace: ADDR-001, FILE-001`。
   Djangoは `{# trace: ADDR-001 #}`。TASK/要件を通常のコード注釈へ書きません。
 - Test: `# trace: FR-001, ADDR-001` のように要件と関連判断を記入します。
@@ -65,7 +66,7 @@ python .github/skills/traceability-audit/scripts/trace_check.py --scope ARCHITEC
 | C01 | ID実在・重複・計画参照。実装以降は既存Architecture Gateも検証 |
 | C02 | 下流から廃止・未確定判断を参照しない |
 | C03 | ADDRの状態・関連要件欄 |
-| C04 | TASKの要件/ADDR/DBD根拠 |
+| C04 | TASKの要件/ADDR/ENT/DBD根拠 |
 | C05 | 先頭注釈と許可ID種別 |
 | C06 | 定義ごとの注釈と先頭との整合 |
 | C07 | 各テストの要件参照 |
