@@ -10,6 +10,7 @@ Architectureの中でADDRを実行したり、通常経路でArchitectureのFINA
 
 | 対象 | Architecture | ADDR |
 | --- | --- | --- |
+| 論理DBモデル（Entity・属性・識別子・関連・制約・正規化結果） | 要件・既存判断を根拠に正本設計書を作成する | パス/版/Entity IDで参照し、モデルを再作成しない |
 | 既存仕様の再構成・ファイル項目表 | 作成する | パス/IDで参照。表全体を複製しない |
 | 成果物間整合性分析 | 現在の入力時点の資料を作成する | 同じ分析資料を再作成しない |
 | 実装タスク・依存・Wave・検証方法 | 根拠のある作業計画として作成する | Taskを再定義しない |
@@ -19,10 +20,15 @@ Architectureの中でADDRを実行したり、通常経路でArchitectureのFINA
 | 設計本文を変える必要 | 自分の資料だけ修正する | 直接編集せず具体的変更要求を返す |
 | 実装可能性・独立品質検査 | 自己分析だけで許可しない | ACTIVEだけで許可しない |
 
-Architectureの出力は既存テンプレートのfile-definition（該当時）、
+Architectureの出力は既存テンプレートのlogical-database-design（DB管理データがある場合）、file-definition（該当時）、
 cross-artifact-consistency-analysis、implementation-task-listである。
 未提供の設計種別のテンプレートは追加せず、提供済み仕様を参照する。
 ADDRの出力は既存ADDRテンプレートの1〜9章と対応design_type節で、設計資料の丸写しではない。
+論理DB設計の正本は `.github/skills/architecture/templates/logical-database-design.template.md`、
+出力は `docs/architecture/db-logical-design.md` または分割した `docs/architecture/db-logical-design/*.md`。
+Entity IDはENT、既存DBDも有効。論理DB設計不要の理由は整合性分析へ記録し、ADDR不要と混同しない。
+DBMS物理型・物理名・Index・Partition・DDLは物理設計/実装への引継ぎ対象とする。
+正規化例外・履歴方式等の重要判断はADDRへ委譲し、モデル本文を変える場合だけArchitectureへ差し戻す。
 既に要件・受領仕様で一意に決まる内容に、比較案や新しい判断を捏造しない。
 
 整合性分析はArchitecture Producerの資料であって独立合格証拠ではない。
@@ -40,7 +46,7 @@ artifacts、targets（対象・根拠付き重要度）、unresolved_design_deci
 unresolved_design_decisionsは後続ADDRへの委譲事項として残せるが、TaskやFILEの重要方式を推測して確定しない。
 重要方式がなくても根拠付き空配列で渡す。架空の将来ADDR IDは設計書へ書かない。
 
-artifactsのtemplateはfile-definition / cross-artifact-consistency-analysis /
+artifactsのtemplateはlogical-database-design / file-definition / cross-artifact-consistency-analysis /
 implementation-task-list / provided。実装タスクと分析資料は各1件必須。
 providedは実際の受領資料だけでsourcesにも同じパスを記録する。
 各成果物はartifact_id/path/template/sha256/target_id/related_requirement_ids/related_addr_idsを持つ。
@@ -71,7 +77,7 @@ ADDR requestのdesign_input_pathはFINAL manifest、workflow_version=2。
 
 ## 設計書を書き戻さず参照を成立させる
 
-ADDRの正本2章へ実在要件、設計パスと影響するFILE/TASK IDを記載する。
+ADDRの正本2章へ実在要件、設計パスと影響するENT/DBD/FILE/TASK IDを記載する。
 同じ明示参照をaddr-resultのartifact_link_updatesへ保存する。
 
 ```json
@@ -86,6 +92,7 @@ ADDRの正本2章へ実在要件、設計パスと影響するFILE/TASK IDを記
 
 形式例のIDは実在値に置き換える。リンクは同じ対象の凍結成果物と新規ADDRを結び、
 element_idsは当該文書で定義するID、かつADDR正本2章にも明示したIDだけにする。
+logical-database-designとの関連付けでは5章のEntity IDを指定する。成果物ID（例LDB-001）とEntity ID（例ENT-001）は区別する。
 全生成ADDRに関連付けを持たせる。plan全体への関連付けから全Taskを推測して結ばない。
 Auditorは設計Gate・ADDR結果・handoffの整合を検証してこの明示参照から表を派生生成する。
 凍結設計書へ将来IDを自動追記しないので、参照追加だけを理由とするFINALIZEは不要。
@@ -94,7 +101,7 @@ ADDR不要は正常終了で、全未使用IDとneeded=falseを返し、空の�
 ## 実際に修正が必要な場合
 
 - 重要判断の不備だけならADDR内で修正する。Implementationで判断不足を検出した場合もADDRへ戻す。
-- FILE本文、項目値、異常動作、Task本体などを変えるなら、ADDRはdesign_change_requestsへ
+- 論理DBモデル、FILE本文、項目値、異常動作、Task本体などを変えるなら、ADDRはdesign_change_requestsへ
   artifact_id/対象/根拠/必要変更を記載しBLOCKEDで返す。ADDRは設計資料を直接編集しない。
 - OrchestratorがARCHITECTUREへ実際に戻し、担当資料だけを修正する。
   新manifest/設計Assurance/設計Gateに更新し、ADDR入力・handoff・実装引渡しGateと影響下流を無効化する。

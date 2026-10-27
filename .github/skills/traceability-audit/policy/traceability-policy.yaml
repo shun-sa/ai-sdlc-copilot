@@ -18,7 +18,7 @@ ids:
   requirement: [FR, NFR, SEC, CON, DR, IFR, UIR, UC]
   acceptance: [AC]
   addr: [ADDR, ADR]          # 移行期間中は旧ADRも読む
-  entity: [DBD]              # DB論理設計書のエンティティ
+  entity: [ENT, DBD]
   file_definition: [FILE]    # ファイル定義書
   task: [TASK]               # 実装タスク一覧
   change: [CR]               # 変更管理記録（保守）

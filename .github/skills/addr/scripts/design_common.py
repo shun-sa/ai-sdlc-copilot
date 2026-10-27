@@ -218,6 +218,30 @@ def validate_task_plan(template: str, text: str, path: Path, errors: list[str], 
         visit(identifier)
 
 
+def design_element_ids(artifact: dict, text: str) -> set[str]:
+    document = parse_document(text)
+    kind = artifact.get("template")
+    if kind == "implementation-task-list":
+        return {row["Task ID"] for row in row_records(document, {"Task ID"}, "4.")}
+    if kind == "logical-database-design":
+        return {row["Entity ID"] for row in row_records(document, {"Entity ID"}, "5.")}
+    return {row["内容"].strip("` ") for row in row_records(document, {"項目", "内容"}) if row["項目"] == "File Interface ID"}
+
+
+def validate_logical_database(template: str, text: str, path: Path, errors: list[str]) -> None:
+    errors.extend(validate_document(template, text, path))
+    document = parse_document(text)
+    identifiers = [row["Entity ID"] for row in row_records(document, {"Entity ID"}, "5.")]
+    duplicates(identifiers, "Entity ID", errors)
+    if not identifiers or any(not re.fullmatch(r"(?:ENT|DBD)-(?:[A-Z0-9_]+-)*\d{2,}", identifier) for identifier in identifiers):
+        errors.append(f"{path}: logical database design requires valid ENT/DBD entity IDs")
+    details = [row["内容"].strip("` ") for row in row_records(document, {"項目", "内容"}) if row["項目"] == "Entity ID"]
+    headings = [section for section in walk(document) if section.level == 3 and re.match(r"7\.\d+\s", section.title)]
+    heading_ids = [identifier for section in headings for identifier in ID_PATTERN.findall(section.title) if identifier.startswith(("ENT-", "DBD-"))]
+    if Counter(identifiers) != Counter(details) or Counter(identifiers) != Counter(heading_ids):
+        errors.append(f"{path}: Entity Summary and Details differ")
+
+
 def validate_design(root: Path, stage: str) -> list[str]:
     root = root.resolve()
     errors = []
@@ -271,7 +295,7 @@ def validate_design(root: Path, stage: str) -> list[str]:
             if path.relative_to(root).as_posix() not in sources:
                 errors.append(f"Provided design is not a source: {path}")
             continue
-        if kind not in ("file-definition", "implementation-task-list", "cross-artifact-consistency-analysis") or (kind == "cross-artifact-consistency-analysis" and not sequential):
+        if kind not in ("logical-database-design", "file-definition", "implementation-task-list", "cross-artifact-consistency-analysis") or (kind == "cross-artifact-consistency-analysis" and not sequential):
             errors.append(f"Unknown design template: {kind}")
             continue
         if kind == "cross-artifact-consistency-analysis":
@@ -279,6 +303,8 @@ def validate_design(root: Path, stage: str) -> list[str]:
                 errors.append("Architecture consistency analysis must use its canonical report path")
         elif not path.is_relative_to(root / "docs/architecture"):
             errors.append(f"Design output outside docs/architecture: {path}")
+        if kind == "logical-database-design" and (path.suffix.lower() != ".md" or (path != root / "docs/architecture/db-logical-design.md" and not path.is_relative_to(root / "docs/architecture/db-logical-design"))):
+            errors.append("Logical database design must use its canonical document path or split directory")
         template_path = root / TEMPLATES / f"{kind}.template.md"
         if not template_path.is_file():
             errors.append(f"Missing design template: {template_path}")
@@ -288,6 +314,8 @@ def validate_design(root: Path, stage: str) -> list[str]:
         if kind == "implementation-task-list":
             task_count += 1
             validate_task_plan(template, text, path, errors, known)
+        elif kind == "logical-database-design":
+            validate_logical_database(template, text, path, errors)
         else:
             errors.extend(validate_document(template, text, path))
     if stage == "final":

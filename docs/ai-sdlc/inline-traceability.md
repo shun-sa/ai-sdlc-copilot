@@ -1,15 +1,15 @@
 # 注釈方式トレーサビリティ
 
 2026-10-21更新。トレーサビリティ方針を、最新の分割要件とArchitecture/ADDR分離契約へ適合したものです。
-チームZIPにある旧要件・旧ADR-only設計Agentは採用せず、既存テンプレートも変更していません。
+2026-10-27に論理DB設計テンプレートとEntity参照を接続しました。旧要件・旧ADR-only設計Agentは採用しません。
 
 ## 処理と担当
 
 1. Requirementsが分割本文・UC/ACを再構成します。IDと既存の関連参照を保持します。
 2. Architecture→ADDRの独立工程で、設計資料・判断・TASKの既存欄に実在根拠IDを記入します。
-   後続ADDRのFILE/TASK参照は正本2章と検証済み派生handoffで結び、通常FINALIZEは行いません。
+   後続ADDRのENT/DBD/FILE/TASK参照は正本2章と検証済み派生handoffで結び、通常FINALIZEは行いません。
 3. Architectureの構造検証とQuality/Security/Traceabilityを経て既存のハッシュ固定Gateを保存します。
-4. Implementationはコード作成と同時にADDR/DBD/FILEの先頭注釈を付けます。
+4. Implementationはコード作成と同時にADDR/ENT/DBD/FILEの先頭注釈を付けます。
 5. UnitTest/IntegrationTestは要件と関連ADDRの注釈を付け、実行でJUnitを生成して実行版を記録します。
 6. Auditorが各工程のC01〜C11を機械検査し、正本からMap・表・Reportを生成します。
 7. 同一条件で独立再計算する--no-write検証がPASSした後、既存の工程Gateで遷移します。
@@ -28,8 +28,9 @@ AST/FQN/Callによるリンク生成・AIの意味推論によるリンク補完
   2章の「要件」行を読取り、DBD等の別行にある参照は要件リンクに混ぜません。
 - FILEはdocs/architecture/filesの正本「File Interface ID」欄を読取ります。
   TASKはdocs/architecture/implementation-task-list.md。既存のRelated ADR欄をADDRにも使います。
-- DBDは提供済みのdocs/architecture/db-logical-design*.md等を使用します。
-  今回存在しないDB/API/画面設計テンプレートを追加しません。
+- ENTと既存DBDはdocs/architecture/db-logical-design.mdまたはdb-logical-design/*.mdのEntity定義を使用します。
+  Architectureは提供済みlogical-database-design.template.mdから作成し、ADDRはEntity IDで参照します。
+  既存db-logical-design*.mdの読取り互換性も保持します。未提供の物理DB/API/画面設計テンプレートは追加しません。
 - ADDR不要の正常系は保持します。実装以降の検証済みGate・needed=falseが承認した対象の
   basis_idsだけ、コードの直接要件参照を許可します。有効ADDRがある要件には例外を使いません。
 - 既存Integration Planのrequirement_id/related_adrを維持します。

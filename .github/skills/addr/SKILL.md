@@ -14,6 +14,10 @@ disable-model-invocation: false
 Architectureは既存テンプレートによる設計資料、ADDRは重要判断の唯一の作成者である。
 仕様で確定している項目表・手順・Taskや全体整合性分析をADDRへ丸ごと複製しない。
 入力の章構成を作り直したり、ADDRを詳細設計書の代わりにしたりしない。
+論理DB設計書のEntity一覧・ER図・属性・識別子・関連/多重度・論理制約・正規化結果はArchitectureが作成する。
+ADDRにこれらの定義表・モデルを生成しない。データモデル参照は論理DB設計書のパス・版・Entity IDとして使用する。
+データに関する重要判断は、中心判断に合う既存design_typeで比較・採否・DD/INV/ASMだけを記録する。
+モデル本文の変更が必要ならdesign_change_requestsを返す。論理DB設計専用のdesign_typeや章を追加しない。
 
 ## Input
 
@@ -38,7 +42,7 @@ design_input_sha256という既存フィールド名は「受領FINAL manifest�
 4. 正本templates/addr.mdを使いdocs/addr/ADDR-xxx.mdへ生成する。1〜9章を維持し、
    6章のdesign_type対応節は1つだけ残す。DD/INV/ASM、MUST/MUST_NOT/SHOULDを既存欄へ記録する。
    要件・受入条件・根拠のない値を補完せず、既存仕様はID/Pathで参照する。
-5. 2章の既存「関連要件・参照成果物」へ実在要件IDと、影響するFILE/TASK ID・設計パスを記載する。
+5. 2章の既存「関連要件・参照成果物」へ実在要件IDと、影響するENT/DBD/FILE/TASK ID・設計パスを記載する。
    related-artifactsという新しい章やTrace専用表は追加しない。
 6. 前工程を変更せず、artifact_link_updatesでその明示的参照を機械可読にする。
    このLINK_ADDRは通常の設計書編集依頼ではなく、ADDR側からの関連付けである。
@@ -59,7 +63,8 @@ assumptions/blocking_issues/human_intervention_requested/autonomous_recoveryを�
 {"artifact_id":"PLAN-001","target_id":"FR-001","related_addr_id":"ADDR-001","requested_action":"LINK_ADDR","element_ids":["TASK-001"]}
 ```
 
-artifact_idは受領manifestの成果物ID、element_idsはその文書が定義する実在FILE/TASK ID。
+artifact_idは受領manifestの成果物ID、element_idsはその文書が定義する実在ENT/DBD/FILE/TASK ID。
+論理DB設計は5章のEntity IDを指定する。属性・関連の詳細は同じ参照欄で節を示し、Entityに関連付ける。
 正本2章にも同じ設計パスまたは成果物IDとelement_idsを記載する。別対象へ一括関連付けしない。
 全生成ADDRには少なくとも1件の明示的関連付けが必要。不要ならneeded=false、addr_id=null、
 出力/関連付けは空とし、全未使用IDを返す。空のADDRは作らない。

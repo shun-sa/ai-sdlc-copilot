@@ -11,7 +11,7 @@ from pathlib import Path
 import yaml
 
 from design_common import (
-    FINAL, GATE, INPUT, KINDS, REQUEST, RESULT, HANDOFF, addr_records, digest, duplicates,
+    FINAL, GATE, INPUT, KINDS, REQUEST, RESULT, HANDOFF, addr_records, design_element_ids, digest, duplicates,
     design_input_path, handoff_content, validate_design_gate, ID_PATTERN,
     gate_paths, load_json, local_path, objects, parse_document, requirement_ids,
     row_records, snapshots, strings, validate_design, validate_document, validate_gate, walk,
@@ -247,10 +247,9 @@ def validate_addr(root: Path, final: bool = False) -> list[str]:
             if artifact["artifact_id"] not in reference_ids and artifact["path"] not in references:
                 errors.append("ADDR binding is not stated in its canonical related-artifacts section")
             element_ids = strings(link.get("element_ids"), "ADDR binding element IDs", errors)
-            document = parse_document((root / artifact["path"]).read_text(encoding="utf-8-sig"))
-            defined = {row["Task ID"] for row in row_records(document, {"Task ID"}, "4.")} if artifact.get("template") == "implementation-task-list" else {row["内容"].strip("` ") for row in row_records(document, {"項目", "内容"}) if row["項目"] == "File Interface ID"}
+            defined = design_element_ids(artifact, (root / artifact["path"]).read_text(encoding="utf-8-sig"))
             if not element_ids or not set(element_ids).issubset(defined) or not set(element_ids).issubset(reference_ids):
-                errors.append("ADDR binding must name real task/file IDs explicitly in its related-artifacts section")
+                errors.append("ADDR binding must name real entity/task/file IDs explicitly in its related-artifacts section")
             linked.add(identifier)
             link_keys.append((artifact["artifact_id"], identifier))
         duplicates(link_keys, "ADDR artifact binding", errors)

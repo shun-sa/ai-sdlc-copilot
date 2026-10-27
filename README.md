@@ -82,6 +82,7 @@ Requirements
   要件本文・UC/AC・Steering・準備済み仕様
        ↓
 Architecture Agent（設計資料を作る）
+  データベース論理設計書（DB管理データがある場合）
   ファイル定義（該当時）
   成果物間整合性分析
   実装タスク一覧
@@ -89,7 +90,7 @@ Architecture Agent（設計資料を作る）
        ↓ Orchestratorが資料と設計Gateを渡す
 ADDR Agent（重要判断だけを記録する）
   判断の要否、選択肢、採否理由、設計差分・実装拘束
-  影響する実在FILE/TASKへの明示参照
+  影響する実在ENT/DBD/FILE/TASKへの明示参照
        ↓ Orchestratorが検証・独立検査し、handoffと実装引渡しGateを作る
 Implementation Agent
   Architectureの設計資料 ＋ ADDRの判断 ＋ 実装タスクを読む
@@ -97,6 +98,7 @@ Implementation Agent
 
 | 成果物・作業 | 担当 | 他方との境界 |
 | --- | --- | --- |
+| logical-database-design | Architecture | ADDRは論理モデルを再作成せず、重要判断とEntity参照だけ記録する |
 | file-definition | Architecture | ADDRは項目表を再作成しない |
 | cross-artifact-consistency-analysis | Architecture | 入力時点の自己分析。独立Qualityの合格証拠ではない |
 | implementation-task-list | Architecture | ADDRはTask・依存・Waveを再定義しない |
@@ -115,7 +117,7 @@ ADDR前の整合性分析では未実施判断を明示し、実装Readinessを�
 
 **戻りません。通常のFINALIZE再呼出しはありません。**
 
-- 新しいADDRとの参照追加だけなら、ADDR正本2章のFILE/TASK参照と派生handoffで接続します。
+- 新しいADDRとの参照追加だけなら、ADDR正本2章のENT/DBD/FILE/TASK参照と派生handoffで接続します。
   凍結済みの設計書に将来IDを自動追記するための再起動はしません。
 - ADDRの決定で、ファイル定義の再送条件やTask本体などを本当に変える必要がある場合だけ、
   ADDRが具体的なdesign_change_requestsを返し、OrchestratorがArchitectureへ差し戻します。
@@ -126,6 +128,7 @@ ADDR前の整合性分析では未実施判断を明示し、実装Readinessを�
 
 | ファイル | 作成者 / 意味 |
 | --- | --- |
+| docs/architecture/db-logical-design.md または db-logical-design/*.md | Architecture。DB管理データがある場合。既存の論理DB設計テンプレートを使用 |
 | docs/architecture/files/FILE-xxx.md | Architecture。ファイル連携がある場合 |
 | docs/architecture/implementation-task-list.md | Architecture。実装作業と依存 |
 | reports/architecture/cross-artifact-consistency.md | Architecture。入力時点の分析 |
@@ -201,7 +204,7 @@ flowchart TB
 | --- | --- |
 | SDLC Orchestrator | Agent起動、Phase遷移、Validator、Assurance、Routing、Invalidation、Final Assuranceを制御 |
 | Requirements Agent | Requirementを定義・更新 |
-| Architecture Agent | 既存仕様からファイル定義・整合性分析・実装タスク等の設計資料を作成 |
+| Architecture Agent | 要件・既存仕様から論理DB設計・ファイル定義・整合性分析・実装タスク等の設計資料を作成 |
 | ADDR Agent | 設計資料を参照し、重要判断の要否・比較・採否理由・差分・実装拘束を記録 |
 | Implementation Agent | 要件・設計資料・ADDR・実装タスクに従ってProduction Codeを実装 |
 | Unit Test Agent | Requirements / Accepted ADRからExpected Resultを導出しUnit Testを作成・実行 |

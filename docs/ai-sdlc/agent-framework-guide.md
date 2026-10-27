@@ -326,6 +326,7 @@ Requirements Phaseへ正式に差し戻して修正します。
 
 要件・UC/AC・Steering・準備済み仕様を、既存テンプレートに沿った設計資料へ再構成します。
 
+- DB管理データがある場合のlogical-database-design（既存専用テンプレートを使用し、docs/architecture/db-logical-design.mdまたは同名ディレクトリへ出力）
 - ファイル連携がある場合のfile-definition
 - 現在の入力を対象にしたcross-artifact-consistency-analysis
 - 根拠のある実装作業・依存・Wave・検証方法を示すimplementation-task-list
@@ -343,8 +344,8 @@ Architectureとは対等な独立Producerで、親は同じSDLC Orchestratorで�
 Architectureの設計資料・manifest・設計Gateと要件を受け取り、重要判断の要否を確認します。
 必要な対象だけ、選択肢・採否理由・判断による設計差分・不変条件・実装拘束を正本ADDRへ記録します。
 
-ADDRはFILEの項目表、全体整合性分析、Task一覧を再作成・直接編集しません。
-実在FILE/TASKへの参照はADDRの正本2章へ明示し、機械可読結果と派生handoffで接続します。
+ADDRは論理DBモデル、FILEの項目表、全体整合性分析、Task一覧を再作成・直接編集しません。
+実在ENT/DBD/FILE/TASKへの参照はADDRの正本2章へ明示し、機械可読結果と派生handoffで接続します。
 親がADDR Scopeの独立検査と実装引渡しGateを実施し、Implementationへ両方の資料を渡します。
 
 ```text
