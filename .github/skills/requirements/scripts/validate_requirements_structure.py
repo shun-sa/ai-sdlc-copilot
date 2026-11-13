@@ -232,6 +232,24 @@ def definitions(records, column: str, source: Path, errors: list[str]) -> list[s
     return values
 
 
+def validate_pending_requirement_links(document: Section, source: Path) -> list[str]:
+    pending_subjects = {
+        identifier
+        for row in row_records(document, {"ID", "内容", "影響範囲", "状態"}, "7.")
+        if row["状態"] in {"未着手", "確認中"}
+        and row["ID"] not in NOT_APPLICABLE
+        and row["内容"] not in NOT_APPLICABLE
+        for identifier in IDENTIFIER.findall(row["影響範囲"])
+    }
+    errors = []
+    for chapter, subject_column in (("2.", "Actor ID"), ("3.", "User Story ID"), ("4.", "Use Case ID")):
+        for row in row_records(document, {subject_column, "関連Requirement ID"}, chapter):
+            subject = row[subject_column]
+            if row["関連Requirement ID"] == "未決" and subject not in NOT_APPLICABLE and subject not in pending_subjects:
+                errors.append(f"{source}: unresolved 関連Requirement ID for {subject} requires an open issue in section 7 with that ID in 影響範囲")
+    return errors
+
+
 def non_functional_rows(document: Section) -> list[dict[str, str]]:
     performance = list(row_records(document, {"ID", "要件項目", "目標値（単位付き）", "検証方法"}))
     compliance = list(row_records(document, {"ID", "法令・規約名", "求められる事項", "確認方法"}, "11."))
@@ -355,6 +373,7 @@ def validate(root: Path) -> list[str]:
             errors.append(f"AI Steering reference differs from artifact contract: {kind}")
 
     index_doc = documents["use_case_user_story_list.md"]
+    errors.extend(validate_pending_requirement_links(index_doc, root / ARTIFACTS["use_case_user_story_list.md"]))
     actors = definitions(row_records(index_doc, {"Actor ID", "種別"}, "2."), "Actor ID", root / ARTIFACTS["use_case_user_story_list.md"], errors)
     stories = list(row_records(index_doc, {"User Story ID", "Actor ID"}, "3."))
     story_ids = definitions(stories, "User Story ID", root / ARTIFACTS["use_case_user_story_list.md"], errors)

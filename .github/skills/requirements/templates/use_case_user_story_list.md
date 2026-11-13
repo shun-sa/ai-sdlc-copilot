@@ -24,7 +24,7 @@ author: "{{作成者}}"
 - 本書は、利用者・外部システムの目的とシステム利用の単位を、User Story / Use Caseとして一覧化する。
 - 詳細な処理手順、代替・例外フロー、Acceptance Criteriaは本書に重複記載せず、個別ユースケース定義書を参照する。
 - User Storyは利用者価値を簡潔に表現し、詳細な振る舞いが必要な場合はUse Caseへ関連付ける。
-- Requirementとの関連は関連Requirement IDで明示し、存在しないRequirement IDを推測して作成しない。
+- Requirementとの関連は関連Requirement IDで明示する。未確定の Requirement ID は記入せず「未決」とし、「未決事項・確認事項」に登録する。
 -->
 
 ## 0. 文書管理
@@ -84,7 +84,7 @@ author: "{{作成者}}"
 - 1行1Use Caseとする。
 - 目的はActorがシステムを利用して達成する結果を書く。
 - 詳細ファイルには個別ユースケース定義書の相対パスを記入する。
-- Acceptance Criteriaは個別ユースケース定義書側をSource of Truthとする。
+- Acceptance Criteriaは個別ユースケース定義書側を正本とする。
 -->
 
 | Use Case ID | ユースケース名 | Primary Actor | 目的 | 関連Requirement ID | 関連User Story ID | 詳細ファイル | 優先度 | 状態 |

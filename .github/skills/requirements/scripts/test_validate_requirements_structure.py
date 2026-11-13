@@ -200,6 +200,28 @@ class RequirementsTests(unittest.TestCase):
         self.change(ARTIFACTS["use_case_user_story_list.md"], "FR-001", "FR-999")
         self.assert_error("undefined reference FR-999")
 
+    def test_pending_links_require_an_open_issue_for_each_subject(self) -> None:
+        index = self.root / ARTIFACTS["use_case_user_story_list.md"]
+        text = index.read_text(encoding="utf-8").replace("| FR-001 |", "| 未決 |")
+        index.write_text(text, encoding="utf-8")
+
+        for subject in ("ACT-001", "US-001", "UC-001"):
+            self.assert_error(f"unresolved 関連Requirement ID for {subject}")
+
+        with index.open("a", encoding="utf-8") as stream:
+            stream.write("| OQ-001 | 要求を確認する | ACT-001、US-001、UC-001 | 要件担当 | 2026-12-01 | 確認中 |\n")
+        self.assertEqual([], validate(self.root))
+
+        self.change(index, "UC-001 | 要件担当", "UC-0010 | 要件担当")
+        self.assert_error("unresolved 関連Requirement ID for UC-001")
+
+    def test_resolved_issue_does_not_cover_a_pending_link(self) -> None:
+        index = self.root / ARTIFACTS["use_case_user_story_list.md"]
+        self.change(index, "| FR-001 |", "| 未決 |")
+        with index.open("a", encoding="utf-8") as stream:
+            stream.write("| OQ-001 | 要求を確認した | ACT-001 | 要件担当 | 2026-12-01 | 解決済 |\n")
+        self.assert_error("unresolved 関連Requirement ID for ACT-001")
+
     def test_uc_detail_unknown_requirement_reference_fails(self) -> None:
         self.change("docs/requirements/use-cases/UC-001.md", "| 関連Requirement ID | FR-001 |", "| 関連Requirement ID | FR-999 |")
         self.assert_error("undefined reference FR-999")

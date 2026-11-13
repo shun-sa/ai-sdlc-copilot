@@ -185,7 +185,9 @@ ValidatorがPASSした後、
 必要なAssuranceを実行してください。
 
 Assuranceと後続工程へは、requirements_indexに加え、source_artifactsの全文書・UC詳細、
-project_ai_steering、input_mapping、未決事項も渡してください。
+project_ai_steering、input_mapping、設計へ委ねる事項、未決事項と影響対象も渡してください。
+「設計で決定」は確定済みの要求を根拠に設計へ引き継ぎます。要求・権限・合否条件の重大な未決は
+共通の未解決継続判定に従い、影響する対象の設計・実装・試験を推測で確定させません。
 索引は派生参照であり、要求本文やACの代わりに使用しないでください。
 構造PASSは内容の妥当性や人レビュー完了を意味しません。
 
