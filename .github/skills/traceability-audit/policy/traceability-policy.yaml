@@ -15,7 +15,7 @@ version: 3
 #   連番は min_digits 桁以上。
 # ------------------------------------------------------------
 ids:
-  requirement: [FR, NFR, SEC, CON, DR, IFR, UIR, UC]
+  requirement: [FR, NFR, SEC, CON, DR, IFR, UIR, SCR, UC]
   acceptance: [AC]
   addr: [ADDR, ADR]          # 移行期間中は旧ADRも読む
   entity: [ENT, DBD]
@@ -86,16 +86,43 @@ addr:
 code:
   include:
     - "src/**/*.py"
+    - "src/**/*.js"
+    - "src/**/*.jsx"
+    - "src/**/*.ts"
+    - "src/**/*.tsx"
+    - "src/**/*.java"
     - "app/**/*.py"
+    - "app/**/*.js"
+    - "app/**/*.jsx"
+    - "app/**/*.ts"
+    - "app/**/*.tsx"
+    - "backend/**/*.py"
+    - "backend/**/*.java"
+    - "frontend/src/**/*.js"
+    - "frontend/src/**/*.jsx"
+    - "frontend/src/**/*.ts"
+    - "frontend/src/**/*.tsx"
     - "**/templates/**/*.html"
   exclude:
     - "**/migrations/**"
+    - "**/*.test.ts"
+    - "**/*.test.tsx"
+    - "**/*.spec.ts"
+    - "**/*.spec.tsx"
+    - "**/*.test.js"
+    - "**/*.spec.js"
   allowed: [addr, entity, file_definition]
 
 unit_test:
   include:
     - "tests/unit/**/*.py"
     - "**/tests/unit/**/*.py"
+    - "tests/unit/**/*.js"
+    - "tests/unit/**/*.ts"
+    - "tests/unit/**/*.tsx"
+    - "**/tests/unit/**/*.js"
+    - "**/tests/unit/**/*.ts"
+    - "**/tests/unit/**/*.tsx"
   exclude: ["**/conftest.py", "**/__init__.py", "**/_helpers.py"]
   allowed: [requirement, acceptance, addr, entity, file_definition]
   junit: ["reports/unit-test/junit.xml"]
@@ -104,6 +131,13 @@ unit_test:
 integration_test:
   include:
     - "tests/integration/**/*.py"
+    - "**/tests/integration/**/*.py"
+    - "tests/integration/**/*.js"
+    - "tests/integration/**/*.ts"
+    - "tests/integration/**/*.tsx"
+    - "**/tests/integration/**/*.js"
+    - "**/tests/integration/**/*.ts"
+    - "**/tests/integration/**/*.tsx"
   exclude: ["**/conftest.py", "**/__init__.py", "**/_helpers.py"]
   allowed: [requirement, acceptance, addr, entity, file_definition]
   junit: ["reports/integration-test/junit.xml"]
@@ -123,8 +157,11 @@ integration_test:
 #   C09 実装されていないADDRがない
 #   C10 テストされていない要件がない
 #   C11 表が正本から作り直した結果と一致する（--no-write 指定時だけ実行。Validatorとしての実行で使う）
+#   C12 実装対象FR全件のコード到達とコードから要件への逆引きを検査（実装以降）
 # ------------------------------------------------------------
 checks:
+  # 承認済み実装対象FRを監査結果から独立して固定。作成方法はSKILL.md参照。
+  expected_fr_file: "docs/requirements/expected-fr.txt"
   require_test_for: [FR, NFR, SEC]
   commit_prefixes: [TASK, CR]
   addr_without_code: []        # コードを持たないADDR（例: 運用だけの判断）
@@ -139,16 +176,16 @@ checks:
       fail: [C01, C02, C03, C04, C11]
       warn: []
     IMPLEMENTATION:
-      fail: [C01, C02, C03, C04, C05, C06, C11]
+      fail: [C01, C02, C03, C04, C05, C06, C11, C12]
       warn: [C08, C09]
     UNIT_TEST:
-      fail: [C01, C02, C03, C04, C05, C06, C07, C11]
+      fail: [C01, C02, C03, C04, C05, C06, C07, C11, C12]
       warn: [C08, C09, C10]
     INTEGRATION_TEST:
-      fail: [C01, C02, C03, C04, C05, C06, C07, C11]
+      fail: [C01, C02, C03, C04, C05, C06, C07, C11, C12]
       warn: [C08, C09, C10]
     FULL:
-      fail: [C01, C02, C03, C04, C05, C06, C07, C09, C10, C11]
+      fail: [C01, C02, C03, C04, C05, C06, C07, C09, C10, C11, C12]
       warn: [C08]
 
 outputs:

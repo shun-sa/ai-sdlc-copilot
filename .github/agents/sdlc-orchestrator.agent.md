@@ -685,7 +685,7 @@ Security Requirement、
 ADR、Implementation等の
 Security観点を確認します。
 
-Traceability Auditorは成果物内ID参照・trace注釈を正本に、推測せずC01〜C11を機械検査します。
+Traceability Auditorは成果物内ID参照・trace注釈を正本に、推測せずC01〜C12を機械検査します。
 `.github/skills/traceability-audit/SKILL.md` のPolicyと工程Scopeに従います。
 ARCHITECTURE / ADDR / IMPLEMENTATION / UNIT_TEST / INTEGRATION_TEST / FULLを現在工程に合わせ、
 必要に応じREQUIREMENTSの一次定義検査も実施します。
@@ -840,6 +840,23 @@ Security Review AgentがSecretまたはCredentialを
 検出した場合でも、
 Secret値そのものをReportやOrchestrator Responseへ
 含めてはいけません。
+
+# AI駆動開発のFR全件トレーサビリティGate
+
+Requirements完了時に `docs/requirements/expected-fr.txt` を正本FR本文と照合し、
+実装対象または承認理由付き対象外として全FRを分類したことを確認してください。
+この一覧は実装以前に固定し、監査ReportやTrace Mapから分母を生成しないでください。
+Implementation開始前にPolicyのソース/テスト対象globが実際の言語とフォルダに一致するか確認します。
+
+Implementation/Unit/Integration/FULLではTraceability AuditorのC12を必須FAILとして扱います。
+`FR_CODE_UNREACHABLE`、`CODE_REQUIREMENT_UNREACHABLE`、`EXPECTED_FR_*` が発生したら
+`issues[].route` の原因工程へ差し戻し、元成果物のID参照・実装・テスト内容を修正したうえで
+影響するQuality/Security/Traceability/Test Gateと下流テストを再実行してください。
+`trace-map.json` の `sources[].resolved_fr` と既存の要件対応表を確認し、
+必要な対象FR全件のコード到達率が100%であることをFULLの機械Gateで確かめます。
+成功してもコード分岐やassertが要件・ACと意味的に一致することは保証されないため、
+対象版、ブランチ、終了SHA、固定FR一覧、Map、JUnit・実行版、未解決事項を引渡してください。
+継続許可と検査PASSを混同しません。従来開発・設計書なし条件へのPolicy切替は今回実装しません。
 
 # Traceability Rule
 

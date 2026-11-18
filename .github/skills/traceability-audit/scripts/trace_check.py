@@ -4,7 +4,7 @@ Traceability Validator（注釈方式）
 
 要件・ADDR・実装タスク等の文書に書かれたIDと、
 Production Code・Test Codeの `trace:` 注釈を正規表現で読み、
-トレーサビリティの検査（C01〜C11）と、
+トレーサビリティの検査（C01〜C12）と、
 派生成果物（Trace Map、要件トレーサビリティ表、確認結果、ADDR別一覧）の生成を行う。
 
 AST解析は使わない。正本は各成果物の中のID参照だけで、
@@ -47,7 +47,7 @@ DOC_KINDS = (
     "task",
     "change",
 )
-CHECK_IDS = tuple(f"C{number:02d}" for number in range(1, 12))
+CHECK_IDS = tuple(f"C{number:02d}" for number in range(1, 13))
 DEFAULT_POLICY = ".github/skills/traceability-audit/policy/traceability-policy.yaml"
 
 # 問題の原因がある成果物の種類 → 差し戻す工程
@@ -227,6 +227,9 @@ def load_policy(path: Path) -> dict[str, Any]:
                 for value in values:
                     safe_relative(value)
     safe_relative(data.get("outputs", {}).get("dir", "reports/traceability"))
+    expected_fr_file = data["checks"].get("expected_fr_file")
+    if expected_fr_file is not None:
+        safe_relative(expected_fr_file)
     for config in (data["unit_test"], data["integration_test"]):
         for key in ("plan", "execution"):
             if key in config:
@@ -861,6 +864,8 @@ class Auditor:
         self.junit_by_role: dict[str, list[tuple[str, str, str]]] = {}
         self.execution: dict[str, dict[str, Any]] = {}
         self.requirement_fallback: set[str] = set()
+        self.expected_fr: list[str] = []
+        self.excluded_fr: dict[str, str] = {}
         self.plan_error = ""
         self.workflow_unresolved: list[dict[str, Any]] = []
         scope_policy = policy["checks"]["scopes"][scope]
@@ -1036,6 +1041,7 @@ class Auditor:
         self.c07_tests_have_requirements()
         self.c08_commits(commit_range)
         self.c09_addr_implemented()
+        self.c12_fr_code_and_reverse()
         self.c10_requirements_tested()
 
     def check_architecture_gate(self) -> None:
@@ -1274,6 +1280,8 @@ class Auditor:
         for element in sorted(self.elements.values(), key=lambda item: item.id):
             if element.kind != "requirement" or element.id.split("-", 1)[0] not in prefixes:
                 continue
+            if element.id in self.excluded_fr:
+                continue
             if element.id not in tested:
                 route = "UNIT_TEST" if self.scope == "UNIT_TEST" else "INTEGRATION_TEST"
                 self.report(
@@ -1288,6 +1296,144 @@ class Auditor:
         for case in self.plan:
             tested.update(case.requirement_ids)
         return tested
+
+    def requirement_origins(self, identifier: str) -> set[str]:
+        """注釈IDから正本中の要件IDへ、明示ID参照のみで戻る。
+
+        設計側のreferences/ADDRの関連要件を辿る。要件同士の参照は
+        DR/IFR/UIR等から親FRへのリンク（例: DR-001 -> FR-001）を辿る。
+        廃止ADDRおよび未定義IDは有効な到達経路に数えない。
+        """
+        result: set[str] = set()
+        seen: set[str] = set()
+        stack = [identifier]
+        while stack:
+            current = stack.pop()
+            if current in seen:
+                continue
+            seen.add(current)
+            element = self.elements.get(current)
+            if element is None:
+                continue
+            if element.kind == "addr" and self.addr_state(element) != "current":
+                continue
+            if element.kind == "requirement":
+                result.add(current)
+                # FRとNFRは根拠の終点。他の要件への単なる言及でFRの実装と誤認しない。
+                # 画面・データ・IFの主IDは親FRの明示参照を辿る。
+                if current.split("-", 1)[0] not in ("DR", "IFR", "UIR", "SCR"):
+                    continue
+            if element.kind not in ("requirement", "addr", "entity", "file_definition"):
+                continue
+            refs = element.req_refs if element.kind == "addr" else element.refs
+            stack.extend(
+                ref for ref in refs
+                if (target := self.elements.get(ref)) is not None
+                and target.kind in ("requirement", "addr", "entity", "file_definition")
+            )
+        return result
+
+    def asserted_origins(self, identifiers: list[str] | set[str]) -> set[str]:
+        """テストはassert対象の要件IDだけを採用。ADDRだけではFRを検証したとは見なさない。"""
+        return set().union(*(
+            self.requirement_origins(identifier)
+            for identifier in identifiers
+            if self.rules.kind_of(identifier) == "requirement"
+        )) if identifiers else set()
+
+    def source_origins(self, source: SourceFile) -> set[str]:
+        if source.role != "code":
+            return self.asserted_origins(source.all_ids())
+        result: set[str] = set()
+        for identifier in source.all_ids():
+            result.update(self.requirement_origins(identifier))
+        return result
+
+    def sources_for_fr(self, fr: str, role: str) -> list[str]:
+        """FRに到達する注釈があるソースの場所。テストは実際の定義単位。"""
+        origins = lambda ids: (set().union(*(self.requirement_origins(i) for i in ids))
+                               if role == "code" else self.asserted_origins(ids))
+        locations: set[str] = set()
+        for source in self.sources:
+            if source.role != role:
+                continue
+            if role != "code" and source.per_symbol_supported:
+                symbols = considered_symbols(source)
+                if symbols:
+                    locations.update(
+                        f"{source.path}::{symbol.name}" for symbol in symbols
+                        if fr in origins(source.effective_ids(symbol))
+                    )
+                    continue
+            owned = [symbol for symbol in source.symbols if
+                     fr in origins(symbol.own_ids)]
+            if owned:
+                locations.update(f"{source.path}::{symbol.name}" for symbol in owned)
+            elif fr in origins(source.header_ids):
+                locations.add(source.path)
+        return sorted(locations)
+
+    def c12_fr_code_and_reverse(self) -> None:
+        if not self.runs("C12") or self.scope in ("REQUIREMENTS", "ARCHITECTURE", "ADDR"):
+            return
+        relative = self.policy["checks"].get("expected_fr_file", "docs/requirements/expected-fr.txt")
+        path = self.root / relative
+        if not path.is_file():
+            self.report("C12", "EXPECTED_FR_LIST_MISSING", relative,
+                        "承認済み実装対象FR一覧がありません。要件正本から独立に確定し配置してください。", "REQUIREMENTS")
+            return
+        self.input_paths.add(relative)
+        seen: set[str] = set()
+        for number, line in enumerate(read_text(path).splitlines(), 1):
+            value = line.strip()
+            if not value or value.startswith("#"):
+                continue
+            excluded = re.fullmatch(r"EXCLUDE\s+(FR-\d{3,})\s*:\s*(.+)", value)
+            if excluded:
+                fr, reason = excluded.groups()
+                if fr in seen:
+                    self.report("C12", "EXPECTED_FR_DUPLICATE", f"{relative}:{number}",
+                                f"{fr} は実装対象または対象外にすでに記載されています。", "REQUIREMENTS")
+                else:
+                    seen.add(fr)
+                    self.excluded_fr[fr] = reason
+                continue
+            if not self.rules.is_id(value) or not re.fullmatch(r"FR-\d{3,}", value):
+                self.report("C12", "EXPECTED_FR_INVALID", f"{relative}:{number}",
+                            f"実装対象FRは1行にFR-nnnを1件だけ記載します: {value!r}", "REQUIREMENTS")
+                continue
+            if value in seen:
+                self.report("C12", "EXPECTED_FR_DUPLICATE", f"{relative}:{number}",
+                            f"{value} が重複しています。", "REQUIREMENTS")
+                continue
+            seen.add(value)
+            self.expected_fr.append(value)
+            if value not in self.elements or self.elements[value].kind != "requirement":
+                self.report("C12", "EXPECTED_FR_UNDEFINED", f"{relative}:{number}",
+                            f"{value} の要件本文が正本に存在しません。", "REQUIREMENTS")
+        defined_fr = {element.id for element in self.elements.values()
+                      if element.kind == "requirement" and element.id.startswith("FR-")}
+        for fr in sorted(defined_fr - seen):
+            self.report("C12", "EXPECTED_FR_SCOPE_UNDECLARED", relative,
+                        f"正本の {fr} が実装対象／対象外のどちらにもありません。", "REQUIREMENTS")
+        for fr in sorted(self.excluded_fr.keys() - defined_fr):
+            self.report("C12", "EXPECTED_FR_UNDEFINED", relative,
+                        f"対象外指定の {fr} が要件正本に存在しません。", "REQUIREMENTS")
+        if not self.expected_fr:
+            self.report("C12", "EXPECTED_FR_EMPTY", relative,
+                        "実装対象FRが0件です。未確定のまま全件到達PASSとしません。", "REQUIREMENTS")
+            return
+        for fr in self.expected_fr:
+            if fr not in self.elements:
+                continue
+            if not self.sources_for_fr(fr, "code"):
+                element = self.elements[fr]
+                self.report("C12", "FR_CODE_UNREACHABLE", f"{element.file}:{element.line}",
+                            f"{fr} に到達できるProduction Codeがありません。実装・設計・要件の参照を点検してください。", "IMPLEMENTATION")
+        for source in self.code():
+            if source.header_ids and not any(self.requirement_origins(identifier) for identifier in source.all_ids()):
+                self.report("C12", "CODE_REQUIREMENT_UNREACHABLE", source.path,
+                            "コード注釈から実在する有効な要件に逆引きできません。設計要素の関連要件を確認してください。", "IMPLEMENTATION")
 
     # ---------- 派生成果物 ----------
 
@@ -1334,10 +1480,13 @@ class Auditor:
             acceptance = sorted(
                 item.id for item in self.elements.values() if item.kind == "acceptance" and rid in item.refs
             )
-            code = self.locations(targets, "code")
-            unit = self.locations({rid}, "unit_test")
-            integration = self.locations({rid}, "integration_test")
-            cases = sorted(case.case_id for case in self.plan if rid in case.requirement_ids)
+            code = self.sources_for_fr(rid, "code") if rid.startswith("FR-") else self.locations(targets, "code")
+            unit = self.sources_for_fr(rid, "unit_test") if rid.startswith("FR-") else self.locations({rid}, "unit_test")
+            integration = self.sources_for_fr(rid, "integration_test") if rid.startswith("FR-") else self.locations({rid}, "integration_test")
+            cases = sorted(
+                case.case_id for case in self.plan
+                if rid in case.requirement_ids or (rid.startswith("FR-") and rid in self.asserted_origins(case.requirement_ids))
+            )
             rows.append(
                 {
                     "要件ID": rid,
@@ -1480,6 +1629,8 @@ class Auditor:
                     "path": source.path,
                     "role": source.role,
                     "trace": source.header_ids,
+                    "resolved_requirements": sorted(self.source_origins(source)),
+                    "resolved_fr": sorted(self.source_origins(source) & set(self.expected_fr)),
                     "symbols": [
                         {"name": symbol.name, "line": symbol.line, "trace": symbol.own_ids}
                         for symbol in source.symbols
@@ -1488,6 +1639,7 @@ class Auditor:
                 }
                 for source in self.sources
             ],
+            "implementation_scope": {"expected_fr": self.expected_fr, "excluded_fr": self.excluded_fr},
             "integration_test_cases": [
                 {"case_id": case.case_id, "origin": case.origin, "requirement_id": case.requirement_ids, "related_adr": case.related_addr}
                 for case in self.plan
@@ -1501,7 +1653,15 @@ class Auditor:
             count = sum(1 for row in rows if row[key])
             return {"covered": count, "total": total, "rate": round(100 * count / total, 1) if total else None}
 
+        expected = [row for row in rows if row["要件ID"] in self.expected_fr]
+        expected_with_code = sum(1 for row in expected if row["コード"])
         return {
+            "expected_fr_to_implementation": {
+                "covered": expected_with_code,
+                "total": len(self.expected_fr),
+                "rate": round(100 * expected_with_code / len(self.expected_fr), 1) if self.expected_fr else None,
+                "unreachable": sorted(row["要件ID"] for row in expected if not row["コード"]),
+            },
             "requirement_to_addr": rate("ADDR"),
             "requirement_to_implementation": rate("コード"),
             "requirement_to_unit_test": rate("単体テスト"),
@@ -1637,7 +1797,8 @@ def generated_outputs(auditor: Auditor, output_dir: str) -> dict[str, str]:
         "version": 3, "status": status, "audit_scope": auditor.scope,
         "method": "inline-annotation", "source_baseline_sha256": baseline_hash,
         "trace_map": {"path": output_dir + "/trace-map.json", "version": 3},
-        "coverage": coverage, "annotation_stats": stats,
+        "coverage": coverage, "expected_fr": auditor.expected_fr,
+        "excluded_fr": auditor.excluded_fr, "annotation_stats": stats,
         "issues": [issue.__dict__ for issue in auditor.issues],
         "workflow_unresolved": auditor.workflow_unresolved,
     }

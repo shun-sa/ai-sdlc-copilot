@@ -36,6 +36,7 @@ SPEC.loader.exec_module(checker)
 
 
 BASE_FILES: dict[str, str] = {
+    "docs/requirements/expected-fr.txt": "# 承認済み実装対象FR\nFR-001\nFR-002\n",
     "docs/requirements/functional_requirements.md": """---
 document_type: "機能要件定義書"
 ---
@@ -243,6 +244,95 @@ class TraceCheckTest(unittest.TestCase):
         self.assertIn("app/vouchers/services.py", row)
         self.assertIn("tests/unit/test_voucher.py::test_expired", row)
         self.assertNotIn("ADDR-002", row)
+
+    # ---------- C12: 独立分母／往復到達性 ----------
+
+    def test_c12_missing_expected_fr_is_a_hard_failure(self) -> None:
+        (self.root / "docs/requirements/expected-fr.txt").unlink()
+        status, report = run_checker(self.root, "--scope", "IMPLEMENTATION")
+        self.assertEqual(status, 1)
+        self.assertEqual(self.issues(report, "C12")[0]["classification"], "EXPECTED_FR_LIST_MISSING")
+
+    def test_c12_missing_fr_code_fails_even_if_addr_is_valid(self) -> None:
+        self.write_files({
+            "docs/addr/ADDR-001-voucher.md": BASE_FILES["docs/addr/ADDR-001-voucher.md"].replace("FR-001, FR-002, NFR-SEC-001", "FR-001, NFR-SEC-001"),
+            "docs/architecture/db-logical-design.md": "### DBD-001 Voucher\n\n- 関連要件: FR-001\n",
+        })
+        status, report = run_checker(self.root, "--scope", "IMPLEMENTATION")
+        self.assertEqual(status, 1)
+        self.assertTrue(any(i["classification"] == "FR_CODE_UNREACHABLE" and "FR-002" in i["message"]
+                            for i in self.issues(report, "C12")))
+        self.assertIn("FR-002", report["report"]["coverage"]["expected_fr_to_implementation"]["unreachable"])
+
+    def test_c12_scope_omission_fails_but_exclusion_with_reason_passes(self) -> None:
+        self.write_files({"docs/requirements/expected-fr.txt": "FR-001\n"})
+        self.assertEqual(run_checker(self.root, "--scope", "IMPLEMENTATION")[0], 1)
+        self.write_files({"docs/requirements/expected-fr.txt": "FR-001\nEXCLUDE FR-002: 再実行では対象外と承認済み\n"})
+        status, result = run_checker(self.root, "--scope", "IMPLEMENTATION")
+        self.assertEqual(status, 0, result.get("errors"))
+        self.assertEqual(result["report"]["excluded_fr"], {"FR-002": "再実行では対象外と承認済み"})
+
+    def test_excluded_fr_does_not_require_test_in_full(self) -> None:
+        self.write_files({
+            "docs/requirements/expected-fr.txt": "FR-001\nEXCLUDE FR-002: この実行条件では対象外\n",
+            "tests/unit/test_voucher.py": "# trace: FR-001, ADDR-001\ndef test_apply():\n    assert True\n",
+        })
+        audit = self.audit("FULL")
+        self.assertFalse(any(issue.check == "C10" and "FR-002" in issue.message for issue in audit.issues))
+
+    def test_c12_explicit_dr_ifr_parent_paths_and_reverse_map(self) -> None:
+        self.write_files({
+            "docs/requirements/data_requirements.md": "| データID | データ名 | 意味・説明 |\n|---|---|---|\n| DR-001 | Coupon | FR-001 のクーポン台帳 |\n",
+            "docs/requirements/external_interface_requirements.md": "| ID | IF名称 | 連携目的 |\n|---|---|---|\n| IFR-001 | Coupon API | FR-002 の外部連携 |\n",
+            "docs/architecture/db-logical-design.md": "### DBD-001 Voucher\n関連データ要件: DR-001\n",
+            "docs/architecture/files/FILE-001.md": "| 項目 | 内容 |\n|---|---|\n| File Interface ID | FILE-001 |\n\n## 2.関連情報\nIFR-001\n",
+            "app/vouchers/models.py": "# trace: DBD-001\nclass Voucher:\n    pass\n",
+            "app/vouchers/services.py": "# trace: FILE-001\ndef send():\n    pass\n",
+            "app/templates/vouchers/apply.html": "{# trace: ADDR-001 #}\n<p>ok</p>\n",
+        })
+        status, result = run_checker(self.root, "--scope", "IMPLEMENTATION")
+        self.assertEqual(status, 0, result.get("errors"))
+        trace = json.loads((self.root / "reports/traceability/trace-map.json").read_text(encoding="utf-8"))
+        model = next(row for row in trace["sources"] if row["path"] == "app/vouchers/models.py")
+        svc = next(row for row in trace["sources"] if row["path"] == "app/vouchers/services.py")
+        self.assertIn("FR-001", model["resolved_fr"])
+        self.assertIn("FR-002", svc["resolved_fr"])
+        self.assertEqual(result["report"]["coverage"]["expected_fr_to_implementation"]["covered"], 2)
+
+    def test_screen_requirement_scr_traces_to_parent_fr(self) -> None:
+        self.write_files({
+            "docs/requirements/ui_report_requirements.md": "| ID | 画面名 | 利用目的 |\n|---|---|---|\n| SCR-001 | 検索画面 | FR-001 の機能を提供 |\n",
+            "docs/architecture/db-logical-design.md": "### DBD-001 Voucher\n関連要件: SCR-001\n",
+            "app/vouchers/models.py": "# trace: DBD-001\nclass Voucher:\n    pass\n",
+        })
+        audit = self.audit("IMPLEMENTATION")
+        source = next(src for src in audit.sources if src.path == "app/vouchers/models.py")
+        self.assertIn("FR-001", audit.source_origins(source))
+        self.assertFalse([i for i in audit.issues if i.check == "C12"])
+
+    def test_c12_nonrequirement_code_id_without_origin_is_a_failure(self) -> None:
+        self.write_files({
+            "docs/architecture/db-logical-design.md": "### DBD-001 Voucher\n- 責務: 技術モデル\n",
+            "app/vouchers/models.py": "# trace: DBD-001\nclass Voucher:\n    pass\n",
+        })
+        status, result = run_checker(self.root, "--scope", "IMPLEMENTATION")
+        self.assertEqual(status, 1)
+        self.assertTrue(any(i["classification"] == "CODE_REQUIREMENT_UNREACHABLE"
+                            for i in self.issues(result, "C12")))
+
+    def test_tests_do_not_claim_fr_coverage_solely_through_addr(self) -> None:
+        self.write_files({"tests/unit/test_voucher.py": "# trace: FR-001, ADDR-001\ndef test_apply():\n    assert True\n"})
+        audit = self.audit("UNIT_TEST")
+        rows = {row["要件ID"]: row for row in audit.requirement_rows()}
+        self.assertTrue(rows["FR-001"]["単体テスト"])
+        self.assertFalse(rows["FR-002"]["単体テスト"])
+
+    def test_c12_detects_invalid_expected_fr_lines(self) -> None:
+        self.write_files({"docs/requirements/expected-fr.txt": "FR-001\nFR-001\nFR-02\nEXCLUDE FR-999: 適用外\n"})
+        status, result = run_checker(self.root, "--scope", "IMPLEMENTATION")
+        self.assertEqual(status, 1)
+        classes = {i["classification"] for i in self.issues(result, "C12")}
+        self.assertTrue({"EXPECTED_FR_DUPLICATE", "EXPECTED_FR_INVALID", "EXPECTED_FR_UNDEFINED"} <= classes)
 
     # ---------- C01〜C11 ----------
 
@@ -586,6 +676,7 @@ class TraceCheckTest(unittest.TestCase):
         spec.loader.exec_module(module)
         root = self.root / "split"
         module.create(root, needed)
+        module.save(root, "docs/requirements/expected-fr.txt", "FR-001\n")
         module.save(root, "reports/architecture/cross-artifact-consistency.md", module.fill((root / module.TEMPLATES / "cross-artifact-consistency-analysis.template.md").read_text(encoding="utf-8")))
         for kind in ("quality-review", "security-review"):
             module.save(root, f"reports/{kind}/validation-result.json", {"status": "PASS", "audit_scope": "ARCHITECTURE", "source_baseline_sha256": module.digest(root / module.FINAL), "errors": []})

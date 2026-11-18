@@ -88,11 +88,11 @@
 | Business Requirement | `<BR-xxx / path>` | `<業務上の根拠>` |
 | Functional Requirement | `<FR-xxx / path>` | `<機能からのデータ要求>` |
 | Non-Functional Requirement | `<NFR-xxx / path>` | `<保持・性能・Security等>` |
-| Data Requirement | `<DATA-xxx / path>` | `<論理モデル化する元データ>` |
+| Data Requirement | `<DR-xxx / path>` | `<論理モデル化する元データ>` |
 | Use Case / AC | `<UC-xxx / AC-xxx>` | `<データ生成・参照・更新契機>` |
 | ADR | `<ADDR-xxx / ADR-xxx / None>` | `<参照時点で有効なデータ方式の設計判断>` |
 | Glossary | `<TERM-xxx / path>` | `<業務用語の定義>` |
-| External IF Requirement | `<IF-xxx / None>` | `<外部データとの関係>` |
+| External IF Requirement | `<IFR-xxx / None>` | `<外部データとの関係>` |
 
 ## 4. 論理データモデル方針
 
@@ -127,7 +127,7 @@
 
 | Entity ID | エンティティ名 | 種別 | 業務上の意味・責務 | 主な生成契機 | 主な利用機能 | 関連Data Requirement | Owner Domain |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| ENT-001 | `<エンティティ名>` | `MASTER / TRANSACTION / HISTORY / REFERENCE / ASSOCIATION / OTHER` | `<何を表すか>` | `<登録・外部取込等>` | `<FR/UC>` | `<DATA-xxx>` | `<Domain>` |
+| ENT-001 | `<エンティティ名>` | `MASTER / TRANSACTION / HISTORY / REFERENCE / ASSOCIATION / OTHER` | `<何を表すか>` | `<登録・外部取込等>` | `<FR/UC>` | `<DR-xxx>` | `<Domain>` |
 
 ## 6. ER図
 
@@ -166,7 +166,7 @@ Entityごとに7.xブロックを複製する。
 | Business Definition | `<業務上の定義>` |
 | Entity Type | `<MASTER / TRANSACTION / ...>` |
 | Owner Domain | `<Domain>` |
-| Related Data Requirement | `<DATA-xxx>` |
+| Related Data Requirement | `<DR-xxx>` |
 | Related Requirements | `<FR-xxx, NFR-xxx>` |
 | Related ADR | `<ADDR-xxx / ADR-xxx / None>` |
 | Lifecycle | `<生成 → 更新 → 完了/失効/削除>` |
@@ -197,7 +197,7 @@ STRING / INTEGER / DECIMAL / BOOLEAN / DATE / DATETIME / TIME / CODE / IDENTIFIE
 
 | Constraint ID | 対象Attribute | 条件 | 制約内容 | 違反時の論理上の扱い | Related Requirement |
 | --- | --- | --- | --- | --- | --- |
-| LDC-ENT-001-001 | `<ATTR-...>` | `<条件>` | `<必須・相互排他・大小関係等>` | `<受付不可等>` | `<FR/DATA-xxx>` |
+| LDC-ENT-001-001 | `<ATTR-...>` | `<条件>` | `<必須・相互排他・大小関係等>` | `<受付不可等>` | `<FR/DR-xxx>` |
 
 #### 7.1.5 状態・Lifecycle
 
@@ -217,7 +217,7 @@ STRING / INTEGER / DECIMAL / BOOLEAN / DATE / DATETIME / TIME / CODE / IDENTIFIE
 | 保持対象 | `<変更履歴 / 状態履歴 / 業務履歴 等>` |
 | 業務上の有効期間 | `<開始/終了の考え方 / 該当なし>` |
 | 過去時点参照 | `<必要 / 不要>` |
-| Requirement | `<NFR/DATA-xxx>` |
+| Requirement | `<NFR/DR-xxx>` |
 
 ## 8. Relationship定義
 
@@ -227,7 +227,7 @@ STRING / INTEGER / DECIMAL / BOOLEAN / DATE / DATETIME / TIME / CODE / IDENTIFIE
 
 | Relationship ID | From Entity | To Entity | 関連の意味 | From→To多重度 | To→From多重度 | 必須性 | 識別関係 | Related Requirement |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| REL-001 | `<ENT-001>` | `<ENT-002>` | `<顧客は注文を行う等>` | `1 / 0..1 / 1..N / 0..N` | `<...>` | `<MANDATORY / OPTIONAL>` | `IDENTIFYING / NON_IDENTIFYING` | `<FR/DATA-xxx>` |
+| REL-001 | `<ENT-001>` | `<ENT-002>` | `<顧客は注文を行う等>` | `1 / 0..1 / 1..N / 0..N` | `<...>` | `<MANDATORY / OPTIONAL>` | `IDENTIFYING / NON_IDENTIFYING` | `<FR/DR-xxx>` |
 
 ### 8.1 Relationship制約
 
@@ -279,7 +279,7 @@ STRING / INTEGER / DECIMAL / BOOLEAN / DATE / DATETIME / TIME / CODE / IDENTIFIE
 
 | Rule ID | 対象Entity / Attribute | Rule Type | 条件・制約 | Related Requirement | Verification Hint |
 | --- | --- | --- | --- | --- | --- |
-| LDR-001 | `<ENT/ATTR>` | `UNIQUENESS / RANGE / CONSISTENCY / TEMPORAL / CROSS_ENTITY / OTHER` | `<論理整合性ルール>` | `<FR/DATA-xxx>` | `<確認方法>` |
+| LDR-001 | `<ENT/ATTR>` | `UNIQUENESS / RANGE / CONSISTENCY / TEMPORAL / CROSS_ENTITY / OTHER` | `<論理整合性ルール>` | `<FR/DR-xxx>` | `<確認方法>` |
 
 ## 12. データ生成・更新・参照Matrix
 
@@ -295,7 +295,7 @@ CRUDの物理実装ではなく、どの機能/Use Caseがどの論理Entityを�
 
 | Entity / Attribute | Data Classification | Personal / Sensitive | Access Requirement | Masking Requirement | Retention Reference |
 | --- | --- | --- | --- | --- | --- |
-| `<ENT/ATTR>` | `<PUBLIC / INTERNAL / CONFIDENTIAL 等>` | `<YES / NO>` | `<Role / Requirement>` | `<要件 / None>` | `<NFR/DATA-xxx>` |
+| `<ENT/ATTR>` | `<PUBLIC / INTERNAL / CONFIDENTIAL 等>` | `<YES / NO>` | `<Role / Requirement>` | `<要件 / None>` | `<NFR/DR-xxx>` |
 
 ## 14. データ量・Lifecycle前提
 

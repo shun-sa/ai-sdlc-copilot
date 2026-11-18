@@ -45,7 +45,8 @@ ADDR/Architecture、実装、テスト成果物は作成しません。工程遷
 
 1. 全正本と記入ガイドを確認し、構造を維持して再構成した。
 2. 全入力を成果物、設計への引継ぎ、または理由付きの対象外・未決事項へ対応付けた。
-3. FR/NFRとActor/US/UC/ACの定義・参照を照合し、既存IDを保持した。
+3. FR/NFRとActor/US/UC/ACの定義・参照を照合し、既存IDを保持した。新規DR/IFRは正規IDで採番した。
+   実装対象FR全件を `docs/requirements/expected-fr.txt` に列挙し、対象外FRは承認理由とともに明示した。
 4. UC詳細をACの正本とし、派生索引とSteeringの参照先を整合させた。
 5. 不足・仮定・矛盾を記録し、重大なBLOCKEDが残っていない。
 6. 構造検証がPASSし、内容・出典・Scope・数値を照合した。
@@ -79,6 +80,7 @@ validation:
 summary: 実施内容と残存事項
 input_mapping: reports/requirements/input-mapping.md
 requirements_index: docs/requirements/requirements.md
+implementation_scope: docs/requirements/expected-fr.txt
 source_artifacts: []
 project_ai_steering: .github/project-context/project-ai-steering.md
 resolved: []

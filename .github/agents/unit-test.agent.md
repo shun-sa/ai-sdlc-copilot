@@ -574,6 +574,8 @@ summary:
 # Inline Traceabilityと実行版
 
 生成するテスト先頭へ `# trace: FR-001, ADDR-001` のように実在要件IDと関連ADDRを記入します。
+各テストが実際にassertする要件だけを参照し、ADDR/設計のIDだけでFRをテスト済みと見なさないでください。
+固定済み `docs/requirements/expected-fr.txt` を確認し、対象FRのテスト対応漏れを検出したら原因工程へ差し戻します。
 AC/FILEだけでは要件参照を満たしません。先頭ID>=2かつトップレベル定義>=2なら、
 private/helperを含め各定義直前・decoratorより前にも先頭の部分集合のtraceを付けます。
 既存Evidenceと注釈を一致させ、
