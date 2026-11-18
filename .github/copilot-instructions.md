@@ -76,6 +76,8 @@ Requirements成果物とする。
 すべてのAgent/Assuranceはリンク先の本文とUC詳細を読み、AC / Pass-Fail RuleはUC詳細を正本とする。
 PJ固有情報は `.github/project-context/project-ai-steering.md` を参照する。
 Steeringへ要求本文やFramework共通手順を複製しない。
+SteeringはRequirements時点で確定済みのPJ前提・制約に限定する。設計判断・ADDR ID・実装結果を
+Steeringへ先取り記載・書き戻しせず、後続工程の正本で管理する。
 
 重要なArchitecture DecisionのSource of Truthは
 Accepted ADRとする。

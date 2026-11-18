@@ -41,7 +41,8 @@ Production Codeの単体テストを設計・作成・実行し、
 `.github/skills/evaluation/scripts/experiment_recorder.py run-unit` 経由で行う。
 手順とコマンド仕様は `docs/ai-sdlc/experiment-measurement.md` を正とする。
 
-- Steeringの実テストコマンド、同じ実行の分岐レポート出力コマンド、coverage/JUnitパスを
+- 実際に使用したテストコマンド（Steeringに事前指定がなければリポジトリの実設定等から確認）、
+  同じ実行の分岐レポート出力コマンド、coverage/JUnitパスを
   `reports/experiments/<run-id>/unit-command.json` に保存する。Shell文字列ではなくargv配列を使う。
 - 計測対象・除外・分岐計測有効化を実験前に固定し、各試行の計測データをクリアする。
   生のcoverage.py JSONまたはIstanbul JSON summaryの分岐covered/totalを保持する。
