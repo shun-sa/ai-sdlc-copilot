@@ -33,7 +33,7 @@
 | Use Case | `<path>` | `<APPROVED / version>` | Behavior / AC |
 | ADR | `<ADR-xxx>` | `ACCEPTED` | Architecture Decision |
 | Detailed Design | `<ENT-xxx / DBD-xxx / FILE-xxx / path / None>` | `<APPROVED>` | Implementation Detail |
-| Project AI Steering | `<path>` | `<APPROVED / version>` | PJ-specific Environment / Commands |
+| Project AI Steering | `<path>` | `<APPROVED / version>` | PJ-specific confirmed Preconditions / Constraints |
 
 ## 3. Task Decomposition Rules
 
@@ -126,7 +126,7 @@ Cycleが存在してはならない。
 
 | Validation Type | Command / Method | Expected Result |
 | --- | --- | --- |
-| Build | `<Project AI Steering参照 / command>` | `PASS` |
+| Build | `<実際のリポジトリ設定を確認したcommand / 要確定>` | `PASS / planned` |
 | Static Check | `<command / N/A>` | `PASS` |
 | Unit Test | `<command / later phase / N/A>` | `<PASS / planned>` |
 | Other | `<Validator等>` | `<Expected>` |

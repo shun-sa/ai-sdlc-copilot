@@ -408,6 +408,15 @@ def validate(root: Path) -> list[str]:
         if target != (root / expected).resolve():
             errors.append(f"AI Steering reference differs from artifact contract: {kind}")
 
+    # SteeringはRequirements工程の事前前提に限定し、未作成の後続工程IDを置かない。
+    # 設計成果物のIDや生成先を記載すると、要件からの工程順序が逆転する。
+    steering_text = visible_text(texts["steering"])
+    for identifier in sorted(set(re.findall(r"(?<![A-Za-z0-9_-])(?:ADR|ADDR|TASK|ENT|DBD|FILE)-\d{2,}(?![A-Za-z0-9_-])", steering_text))):
+        errors.append(f"AI Steering contains downstream design identifier: {identifier}")
+    for downstream_path in ("docs/adr/", "docs/addr/", "docs/architecture/"):
+        if downstream_path in steering_text:
+            errors.append(f"AI Steering contains downstream design path: {downstream_path}")
+
     index_doc = documents["use_case_user_story_list.md"]
     errors.extend(validate_pending_requirement_links(index_doc, root / ARTIFACTS["use_case_user_story_list.md"]))
     actors = definitions(row_records(index_doc, {"Actor ID", "種別"}, "2."), "Actor ID", root / ARTIFACTS["use_case_user_story_list.md"], errors)

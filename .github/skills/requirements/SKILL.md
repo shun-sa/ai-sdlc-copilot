@@ -32,7 +32,7 @@ disable-model-invocation: false
 | `templates/use_case_detail.md` | `docs/requirements/use-cases/<UC ID>.md` | UCごとのフロー・AC・合否判定基準 |
 | `templates/glossary.md` | `docs/requirements/glossary.md` | 用語・同義語・非推奨表記 |
 | `templates/requirements_quality_checklist.md` | `docs/requirements/requirements_quality_checklist.md` | 人レビューの準備・提供済みレビュー記録 |
-| `../../project-context/templates/project-ai-steering.md` | `.github/project-context/project-ai-steering.md` | PJ固有の事実・制約・参照先・未決判断 |
+| `../../project-context/templates/project-ai-steering.md` | `.github/project-context/project-ai-steering.md` | Requirements時点で確定済みのPJ前提・制約・要件参照先・確認事項 |
 
 正本ファイルは編集しない。見出しの名称・順序・階層と固定の表列を維持する。
 ガイドが許す行の増減、繰り返しブロックの複製・連番化、権限表のActor列増減は許可する。
@@ -108,10 +108,15 @@ DR/IFR主行はテンプレートの既存記載欄（データの意味・説�
 
 ### 3. Steeringとレビュー準備を整える
 
-AI Steeringは上表の実体ファイルへ作成・更新する。提供済みの技術・配置・規約・コマンドだけを整理し、
-未採用の技術や設計判断を補完しない。参照先は実在パスにする。
-要求本文・AC・Agent手順・Routing・Validator実行方法をSteeringへ複製しない。
-PJ共通の未決事項はSteeringの12章に登録し、関連Requirement/ADR/Ownerへの解決先を示す。
+AI Steeringは上表の実体ファイルへRequirements工程で作成・更新する「PJ固有の事前前提・制約」である。
+提供済み・承認済みの技術スタック、使用基盤、環境制約、既存の配置・開発規約のみを指定元付きで整理する。
+提供されていない事項は「指定なし」または「未確認」を区別し、技術や実装方式を推測して補完しない。
+要件本文・UC/AC・Agent手順・Routing・Validator実行方法をSteeringへ複製しない。要件参照は実在パスにする。
+Architecture/ADDR/Implementation以降で初めて確定する設計ID、モジュール依存方向、内部API形式、DB構造、
+監視方式、具体的なBuild/Testコマンド等を必須とせず、未確定の内容を先取りしない。
+後続工程の設計判断や実装結果をSteeringへ追記しない。決定内容は各工程の正本に残す。
+事前前提そのものに確認が必要な場合だけSteeringの8.1節へ記録し、確認先と影響を明示する。
+後続工程で決めればよい事項は、入力対応記録と設計引継ぎに記載し、Steeringの未決事項へ混在させない。
 
 仕様品質チェックリストは人レビュー用である。提供済み記録は実施者・対象版とともに保持する。
 未実施の人レビューを実施済みにせず、判定不能はBLOCKEDと理由・確認先を記録する。

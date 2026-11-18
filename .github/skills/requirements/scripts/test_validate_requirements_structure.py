@@ -218,6 +218,21 @@ class RequirementsTests(unittest.TestCase):
         self.change(ARTIFACTS["functional_requirements.md"], "| 機能ID | FR-001 |", "| 機能ID | FR-999 |")
         self.assert_error("basic information ID differs")
 
+    def test_steering_has_only_predefined_project_constraints(self) -> None:
+        template = (self.root / STEERING_TEMPLATE).read_text(encoding="utf-8")
+        self.assertNotIn("Related ADR", template)
+        self.assertNotIn("## 9. Build / Test / Local Execution", template)
+        self.assertNotIn("PJ固有のDependency Rules", template)
+        self.assertEqual([], validate(self.root))
+
+    def test_steering_downstream_design_id_is_rejected(self) -> None:
+        self.change(STEERING_OUTPUT, "記入済み", "ADDR-001")
+        self.assert_error("AI Steering contains downstream design identifier: ADDR-001")
+
+    def test_steering_downstream_design_path_is_rejected(self) -> None:
+        self.change(STEERING_OUTPUT, "記入済み", "docs/addr/ADDR-001.md")
+        self.assert_error("AI Steering contains downstream design path: docs/addr/")
+
     def test_steering_reference_mismatch_fails(self) -> None:
         self.change(STEERING_OUTPUT, "docs/requirements/glossary.md", "docs/requirements/absent.md")
         self.assert_error("AI Steering reference")
