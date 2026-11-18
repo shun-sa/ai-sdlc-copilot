@@ -267,6 +267,11 @@ Djangoは `{# trace: ADDR-001 #}`。通常のProduction注釈はADDR/ENT/DBD/FIL
 先頭の部分集合のtraceを付けます。詳細はTraceability Audit SkillとPolicyに従います。
 要件への直接参照は、現在のArchitecture GateがADDR不要として承認した対象のbasis_idsに限ります。
 監査表・Trace Mapは手編集せず、仕様根拠を変える修正は設計/ADDR工程へ戻します。
+実装開始前に `docs/requirements/expected-fr.txt` と正本FR全件の対象区分を確認し、
+各対象FRから実装対象の設計要素に至る経路と、その設計要素を記録した実装コードを対応付けます。
+トレーサビリティC12で未到達FRやコードから要件への逆引き不能が報告されたら、
+`issues[].route`に従い実際の注釈または設計・要件の参照を修正します。
+コードが存在しないのに注釈だけ追加して充足扱いにすること、無関係のADDRで穴埋めすることは禁止します。
 既存IDを変更せず、Test IDを先回りして作りません。
 依頼された場合だけコミットし、件名先頭に既存[TASK-nnn]/[CR-nnn]を使います。
 

@@ -1,7 +1,8 @@
 # 注釈方式トレーサビリティ
 
 2026-10-21更新。トレーサビリティ方針を、最新の分割要件とArchitecture/ADDR分離契約へ適合したものです。
-2026-10-27に論理DB設計テンプレートとEntity参照を接続しました。旧要件・旧ADR-only設計Agentは採用しません。
+2026-10-27に論理DB設計テンプレートとEntity参照を接続しました。
+2026-11-18にAI駆動開発の対象FR全件到達検査C12とDR/IFR採番規則を追加しました。旧要件・旧ADR-only設計Agentは採用しません。
 
 ## 処理と担当
 
@@ -11,7 +12,7 @@
 3. Architectureの構造検証とQuality/Security/Traceabilityを経て既存のハッシュ固定Gateを保存します。
 4. Implementationはコード作成と同時にADDR/ENT/DBD/FILEの先頭注釈を付けます。
 5. UnitTest/IntegrationTestは要件と関連ADDRの注釈を付け、実行でJUnitを生成して実行版を記録します。
-6. Auditorが各工程のC01〜C11を機械検査し、正本からMap・表・Reportを生成します。
+6. Auditorが各工程のC01〜C12を機械検査し、正本からMap・表・Reportを生成します。
 7. 同一条件で独立再計算する--no-write検証がPASSした後、既存の工程Gateで遷移します。
 
 正本は成果物内参照・注釈です。表やMapは編集しません。
@@ -55,7 +56,7 @@ Djangoは `{# trace: ADDR-001 #}`、テストは `# trace: FR-001, ADDR-001`。
 先頭IDが2つ以上かつトップレベルclass/defが2つ以上なら、private/helperを含む全定義直前
 （decoratorより前）にも先頭の部分集合を付けます。クラスのメソッドごとは要求しません。
 
-既定の対象はsrc/app配下Python・Django HTMLとtests/unit・tests/integrationのPythonです。
+既定の対象はsrc/app配下のPython・JavaScript/TypeScript・Java（一部）・Django HTMLとtests/unit・tests/integrationのPython/JS/TSです。
 別配置・ID接頭辞はPolicyで明示します。非Pythonの定義別解析は未対応でファイル注釈のみです。
 対象外ファイルは自動的に網羅した扱いにしません。採用言語・配置に合わせPolicyを確認してください。
 
@@ -64,6 +65,13 @@ C04=TASK根拠、C05=先頭/種別、C06=定義注釈、C07=テスト要件、
 C08=コミット先頭TASK/CR、C09=未実装判断、C10=未テストFR/NFR/SEC、C11=再生成一致。
 C08は範囲指定時のみの警告。C09/C10は開発中警告、FULLでは不合格です。
 要件・設計工程では未生成コード/テストを要求しません。
+C12=独立分母の対象FR全件のコード到達、コード注釈から有効要件への逆引き、
+対象FRリストの未記載/重複/未定義を検査し、Implementation以降で不合格とします。
+`docs/requirements/expected-fr.txt` を実装開始前に正本FRから作成・レビューし、
+`FR-001` を1行ずつ、対象外は `EXCLUDE FR-002: 理由` で記録します。
+実装対象と対象外の合計が正本FR全件と一致しない場合は不合格です。
+Trace Mapの`sources[].resolved_requirements`/`resolved_fr` はコードとテストの逆引き検索に使用できます。
+テスト側でADDRだけを参照してもFRテスト済みには数えません。意味上の正しさは別途実物照合します。
 
 ```text
 python .github/skills/traceability-audit/scripts/trace_check.py --scope ARCHITECTURE

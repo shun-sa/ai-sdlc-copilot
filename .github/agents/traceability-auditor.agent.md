@@ -16,7 +16,7 @@ target: vscode
 # Role
 
 `.github/skills/traceability-audit/SKILL.md` に従います。
-Orchestratorのaudit_scopeでC01〜C11を実行し、現在の正本から派生成果物を生成します。
+Orchestratorのaudit_scopeでC01〜C12を実行し、現在の正本から派生成果物を生成します。
 AST/FQNや意味推論によるリンク作成は行いません。
 要件本文・正本テンプレート・設計書・ADDR・TASK・コード・テスト・JUnit・外部ケースは編集しません。
 
@@ -33,6 +33,9 @@ ACTIVEはGate前には候補です。実装以降の監査はGateの現在性を
 reports/traceability/のTrace Map v3、機械Report、要件対応表、確認結果表、
 ADDR別一覧、validation-resultをSkillどおり生成し、同一Scopeの `--no-write` で再検証します。
 source_baseline_sha256はARCHITECTUREでFINAL manifest、ADDRで派生handoffからScriptが設定します。
+Implementation以降では固定済み `docs/requirements/expected-fr.txt` を独立したFR全件分母とし、
+C12でコード到達・逆引き不能箇所をFAIL検出します。元成果物の参照の推測や自動補完はしません。
+FR未到達／コードの逆引き不能は差戻し先を特定し、正本が修正されたあとに再監査します。
 旧Trace Map v2を手でv3へ移行せず、正本から再生成します。
 
 意味的な懸念はsemantic-review.mdへ助言として分離し、機械PASS/FAILを上書きしません。

@@ -232,6 +232,20 @@ def definitions(records, column: str, source: Path, errors: list[str]) -> list[s
     return values
 
 
+def validate_primary_ids(records: list[dict[str, str]], column: str, prefix: str,
+                         source: Path, errors: list[str]) -> list[str]:
+    """新規のデータ要件・外部IF要件の代表ID形式と重複を検査する。
+
+    文書内の補助行IDは別系列のため対象外。既存成果物の改番は行わない。
+    """
+    identifiers = definitions(records, column, source, errors)
+    expected = re.compile(rf"{re.escape(prefix)}-\d{{3,}}\Z")
+    for identifier in identifiers:
+        if not expected.fullmatch(identifier):
+            errors.append(f"{source}: {column} must be {prefix}-nnn: {identifier}")
+    return identifiers
+
+
 def validate_pending_requirement_links(document: Section, source: Path) -> list[str]:
     pending_subjects = {
         identifier
@@ -336,6 +350,28 @@ def validate(root: Path) -> list[str]:
     fr_ids = definitions(row_records(functional, {"ID", "機能名"}, "4."), "ID", root / ARTIFACTS["functional_requirements.md"], errors)
     nfr_rows = non_functional_rows(non_functional)
     nfr_ids = definitions(nfr_rows, "ID", root / ARTIFACTS["non_functional_requirements.md"], errors)
+    data_ids = validate_primary_ids(
+        list(row_records(documents["data_requirements.md"], {"データID", "データ名"}, "2.1")),
+        "データID", "DR", root / ARTIFACTS["data_requirements.md"], errors,
+    )
+    ifr_ids = validate_primary_ids(
+        list(row_records(documents["external_interface_requirements.md"], {"ID", "IF名称"}, "4.")),
+        "ID", "IFR", root / ARTIFACTS["external_interface_requirements.md"], errors,
+    )
+    # 設計等で使われるIDとの衝突を防ぎ、単に形式が合うだけの未定義参照も検出する。
+    for label, ids, doc in (
+        ("DR", data_ids, documents["data_requirements.md"]),
+        ("IFR", ifr_ids, documents["external_interface_requirements.md"]),
+    ):
+        known_ids = set(ids)
+        for section, header, rows in all_tables(doc):
+            if not (section.title.startswith(("3.", "5.", "6.", "7.", "8.", "9.", "10.")) if label == "DR" else section.title.startswith(("5.", "6.", "7."))):
+                continue
+            for row in rows:
+                for cell in row:
+                    for identifier in re.findall(rf"(?<![\w-]){label}-\d{{2,}}(?![\w-])", cell):
+                        if identifier not in known_ids:
+                            errors.append(f"{label} undefined or noncanonical reference {identifier} in {section.title}")
     for identifier in set(fr_ids) & set(nfr_ids):
         errors.append(f"Requirement ID defined as both functional and non-functional: {identifier}")
     details = [section for section in walk(functional) if section.level == 3 and re.match(r"^6\.\d+ ", section.title)]

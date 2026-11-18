@@ -27,6 +27,14 @@ def filled(template: str, name: str) -> str:
     def replace(match: re.Match) -> str:
         nonlocal counter
         label = match.group(1)
+        if label == "DR-nnn" and name == "data_requirements.md":
+            return "DR-001"
+        if label == "IFR-nnn" and name == "external_interface_requirements.md":
+            return "IFR-001"
+        if label == "2.1のデータID" and name == "data_requirements.md":
+            return "DR-001"
+        if label == "IF ID" and name == "external_interface_requirements.md":
+            return "IFR-001"
         if label == "ID" and name == "non_functional_requirements.md":
             counter += 1
             headers = re.findall(r"(?m)^\| [^\n]+\n\|[-|]+\|", match.string[:match.start()])
@@ -120,6 +128,24 @@ class RequirementsTests(unittest.TestCase):
 
     def test_actual_templates_pass(self) -> None:
         self.assertEqual([], validate(self.root))
+
+    def test_dr_and_ifr_primary_ids_have_3_digits(self) -> None:
+        self.change(ARTIFACTS["data_requirements.md"], "| DR-001 |", "| D-01 |")
+        self.assert_error("DR-nnn")
+        self.change(ARTIFACTS["external_interface_requirements.md"], "| IFR-001 | 記入済み | 記入済み |", "| IF-01 | 記入済み | 記入済み |")
+        self.assert_error("IFR-nnn")
+
+    def test_duplicate_dr_ifr_are_rejected(self) -> None:
+        path = self.root / ARTIFACTS["data_requirements.md"]
+        text = path.read_text(encoding="utf-8")
+        line = next(row for row in text.splitlines() if row.startswith("| DR-001 |"))
+        path.write_text(text.replace(line, line + "\n" + line, 1), encoding="utf-8")
+        self.assert_error("duplicate definition DR-001")
+        path = self.root / ARTIFACTS["external_interface_requirements.md"]
+        text = path.read_text(encoding="utf-8")
+        line = next(row for row in text.splitlines() if row.startswith("| IFR-001 |"))
+        path.write_text(text.replace(line, line + "\n" + line, 1), encoding="utf-8")
+        self.assert_error("duplicate definition IFR-001")
 
     def test_missing_template_fails(self) -> None:
         (self.root / TEMPLATE_DIR / "glossary.md").unlink()
@@ -296,7 +322,7 @@ class RequirementsTests(unittest.TestCase):
 
     def test_alternate_existing_requirement_ids_pass(self) -> None:
         for path in (self.root / "docs/requirements").rglob("*.md"):
-            path.write_text(path.read_text(encoding="utf-8").replace("FR-001", "REQ-101"), encoding="utf-8")
+            path.write_text(re.sub(r"(?<![A-Z])FR-001", "REQ-101", path.read_text(encoding="utf-8")), encoding="utf-8")
         self.assertEqual([], validate(self.root))
 
     def test_front_matter_missing_field_fails(self) -> None:
@@ -329,7 +355,7 @@ class RequirementsTests(unittest.TestCase):
         audit.check_all(None)
         identifiers = {identifier for identifier, element in audit.elements.items() if element.kind == "requirement"}
         document = parse_document((self.root / ARTIFACTS["non_functional_requirements.md"]).read_text(encoding="utf-8"))
-        expected = {"FR-001", "UC-001"} | {row["ID"] for row in non_functional_rows(document)}
+        expected = {"FR-001", "UC-001", "DR-001", "IFR-001"} | {row["ID"] for row in non_functional_rows(document)}
         self.assertEqual(expected, identifiers)
         self.assertFalse(audit.duplicates)
         self.assertFalse(audit.issues, audit.issues)

@@ -1,7 +1,7 @@
 ---
 name: traceability-audit
 description: >
-  成果物内のID参照とtrace注釈を正本としてC01〜C11を機械検査し、
+  成果物内のID参照とtrace注釈を正本としてC01〜C12を機械検査し、
   Trace Mapと3種の表を再生成する。元成果物は修正せず原因工程へ返す。
 user-invocable: false
 disable-model-invocation: false
@@ -13,7 +13,12 @@ disable-model-invocation: false
 
 正本は要件・ADDR・設計・TASK・CRのID参照と、コード・テストのtrace注釈です。
 推測した意味リンク、AST、FQN、呼出し解析は使いません。
-既存IDを改番せず、表やTrace Mapを手編集しません。Producerが成果物作成時に参照を記入します。
+既存IDを改番せず、表やTrace Mapを手編集しません。
+AI駆動開発の正本FR（例: `FR-001`）からの全件到達検査は `docs/requirements/expected-fr.txt` を独立分母にします。
+ファイルはRequirementsで要件正本から確定し、実装開始前にレビュー・版固定すること。
+書式は1行1FR、対象外FRは `EXCLUDE FR-002: 承認済み対象外理由`、`#`行はコメントです。
+元のFR全件を対象／対象外に分類し、対象が空のままPASSにしません。
+この一覧をTrace Mapやコードの注釈から自動生成してはいけません。Producerが成果物作成時に参照を記入します。
 Auditorは元成果物・注釈・テスト結果を修正しません。生成・検証対象はPolicyのoutputs.dirのみです。
 
 要件の正本は分割された要件本文・UC・ACです。requirements.mdは派生索引なので定義から除外します。
@@ -30,9 +35,12 @@ Auditorは設計書や設計テンプレートを作成しません。配置・�
 - ADDR: 正本の2章「関連要件・参照成果物」の「要件」行に実在要件IDを記入します。
   他種成果物行のIDは要件リンクに代用しません。ACだけでは関連要件を満たしません。
 - 設計・TASK: 要件・ADDR・ENT/DBDへの参照を既存欄で維持します。TASKだけを実装根拠にしません。
+  ENT/DBDにはFR/DRの根拠、FILEにはFR/IFRの根拠を明示します。
+  DR/IFRとFRの親子関係は要件正本（DRの意味・説明／IFRの連携目的欄）に明記します。
 - Production: ファイル先頭、docstring/importより前に `# trace: ADDR-001, FILE-001`。
   Djangoは `{# trace: ADDR-001 #}`。TASK/要件を通常のコード注釈へ書きません。
 - Test: `# trace: FR-001, ADDR-001` のように要件と関連判断を記入します。
+  実際にassertする要件のみを書きます。ADDRだけを参照してもFRを検証したとはカウントしません。
   AC・FILEだけでは要件への参照を満たしません。
 - Pythonの先頭IDが2つ以上、かつトップレベルclass/defが2つ以上なら、
   private/helperを含む全トップレベル定義の直前（decoratorより前）にもtraceを記入します。
@@ -74,6 +82,25 @@ python .github/skills/traceability-audit/scripts/trace_check.py --scope ARCHITEC
 | C09 | 有効ADDRの実装漏れ（開発中警告、FULL不合格） |
 | C10 | FR/NFR/SECのテスト漏れ（開発中警告、FULL不合格） |
 | C11 | 保存済み派生成果物と再計算結果の一致 |
+| C12 | 実装対象FR全件がコードへ到達し、コード注釈から正本要件へ逆引きできるか。未記載／重複／未定義の対象FRも検出 |
+
+## AI駆動開発での全件引渡し検査
+
+1. 要件確定時に `docs/requirements/expected-fr.txt` を正本FRから作成し、レビューと版固定を行います。
+2. Implementation以降のC12では、対象FR→有効ADDRまたはENT/DBD/FILE→実在コードの経路を検証します。
+   Gateで`needed=false`が承認した要件だけ、例外の直接参照を従来どおり許可します。
+   Codeに有効な要件到達経路がなければFAILです。要件・設計から推測して注釈を補いません。
+3. FULLでは既存C01〜C11とC12を必須FAIL検査にします。FR到達率と未到達IDは
+   `reports/traceability/traceability-report.json` の `coverage.expected_fr_to_implementation` を参照します。
+4. `trace-map.json` の `sources[].resolved_requirements` と `sources[].resolved_fr` は各コード／テストの逆引き結果です。
+   テストは注釈内の要件IDからのみ辿り、ADDRの関連FRをテスト済みと誤認しません。
+5. C12 FAILは `issues[].route` の工程（要件／設計／実装）で正本を直し、関連Gateと下流テストを再実行します。
+   検査失敗後も3回修正ループにより工程継続する場合、FULL充足と取り違えず未解決を引き渡します。
+6. 出力PASSでも「要件本文・ACと実装ロジック／assertが意味的に合致するか」は
+   トレーサビリティチームが実際の対象コミットで確認します。自動監査は意味的一致を保証しません。
+
+最終引渡しは `--scope FULL` の生成／同一条件 `--no-write` がともに0であることに加え、
+検査用FR一覧・Policy・実装ブランチ・コミットSHA・JUnitと記録版・未解決事項を共有します。
 
 ## テスト結果と実行版
 
@@ -97,8 +124,8 @@ Integration Planのrequirement_id/related_adrは既存契約名を維持し、�
 
 reports/traceability/以下に生成します。
 
-- trace-map.json: version=3、elements/sources/integration_test_casesと入力ハッシュ
-- traceability-report.json/.md: 機械検査の結果・Issue・Coverage・注釈量
+- trace-map.json: version=3、elements/sources/integration_test_cases、実装対象FR、逆引き結果と入力ハッシュ
+- traceability-report.json/.md: 機械検査の結果・Issue・Coverage（独立分母の実装対象FR到達率を含む）・注釈量
 - requirements-traceability-matrix.md/.csv: 要件→判断/設計/実装/テスト/AC
 - requirements-traceability-check.md/.csv: UNIT_TEST以降、実行版・JUnit結果・確認判定
 - addr-index.md/.csv: 判断別の参照一覧

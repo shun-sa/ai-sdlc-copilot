@@ -36,6 +36,9 @@ PREPARE→ADDR→FINALIZEという通常往復は行いません。他Agentを�
 新しいADDR/旧ADR、Production Code、実行テストを作成しません。
 既知の仕様は参照・再構成し、重要判断を推測で確定しません。新しい方式や数値を補完しません。
 自己分析のPASSは独立Quality/Security/TraceabilityのPASSやImplementation開始許可ではありません。
+実装対象FR（`docs/requirements/expected-fr.txt`）を踏まえ、設計要素ENT/DBD/FILE/TASKには
+根拠FR、DR-nnn、IFR-nnn、関連ADDRを既存欄に明記します。特にDR/IFRしか記録しない場合は
+要件正本で親FRへの参照が存在することを確認し、存在しなければ要件工程へ差し戻します。
 
 # Handoff and Rework
 

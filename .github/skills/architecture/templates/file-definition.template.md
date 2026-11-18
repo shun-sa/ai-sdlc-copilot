@@ -35,7 +35,7 @@
 | Requirement | `<FR-xxx / NFR-xxx>` | `<このファイルで満たす要求>` |
 | Use Case | `<UC-xxx / None>` | `<関連する業務フロー>` |
 | ADR | `<ADR-xxx / None>` | `<方式・技術判断>` |
-| External IF | `<IF-xxx / None>` | `<外部インターフェース>` |
+| External IF | `<IFR-xxx / None>` | `<外部インターフェース>` |
 | Glossary | `<TERM-xxx / path>` | `<用語定義>` |
 
 ## 3. ファイル概要

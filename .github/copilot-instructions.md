@@ -286,12 +286,14 @@ Deterministic Validatorの代わりにしてはいけない。
 # Traceability
 
 正本は成果物内のID参照とコード・テストのtrace注釈です。
-Producerが作成時に記入し、Auditorは推測せずC01〜C11で検査・表生成します。
+Producerが作成時に記入し、Auditorは推測せずC01〜C12で検査・表生成します。
 AST/FQN/Call解析や手編集Mapは使いません。詳細は
 `.github/skills/traceability-audit/SKILL.md` と
 `docs/ai-sdlc/inline-traceability.md` に従います。
 
 - 要件本文・UC/ACを読む。派生requirements.md、旧features、背景・用語・SteeringをID定義に数えない。
+- Requirementsでは主データ要件ID `DR-nnn`、主外部IF要件ID `IFR-nnn` を採番し、既存の説明欄に親FRを明示。
+- `docs/requirements/expected-fr.txt` は正本FRから独立に承認・固定し、全FRを対象または承認理由付き対象外に分類する。
 - ADDRの2章「要件」行へ実在要件IDを記入する。設計/TASKの既存参照欄を維持する。
 - Production先頭: `# trace: ADDR-001, FILE-001`。Djangoは `{# trace: ADDR-001 #}`。
   通常はADDR/ENT/DBD/FILEのみ。TASKを根拠にしない。
@@ -302,6 +304,8 @@ AST/FQN/Call解析や手編集Mapは使いません。詳細は
 - 各テスト担当は実JUnit実行直後に `trace_check.py --record-test-run <role>` で実行版を記録する。
   過去JUnit・監査時HEADを現在の実行証拠にすり替えない。
 - Auditorは `trace_check.py --scope <scope>`、次に同一条件の `--no-write` を実行する。
+- Implementation以降はC12で対象FRのコード到達とコードから要件への逆引きをFAIL検査する。
+  trace-mapのresolved_frと機械到達率は意味の正しさを保証しないため、実装箇所・テストassertも照合する。
   派生物だけ再生成し、原因成果物は担当工程へ差し戻す。
 - Traceの意味的レビューは助言。独立Quality/Security/Test Gateは引き続き必須。
 - 同一原因を3回修正しても残れば未解決結果を保存し、Orchestratorの継続許可で次へ進める。
