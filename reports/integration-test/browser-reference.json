@@ -1,0 +1,826 @@
+{
+  "GF-059_browser_compatibility": {
+    "condition": "開発環境の PC の OS とインストール済みのブラウザをヘッドレスで起動し、表示領域 1280×720・表示倍率 100%、live_server（Django の試験用サーバー）。目視による表示崩れの確認・通常のウィンドウ表示・全操作の網羅は含まない",
+    "measured_at": "2026-11-19T19:06:20+0000",
+    "os": {
+      "platform": "win32",
+      "build": 26300,
+      "major": 10,
+      "edition": "Professional",
+      "release": "11",
+      "is_windows_11": true
+    },
+    "browsers": {
+      "edge": {
+        "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "file_version": "157.0.4341.60",
+        "devtools_version": "Edg/157.0.4341.60",
+        "dialogs": [
+          "合計（税込）4,213円で注文を確定します。よろしいですか？",
+          "注文 PO-00000580 をキャンセルします。よろしいですか？",
+          "注文 PO-00000581 を出荷済にします。よろしいですか？",
+          "注文 PO-00000581 を配達完了にします。よろしいですか？"
+        ],
+        "steps": [
+          {
+            "step": "来訪者：商品一覧",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：商品詳細",
+            "screen": "SCR-002",
+            "status": 200,
+            "path": "/products/1129/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：会員登録の表示",
+            "screen": "SCR-003",
+            "status": 200,
+            "path": "/register/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "会員登録｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：会員登録",
+            "screen": "SCR-004",
+            "status": 200,
+            "path": "/login/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "ログイン｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：対象なし（エラー画面）",
+            "screen": "SCR-901",
+            "status": 404,
+            "path": "/products/999999999/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "エラー｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：ログイン画面",
+            "screen": "SCR-004",
+            "status": 200,
+            "path": "/login/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "ログイン｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：ログイン",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：商品詳細",
+            "screen": "SCR-002",
+            "status": 200,
+            "path": "/products/1129/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：カートに入れる",
+            "screen": "SCR-002",
+            "status": 200,
+            "path": "/products/1129/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：カート",
+            "screen": "SCR-005",
+            "status": 200,
+            "path": "/cart/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "カート｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：クーポン適用",
+            "screen": "SCR-005",
+            "status": 200,
+            "path": "/cart/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "カート｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文手続き",
+            "screen": "SCR-006",
+            "status": 200,
+            "path": "/checkout/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文手続き（配送先入力・確認）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文確定",
+            "screen": "SCR-007",
+            "status": 200,
+            "path": "/orders/582/complete/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文完了｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：支払画面",
+            "screen": "SCR-008",
+            "status": 200,
+            "path": "/orders/582/payment/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "支払（模擬決済）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：支払（承認）",
+            "screen": "SCR-010",
+            "status": 200,
+            "path": "/orders/582/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文履歴",
+            "screen": "SCR-009",
+            "status": 200,
+            "path": "/orders/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文履歴一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文詳細",
+            "screen": "SCR-010",
+            "status": 200,
+            "path": "/orders/580/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文キャンセル",
+            "screen": "SCR-010",
+            "status": 200,
+            "path": "/orders/580/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：ログアウト",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：ログイン画面",
+            "screen": "SCR-004",
+            "status": 200,
+            "path": "/login/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "ログイン｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：ログイン",
+            "screen": "SCR-102",
+            "status": 200,
+            "path": "/manage/orders/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文一覧（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：在庫単位一覧",
+            "screen": "SCR-101",
+            "status": 200,
+            "path": "/manage/stock-units/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "在庫単位一覧（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：注文詳細",
+            "screen": "SCR-103",
+            "status": 200,
+            "path": "/manage/orders/581/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：出荷登録",
+            "screen": "SCR-103",
+            "status": 200,
+            "path": "/manage/orders/581/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：配達完了登録",
+            "screen": "SCR-103",
+            "status": 200,
+            "path": "/manage/orders/581/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：注文一覧",
+            "screen": "SCR-102",
+            "status": 200,
+            "path": "/manage/orders/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文一覧（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：ログアウト",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          }
+        ]
+      },
+      "chrome": {
+        "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "file_version": "158.0.8127.36",
+        "devtools_version": "Chrome/158.0.8127.36",
+        "dialogs": [
+          "合計（税込）2,926円で注文を確定します。よろしいですか？",
+          "注文 PO-00000583 をキャンセルします。よろしいですか？",
+          "注文 PO-00000584 を出荷済にします。よろしいですか？",
+          "注文 PO-00000584 を配達完了にします。よろしいですか？"
+        ],
+        "steps": [
+          {
+            "step": "来訪者：商品一覧",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：商品詳細",
+            "screen": "SCR-002",
+            "status": 200,
+            "path": "/products/1129/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：会員登録の表示",
+            "screen": "SCR-003",
+            "status": 200,
+            "path": "/register/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "会員登録｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：会員登録",
+            "screen": "SCR-004",
+            "status": 200,
+            "path": "/login/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "ログイン｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：対象なし（エラー画面）",
+            "screen": "SCR-901",
+            "status": 404,
+            "path": "/products/999999999/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "エラー｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "来訪者：ログイン画面",
+            "screen": "SCR-004",
+            "status": 200,
+            "path": "/login/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "ログイン｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：ログイン",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：商品詳細",
+            "screen": "SCR-002",
+            "status": 200,
+            "path": "/products/1129/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：カートに入れる",
+            "screen": "SCR-002",
+            "status": 200,
+            "path": "/products/1129/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：カート",
+            "screen": "SCR-005",
+            "status": 200,
+            "path": "/cart/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "カート｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：クーポン適用",
+            "screen": "SCR-005",
+            "status": 200,
+            "path": "/cart/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "カート｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文手続き",
+            "screen": "SCR-006",
+            "status": 200,
+            "path": "/checkout/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文手続き（配送先入力・確認）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文確定",
+            "screen": "SCR-007",
+            "status": 200,
+            "path": "/orders/585/complete/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文完了｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：支払画面",
+            "screen": "SCR-008",
+            "status": 200,
+            "path": "/orders/585/payment/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "支払（模擬決済）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：支払（承認）",
+            "screen": "SCR-010",
+            "status": 200,
+            "path": "/orders/585/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文履歴",
+            "screen": "SCR-009",
+            "status": 200,
+            "path": "/orders/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文履歴一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文詳細",
+            "screen": "SCR-010",
+            "status": 200,
+            "path": "/orders/583/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：注文キャンセル",
+            "screen": "SCR-010",
+            "status": 200,
+            "path": "/orders/583/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "購入者：ログアウト",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：ログイン画面",
+            "screen": "SCR-004",
+            "status": 200,
+            "path": "/login/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "ログイン｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：ログイン",
+            "screen": "SCR-102",
+            "status": 200,
+            "path": "/manage/orders/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文一覧（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：在庫単位一覧",
+            "screen": "SCR-101",
+            "status": 200,
+            "path": "/manage/stock-units/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "在庫単位一覧（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：注文詳細",
+            "screen": "SCR-103",
+            "status": 200,
+            "path": "/manage/orders/584/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：出荷登録",
+            "screen": "SCR-103",
+            "status": 200,
+            "path": "/manage/orders/584/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：配達完了登録",
+            "screen": "SCR-103",
+            "status": 200,
+            "path": "/manage/orders/584/",
+            "scroll_width": 1265,
+            "client_width": 1265,
+            "title": "注文詳細（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：注文一覧",
+            "screen": "SCR-102",
+            "status": 200,
+            "path": "/manage/orders/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "注文一覧（管理）｜MiniCommerce",
+            "problems": []
+          },
+          {
+            "step": "管理者：ログアウト",
+            "screen": "SCR-001",
+            "status": 200,
+            "path": "/",
+            "scroll_width": 1280,
+            "client_width": 1280,
+            "title": "商品一覧｜MiniCommerce",
+            "problems": []
+          }
+        ]
+      }
+    },
+    "latest_stable_at_fetch": {
+      "chrome": "159.0.8154.13",
+      "edge": "157.0.4341.60"
+    },
+    "screens": [
+      "SCR-001",
+      "SCR-002",
+      "SCR-003",
+      "SCR-004",
+      "SCR-005",
+      "SCR-006",
+      "SCR-007",
+      "SCR-008",
+      "SCR-009",
+      "SCR-010",
+      "SCR-101",
+      "SCR-102",
+      "SCR-103",
+      "SCR-901"
+    ]
+  },
+  "GF-060_screen_display_time": {
+    "condition": "各画面を各ブラウザ（ヘッドレス、キャッシュ無効）で30回表示し、Navigation Timing の画面要求の開始からload イベント終了（画面の構成に必要な資源の読込完了）までの時間を計測。単一利用者・小データ量・live_server。ピーク負荷（同時155利用者）・3年後データ量・ENV-01 の判定ではない参考計測",
+    "measured_at": "2026-11-19T19:07:07+0000",
+    "os": {
+      "platform": "win32",
+      "build": 26300,
+      "major": 10,
+      "edition": "Professional",
+      "release": "11",
+      "is_windows_11": true
+    },
+    "browsers": {
+      "edge": {
+        "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "file_version": "157.0.4341.60"
+      },
+      "chrome": {
+        "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "file_version": "158.0.8127.36"
+      }
+    },
+    "results": {
+      "edge": {
+        "SCR-003": {
+          "loads": 30,
+          "p95_ms": 69.7,
+          "max_ms": 70.5,
+          "min_ms": 12.6,
+          "limit_ms": 2000
+        },
+        "SCR-004": {
+          "loads": 30,
+          "p95_ms": 18.7,
+          "max_ms": 21.7,
+          "min_ms": 12,
+          "limit_ms": 2000
+        },
+        "SCR-001": {
+          "loads": 30,
+          "p95_ms": 59.5,
+          "max_ms": 64.7,
+          "min_ms": 42.4,
+          "limit_ms": 2000
+        },
+        "SCR-002": {
+          "loads": 30,
+          "p95_ms": 69.9,
+          "max_ms": 108,
+          "min_ms": 37.7,
+          "limit_ms": 2000
+        },
+        "SCR-005": {
+          "loads": 30,
+          "p95_ms": 63.9,
+          "max_ms": 80.7,
+          "min_ms": 39,
+          "limit_ms": 2000
+        },
+        "SCR-006": {
+          "loads": 30,
+          "p95_ms": 57.8,
+          "max_ms": 70.9,
+          "min_ms": 41.2,
+          "limit_ms": 2000
+        },
+        "SCR-007": {
+          "loads": 30,
+          "p95_ms": 51.8,
+          "max_ms": 80.8,
+          "min_ms": 39.2,
+          "limit_ms": 2000
+        },
+        "SCR-008": {
+          "loads": 30,
+          "p95_ms": 58.4,
+          "max_ms": 64.7,
+          "min_ms": 38.4,
+          "limit_ms": 2000
+        },
+        "SCR-009": {
+          "loads": 30,
+          "p95_ms": 68.8,
+          "max_ms": 72.6,
+          "min_ms": 38.9,
+          "limit_ms": 2000
+        },
+        "SCR-010": {
+          "loads": 30,
+          "p95_ms": 54.7,
+          "max_ms": 60.9,
+          "min_ms": 39.1,
+          "limit_ms": 2000
+        },
+        "SCR-901": {
+          "loads": 30,
+          "p95_ms": 59.2,
+          "max_ms": 78.9,
+          "min_ms": 36,
+          "limit_ms": 2000
+        },
+        "SCR-101": {
+          "loads": 30,
+          "p95_ms": 37.5,
+          "max_ms": 38.2,
+          "min_ms": 30.9,
+          "limit_ms": 2000
+        },
+        "SCR-102": {
+          "loads": 30,
+          "p95_ms": 44.8,
+          "max_ms": 51.3,
+          "min_ms": 31.5,
+          "limit_ms": 2000
+        },
+        "SCR-103": {
+          "loads": 30,
+          "p95_ms": 52,
+          "max_ms": 63.8,
+          "min_ms": 34.5,
+          "limit_ms": 2000
+        }
+      },
+      "chrome": {
+        "SCR-003": {
+          "loads": 30,
+          "p95_ms": 59.7,
+          "max_ms": 65.7,
+          "min_ms": 11.7,
+          "limit_ms": 2000
+        },
+        "SCR-004": {
+          "loads": 30,
+          "p95_ms": 16.7,
+          "max_ms": 17,
+          "min_ms": 12.2,
+          "limit_ms": 2000
+        },
+        "SCR-001": {
+          "loads": 30,
+          "p95_ms": 133.3,
+          "max_ms": 171.4,
+          "min_ms": 39.7,
+          "limit_ms": 2000
+        },
+        "SCR-002": {
+          "loads": 30,
+          "p95_ms": 68.4,
+          "max_ms": 72.8,
+          "min_ms": 37.3,
+          "limit_ms": 2000
+        },
+        "SCR-005": {
+          "loads": 30,
+          "p95_ms": 67.3,
+          "max_ms": 68.2,
+          "min_ms": 41.5,
+          "limit_ms": 2000
+        },
+        "SCR-006": {
+          "loads": 30,
+          "p95_ms": 77.1,
+          "max_ms": 97.4,
+          "min_ms": 40.9,
+          "limit_ms": 2000
+        },
+        "SCR-007": {
+          "loads": 30,
+          "p95_ms": 81.5,
+          "max_ms": 109.7,
+          "min_ms": 40.3,
+          "limit_ms": 2000
+        },
+        "SCR-008": {
+          "loads": 30,
+          "p95_ms": 54.2,
+          "max_ms": 59.2,
+          "min_ms": 40,
+          "limit_ms": 2000
+        },
+        "SCR-009": {
+          "loads": 30,
+          "p95_ms": 48.6,
+          "max_ms": 77,
+          "min_ms": 34.5,
+          "limit_ms": 2000
+        },
+        "SCR-010": {
+          "loads": 30,
+          "p95_ms": 49.5,
+          "max_ms": 52.9,
+          "min_ms": 38.5,
+          "limit_ms": 2000
+        },
+        "SCR-901": {
+          "loads": 30,
+          "p95_ms": 56.8,
+          "max_ms": 59.3,
+          "min_ms": 36.5,
+          "limit_ms": 2000
+        },
+        "SCR-101": {
+          "loads": 30,
+          "p95_ms": 44.8,
+          "max_ms": 46.7,
+          "min_ms": 32,
+          "limit_ms": 2000
+        },
+        "SCR-102": {
+          "loads": 30,
+          "p95_ms": 49.5,
+          "max_ms": 54.3,
+          "min_ms": 33.7,
+          "limit_ms": 2000
+        },
+        "SCR-103": {
+          "loads": 30,
+          "p95_ms": 49.6,
+          "max_ms": 68.4,
+          "min_ms": 34.2,
+          "limit_ms": 2000
+        }
+      }
+    }
+  }
+}

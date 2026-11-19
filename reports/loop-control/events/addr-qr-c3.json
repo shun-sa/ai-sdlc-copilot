@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "addr_quality_QR-ADDR-R1-001-004"
+  },
+  "action": "RESOLVED",
+  "cycle": 3,
+  "run_id": "addr-qr-run-3",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "addr-result要約更新, ADDR-004/011改訂",
+  "impact": "解消",
+  "recommended_route": "ADDR"
+}

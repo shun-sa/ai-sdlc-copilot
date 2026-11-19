@@ -1,0 +1,52 @@
+{# trace: ADDR-012, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>注文一覧（管理）</h1>
+<form method="get" action="/manage/orders/" novalidate>
+  <div class="form-row">
+    <label for="order_number">注文番号</label>
+    <input id="order_number" type="text" name="order_number" value="{{ values.order_number }}">
+    {% for e in errors.order_number %}<span class="field-error">注文番号：{{ e }}</span>{% endfor %}
+  </div>
+  <fieldset>
+    <legend>状態</legend>
+    {% for value, label in status_choices %}
+      <label><input type="checkbox" name="status" value="{{ value }}"{% if value in values.status %} checked{% endif %}>{{ label }}</label>
+    {% endfor %}
+    {% for e in errors.status %}<span class="field-error">状態：{{ e }}</span>{% endfor %}
+  </fieldset>
+  <div class="form-row">
+    <label for="order_date_from">注文日（開始）</label>
+    <input id="order_date_from" type="date" name="order_date_from" value="{{ values.order_date_from }}">
+    {% for e in errors.order_date_from %}<span class="field-error">注文日（開始）：{{ e }}</span>{% endfor %}
+    <label for="order_date_to">注文日（終了）</label>
+    <input id="order_date_to" type="date" name="order_date_to" value="{{ values.order_date_to }}">
+    {% for e in errors.order_date_to %}<span class="field-error">注文日（終了）：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="buyer_email">購入者メールアドレス</label>
+    <input id="buyer_email" type="text" name="buyer_email" value="{{ values.buyer_email }}">
+    {% for e in errors.buyer_email %}<span class="field-error">購入者メールアドレス：{{ e }}</span>{% endfor %}
+  </div>
+  {% for e in errors.page %}<p class="field-error">ページ：{{ e }}</p>{% endfor %}
+  <button type="submit">検索</button>
+  <a href="/manage/orders/">条件をクリア</a>
+</form>
+{% if result %}
+  {% if result.items %}
+    <p>全{{ result.total_count }}件（{{ first_index }}〜{{ last_index }}件目を表示）</p>
+    <table>
+      <thead><tr><th scope="col">注文番号</th><th scope="col">注文日時</th><th scope="col">購入者メールアドレス</th><th scope="col">購入者氏名</th><th scope="col">状態</th><th scope="col">合計（税込）</th><th scope="col">合計点数</th></tr></thead>
+      <tbody>
+      {% for o in result.items %}
+        <tr><td><a href="/manage/orders/{{ o.order_id }}/">{{ o.order_number }}</a></td><td>{{ o.ordered_at|jst }}</td><td>{{ o.buyer_email }}</td><td>{{ o.buyer_name }}</td><td>{{ o.status_label }}</td><td>{{ o.total_amount|yen }}</td><td>{{ o.total_quantity }}点</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% include "common/pagination.html" %}
+  {% else %}
+    <p>該当する注文はありません。</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

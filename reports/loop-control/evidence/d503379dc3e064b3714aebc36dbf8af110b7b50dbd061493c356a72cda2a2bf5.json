@@ -1,0 +1,92 @@
+{
+  "status": "FAIL",
+  "audit_scope": "REQUIREMENTS",
+  "method": "inline-annotation",
+  "source_baseline_sha256": null,
+  "errors": [
+    "[C01] docs/requirements/use-cases/UC-003.md:269: AC-UC-003-020 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-004.md:367: AC-UC-004-026 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-005.md:368: AC-UC-005-028 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-006.md:338: AC-UC-006-029 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-006.md:338: AC-UC-006-030 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-007.md:361: AC-UC-007-017 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-008.md:267: AC-UC-008-014 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-010.md:237: AC-UC-010-012 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）",
+    "[C01] docs/requirements/use-cases/UC-011.md:328: AC-UC-011-021 はどの成果物にも定義されていません。（差し戻し先: REQUIREMENTS）"
+  ],
+  "warnings": [],
+  "issues": [
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-003.md:269",
+      "message": "AC-UC-003-020 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-004.md:367",
+      "message": "AC-UC-004-026 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-005.md:368",
+      "message": "AC-UC-005-028 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-006.md:338",
+      "message": "AC-UC-006-029 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-006.md:338",
+      "message": "AC-UC-006-030 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-007.md:361",
+      "message": "AC-UC-007-017 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-008.md:267",
+      "message": "AC-UC-008-014 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-010.md:237",
+      "message": "AC-UC-010-012 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "INVALID_REQUIREMENT_REFERENCE",
+      "location": "docs/requirements/use-cases/UC-011.md:328",
+      "message": "AC-UC-011-021 はどの成果物にも定義されていません。",
+      "route": "REQUIREMENTS"
+    }
+  ]
+}

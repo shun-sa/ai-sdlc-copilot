@@ -1,0 +1,23 @@
+{# trace: ADDR-012, ADDR-004, ADDR-002 #}
+{% extends "common/base.html" %}
+{% block content %}
+<h1>ログイン</h1>
+{% if login_required %}<p class="message" role="status">ログインが必要です。ログインしていないか、30分間操作がなかったためログインが切れています。</p>{% endif %}
+<form method="post" action="/login/" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="submit_token" value="{{ submit_token }}">
+  <input type="hidden" name="next" value="{{ next }}">
+  <div class="form-row">
+    <label for="login-email" class="required-mark">メールアドレス</label>
+    <input id="login-email" type="email" name="email" value="{{ values.email|default:'' }}" autocomplete="username">
+    {% for e in errors.email %}<span class="field-error">{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="login-password" class="required-mark">パスワード</label>
+    <input id="login-password" type="password" name="password" value="" autocomplete="current-password">
+    {% for e in errors.password %}<span class="field-error">{{ e }}</span>{% endfor %}
+  </div>
+  <button type="submit">ログイン</button>
+</form>
+<p>会員でない方は会員登録してください。 <a href="/register/">会員登録</a></p>
+{% endblock %}

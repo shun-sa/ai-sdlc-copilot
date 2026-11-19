@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "nul_char_input_db_error_SEC-IMPL-001"
+  },
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "impl-sec-run-2",
+  "validation_result": "reports/loop-control/checks/impl-security.json",
+  "repair": "整数19桁上限、識別子fullmatch、ログインNUL処理、ADDR-003 r2ハッシャー",
+  "impact": "SEC-IMPL-R3-001 クエリ1000超パラメータ/JSON深いネストで500、R3-002 注文日to=9999-12-31で+1日オーバーフロー500",
+  "recommended_route": "IMPLEMENTATION",
+  "errors": [
+    "Applicable criterion is not PASS: input-validation-injection",
+    "Unresolved blocking Security Review Issue(s): 2"
+  ]
+}

@@ -1,0 +1,1082 @@
+{
+  "version": 2,
+  "stage": "FINAL",
+  "run_id": "RUN-AOBA-EC-1118",
+  "generated_by": "Architecture Agent",
+  "generated_at": "2026-11-19T18:12:34+09:00",
+  "source_revision": "958677fe4a672dc82902289cfd4b0da5cfac39e5+worktree(RUN-AOBA-EC-1118 requirements 2026-11-19)",
+  "note": "FINAL は Architecture 成果物の公開版であり、重要判断の完了を意味しない。unresolved_design_decisions は後続ADDRへの委譲事項。修正cycle 1（2026-11-19）：ARCHITECTURE Scope Assurance の QR-ARCH-001〜QR-ARCH-004、SR-ARCH-001〜SR-ARCH-003 を反映（TASK-019 新設、Wave 1〜9 に再編、environment-configuration を追加、authentication-session・identifier-assignment に FR-060 の論点を追加）。修正cycle 2（2026-11-19）：ARCHITECTURE Assurance 再検査の QR-ARCH-R1-001〜QR-ARCH-R1-003、SR-ARCH-R1-001〜SR-ARCH-R1-003 を反映（本 manifest を UTF-8 で再出力し文字化けした委譲事項を再記述、AC 単位の依存照合により TASK-020 を新設し依存と Wave 1〜12 を再編、依存ライブラリ・実行環境のセキュリティ確認として TASK-021 を新設、environment-configuration に依存の取得元・版の固定と記録の方式を追加、application-logging にアクセスログの検索条件除外を明示）。 修正cycle 3（2026-11-19）：ARCHITECTURE Assurance 再検査の SR-ARCH-R2-001、QR-ARCH-R2-001、QR-ARCH-R2-002 を反映（TASK-001 に本番環境向け設定でログイン状態を示す情報・CSRF 対策の値を暗号化通信でのみ送信し HTTP で業務データを受け付けないことを追加、全非機能要件115件×Task の照合により NFR-OM-11・NFR-OM-18・NFR-US-01・NFR-US-05・NFR-US-07・NFR-EN-12 ほかを Task に割当て、全15候補の根拠に方式を縛る非機能要件（NFR-PF-09・NFR-PF-16・NFR-PF-17・NFR-OM-11・NFR-OM-18 ほか）を追加）。 上流変更の反映（2026-11-19T18:12:34+09:00）：docs/requirements/expected-fr.txt への EXCLUDE FR-OUT-01〜16 と先頭注記の追記、reports/requirements/input-mapping.md 11章の追記に合わせて sources のハッシュを再計算した。実装対象26 FR・要件本文・Steering は不変。設計資料の対象外機能（FR-OUT）の扱いは整合しており、cross-artifact-consistency.md の 3章の「除外なし」の記載と Validation Notes のみ更新した（新しい設計判断・Task の追加なし）。",
+  "sources": [
+    {
+      "path": "docs/requirements/requirements.md",
+      "sha256": "79f13953a9fb85cd611a6e64589076199c2ea275685590342901d4a755d80d1d",
+      "role": "requirements-index"
+    },
+    {
+      "path": "docs/requirements/business_requirements.md",
+      "sha256": "c1be4645ffd62b89241ad99e53a1a72935a94699171c97b4cd0d5bc596950d23",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/data_requirements.md",
+      "sha256": "8a611e62a376d67fdf91e886fb7ae47c48c03a76da7ae209656b9044507c255c",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/external_interface_requirements.md",
+      "sha256": "10f2f74445c75edbda1b3db8d7f9d8152b37aacbbb1b69b23611a60feee3dfba",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/functional_requirements.md",
+      "sha256": "9df54714e91bbe1a7cf543e500e3bc05520cfbb64643a69cefefa55bf8a869ae",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/glossary.md",
+      "sha256": "9d1f91bc1e8935ec4a7438a395c44788dbed23060a8754e56115286bf0b44e85",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/non_functional_requirements.md",
+      "sha256": "b9f5df11a4458e6b86db216411ced9745a187be6aa9855f5c7d1e8895168fef5",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/requirements_quality_checklist.md",
+      "sha256": "eefbb4b2430f3fdcbcbcbf9c302a609fa043e6a2a4690fb91e9f082dbfb13f06",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/ui_report_requirements.md",
+      "sha256": "9b0c3affff05341ca260f803d03059d36666ff770576ec3e61e2466b0af8834f",
+      "role": "requirements"
+    },
+    {
+      "path": "docs/requirements/use-case-user-story-index.md",
+      "sha256": "da7e51f68d95a84f75b9b7ab855080a933ae96012c7a02c3a78bbeee43fa3547",
+      "role": "use-case-index"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-001.md",
+      "sha256": "bec417d03d78ecdde7e1b1931bf3059971b0426f5225ec650d8d07aef1144ee6",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-002.md",
+      "sha256": "40b6f4790dae10a9b4c85191c6b324434089ab2c944796a765b7eb419fd1ea13",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-003.md",
+      "sha256": "291b3733f1ec671d97df44a939dd6d0f4eba0d52416e5f72958f8d3d346d8b1e",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-004.md",
+      "sha256": "6cec59bb0d930a3a997f240794e044fd510f99ddeaf9d50bfa4c251a74a36b9c",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-005.md",
+      "sha256": "7a8e909d58c1ebedb2ee3a89ad5fbab1e01f831770baf6cba1cce87f731e4fde",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-006.md",
+      "sha256": "bd3126ed45eb3e2d9de69901e2cf14641cfe72b5818ec48f536da53c93886261",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-007.md",
+      "sha256": "500404a2855dffe1076b09ea9863acc526bdb98e06ff5a013157f70e8aa091ae",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-008.md",
+      "sha256": "633a6a8c7b131893fff2028e3253b82d04a034c942769aa89ca0c8cc95c2f7dd",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-009.md",
+      "sha256": "664713981ebf2a33fcbe1d1a61a11d025bf9cbcbae3643c315c2adc8a171cc7c",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-010.md",
+      "sha256": "44728770d4232501dbdde054a1a3311e046f8f8c5b0964e6845bd6ee42ce86cc",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-011.md",
+      "sha256": "98bced33b231f80056173b5a57b6cfbee37b37aa977e660a9373034f11a9d571",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-012.md",
+      "sha256": "ebe027752d88003d627278517270d3cc219bb9e31723532f7f16437086fa7057",
+      "role": "use-case"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-013.md",
+      "sha256": "131b5c643df33e6fa96a1e360aabd824913a7aaa04b6c965613cb74683b9240c",
+      "role": "use-case"
+    },
+    {
+      "path": ".github/project-context/project-ai-steering.md",
+      "sha256": "41e1b3a2185ec7dc01ce4f39f1c04bafa207c029cf6f03c740abd192eaa950db",
+      "role": "steering"
+    },
+    {
+      "path": "docs/requirements/expected-fr.txt",
+      "sha256": "2d07108fb6310d11bb8a55b6be0e1690f860c61233a5e7e3dc2ad6738165cd2b",
+      "role": "expected-fr"
+    },
+    {
+      "path": "reports/requirements/input-mapping.md",
+      "sha256": "9ff9128420b5cd5c19f4c9da5dde76547eb2d16340df7bf8c2610633acfa4bf0",
+      "role": "requirements-input-mapping"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "data-model",
+      "name": "MiniCommerce 論理データモデル（ENT-001〜ENT-015）",
+      "criticality": "MANDATORY",
+      "criticality_reason": "全実装対象FRが利用する業務データ（DR-001〜DR-015）の整合性・保存期間・機密区分を担う。在庫・金額・注文状態の不整合は二重販売・誤請求に直結する（NFR-PF-07、NFR-PF-11、NFR-LG-03）",
+      "basis_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-026",
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-034",
+        "FR-040",
+        "FR-041",
+        "FR-042",
+        "FR-043",
+        "FR-044",
+        "FR-045",
+        "FR-060",
+        "NFR-SC-01",
+        "NFR-SC-23",
+        "NFR-LG-03",
+        "NFR-EN-02",
+        "NFR-EN-04",
+        "NFR-PF-06"
+      ]
+    },
+    {
+      "target_id": "initial-data-file",
+      "name": "初期データ定義ファイル（FILE-001）と初期データ一括投入",
+      "criticality": "MANDATORY",
+      "criticality_reason": "稼働開始時のマスタ・管理者アカウントの唯一の登録経路であり、全件成功か無変更・削除指定・平文パスワードの取扱いを含む（FR-060、NFR-MG-04、NFR-SC-15）",
+      "basis_ids": [
+        "FR-060",
+        "NFR-EN-04",
+        "NFR-OM-04",
+        "NFR-OM-13",
+        "NFR-PF-10",
+        "NFR-SC-15",
+        "NFR-MG-04",
+        "NFR-MG-07"
+      ]
+    },
+    {
+      "target_id": "application",
+      "name": "MiniCommerce アプリケーション（画面・Web API・業務処理・模擬決済・試験支援・結合確認・依存の確認。TASK-001〜TASK-021）",
+      "criticality": "MANDATORY",
+      "criticality_reason": "全実装対象FR 26件の振る舞い、認証・権限・セッション、同時実行時の整合、模擬決済連携、試験容易性を実現する（NFR-SC-03、NFR-SC-08、NFR-PF-07、NFR-OM-06）",
+      "basis_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-026",
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-034",
+        "FR-040",
+        "FR-041",
+        "FR-042",
+        "FR-043",
+        "FR-044",
+        "FR-045",
+        "FR-060",
+        "NFR-SC-03",
+        "NFR-SC-08",
+        "NFR-SC-09",
+        "NFR-SC-19",
+        "NFR-PF-07",
+        "NFR-PF-11",
+        "NFR-OM-01",
+        "NFR-OM-05",
+        "NFR-OM-06",
+        "NFR-EN-01",
+        "NFR-EN-05",
+        "NFR-EN-09",
+        "NFR-OM-17",
+        "NFR-EN-08",
+        "NFR-SC-10",
+        "NFR-SC-06",
+        "NFR-SC-11",
+        "NFR-SC-21",
+        "NFR-EN-10",
+        "NFR-SC-02",
+        "NFR-OM-11",
+        "NFR-OM-18",
+        "NFR-US-01",
+        "NFR-US-05",
+        "NFR-US-07",
+        "NFR-EN-12",
+        "NFR-PF-16",
+        "NFR-PF-17",
+        "NFR-PF-09"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "LDB-001",
+      "path": "docs/architecture/db-logical-design.md",
+      "template": "logical-database-design",
+      "sha256": "a94084d6028f441f9acae063c3d4a1401c0abe9366714036407dae17a9ff5dbc",
+      "target_id": "data-model",
+      "element_ids": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003",
+        "ENT-004",
+        "ENT-005",
+        "ENT-006",
+        "ENT-007",
+        "ENT-008",
+        "ENT-009",
+        "ENT-010",
+        "ENT-011",
+        "ENT-012",
+        "ENT-013",
+        "ENT-014",
+        "ENT-015"
+      ],
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-026",
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-034",
+        "FR-040",
+        "FR-041",
+        "FR-042",
+        "FR-043",
+        "FR-044",
+        "FR-045",
+        "FR-060",
+        "NFR-SC-01",
+        "NFR-SC-23",
+        "NFR-LG-03",
+        "NFR-PF-07",
+        "NFR-EN-02",
+        "NFR-EN-04",
+        "NFR-SC-08"
+      ],
+      "related_data_requirement_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003",
+        "DR-004",
+        "DR-005",
+        "DR-006",
+        "DR-007",
+        "DR-008",
+        "DR-009",
+        "DR-010",
+        "DR-011",
+        "DR-012",
+        "DR-013",
+        "DR-014",
+        "DR-015",
+        "IFR-001"
+      ],
+      "related_addr_ids": []
+    },
+    {
+      "artifact_id": "FDEF-001",
+      "path": "docs/architecture/files/FILE-001.md",
+      "template": "file-definition",
+      "sha256": "1ba05f0badcf32da34ac95efd5f2f4cecd4845d85c4e563b469deb5e319a3f2e",
+      "target_id": "initial-data-file",
+      "element_ids": [
+        "FILE-001"
+      ],
+      "related_requirement_ids": [
+        "FR-060",
+        "NFR-EN-04",
+        "NFR-OM-04",
+        "NFR-OM-13",
+        "NFR-PF-10",
+        "NFR-SC-01",
+        "NFR-SC-15",
+        "NFR-MG-04",
+        "NFR-MG-07",
+        "NFR-SC-06",
+        "NFR-SC-08"
+      ],
+      "related_data_requirement_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003",
+        "DR-004",
+        "DR-005",
+        "DR-006",
+        "DR-007"
+      ],
+      "related_addr_ids": []
+    },
+    {
+      "artifact_id": "ANALYSIS-001",
+      "path": "reports/architecture/cross-artifact-consistency.md",
+      "template": "cross-artifact-consistency-analysis",
+      "sha256": "acea9ac7809e35c50abba02948ee804351a9955d1d240b5990ff4991a69aec8b",
+      "target_id": "application",
+      "element_ids": [],
+      "analysis_result": "BLOCKED",
+      "readiness_result": "NOT_READY",
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-026",
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-034",
+        "FR-040",
+        "FR-041",
+        "FR-042",
+        "FR-043",
+        "FR-044",
+        "FR-045",
+        "FR-060",
+        "NFR-OM-06",
+        "NFR-OM-17",
+        "NFR-SC-10",
+        "NFR-EN-08",
+        "NFR-SC-06",
+        "NFR-SC-11",
+        "NFR-SC-21",
+        "NFR-EN-10",
+        "NFR-OM-14",
+        "NFR-SC-02",
+        "NFR-SC-19",
+        "NFR-OM-11",
+        "NFR-OM-18",
+        "NFR-US-01",
+        "NFR-US-05",
+        "NFR-US-07",
+        "NFR-EN-12",
+        "NFR-PF-09",
+        "NFR-PF-16",
+        "NFR-PF-17"
+      ],
+      "related_addr_ids": []
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "path": "docs/architecture/implementation-task-list.md",
+      "template": "implementation-task-list",
+      "sha256": "13eef307ccd12f8383bfe834664c1e926238603aac07941ae87ead660c15c94f",
+      "target_id": "application",
+      "element_ids": [
+        "TASK-001",
+        "TASK-002",
+        "TASK-003",
+        "TASK-004",
+        "TASK-005",
+        "TASK-006",
+        "TASK-007",
+        "TASK-008",
+        "TASK-009",
+        "TASK-010",
+        "TASK-011",
+        "TASK-012",
+        "TASK-013",
+        "TASK-014",
+        "TASK-015",
+        "TASK-016",
+        "TASK-017",
+        "TASK-018",
+        "TASK-019",
+        "TASK-020",
+        "TASK-021"
+      ],
+      "task_dependencies": {
+        "TASK-001": [],
+        "TASK-002": [
+          "TASK-001"
+        ],
+        "TASK-003": [
+          "TASK-001"
+        ],
+        "TASK-004": [
+          "TASK-001"
+        ],
+        "TASK-005": [
+          "TASK-003",
+          "TASK-004"
+        ],
+        "TASK-006": [
+          "TASK-002",
+          "TASK-003",
+          "TASK-017"
+        ],
+        "TASK-007": [
+          "TASK-002",
+          "TASK-004"
+        ],
+        "TASK-008": [
+          "TASK-002"
+        ],
+        "TASK-009": [
+          "TASK-002",
+          "TASK-005"
+        ],
+        "TASK-010": [
+          "TASK-004",
+          "TASK-006"
+        ],
+        "TASK-011": [
+          "TASK-002",
+          "TASK-003",
+          "TASK-004",
+          "TASK-005",
+          "TASK-006"
+        ],
+        "TASK-012": [
+          "TASK-005",
+          "TASK-006",
+          "TASK-007",
+          "TASK-009",
+          "TASK-017"
+        ],
+        "TASK-013": [
+          "TASK-011"
+        ],
+        "TASK-014": [
+          "TASK-009",
+          "TASK-012",
+          "TASK-017"
+        ],
+        "TASK-015": [
+          "TASK-008",
+          "TASK-014",
+          "TASK-016",
+          "TASK-017"
+        ],
+        "TASK-016": [
+          "TASK-014"
+        ],
+        "TASK-017": [
+          "TASK-002",
+          "TASK-008"
+        ],
+        "TASK-018": [
+          "TASK-015",
+          "TASK-016",
+          "TASK-017"
+        ],
+        "TASK-019": [
+          "TASK-014",
+          "TASK-017"
+        ],
+        "TASK-020": [
+          "TASK-006",
+          "TASK-007",
+          "TASK-010",
+          "TASK-011",
+          "TASK-012",
+          "TASK-014",
+          "TASK-015",
+          "TASK-016",
+          "TASK-017",
+          "TASK-018"
+        ],
+        "TASK-021": [
+          "TASK-013",
+          "TASK-019",
+          "TASK-020"
+        ]
+      },
+      "task_waves": {
+        "1": [
+          "TASK-001"
+        ],
+        "2": [
+          "TASK-002",
+          "TASK-003",
+          "TASK-004"
+        ],
+        "3": [
+          "TASK-005",
+          "TASK-007",
+          "TASK-008"
+        ],
+        "4": [
+          "TASK-009",
+          "TASK-017"
+        ],
+        "5": [
+          "TASK-006"
+        ],
+        "6": [
+          "TASK-010",
+          "TASK-011",
+          "TASK-012"
+        ],
+        "7": [
+          "TASK-013",
+          "TASK-014"
+        ],
+        "8": [
+          "TASK-016",
+          "TASK-019"
+        ],
+        "9": [
+          "TASK-015"
+        ],
+        "10": [
+          "TASK-018"
+        ],
+        "11": [
+          "TASK-020"
+        ],
+        "12": [
+          "TASK-021"
+        ]
+      },
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-026",
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-034",
+        "FR-040",
+        "FR-041",
+        "FR-042",
+        "FR-043",
+        "FR-044",
+        "FR-045",
+        "FR-060",
+        "NFR-OM-06",
+        "NFR-PF-07",
+        "NFR-SC-03",
+        "NFR-SC-08",
+        "NFR-OM-17",
+        "NFR-SC-10",
+        "NFR-EN-08",
+        "NFR-SC-06",
+        "NFR-SC-11",
+        "NFR-SC-21",
+        "NFR-EN-10",
+        "NFR-SC-09",
+        "NFR-EN-01",
+        "NFR-EN-02",
+        "NFR-EN-03",
+        "NFR-EN-04",
+        "NFR-EN-09",
+        "NFR-EN-11",
+        "NFR-OM-05",
+        "NFR-SC-07",
+        "NFR-EN-05",
+        "NFR-SC-02",
+        "NFR-SC-19",
+        "NFR-PF-16",
+        "NFR-EN-07",
+        "NFR-EN-12",
+        "NFR-OM-19",
+        "NFR-LG-01",
+        "NFR-LG-07",
+        "NFR-OM-01",
+        "NFR-OM-02",
+        "NFR-SC-04",
+        "NFR-SC-05",
+        "NFR-US-04",
+        "NFR-PF-08",
+        "NFR-US-01",
+        "NFR-US-02",
+        "NFR-US-05",
+        "NFR-US-06",
+        "NFR-US-07",
+        "NFR-LG-08",
+        "NFR-PF-03",
+        "NFR-US-03",
+        "NFR-OM-11",
+        "NFR-OM-18",
+        "NFR-SC-01",
+        "NFR-SC-23",
+        "NFR-OM-03",
+        "NFR-LG-03",
+        "NFR-LG-09",
+        "NFR-SC-12",
+        "NFR-SC-15",
+        "NFR-SC-18",
+        "NFR-SC-22",
+        "NFR-PF-09",
+        "NFR-SC-16",
+        "NFR-US-10",
+        "NFR-SC-24",
+        "NFR-PF-01",
+        "NFR-LG-02",
+        "NFR-PF-17",
+        "NFR-LG-05",
+        "NFR-LG-06",
+        "NFR-PF-11",
+        "NFR-OM-04",
+        "NFR-OM-13",
+        "NFR-PF-10",
+        "NFR-MG-04",
+        "NFR-MG-07",
+        "NFR-MG-03",
+        "NFR-PF-02",
+        "NFR-US-09",
+        "NFR-SC-25",
+        "NFR-PF-04",
+        "NFR-US-08"
+      ],
+      "related_addr_ids": []
+    }
+  ],
+  "unresolved_design_decisions": [
+    {
+      "candidate_key": "api-contract",
+      "target_id": "application",
+      "topic": "Web API 契約（パス・電文形式・認証ヘッダー・エラー応答形式・ページング表現・HTTP ステータス対応）",
+      "location": [
+        "docs/architecture/implementation-task-list.md TASK-002, TASK-006〜TASK-018, TASK-020",
+        "reports/architecture/cross-artifact-consistency.md ARCH-CI-004",
+        "docs/architecture/implementation-task-list.md TASK-002（NFR-US-04・NFR-PF-08）"
+      ],
+      "basis": "functional_requirements.md 1.2（Web API の呼出し方式は本書で定義しない）、CMN-34・CMN-35・MSG-05、Steering 5章・6.2（REST/JSON、/api・/api/admin、snake_case、Bearer の事前指定）、Steering 8.1 OQ-PJ-001（docs/specifications/api-contract.md 未格納）。修正cycle 3 で追加した方式を縛る要件：NFR-PF-08（一覧の応答件数上限）、NFR-US-04（入力エラーは誤りのある全項目分を項目を識別できる形で通知）、NFR-SC-04（全ての外部入力をシステムで検証）、NFR-SC-08（Web API のログイン状態の有効期間・推測困難性）、NFR-SC-24（個人情報を返す範囲）、NFR-EN-04（日時は JST、UTF-8）、NFR-LG-06（画面と API で同じ規則）",
+      "reason_unresolved": "受領仕様（API 契約資料）が存在せず要件も方式を定義しないため、Steering の事前指定を制約として保持したまま契約詳細を ADDR で判断する必要がある",
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-034",
+        "FR-040",
+        "FR-041",
+        "FR-042",
+        "FR-043",
+        "FR-044",
+        "FR-045",
+        "NFR-SC-03",
+        "NFR-SC-10",
+        "NFR-PF-08",
+        "NFR-US-04",
+        "NFR-SC-04",
+        "NFR-SC-08",
+        "NFR-SC-24",
+        "NFR-EN-04",
+        "NFR-LG-06"
+      ]
+    },
+    {
+      "candidate_key": "authentication-session",
+      "target_id": "application",
+      "topic": "ログイン状態（Web API の Bearer 形式のログイン状態を示す情報、画面のセッション）の発行・保持・有効期限・無効化の方式、CSRF 対策の方式、削除指定付きの初期データ一括投入で削除した利用者のログイン状態を無効にする方式。本番環境でログイン状態を示す情報・CSRF 対策の値を暗号化された通信でのみ送信させる方式、処理能力を増強（アプリケーションの実行単位の追加）してもログイン状態が失われない保持方式",
+      "location": [
+        "docs/architecture/implementation-task-list.md TASK-002（CSRF）, TASK-006, TASK-011",
+        "docs/architecture/db-logical-design.md 11章 LDR-013、18章 OQ-LDB-005",
+        "docs/architecture/files/FILE-001.md 10章 Atomicity、13章 FILE-V-009、14章 OQ-FILE-005",
+        "docs/architecture/implementation-task-list.md TASK-001（本番設定：NFR-SC-02・NFR-SC-19、処理能力の増強：NFR-PF-16）, TASK-006（NFR-PF-16）"
+      ],
+      "basis": "CMN-09〜CMN-12、NFR-SC-05・NFR-SC-08（24時間、128ビット以上相当）・NFR-SC-09（無操作30分）・NFR-SC-18（多重ログイン）・NFR-SC-19、Steering 6.2、data_requirements.md 1.2（ログイン状態は対象外）、FR-060 6.26.4 手順9（削除指定で削除した利用者のログイン状態は無効）・6.26.9（投入完了後は削除前のログイン状態による要求は認証エラー、削除後に投入された利用者として認証されない）、CMN-02。修正cycle 3 で追加した方式を縛る要件：NFR-PF-16（処理能力を増強した状態でもログイン状態が失われない、プログラム変更なしで増強）、NFR-SC-02（本番は HTTPS のみ、HTTP で業務データを送受信しない）、NFR-SC-19 の確認方法（暗号化されない通信でログイン状態を示す情報が送信されない）、data_requirements.md 8.1 CLS-01〜CLS-04（通信時の暗号化：本番必須）、NFR-SC-12（メールアドレスとパスワードで認証）、NFR-SC-06（ログイン状態を示す情報をログに出力しない）、NFR-SC-21 VUL-02・VUL-03・VUL-06",
+      "reason_unresolved": "要件はログイン状態の有効期限・推測困難性・多重ログイン・個別ログアウト・削除指定時の無効化と CSRF 対策の必要性を定めるが、保持方式・無効化の実現方式・CSRF 対策の方式は定めていない。ログイン状態はデータ要件の対象外のため、業務データとして論理モデルへの追加が必要かも含めて判断が必要（必要な場合は DB 論理設計を改訂する）",
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "NFR-SC-05",
+        "NFR-SC-08",
+        "NFR-SC-09",
+        "NFR-SC-18",
+        "NFR-SC-19",
+        "FR-060",
+        "NFR-PF-16",
+        "NFR-SC-02",
+        "NFR-SC-12",
+        "NFR-SC-06",
+        "NFR-SC-21"
+      ]
+    },
+    {
+      "candidate_key": "password-storage",
+      "target_id": "data-model",
+      "topic": "パスワード（照合用）の保持方式",
+      "location": [
+        "docs/architecture/db-logical-design.md ENT-001 ATTR-ENT-001-003、18章 OQ-LDB-001",
+        "docs/architecture/files/FILE-001.md FLD-002",
+        "docs/architecture/implementation-task-list.md TASK-003, TASK-006（NFR-PF-09）, TASK-011"
+      ],
+      "basis": "data_requirements.md D-01-03・CLS-04・PI-10、CMN-06、NFR-SC-01（復元できない形式、同じパスワードでも保持値が異なる）、input-mapping.md 5章。修正cycle 3 で追加した方式を縛る要件：NFR-PF-09（認証系 API（会員登録・ログイン等）の応答時間 2.0秒以内（95パーセンタイル、パスワードの照合・保存の処理を含む、ピーク負荷・会員 10,000件））、NFR-SC-21 VUL-03",
+      "reason_unresolved": "要件は平文・復号可能な形式で保持しないことのみ確定し、具体方式を設計に委ねている",
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-060",
+        "NFR-SC-01",
+        "NFR-PF-09",
+        "NFR-SC-21"
+      ]
+    },
+    {
+      "candidate_key": "concurrency-transaction",
+      "target_id": "application",
+      "topic": "在庫引当・戻し、注文状態遷移、利用中カート作成、承認決済記録、メールアドレス登録、初期データ一括投入の同時実行制御とトランザクション境界",
+      "location": [
+        "docs/architecture/implementation-task-list.md TASK-005, TASK-006, TASK-011, TASK-012, TASK-014〜TASK-016, TASK-018, TASK-019, TASK-020",
+        "docs/architecture/db-logical-design.md 18章 OQ-LDB-011、17章 PHY-HO-004"
+      ],
+      "basis": "CMN-19〜CMN-23、DQ-09・DQ-14・DQ-18・DQ-39、UPD-08・UPD-09・UPD-21〜UPD-23、FR-030 6.15.9、FR-031 6.16.9、FR-060 6.26.9、NFR-PF-07、NFR-PF-11。修正cycle 3 で追加した方式を縛る要件：NFR-PF-02（更新系 API 2.0秒以内）、NFR-PF-04（注文確定 240件/時以上）、NFR-PF-16（アプリケーションの実行単位を追加しても成立すること）、NFR-US-10（処理完了までの繰り返し操作は1回分だけ反映、決済要求は1回分）、NFR-LG-06（同時実行時にも在庫数量が0未満にならない）、NFR-OM-13・NFR-MG-07（初期データ一括投入の全件取消し）",
+      "reason_unresolved": "「逐次実行と同じ結果」「全件成功か無変更」を満たす制御方式（ロック・制約・分離レベル等）の選択が必要",
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-030",
+        "FR-031",
+        "FR-034",
+        "FR-043",
+        "FR-044",
+        "FR-045",
+        "FR-060",
+        "NFR-PF-07",
+        "NFR-PF-11",
+        "NFR-PF-02",
+        "NFR-PF-04",
+        "NFR-PF-16",
+        "NFR-US-10",
+        "NFR-LG-06",
+        "NFR-OM-13",
+        "NFR-MG-07"
+      ]
+    },
+    {
+      "candidate_key": "order-number-issuance",
+      "target_id": "data-model",
+      "topic": "注文番号（PO-＋8桁、確定順に増加、欠番許容、一意）の採番方式",
+      "location": [
+        "docs/architecture/db-logical-design.md ENT-010 ATTR-ENT-010-002、18章 OQ-LDB-004、LDR-016",
+        "docs/architecture/implementation-task-list.md TASK-014"
+      ],
+      "basis": "data_requirements.md D-10-02・DQ-11、FR-030 6.15.4 手順12・E-030-11。修正cycle 3 で追加した方式を縛る要件：NFR-PF-04（注文確定 240件/時以上）、NFR-PF-16（アプリケーションの実行単位を追加しても一意・確定順を保つこと）",
+      "reason_unresolved": "同時確定でも一意かつ確定順に増加させる採番方式は要件で定めていない（内部採番方式は設計で決定：data_requirements.md 1.2）",
+      "related_requirement_ids": [
+        "FR-030",
+        "FR-041",
+        "NFR-PF-04",
+        "NFR-PF-16"
+      ]
+    },
+    {
+      "candidate_key": "identifier-assignment",
+      "target_id": "data-model",
+      "topic": "システム付与識別子の採番・表現方式（記録順・登録順の判定方法を含む）と、削除指定（UPD-33）で全利用者を削除した後に投入した利用者へ付与する識別子の扱い（削除前と同じ値の再付与を許すか）",
+      "location": [
+        "docs/architecture/db-logical-design.md 18章 OQ-LDB-002、LDM-DEC-006、LDR-013、LDR-014、LDR-015、17章 PHY-HO-002、PHY-HO-003、PHY-HO-005、PHY-HO-006",
+        "docs/architecture/files/FILE-001.md 14章 OQ-FILE-005",
+        "docs/architecture/implementation-task-list.md TASK-006, TASK-011"
+      ],
+      "basis": "data_requirements.md 1.2（内部的な採番方式は定義しない）、DR-008・DR-013〜DR-015（識別方法は設計で決定）、CMN-18、CMN-39、REF-24、D-14-05（記録した順の判定）、監査ログは削除された利用者の識別子を保持する（DQ-48、UPD-33、LDC-REL-007、NFR-SC-23）、削除前のログイン状態は削除後に投入された利用者として認証されない（FR-060 6.26.4 手順9・6.26.9）。識別子を再利用しない旨の明示の定めはない",
+      "reason_unresolved": "要件は内部の採番方式を設計に委ねており、削除指定後の識別子の再付与の可否にも明示の定めがない。物理設計・API 応答の識別子表現、並び順の再現、監査ログの対象の利用者の解釈、削除前のログイン状態の認証エラーに影響するため判断が必要",
+      "related_requirement_ids": [
+        "FR-001",
+        "FR-011",
+        "FR-012",
+        "FR-020",
+        "FR-022",
+        "FR-030",
+        "FR-031",
+        "FR-033",
+        "FR-042",
+        "FR-060",
+        "NFR-SC-23"
+      ]
+    },
+    {
+      "candidate_key": "code-value-assignment",
+      "target_id": "data-model",
+      "topic": "コード値（CD-01〜CD-05、CD-07、CD-08）の外部に出る値の割当て",
+      "location": [
+        "docs/architecture/db-logical-design.md 10章・10.1、18章 OQ-LDB-003",
+        "docs/architecture/files/FILE-001.md FLD-004・FLD-025"
+      ],
+      "basis": "data_requirements.md 4章（値（外部に出る場合）「設計で決定」23箇所）、input-mapping.md 5章",
+      "reason_unresolved": "要件が値の割当てを設計に委ねている。API 応答・定義ファイルの値表現に影響する",
+      "related_requirement_ids": [
+        "FR-004",
+        "FR-031",
+        "FR-033",
+        "FR-041",
+        "FR-042",
+        "FR-060"
+      ]
+    },
+    {
+      "candidate_key": "mock-payment-interface",
+      "target_id": "application",
+      "topic": "IFR-001（決済要求）の呼出し方式・10秒上限の実現・応答検証・認証方式。決済サービスとの連携部分だけを差し替えられる分離（NFR-PF-17）",
+      "location": [
+        "docs/architecture/implementation-task-list.md TASK-008, TASK-015",
+        "docs/architecture/db-logical-design.md 15章 MAP-001〜MAP-008"
+      ],
+      "basis": "external_interface_requirements.md 4章（方式：設計で決定）、IF-01-SEC-01（認証方式：設計で決定）、5.1.3〜5.1.10、XCN-02・XCN-03、input-mapping.md 5章。修正cycle 3 で追加した方式を縛る要件：NFR-PF-17（後続フェーズで決済サービスとの連携部分だけを差し替えられ、注文・在庫・金額計算・状態遷移の処理を変更しない）、NFR-PF-02（支払の応答時間 2.0秒以内、模擬機能の応答時間を含む）、NFR-US-10（決済要求は1回分だけ送信）、NFR-LG-05（カード番号等を入力・保存・送信しない）、NFR-OM-11・NFR-OM-18（LOG-06 外部連携ログと要求の識別子）、NFR-SC-21 VUL-12（接続先を利用者の入力で変更できない）",
+      "reason_unresolved": "要件が方式・認証方式を設計に委ねている。業務条件（同期、10秒、1秒以内、自動再送なし、二重決済防止）は確定済み",
+      "related_requirement_ids": [
+        "FR-031",
+        "NFR-OM-06",
+        "NFR-EN-05",
+        "NFR-SC-24",
+        "NFR-PF-02",
+        "NFR-PF-17",
+        "NFR-US-10",
+        "NFR-LG-05",
+        "NFR-OM-11",
+        "NFR-OM-18",
+        "NFR-SC-21"
+      ]
+    },
+    {
+      "candidate_key": "initial-data-file-format",
+      "target_id": "initial-data-file",
+      "topic": "定義ファイルの記載形式（JSON の全体構造、データ配置、項目キー名、値表現、日時表記、BOM）",
+      "location": [
+        "docs/architecture/files/FILE-001.md 4章・7章・14章 OQ-FILE-001",
+        "docs/architecture/implementation-task-list.md TASK-011, TASK-013"
+      ],
+      "basis": "FR-060 6.26.2・E-060-03（設計で定める記載形式）、NFR-EN-04（UTF-8）、Steering 4章（UTF-8/JSON、app/seed/）。修正cycle 3 で追加した方式を縛る要件：NFR-SC-04（初期データ一括投入の投入データを含む全ての外部入力を検証）",
+      "reason_unresolved": "要件は記載形式を設計に委ねており、JSON 内の構造・キー名・値表現は受領仕様にない",
+      "related_requirement_ids": [
+        "FR-060",
+        "NFR-EN-04",
+        "NFR-SC-04"
+      ]
+    },
+    {
+      "candidate_key": "initial-data-invocation",
+      "target_id": "initial-data-file",
+      "topic": "初期データ一括投入の起動手段（サーバー上での実行方法、ファイル・削除指定の指定方法、結果の提示先、同時実行の逐次化）",
+      "location": [
+        "docs/architecture/files/FILE-001.md 10章・14章 OQ-FILE-002",
+        "docs/architecture/implementation-task-list.md TASK-011"
+      ],
+      "basis": "FR-060 6.26.1・6.26.3・6.26.9、CMN-37、NFR-OM-04（1回の実行操作）、NFR-SC-15、Steering 5章（具体的なデータ投入コマンドは後続工程で整備）。修正cycle 3 で追加した方式を縛る要件：NFR-OM-11（LOG-05 ジョブ実行ログ：データ別の投入件数、違反内容（項目の値は出力しない））、NFR-OM-13・NFR-MG-07（異常終了時の全件取消しと再実行）、NFR-OM-19（開発・検証環境向けの手順書に初期データ一括投入を含む）、NFR-SC-22（初期データ一括投入を監査ログに記録）、NFR-SC-21 VUL-10（サーバーにログインできる運用者だけが実行）",
+      "reason_unresolved": "実行インターフェースの方式は要件・Steering で指定されていない",
+      "related_requirement_ids": [
+        "FR-060",
+        "NFR-OM-04",
+        "NFR-SC-15",
+        "NFR-PF-10",
+        "NFR-OM-11",
+        "NFR-OM-13",
+        "NFR-OM-19",
+        "NFR-MG-07",
+        "NFR-SC-22",
+        "NFR-SC-21"
+      ]
+    },
+    {
+      "candidate_key": "test-state-control",
+      "target_id": "application",
+      "topic": "試験用状態（現在時刻の設定、模擬決済の遅延・接続不可・応答不正、注文確定途中の障害）の設定手段と本番での無効化、使い捨て試験用DBへの切替方式",
+      "location": [
+        "docs/architecture/implementation-task-list.md TASK-001, TASK-017, TASK-019, TASK-020"
+      ],
+      "basis": "NFR-OM-06 (1)〜(3)、NFR-OM-05、IF-01-TST-01、Steering 3章・4章（pytest/pytest-django、Docker Compose）、依頼の前提（Disposable Test DB に切替可能な構造）。修正cycle 3 で追加した方式を縛る要件：NFR-OM-17（本番環境で無効にする開発用の機能の有効・無効を設定値で変更）、NFR-EN-05（自動テストを外部インターネットに接続せずに実行）、NFR-SC-21 VUL-08（本番環境で開発用の機能が無効）",
+      "reason_unresolved": "状態の注入方式と本番での無効化の保証方法、試験用DBの切替方式の選択が必要",
+      "related_requirement_ids": [
+        "NFR-OM-06",
+        "NFR-OM-05",
+        "FR-002",
+        "FR-024",
+        "FR-030",
+        "FR-031",
+        "NFR-OM-17",
+        "NFR-EN-05",
+        "NFR-SC-21"
+      ]
+    },
+    {
+      "candidate_key": "application-structure",
+      "target_id": "application",
+      "topic": "画面と Web API が同一の業務規則を共有するアプリケーション構成（業務処理の配置・依存方向）。処理能力の増強（NFR-PF-16）と決済サービスとの連携部分の差替え（NFR-PF-17）を可能にする構成",
+      "location": [
+        "docs/architecture/implementation-task-list.md 3章, TASK-002, TASK-009",
+        "docs/architecture/implementation-task-list.md TASK-001（NFR-PF-16）, TASK-008・TASK-015（NFR-PF-17）"
+      ],
+      "basis": "CMN-34、FCN-09、Steering 3章・5章（単一 Django プロジェクト、業務規則を画面側に重複実装しない、内部モジュール構造は未指定）。修正cycle 3 で追加した方式を縛る要件：NFR-PF-16（プログラムを変更せずに処理能力を増強でき、増強してもログイン状態・カートの内容が失われない）、NFR-PF-17（決済サービスとの連携部分だけを差し替えられる）、NFR-LG-06・NFR-SC-21 VUL-07（業務ルールを画面と API で同じ規則で判定し画面側の操作で回避できない）、NFR-SC-03（全 API・全画面で権限を判定）",
+      "reason_unresolved": "内部モジュール分割・依存方向は Steering・要件で未指定",
+      "related_requirement_ids": [
+        "FR-021",
+        "FR-024",
+        "FR-026",
+        "FR-030",
+        "NFR-EN-09",
+        "NFR-PF-16",
+        "NFR-PF-17",
+        "NFR-LG-06",
+        "NFR-SC-03",
+        "NFR-SC-21"
+      ]
+    },
+    {
+      "candidate_key": "application-logging",
+      "target_id": "application",
+      "topic": "アプリケーションログの出力形式・要求識別子・機密項目の除外（アクセスログの要求先から検索条件を除くことを含む）・連携エラーの記録。LOG-05（初期データ一括投入）・LOG-06（外部連携）の出力、要求の識別子による LOG-01〜LOG-03・LOG-06 の関連付け（NFR-OM-11、NFR-OM-18）",
+      "location": [
+        "docs/architecture/implementation-task-list.md TASK-002, TASK-008, TASK-018",
+        "docs/architecture/implementation-task-list.md TASK-011（LOG-05）, TASK-020（LOG-01〜LOG-07 の運用テスト、要求の識別子による横断追跡）"
+      ],
+      "basis": "NFR-OM-01（機械解析可能、必須項目）、NFR-OM-02、NFR-SC-06、ERR-07、IF-01-EXC-02、Steering 6.2（監視実装方式は指定しない）。修正cycle 3 で追加した方式を縛る要件：NFR-OM-11（6.3 の LOG-01〜LOG-07 を出力・保管。LOG-05 ジョブ実行ログ、LOG-06 外部連携ログを含む）、NFR-OM-18（1件の要求に関する LOG-01〜LOG-03・LOG-06 を要求の識別子で関連付けて追跡）、NFR-SC-21 VUL-11",
+      "reason_unresolved": "ログの形式・出力先の方式は要件で定めていない",
+      "related_requirement_ids": [
+        "NFR-OM-01",
+        "NFR-OM-02",
+        "NFR-SC-06",
+        "FR-031",
+        "FR-041",
+        "NFR-OM-11",
+        "NFR-OM-18",
+        "NFR-SC-21"
+      ]
+    },
+    {
+      "candidate_key": "retention-deletion",
+      "target_id": "data-model",
+      "topic": "保存期間経過データ（カート1年、監査ログ1年、注文関連7年）の年1回の削除の実施手段",
+      "location": [
+        "docs/architecture/db-logical-design.md 18章 OQ-LDB-006、LDR-012、17章 PHY-HO-007",
+        "reports/architecture/cross-artifact-consistency.md ARCH-CI-007",
+        "docs/architecture/implementation-task-list.md TASK-003（NFR-OM-03）"
+      ],
+      "basis": "data_requirements.md UPD-19・UPD-30・UPD-32・DCN-03（運用者が手順に従い手動、自動削除機能は対象外）、DQ-50、NFR-OM-03、NFR-LG-03、NFR-OM-19。修正cycle 3 で追加した方式を縛る要件：NFR-SC-23（監査ログ・注文状態履歴は追記のみで、画面・API・初期データ一括投入から変更できない）",
+      "reason_unresolved": "対応する FR がなく、運用手順のみで行うか運用用の手段を持つかが未定。機能追加が必要な場合は Requirements へ戻す",
+      "related_requirement_ids": [
+        "NFR-OM-03",
+        "NFR-LG-03",
+        "NFR-OM-19",
+        "NFR-SC-23"
+      ]
+    },
+    {
+      "candidate_key": "environment-configuration",
+      "target_id": "application",
+      "topic": "環境ごとに異なる設定値（接続先、秘密情報、デバッグ用情報の表示、試験用状態の設定手段等の開発用の機能の有効・無効）の管理方式と記入例、本番環境で開発用の機能・デバッグ用情報の表示が無効であることの保証方法、本番環境で用いる Web サーバー・AP サーバーの選定（Django 付属の開発用サーバーを使用しない）、依存ライブラリ・実行環境（コンテナイメージ等）の取得元と版の固定・記録の方式。本番環境でログイン状態を示す情報・CSRF 対策の値を暗号化された通信でのみ送信させ HTTP で業務データを受け付けないアプリケーション側の設定（NFR-SC-02、NFR-SC-19）、処理能力の増強を構成の追加だけで行える構成（NFR-PF-16）、依存ライブラリのライセンスの確認・記録（NFR-EN-12）",
+      "location": [
+        "docs/architecture/implementation-task-list.md TASK-001, TASK-002, TASK-017, TASK-019, TASK-021",
+        "reports/architecture/cross-artifact-consistency.md ARCH-CI-012, ARCH-CI-017"
+      ],
+      "basis": "NFR-OM-17（環境ごとに異なる設定値をプログラムを変更せずに変更でき、一覧と秘密情報を含まない記入例を持つ）、NFR-SC-07（秘密情報をリポジトリに含めない）、NFR-SC-10 後段（本番でデバッグ用情報を表示しない）、NFR-EN-08（Web サーバー・AP サーバーは設計で選定し、本番で Django 付属の開発用サーバーを使用しない）、NFR-SC-21 VUL-08・VUL-13、VUL-10（依存ライブラリ・実行環境の取得元と版が特定でき同じ構成を再現できる）、VUL-09・NFR-SC-11・NFR-EN-10（サポート期限内の版、CVSS 7.0以上の既知脆弱性0件）、NFR-OM-06（試験用状態は本番で設定不可）、Steering 4章・6.2（環境変数、実値を含まない .env.example、取得時のみ外部接続可）、NOQ-01（本番基盤は未決）。修正cycle 3 で追加した方式を縛る要件：NFR-SC-02（本番環境は HTTPS のみ、HTTP で業務データを送受信しない。ENV-01 は HTTP を許容）、NFR-SC-19 の確認方法（暗号化されない通信でログイン状態を示す情報を送信しない）、data_requirements.md 8.1 CLS-01〜CLS-04（通信時の暗号化：本番必須・検証環境不要）、NFR-PF-16（プログラムを変更せず構成の追加だけで処理能力を増強）、NFR-EN-03・NFR-EN-07（Docker Compose で動作し特定のサーバー OS に依存しない）、NFR-EN-12（AGPL・ライセンス不明の依存ライブラリを使わない）、NFR-OM-19（開発・検証環境向けの手順書）。HTTPS 終端・サーバー証明書・TLS 1.2 以上・ネットワーク（NFR-SC-26）・保存媒体の暗号化（NFR-SC-20）は本番基盤（NOQ-01、NOQ-04）の対象で本候補に含めない",
+      "reason_unresolved": "NFR-EN-08 は Web/AP サーバーを設計で選定するとし、設定値の管理方式、本番での開発用機能の無効化の保証方法、依存ライブラリ・実行環境の版の固定・記録の方式も要件・Steering で指定されていない。本番基盤（NOQ-01）が未決のため、リポジトリに含める構成の範囲で判断が必要",
+      "related_requirement_ids": [
+        "NFR-OM-17",
+        "NFR-SC-07",
+        "NFR-SC-10",
+        "NFR-EN-08",
+        "NFR-SC-21",
+        "NFR-OM-06",
+        "NFR-SC-11",
+        "NFR-EN-10",
+        "NFR-SC-02",
+        "NFR-SC-19",
+        "NFR-PF-16",
+        "NFR-EN-03",
+        "NFR-EN-07",
+        "NFR-EN-12",
+        "NFR-OM-19"
+      ]
+    }
+  ]
+}

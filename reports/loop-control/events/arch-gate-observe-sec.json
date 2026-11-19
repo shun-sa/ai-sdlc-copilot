@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_design_gaps_SR-ARCH-001-003"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "arch-gate-run-1s",
+  "validation_result": "reports/loop-control/checks/arch-design-gate.json",
+  "repair": "",
+  "impact": "設計GateはQuality/Security FAILにより不成立",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "architecture_gate: command exit code 1"
+  ]
+}

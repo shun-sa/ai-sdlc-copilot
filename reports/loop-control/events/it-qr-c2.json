@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "TEST_ERROR",
+    "artifact": "reports/integration-test/required-coverage.json",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "integration_coverage_gaps_QR-IT-1118-001-006"
+  },
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "it-qr-run-2",
+  "validation_result": "reports/loop-control/checks/it-quality.json",
+  "repair": "GF-039〜043 処理中同時再送ケース追加、GF-034前提修正",
+  "impact": "QR-IT指摘(001-006,R1)は解消、観点6件PASS。残るValidatorエラーは上流UT/IT validator FAIL(既知UNRESOLVED-6de5eec)のみ。LOW R2-001(GF-034 title/docstring)残",
+  "recommended_route": "INTEGRATION_TEST",
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "Integration Test validation-result status is not PASS: 'FAIL'"
+  ]
+}

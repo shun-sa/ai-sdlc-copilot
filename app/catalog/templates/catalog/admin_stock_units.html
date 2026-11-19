@@ -1,0 +1,63 @@
+{# trace: ADDR-012, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>在庫単位一覧（管理）</h1>
+<form method="get" action="/manage/stock-units/" novalidate>
+  <div class="form-row">
+    <label for="sku">SKU</label>
+    <input id="sku" type="text" name="sku" value="{{ values.sku }}">
+    {% for e in errors.sku %}<span class="field-error">SKU：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="product_name">商品名</label>
+    <input id="product_name" type="text" name="product_name" value="{{ values.product_name }}">
+    {% for e in errors.product_name %}<span class="field-error">商品名：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="supplier_code">仕入先</label>
+    <select id="supplier_code" name="supplier_code">
+      <option value="">指定なし</option>
+      {% for s in suppliers %}<option value="{{ s.supplier_code }}"{% if s.supplier_code == values.supplier_code %} selected{% endif %}>{{ s.name }}</option>{% endfor %}
+    </select>
+    {% for e in errors.supplier_code %}<span class="field-error">仕入先：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="low_stock_only">低在庫のみ</label>
+    <select id="low_stock_only" name="low_stock_only">
+      <option value="false"{% if values.low_stock_only != "true" %} selected{% endif %}>指定しない</option>
+      <option value="true"{% if values.low_stock_only == "true" %} selected{% endif %}>指定する</option>
+    </select>
+    {% for e in errors.low_stock_only %}<span class="field-error">低在庫のみ：{{ e }}</span>{% endfor %}
+  </div>
+  {% for e in errors.page %}<p class="field-error">ページ：{{ e }}</p>{% endfor %}
+  <button type="submit">検索</button>
+  <a href="/manage/stock-units/">条件をクリア</a>
+</form>
+{% if result %}
+  {% if result.items %}
+    <p>全{{ result.total_count }}件（{{ first_index }}〜{{ last_index }}件目を表示）</p>
+    <table>
+      <thead><tr><th scope="col">SKU</th><th scope="col">商品コード</th><th scope="col">商品名</th><th scope="col">規格名</th><th scope="col">公開状態</th><th scope="col">仕入先名</th><th scope="col">税抜価格</th><th scope="col">在庫数量</th><th scope="col">低在庫</th></tr></thead>
+      <tbody>
+      {% for s in result.items %}
+        <tr>
+          <td>{{ s.sku }}</td>
+          <td>{{ s.product_code }}</td>
+          <td>{{ s.product_name }}</td>
+          <td>{{ s.variant_name }}</td>
+          <td>{{ s.visibility_label }}</td>
+          <td>{{ s.supplier_name }}</td>
+          <td>{{ s.price_excluding_tax|yen }}</td>
+          <td>{{ s.stock_quantity|number }}個</td>
+          <td>{% if s.is_low_stock %}低在庫{% else %}－{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% include "common/pagination.html" %}
+  {% else %}
+    <p>該当する在庫単位はありません。</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

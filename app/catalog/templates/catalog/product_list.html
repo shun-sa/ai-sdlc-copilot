@@ -1,0 +1,61 @@
+{# trace: ADDR-012, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>商品一覧</h1>
+<div class="layout">
+  <section aria-labelledby="category-heading">
+    <h2 id="category-heading">商品分類</h2>
+    <ul>
+      <li><a href="/?{% if keyword %}keyword={{ keyword|urlencode }}&amp;{% endif %}sort={{ sort|urlencode }}">すべての商品</a>{% if not category_id %}（選択中）{% endif %}</li>
+      {% for c in categories %}
+        <li style="margin-left: {{ c.depth|add:'-1' }}em"><a href="/?category_id={{ c.category_id }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% endif %}&amp;sort={{ sort|urlencode }}">{{ c.name }}</a>{% if c.category_id|stringformat:"s" == category_id %}（選択中）{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section aria-labelledby="result-heading">
+    <h2 id="result-heading">検索結果</h2>
+    {% if selected_category %}<p>{{ selected_category.name }}（選択中）</p>{% endif %}
+    {% if keyword %}<p>キーワード：{{ keyword }}</p>{% endif %}
+    {% for e in errors.keyword %}<p class="field-error">{{ e }}</p>{% endfor %}
+    {% if errors.category_id or errors.sort or errors.page %}
+      <ul class="field-error">
+        {% for e in errors.category_id %}<li>商品分類：{{ e }}</li>{% endfor %}
+        {% for e in errors.sort %}<li>並び順：{{ e }}</li>{% endfor %}
+        {% for e in errors.page %}<li>ページ：{{ e }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+    <form method="get" action="/" class="inline-form">
+      {% if category_id %}<input type="hidden" name="category_id" value="{{ category_id }}">{% endif %}
+      {% if keyword %}<input type="hidden" name="keyword" value="{{ keyword }}">{% endif %}
+      <label for="sort">並び順</label>
+      <select id="sort" name="sort">
+        {% for value, label in sort_choices %}<option value="{{ value }}"{% if value == sort %} selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <button type="submit">並べ替え</button>
+    </form>
+    {% if result %}
+      {% if result.items %}
+        <p>全{{ result.total_count }}件（{{ first_index }}〜{{ last_index }}件目を表示）</p>
+        <table>
+          <thead><tr><th scope="col">商品名</th><th scope="col">商品コード</th><th scope="col">最低価格</th><th scope="col">在庫状況</th><th scope="col">所属分類</th></tr></thead>
+          <tbody>
+          {% for p in result.items %}
+            <tr>
+              <td><a href="/products/{{ p.product_id }}/">{{ p.name }}</a></td>
+              <td>{{ p.product_code }}</td>
+              <td>{{ p.min_price_excluding_tax|price_pair }}</td>
+              <td>{% if p.is_in_stock %}在庫あり{% else %}在庫切れ{% endif %}</td>
+              <td>{% for c in p.categories %}{{ c.name }}{% if not forloop.last %}、{% endif %}{% empty %}－{% endfor %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% include "common/pagination.html" %}
+      {% else %}
+        <p>該当する商品はありません。</p>
+      {% endif %}
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "full-tr-c01-run-2",
+  "validation_result": "reports/loop-control/checks/full-traceability.json",
+  "repair": "",
+  "impact": "Gate/handoff欠落によるFULL Trace C01(再観測)",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate snapshot coverage differs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate assurance: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate requires three independent Assurance results（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'（差し戻し先: ADDR）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\architecture-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\architecture-gate.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate is not PASS（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate snapshot coverage differs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate assurance: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate requires three independent Assurance results（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Implementation release requires an independent ADDR Gate（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate snapshot coverage differs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate assurance: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate requires three Assurance results（差し戻し先: ARCHITECTURE）"
+  ]
+}

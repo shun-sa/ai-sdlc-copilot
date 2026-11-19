@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "arch-qr-run-0",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "",
+  "impact": "QR-ARCH-001 Task依存矛盾、002 FR-060削除後のログイン状態無効化の引渡し漏れ",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Unresolved blocking Quality Review Issue(s): 2"
+  ]
+}

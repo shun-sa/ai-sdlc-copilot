@@ -1,0 +1,93 @@
+{# trace: ADDR-012, ADDR-004, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>カート</h1>
+{% if cart.items %}
+  <table>
+    <thead><tr><th scope="col">商品名</th><th scope="col">規格名</th><th scope="col">SKU</th><th scope="col">単価</th><th scope="col">数量</th><th scope="col">明細金額</th><th scope="col">在庫数量</th><th scope="col">操作</th></tr></thead>
+    <tbody>
+    {% for item in cart.items %}
+      {% with item_key=item.cart_item_id|stringformat:"s" %}
+      <tr>
+        <td><a href="/products/{{ item.product_id }}/">{{ item.product_name }}</a></td>
+        <td>{{ item.variant_name }}</td>
+        <td>{{ item.sku }}</td>
+        <td>{{ item.unit_price_excluding_tax|price_pair }}</td>
+        <td>
+          <form method="post" action="/cart/items/{{ item.cart_item_id }}/quantity/" class="inline-form" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="submit_token" value="{{ submit_token }}">
+            <label for="quantity-{{ item.cart_item_id }}">数量</label>
+            <input id="quantity-{{ item.cart_item_id }}" type="text" inputmode="numeric" size="3" name="quantity" value="{% if item_values|get_item:item_key is not None %}{{ item_values|get_item:item_key }}{% else %}{{ item.quantity }}{% endif %}">
+            <button type="submit">数量を変更</button>
+          </form>
+          {% if item_errors|get_item:item_key %}<p class="field-error">{{ item_errors|get_item:item_key }}</p>{% endif %}
+          {% if item.cart_item_id in shortage_ids %}<p class="field-error">在庫が不足しています（現在の在庫数量：{{ item.stock_quantity }}個）。数量を変更してください。</p>{% endif %}
+        </td>
+        <td>{{ item.line_amount|yen }}（税抜）</td>
+        <td>{{ item.stock_quantity|number }}個</td>
+        <td>
+          <form method="post" action="/cart/items/{{ item.cart_item_id }}/delete/" class="inline-form" data-confirm="{{ item.product_name }}（{{ item.variant_name }}）をカートから削除します。よろしいですか？">
+            {% csrf_token %}
+            <input type="hidden" name="submit_token" value="{{ submit_token }}">
+            <button type="submit">削除</button>
+          </form>
+        </td>
+      </tr>
+      {% endwith %}
+    {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>カートに商品がありません。</p>
+{% endif %}
+<p>合計点数：{{ cart.total_quantity }}点</p>
+
+<section aria-labelledby="coupon-heading">
+  <h2 id="coupon-heading">クーポン</h2>
+  {% if cart.coupon %}
+    <dl>
+      <dt>クーポンコード</dt><dd>{{ cart.coupon.coupon_code }}</dd>
+      <dt>クーポン名</dt><dd>{{ cart.coupon.name }}</dd>
+      <dt>割引内容</dt><dd>{{ cart.coupon|discount_text }}</dd>
+      <dt>最低購入金額</dt><dd>{% if cart.coupon.minimum_purchase_amount %}小計{{ cart.coupon.minimum_purchase_amount|yen }}以上で利用可{% else %}条件なし{% endif %}</dd>
+      <dt>有効期間</dt><dd>{{ cart.coupon.valid_from|jst }} 〜 {{ cart.coupon.valid_to|jst }}</dd>
+      <dt>適用状況</dt>
+      <dd>{% if cart.coupon.is_applicable %}適用中{% else %}適用条件を満たしていません（{{ cart.coupon.not_applicable_reason|reason_label }}）。このままでは注文を確定できません。クーポンを解除するか、条件を満たしてください。{% endif %}</dd>
+    </dl>
+    <form method="post" action="/cart/coupon/remove/" class="inline-form">
+      {% csrf_token %}
+      <input type="hidden" name="submit_token" value="{{ submit_token }}">
+      <button type="submit">解除する</button>
+    </form>
+  {% else %}
+    <form method="post" action="/cart/coupon/apply/" class="inline-form" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="submit_token" value="{{ submit_token }}">
+      <label for="coupon_code">クーポンコード</label>
+      <input id="coupon_code" type="text" name="coupon_code" value="{{ coupon_value|default:'' }}">
+      <button type="submit">適用する</button>
+    </form>
+    {% for e in errors.coupon_code %}<p class="field-error">クーポンコード：{{ e }}</p>{% endfor %}
+  {% endif %}
+</section>
+
+<section aria-labelledby="amount-heading">
+  <h2 id="amount-heading">金額</h2>
+  <table>
+    <tbody>
+      <tr><th scope="row">小計（税抜）</th><td>{{ cart.amounts.subtotal|yen }}</td></tr>
+      <tr><th scope="row">割引額</th><td>{{ cart.amounts.discount_amount|yen }}</td></tr>
+      <tr><th scope="row">割引後小計</th><td>{{ cart.amounts.discounted_subtotal|yen }}</td></tr>
+      <tr><th scope="row">送料</th><td>{{ cart.amounts.shipping_fee|yen }}</td></tr>
+      <tr><th scope="row">消費税額</th><td>{{ cart.amounts.tax_amount|yen }}</td></tr>
+      <tr><th scope="row">合計（税込）</th><td>{{ cart.amounts.total_amount|yen }}</td></tr>
+    </tbody>
+  </table>
+  <p>割引後小計が5,000円以上の場合、送料は無料です（5,000円未満は送料500円）。</p>
+  {% if cart.items %}<p>在庫は注文確定時に確保します。価格は注文確定時点の価格で確定します。</p>{% endif %}
+</section>
+{% if cart.items %}<p><a href="/checkout/">注文手続きへ進む</a></p>{% endif %}
+<p><a href="/">買い物を続ける</a></p>
+{% endblock %}

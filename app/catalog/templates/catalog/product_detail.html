@@ -1,0 +1,55 @@
+{# trace: ADDR-012, ADDR-001, ADDR-004 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>{{ product.name }}</h1>
+<dl>
+  <dt>商品コード</dt><dd>{{ product.product_code }}</dd>
+  <dt>所属分類</dt>
+  <dd>{% for c in product.categories %}<a href="/?category_id={{ c.category_id }}">{{ c.name }}</a>{% if not forloop.last %}、{% endif %}{% empty %}－{% endfor %}</dd>
+  <dt>商品説明</dt>
+  <dd class="preserve-lines">{{ product.description|default:"－" }}</dd>
+</dl>
+<h2>規格</h2>
+<table>
+  <thead><tr><th scope="col">SKU</th><th scope="col">規格名</th><th scope="col">価格</th><th scope="col">在庫数量</th><th scope="col">在庫状況</th></tr></thead>
+  <tbody>
+  {% for s in product.stock_units %}
+    <tr>
+      <td>{{ s.sku }}</td>
+      <td>{{ s.variant_name }}</td>
+      <td>{{ s.price_excluding_tax|price_pair }}</td>
+      <td>{{ s.stock_quantity|number }}個</td>
+      <td>{% if s.is_in_stock %}在庫あり{% else %}在庫切れ{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% if can_add_to_cart %}
+  {% if all_out_of_stock %}
+    <p>この商品は現在すべての規格が在庫切れのため、カートに入れられません。</p>
+  {% else %}
+    <form method="post" action="/cart/items/add/" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="submit_token" value="{{ submit_token }}">
+      <input type="hidden" name="product_id" value="{{ product.product_id }}">
+      <div class="form-row">
+        <label for="stock_unit_id" class="required-mark">規格</label>
+        <select id="stock_unit_id" name="stock_unit_id">
+          {% for s in product.stock_units %}
+            <option value="{{ s.stock_unit_id }}"{% if not s.is_in_stock %} disabled{% endif %}{% if values.stock_unit_id %}{% if values.stock_unit_id == s.stock_unit_id|stringformat:"s" %} selected{% endif %}{% elif s.stock_unit_id == default_stock_unit_id %} selected{% endif %}>{{ s.variant_name }}（{{ s.sku }}）</option>
+          {% endfor %}
+        </select>
+        {% for e in errors.stock_unit_id %}<span class="field-error">規格：{{ e }}</span>{% endfor %}
+      </div>
+      <div class="form-row">
+        <label for="quantity" class="required-mark">数量</label>
+        <input id="quantity" type="text" inputmode="numeric" name="quantity" value="{{ values.quantity|default:'1' }}">
+        {% for e in errors.quantity %}<span class="field-error">{{ e }}</span>{% endfor %}
+      </div>
+      <button type="submit">カートに入れる</button>
+    </form>
+  {% endif %}
+{% endif %}
+<p><a href="/">商品一覧へ戻る</a></p>
+{% endblock %}

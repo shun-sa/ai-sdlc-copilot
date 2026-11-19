@@ -1,0 +1,8 @@
+{
+  "status": "FAIL",
+  "exit_code": 1,
+  "check_id": "addr_prepare_request",
+  "errors": [
+    "addr_prepare_request: command exit code 1"
+  ]
+}

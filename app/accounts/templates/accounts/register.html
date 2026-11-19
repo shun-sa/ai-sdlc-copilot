@@ -1,0 +1,33 @@
+{# trace: ADDR-012, ADDR-004, ADDR-002 #}
+{% extends "common/base.html" %}
+{% block content %}
+<h1>会員登録</h1>
+<p>会員登録後、ログイン画面からログインしてください。</p>
+<form method="post" action="/register/" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="submit_token" value="{{ submit_token }}">
+  <div class="form-row">
+    <label for="email" class="required-mark">メールアドレス</label>
+    <input id="email" type="email" name="email" value="{{ values.email|default:'' }}" autocomplete="email" aria-describedby="email-error">
+    {% for e in errors.email %}<span id="email-error" class="field-error">メールアドレス：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="password" class="required-mark">パスワード</label>
+    <input id="password" type="password" name="password" value="" autocomplete="new-password" aria-describedby="password-help password-error">
+    <span id="password-help">8〜64文字で、英字と数字をそれぞれ1文字以上含めてください。メールアドレスと同じ文字列（英字の大文字・小文字の違いは区別しない）は使用できません。</span>
+    {% for e in errors.password %}<span id="password-error" class="field-error">パスワード：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="password_confirmation" class="required-mark">パスワード（確認）</label>
+    <input id="password_confirmation" type="password" name="password_confirmation" value="" autocomplete="new-password">
+    {% for e in errors.password_confirmation %}<span class="field-error">パスワード（確認）：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="name" class="required-mark">氏名</label>
+    <input id="name" type="text" name="name" value="{{ values.name|default:'' }}" autocomplete="name">
+    {% for e in errors.name %}<span class="field-error">氏名：{{ e }}</span>{% endfor %}
+  </div>
+  <button type="submit">登録する</button>
+</form>
+<p><a href="/login/">ログイン画面へ</a></p>
+{% endblock %}

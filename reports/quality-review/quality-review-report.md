@@ -1,0 +1,74 @@
+# Quality Review Report（FULL 最終再レビュー）
+
+- Run: RUN-AOBA-EC-1118 / 生成: 2026-11-20T04:55:00+09:00 / Quality Review Agent
+- Audit Scope: **FULL**
+- Status: **FAIL**（FAIL 要因はすべて既知の未解決）
+- source_baseline_sha256（FINAL design-manifest）: `fea9a82a98b5e04a5b79e5e0fbbff4cddf37a3b19748634ee5d47b7bbe69865c`
+- 実装引渡しGate: `reports/addr/implementation-handoff.json` 不在（設計Gate不成立→ADDR BLOCKED。既知 UNRESOLVED-60a549ca11f16034 の帰結）
+- 独立性: 過去 Run のブランチ・reports は不参照。前回判定は流用せず現版を独立評価。成果物の修正・テスト再実行なし
+
+## Criteria Results
+
+| Criterion | Applicable | Result | 理由 |
+|---|---|---|---|
+| requirements-quality | True | PASS | 要件全文（FR-001〜FR-060・NFR・UC・データ/画面/外部IF）、expected-fr.txt、Steering を確認。FR-026 の計算手順と計算例7件、数量上限10、キャンセル可能状態（注文受付・支払済）、E-034/E-045 の例外条件等は入力・出力・エラーが観測可能で一意に導出できる。FR-OUT-01〜16 は機能要件・expected-fr（EXCLUDE 行）・Steering 7章で一貫。NOQ-08/NOQ-10（総当たり対策なし・管理者PW）と Steering OQ-PJ-002（--reset の適用範囲）は確認事項として影響・判断者・暫定扱いが登録済みで、後続工程が追加解釈せず進められる。セキュリティ要件の不足は Security Review の既知 UNRESOLVED-32af0f4a0ca9c80f、expected-fr の EXCLUDE 書式と C12 の不整合は Traceability の既知 UNRESOLVED-34471205dd0539bc で扱い、本観点の新規の意味的欠陥はない |
+| architecture-quality | True | FAIL | 既知の未解決により FAIL。UNRESOLVED-60a549ca11f16034（QR-ARCH-001 Task 依存矛盾、QR-ARCH-002 FR-060 削除後のログイン状態無効化の引渡し漏れ）と UNRESOLVED-0b5694db22a0bead（SR-ARCH-001 本番デバッグ無効化・環境別設定の設計引渡し漏れ）が修正ループ上限（3/3）到達後も残る。その結果、設計Gate（design-gate.json）と addr-request.json が無く、ADDR 工程は BLOCKED（addr-result.json BLK-ADDR-001）で reports/addr/implementation-handoff.json（実装引渡しGate）が存在しない。ADDR-001〜014 自体（判断基準・選択肢・DD/INV・Guardrail）は ACTIVE の候補として要件・Steering と整合し、不要な技術導入（Gunicorn+WhiteNoise・PostgreSQL 16・Django 5.2 は Steering 事前指定）や過剰な複雑さは確認されない。Gate 不成立は既知 60a549ca11f16034 の帰結として扱い新規 Issue にしない |
+| implementation-quality | True | FAIL | 既知 UNRESOLVED-6de5eec64599b907 により FAIL。common.middleware.is_unusable_charset / config.wsgi.application が charset=undefined・idna を通過させ、NFR-SC-04（入力エラーは 400、内部情報なし）に反して 500 となる（UT-DEF-001/002 の8件、IT-058/IT-DEF-001）。Production Code は前回 FULL 以降変更なし（最終更新 2026-11-19 20:59）。それ以外のサンプリング（carts.pricing の FR-026 手順1〜8・送料閾値5,000円/500円・税10%切捨て、MAX_QUANTITY_PER_STOCK_UNIT=10、orders.services の状態遷移 注文受付→支払済→出荷済→配達完了・キャンセル可否、transaction.atomic による部分更新防止、test_support は MINICOMMERCE_DEV_FEATURES 有効時のみ組込み・本番では起動拒否＝ADDR-011/014）は要件・ADDR と整合し、Out of Scope の実装や不要な抽象化は認められない |
+| unit-test-quality | True | PASS | unit-exec-10（737件中729 PASS、分岐96.97%）。単体テストは前回 FULL 以降変更なし。失敗8件は要件（NFR-SC-04・ADDR-001 4.3 の7）由来の期待値を維持したまま Production 欠陥（既知 6de5eec64599b907）を検出しており、期待値を実装へ合わせた形跡はない。境界（数量1〜10、送料5,000円、有効期間の両端）・無効入力・例外（DB 障害注入→ロールバック）・状態遷移の検証が要件由来で揃う。既知 UNRESOLVED-c0b4f02168099ecc は cycle=3 時点で残るエラーが Unit Test validator FAIL（6de5eec 起因）のみ。FR-026 E-026-01 の直接検証欠落は LOW（非Blocking）の QR-FULL-1118-002 として継続記録 |
+| integration-test-quality | True | PASS | it-exec-7（134件中133 PASS、INITIAL 61・GAP_FILL 73、外部ケースなし＝ユーザー明示選択）。新規 GF-044〜073 は全件 origin=AI_GENERATED・generation_stage=GAP_FILL で INITIAL と区別され、期待値は NFR 本文の目標値（照会1.0秒・更新/認証2.0秒・画面2.0秒・310利用者でシステムエラー1%以下・在庫0未満0件・金額整合・リストア4時間以内・更新120分以内、NFR-SC-26 の HTTPS 以外拒否、NFR-SC-11 の CVSS 7.0 以上0件）から導出されている。参考計測（単一PC・短時間・小規模/3年後相当データ）は PARTIAL_IT とし counts_as_quality_pass=false、「該当なし」NFR は NOT_APPLICABLE_PREMISE_IT として前提のみ確認し要件の合否を判定しないと明記しており、検証範囲の過大申告はない。GF-046/GF-048 の『ロック・送信元制限なし』は FR-OUT-11・NFR-SC-14/27 の対象外の確認で要件と整合。旧既知ギャップ（同時キャンセル/支払・要求ID横断ログ・採番非巻戻し等）は IT-041〜047・GF-012/014/018〜021 で実在の連携点を検証。IT-058 の FAIL は既知 6de5eec64599b907 の正当な検出。C10 残 NFR 13件は既知 UNRESOLVED-e1d9dfe900863622 で NOT_VERIFIED 10・NOT_APPLICABLE 3 と現行 traceability-report の C10 と一致。QR-FULL-1118-001（c10 件数表記）は c10_nfr_count=38＋note・一覧92件・cycle3 最終13件の区別が JSON/md で一貫し解消 |
+| cross-phase-consistency | True | FAIL | 既知の未解決により FAIL。NFR-SC-04（復号できない文字コード指定は 400）→ ADDR-001 4.3 の7 → 実装（500）で意味が変質（UNRESOLVED-6de5eec64599b907、テストは要件側の期待値を維持）。FR-060 削除後のログイン状態無効化は実装・GF-018 で成立するが設計資料・Task への引渡しが欠落（UNRESOLVED-60a549ca11f16034）。それ以外のサンプリング（FR-026 金額・数量上限・状態遷移・HTTPS 拒否・性能目標値）では要件→ADDR→実装→単体→結合で期待値の矛盾なし |
+
+## Quality Summary
+
+- criteria_total: 6
+- criteria_pass: 3
+- criteria_not_applicable: 0
+- criteria_fail: 3
+- issues_total: 1
+- blocking_issues: 0
+
+## 前回 FULL 以降の変更の評価
+
+- GF-044〜073: 30件とも GAP_FILL・PASS。期待値は NFR 本文由来、参考計測は PARTIAL_IT（品質上の PASS に数えない）、該当なし前提は NOT_APPLICABLE_PREMISE_IT として区別。新規の品質問題なし
+- QR-FULL-1118-001: 解消（c10_nfr_count=38 と c10_nfr_count_note、一覧92件、cycle3 最終の C10 NFR 13件が JSON/md で区別・一貫）
+
+## Issues
+
+| ID | 区分 | Severity | Route | 新規/既知 | 概要 |
+|---|---|---|---|---|---|
+| QR-FULL-1118-002 | MISSING_BEHAVIOR_COVERAGE | LOW | UNIT_TEST | 継続（前回FULL検出・未修正） | 継続（前回 FULL で検出、未修正のため本レビューで独立に再検出）。FR-026 E-026-01『税抜価格・クーポンの参照中のシステム障害では適用元の機能の当該操作によるデータ変更もすべて行わない』を直接確かめる単体テストがない。実装は carts.services の各操作で更新後の cart_content（DB 参照）を同じ transaction.atomic 内で呼ぶため構造上はロールバックされるが、既存の障害注入は Cart/CartItem の create/save/delete 時点のみで、更新後の金額参照時点の障害は未検証。cart_content が atomic の外へ移るリグレッションを検知できない。 |
+
+### Evidence
+
+- QR-FULL-1118-002: grep 'E-026-01' app/ → 0件。test_carts_services.py の DatabaseError 注入は Cart.objects.create（L137,701）/CartItem.objects.create（L282）/CartItem.save（L402）/CartItem.delete（L446）/Cart.save（L600）のみ。carts/services.py L201-228・248-265・328-378 で cart_content は atomic 内。単体テストは 2026-11-19 22:38 以降変更なし。
+
+## 既知の未解決（重複 Issue にしない）
+
+| ID | 原因工程 | Route | 本レビューへの影響 |
+|---|---|---|---|
+| UNRESOLVED-32af0f4a0ca9c80f | REQUIREMENTS | REQUIREMENTS | Security Review 領域（SEC-REQ-001..004）。requirements-quality は品質観点で PASS。新規 Issue にしない |
+| UNRESOLVED-0b5694db22a0bead | ARCHITECTURE | ARCHITECTURE | architecture-quality FAIL の要因（SR-ARCH-001 設計引渡し漏れ） |
+| UNRESOLVED-60a549ca11f16034 | ARCHITECTURE | ARCHITECTURE | architecture-quality / cross-phase-consistency FAIL の要因。design-gate 不成立→ADDR BLOCKED→implementation-handoff.json 不在もこの帰結 |
+| UNRESOLVED-34471205dd0539bc | IMPLEMENTATION | REQUIREMENTS | Traceability C12/C10 の FR-OUT-01〜16。品質上は expected-fr に EXCLUDE 行と理由があり意味的欠陥なし |
+| UNRESOLVED-6de5eec64599b907 | IMPLEMENTATION | IMPLEMENTATION | implementation-quality / cross-phase-consistency FAIL、Unit Test validator FAIL（UT-DEF-001/002、UT-DEF-003〜015 の full_suite）、Integration Test validator FAIL（IT-058/IT-DEF-001）の原因 |
+| UNRESOLVED-05b079507f12a077 | INTEGRATION_TEST | INTEGRATION_TEST | QR-IT-1118-001〜004 の対象 Behavior は IT-041〜047・GF-012/014/018〜021 で現在カバー済みを確認。残るのは validator FAIL（6de5eec 起因）のみ |
+| UNRESOLVED-c0b4f02168099ecc | UNIT_TEST | UNIT_TEST | cycle=3 で残るエラーは Unit Test validator FAIL（6de5eec 起因）のみ。unit-test-quality は PASS と判定 |
+| UNRESOLVED-e1d9dfe900863622 | INTEGRATION_TEST | INTEGRATION_TEST | C10 NFR 13件（NOT_VERIFIED 10・NOT_APPLICABLE 3）。現行 traceability-report（04:32）の C10 NFR 13件と一致し、nfr-verification-scope cycle3 最終確認と整合。unresolved-results.json には未掲載（retry-ledger のみ） |
+
+## Validator エラーと既知 ID の対応
+
+| Validator エラー | 既知 ID | 補足 |
+|---|---|---|
+| Unit Test validation-result status is not PASS: 'FAIL' | UNRESOLVED-6de5eec64599b907 | UT-DEF-001/002（charset undefined/idna→500）8件の失敗と、その影響による UT-DEF-003〜015 の full_suite 非PASS |
+| Integration Test validation-result status is not PASS: 'FAIL' | UNRESOLVED-6de5eec64599b907 | IT-058 FAIL（IT-DEF-001、known_issue=6de5eec） |
+| Applicable criterion is not PASS: architecture-quality | UNRESOLVED-60a549ca11f16034、UNRESOLVED-0b5694db22a0bead | 実装引渡しGate不在は 60a549 の帰結 |
+| Applicable criterion is not PASS: cross-phase-consistency | UNRESOLVED-6de5eec64599b907、UNRESOLVED-60a549ca11f16034 |  |
+| Applicable criterion is not PASS: implementation-quality | UNRESOLVED-6de5eec64599b907 |  |
+
+## Recommended Route
+
+- **ARCHITECTURE**: FAIL 要因はすべて既知の未解決（修正ループ上限到達）。最上流の原因工程は ARCHITECTURE（60a549ca11f16034・0b5694db22a0bead）、実装欠陥は IMPLEMENTATION（6de5eec64599b907）。新規 Issue は LOW 1件（UNIT_TEST、advisory）のみで新しいループは不要
+
+## Summary
+
+FULL 最終再レビュー: FAIL。Criteria 6件中 PASS 3（requirements・unit-test・integration-test）/ FAIL 3（architecture・implementation・cross-phase）で、FAIL はすべて既知の未解決（60a549ca11f16034・0b5694db22a0bead・6de5eec64599b907）。GF-044〜073 と QR-FULL-1118-001 修正に新たな品質問題なし。新規 Blocking Issue 0、継続 LOW 1件（QR-FULL-1118-002）。

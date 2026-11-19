@@ -1,0 +1,23 @@
+{
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "addr_security_SR-ADDR-001-003"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "addr-sec-run-0",
+  "validation_result": "reports/security-review/validation-result.json",
+  "repair": "",
+  "impact": "SR-ADDR-001 Django管理サイト/特権経路の判断欠落, 002 本番保護のfail-open, 003 DB_USER秘密扱い",
+  "recommended_route": "ADDR",
+  "errors": [
+    "Applicable criterion is not PASS: authentication-authorization",
+    "Applicable criterion is not PASS: cross-phase-security-consistency",
+    "Applicable criterion is not PASS: dependency-configuration",
+    "Unresolved blocking Security Review Issue(s): 2"
+  ]
+}

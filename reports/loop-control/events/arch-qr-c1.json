@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "FAILURE",
+  "cycle": 1,
+  "run_id": "arch-qr-run-1",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "TASK-019新設・依存再編、FR-060引渡し、ラベル統一",
+  "impact": "QR-ARCH-R1-001 manifest文字化け, R1-002 AC経由の依存循環/未宣言",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Unresolved blocking Quality Review Issue(s): 2"
+  ]
+}

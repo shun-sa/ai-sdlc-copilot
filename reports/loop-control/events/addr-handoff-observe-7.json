@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "addr-handoff-run-7",
+  "validation_result": "reports/loop-control/checks/addr-handoff.json",
+  "repair": "",
+  "impact": "設計Gate不成立→handoff生成不能(ADDR-003 r2後)",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "handoff: command exit code 1"
+  ]
+}

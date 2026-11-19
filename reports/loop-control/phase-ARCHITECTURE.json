@@ -1,0 +1,245 @@
+{
+  "status": "CONTINUE_WITH_UNRESOLVED",
+  "quality_pass": false,
+  "phase": "ARCHITECTURE",
+  "checks": {
+    "producer": {
+      "source": "reports/loop-control/checks/arch-producer.json",
+      "path": "reports/loop-control/evidence/dc2d811d8ff4f262c22b4eb83c0cb8086ce6fbebf50963a4ee6f7e1b7de7d16d.json",
+      "sha256": "dc2d811d8ff4f262c22b4eb83c0cb8086ce6fbebf50963a4ee6f7e1b7de7d16d"
+    },
+    "design_final": {
+      "source": "reports/loop-control/checks/arch-design-final.json",
+      "path": "reports/loop-control/evidence/e61a7480818e5c027dc40fa029f6793fb1b5f49710bc6829382de51824c63243.json",
+      "sha256": "e61a7480818e5c027dc40fa029f6793fb1b5f49710bc6829382de51824c63243"
+    },
+    "quality": {
+      "source": "reports/loop-control/checks/arch-quality-rework.json",
+      "path": "reports/loop-control/evidence/86164ba481d1ffb71f011079f9e2e14f70d355533d558b72e1217145e87c52e8.json",
+      "sha256": "86164ba481d1ffb71f011079f9e2e14f70d355533d558b72e1217145e87c52e8"
+    },
+    "security": {
+      "source": "reports/loop-control/checks/arch-security-rework.json",
+      "path": "reports/loop-control/evidence/07224c4b6ba2d5d06b5c7cdcace5cc004f1ccdfa1987306e5b82f2bae4b4380c.json",
+      "sha256": "07224c4b6ba2d5d06b5c7cdcace5cc004f1ccdfa1987306e5b82f2bae4b4380c"
+    },
+    "traceability": {
+      "source": "reports/loop-control/checks/arch-traceability-rework.json",
+      "path": "reports/loop-control/evidence/83486ef6404e6cd921e2af0fd3a3d0a30efd718d02fa4282fdffb0aa8f2f9c9f.json",
+      "sha256": "83486ef6404e6cd921e2af0fd3a3d0a30efd718d02fa4282fdffb0aa8f2f9c9f"
+    },
+    "architecture_gate": {
+      "source": "reports/loop-control/checks/arch-design-gate.json",
+      "path": "reports/loop-control/evidence/f39366b0b73eb9d88e961bcd5723dfa5495f2a6a1104657d9cc0b689714aa854.json",
+      "sha256": "f39366b0b73eb9d88e961bcd5723dfa5495f2a6a1104657d9cc0b689714aa854"
+    }
+  },
+  "unresolved_ids": [
+    "UNRESOLVED-32af0f4a0ca9c80f",
+    "UNRESOLVED-0b5694db22a0bead",
+    "UNRESOLVED-60a549ca11f16034",
+    "UNRESOLVED-34471205dd0539bc",
+    "UNRESOLVED-6de5eec64599b907",
+    "UNRESOLVED-c0b4f02168099ecc",
+    "UNRESOLVED-05b079507f12a077",
+    "UNRESOLVED-e1d9dfe900863622"
+  ],
+  "sources": [
+    {
+      "path": ".github/project-context/project-ai-steering.md",
+      "sha256": "41e1b3a2185ec7dc01ce4f39f1c04bafa207c029cf6f03c740abd192eaa950db"
+    },
+    {
+      "path": ".github/project-context/templates/project-ai-steering.md",
+      "sha256": "1fc7b957118f05eb748f9e295d74c7437a62e81bae2ee43bdfa5ab095c8d2a7d"
+    },
+    {
+      "path": ".github/skills/architecture/templates/cross-artifact-consistency-analysis.template.md",
+      "sha256": "47316f3fa9356925043ccdfcb7422eb039e3336fffbae9c6890a32e058470d4d"
+    },
+    {
+      "path": ".github/skills/architecture/templates/file-definition.template.md",
+      "sha256": "2318171b8506d906644da2487e889a17c065fb0abd371d700f437a8b8b4332ce"
+    },
+    {
+      "path": ".github/skills/architecture/templates/implementation-task-list.template.md",
+      "sha256": "e3dc75b8627b67024d7e2f1d63162bbaf930b07eab5a3933ae27e957760b44c4"
+    },
+    {
+      "path": ".github/skills/architecture/templates/logical-database-design.template.md",
+      "sha256": "a3daff336857db24f9d3e86098849e6f59cfccf6ba8bb31f7e7fab5c6271eb70"
+    },
+    {
+      "path": ".github/skills/failure-triage/policy/loop-policy.json",
+      "sha256": "8fc9ce7b9d695b25aea4dc0a8035f0de996e37ec190d8b031ef8c5a944d7194d"
+    },
+    {
+      "path": ".github/skills/requirements/templates/business_requirements.md",
+      "sha256": "b608a590c048ae49e83c02cba10bfd49e6767343ddbf70da8732da29a2e5a556"
+    },
+    {
+      "path": ".github/skills/requirements/templates/data_requirements.md",
+      "sha256": "94bd242ff3446f19d83e170a02aee275e4397ecf7900468012ef2c57a0d5678c"
+    },
+    {
+      "path": ".github/skills/requirements/templates/external_interface_requirements.md",
+      "sha256": "5fd5e1a48383ffbd78d42cd2dbbc67cca914d97a244b998d1047dd68fb32e4cc"
+    },
+    {
+      "path": ".github/skills/requirements/templates/functional_requirements.md",
+      "sha256": "0c1308e840b3c230de777c2cedff61e7033d5253cffa96a10e78845e5f21cb95"
+    },
+    {
+      "path": ".github/skills/requirements/templates/glossary.md",
+      "sha256": "1a0ee6d23c64aa26c39d28ae620f73530dd3bb5391a930570d79e4a1bd0beb49"
+    },
+    {
+      "path": ".github/skills/requirements/templates/non_functional_requirements.md",
+      "sha256": "46ccb663381bdf0eac64d542921357b69fb9d6243a1d02292ca9bdfa4ff6a476"
+    },
+    {
+      "path": ".github/skills/requirements/templates/requirements_quality_checklist.md",
+      "sha256": "d8481871fa3006c5f9f843a9fc95840a996cfaf9bc0274c7d11b2e9ef5e2a851"
+    },
+    {
+      "path": ".github/skills/requirements/templates/ui_report_requirements.md",
+      "sha256": "9a29c0fd0ac17e54a0e8e5c0114f77b39157a40789c9ee08666b02f23f34f680"
+    },
+    {
+      "path": ".github/skills/requirements/templates/use_case_detail.md",
+      "sha256": "5a28937c48b2b69bf8cf118216d92db811040b867bb3b86c21e1affae49c10a4"
+    },
+    {
+      "path": ".github/skills/requirements/templates/use_case_user_story_list.md",
+      "sha256": "fe4f7c5f732483049dd8e37aa1ee36d7a43f3420a218e51306894e6e38eeaf0b"
+    },
+    {
+      "path": "docs/architecture/db-logical-design.md",
+      "sha256": "a94084d6028f441f9acae063c3d4a1401c0abe9366714036407dae17a9ff5dbc"
+    },
+    {
+      "path": "docs/architecture/files/FILE-001.md",
+      "sha256": "1ba05f0badcf32da34ac95efd5f2f4cecd4845d85c4e563b469deb5e319a3f2e"
+    },
+    {
+      "path": "docs/architecture/implementation-task-list.md",
+      "sha256": "13eef307ccd12f8383bfe834664c1e926238603aac07941ae87ead660c15c94f"
+    },
+    {
+      "path": "docs/requirements/business_requirements.md",
+      "sha256": "c1be4645ffd62b89241ad99e53a1a72935a94699171c97b4cd0d5bc596950d23"
+    },
+    {
+      "path": "docs/requirements/data_requirements.md",
+      "sha256": "8a611e62a376d67fdf91e886fb7ae47c48c03a76da7ae209656b9044507c255c"
+    },
+    {
+      "path": "docs/requirements/expected-fr.txt",
+      "sha256": "2d07108fb6310d11bb8a55b6be0e1690f860c61233a5e7e3dc2ad6738165cd2b"
+    },
+    {
+      "path": "docs/requirements/external_interface_requirements.md",
+      "sha256": "10f2f74445c75edbda1b3db8d7f9d8152b37aacbbb1b69b23611a60feee3dfba"
+    },
+    {
+      "path": "docs/requirements/functional_requirements.md",
+      "sha256": "9df54714e91bbe1a7cf543e500e3bc05520cfbb64643a69cefefa55bf8a869ae"
+    },
+    {
+      "path": "docs/requirements/glossary.md",
+      "sha256": "9d1f91bc1e8935ec4a7438a395c44788dbed23060a8754e56115286bf0b44e85"
+    },
+    {
+      "path": "docs/requirements/non_functional_requirements.md",
+      "sha256": "b9f5df11a4458e6b86db216411ced9745a187be6aa9855f5c7d1e8895168fef5"
+    },
+    {
+      "path": "docs/requirements/requirements.md",
+      "sha256": "79f13953a9fb85cd611a6e64589076199c2ea275685590342901d4a755d80d1d"
+    },
+    {
+      "path": "docs/requirements/requirements_quality_checklist.md",
+      "sha256": "eefbb4b2430f3fdcbcbcbf9c302a609fa043e6a2a4690fb91e9f082dbfb13f06"
+    },
+    {
+      "path": "docs/requirements/ui_report_requirements.md",
+      "sha256": "9b0c3affff05341ca260f803d03059d36666ff770576ec3e61e2466b0af8834f"
+    },
+    {
+      "path": "docs/requirements/use-case-user-story-index.md",
+      "sha256": "da7e51f68d95a84f75b9b7ab855080a933ae96012c7a02c3a78bbeee43fa3547"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-001.md",
+      "sha256": "bec417d03d78ecdde7e1b1931bf3059971b0426f5225ec650d8d07aef1144ee6"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-002.md",
+      "sha256": "40b6f4790dae10a9b4c85191c6b324434089ab2c944796a765b7eb419fd1ea13"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-003.md",
+      "sha256": "291b3733f1ec671d97df44a939dd6d0f4eba0d52416e5f72958f8d3d346d8b1e"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-004.md",
+      "sha256": "6cec59bb0d930a3a997f240794e044fd510f99ddeaf9d50bfa4c251a74a36b9c"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-005.md",
+      "sha256": "7a8e909d58c1ebedb2ee3a89ad5fbab1e01f831770baf6cba1cce87f731e4fde"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-006.md",
+      "sha256": "bd3126ed45eb3e2d9de69901e2cf14641cfe72b5818ec48f536da53c93886261"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-007.md",
+      "sha256": "500404a2855dffe1076b09ea9863acc526bdb98e06ff5a013157f70e8aa091ae"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-008.md",
+      "sha256": "633a6a8c7b131893fff2028e3253b82d04a034c942769aa89ca0c8cc95c2f7dd"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-009.md",
+      "sha256": "664713981ebf2a33fcbe1d1a61a11d025bf9cbcbae3643c315c2adc8a171cc7c"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-010.md",
+      "sha256": "44728770d4232501dbdde054a1a3311e046f8f8c5b0964e6845bd6ee42ce86cc"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-011.md",
+      "sha256": "98bced33b231f80056173b5a57b6cfbee37b37aa977e660a9373034f11a9d571"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-012.md",
+      "sha256": "ebe027752d88003d627278517270d3cc219bb9e31723532f7f16437086fa7057"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-013.md",
+      "sha256": "131b5c643df33e6fa96a1e360aabd824913a7aaa04b6c965613cb74683b9240c"
+    },
+    {
+      "path": "reports/architecture/cross-artifact-consistency.md",
+      "sha256": "acea9ac7809e35c50abba02948ee804351a9955d1d240b5990ff4991a69aec8b"
+    },
+    {
+      "path": "reports/architecture/design-gate.json",
+      "sha256": null
+    },
+    {
+      "path": "reports/architecture/design-input.json",
+      "sha256": null
+    },
+    {
+      "path": "reports/architecture/design-manifest.json",
+      "sha256": "fea9a82a98b5e04a5b79e5e0fbbff4cddf37a3b19748634ee5d47b7bbe69865c"
+    },
+    {
+      "path": "reports/requirements/input-mapping.md",
+      "sha256": "9ff9128420b5cd5c19f4c9da5dde76547eb2d16340df7bf8c2610633acfa4bf0"
+    }
+  ]
+}

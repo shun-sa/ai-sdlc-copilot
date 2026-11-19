@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app/carts/views_web.py",
+    "requirement_reference": "FR-022",
+    "test_case": "",
+    "stable_error_type": "cart_web_quantity_error_reason_UT-DEF-003"
+  },
+  "action": "RESOLVED",
+  "cycle": 1,
+  "run_id": "ut-def003-run-1",
+  "validation_result": "reports/loop-control/checks/ut-def-003-target.json",
+  "repair": "_cart_actionでfield_errorsの数量理由を表示",
+  "impact": "解消",
+  "recommended_route": "IMPLEMENTATION"
+}

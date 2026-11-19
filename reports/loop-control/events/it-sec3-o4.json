@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "nul_char_input_db_error_SEC-IMPL-001"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "it-sec3-o4",
+  "validation_result": "reports/loop-control/checks/it-security.json",
+  "repair": "",
+  "impact": "IT Security: cross-phase(既知)",
+  "recommended_route": "IMPLEMENTATION",
+  "errors": [
+    "Applicable criterion is not PASS: cross-phase-security-consistency"
+  ]
+}

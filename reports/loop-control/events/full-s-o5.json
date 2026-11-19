@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "REQUIREMENTS",
+    "classification": "REQUIREMENT_ERROR",
+    "artifact": "docs/requirements",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_requirement_gaps_SEC-REQ-001-005"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "full-s-o5",
+  "validation_result": "reports/loop-control/checks/full-security.json",
+  "repair": "",
+  "impact": "FULL Security: authentication-authorization(SEC-REQ-002/003)",
+  "recommended_route": "REQUIREMENTS",
+  "errors": [
+    "Applicable criterion is not PASS: authentication-authorization"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "source_baseline_sha256": null,
+  "status": "FAIL",
+  "audit_scope": "REQUIREMENTS",
+  "criteria": {
+    "discovered": [
+      "architecture-quality",
+      "cross-phase-consistency",
+      "implementation-quality",
+      "integration-test-quality",
+      "requirements-quality",
+      "unit-test-quality"
+    ],
+    "total": 6,
+    "pass": 0,
+    "not_applicable": 5,
+    "fail": 1
+  },
+  "issues": {
+    "total": 7,
+    "unresolved": 7,
+    "blocking": 3
+  },
+  "errors": [
+    "Applicable criterion is not PASS: requirements-quality",
+    "Unresolved blocking Quality Review Issue(s): 3"
+  ]
+}

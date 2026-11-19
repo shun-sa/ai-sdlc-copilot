@@ -1,0 +1,8 @@
+{
+  "status": "BLOCKED",
+  "check_id": "producer",
+  "audit_scope": "UNIT_TEST",
+  "agent": "UnitTest",
+  "reason": "final status FAILED/IMPLEMENTATION_FIX_REQUIRED due to known UNRESOLVED-6de5eec64599b907 (8 tests)",
+  "related_issue": "UNRESOLVED-6de5eec64599b907"
+}

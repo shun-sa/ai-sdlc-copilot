@@ -1,0 +1,24 @@
+{# trace: ADDR-012, ADDR-004, ADDR-008 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>支払（模擬決済）</h1>
+<dl>
+  <dt>注文番号</dt><dd>{{ order.order_number }}</dd>
+  <dt>合計（税込）</dt><dd>{{ order.amounts.total_amount|yen }}</dd>
+  <dt>注文状態</dt><dd>{{ order.status_label }}</dd>
+</dl>
+<p>本リリースの支払は模擬決済です。実際の決済・請求は行われません。</p>
+<form method="post" action="/orders/{{ order.order_id }}/payment/" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="submit_token" value="{{ submit_token }}">
+  <fieldset>
+    <legend class="required-mark">模擬決済の結果</legend>
+    <label><input type="radio" name="mock_instruction" value="approved"{% if values.mock_instruction != "declined" %} checked{% endif %}>承認</label>
+    <label><input type="radio" name="mock_instruction" value="declined"{% if values.mock_instruction == "declined" %} checked{% endif %}>否認</label>
+    {% for e in errors.mock_instruction %}<span class="field-error">模擬決済の結果：{{ e }}</span>{% endfor %}
+  </fieldset>
+  <button type="submit">支払う</button>
+</form>
+<p><a href="/orders/{{ order.order_id }}/">注文詳細へ戻る</a></p>
+{% endblock %}

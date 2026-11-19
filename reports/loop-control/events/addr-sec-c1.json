@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "addr_security_SR-ADDR-001-003"
+  },
+  "action": "RESOLVED",
+  "cycle": 1,
+  "run_id": "addr-sec-run-1",
+  "validation_result": "reports/security-review/validation-result.json",
+  "repair": "ADDR-012特権経路遮断, ADDR-014 fail-closed, DB_USER秘密扱い",
+  "impact": "解消",
+  "recommended_route": "ADDR"
+}

@@ -1,0 +1,10 @@
+{
+  "check_id": "addr_prepare_request",
+  "command": [
+    "python",
+    ".github/skills/addr/scripts/validate_addr.py",
+    "--prepare-request"
+  ],
+  "result_path": "reports/loop-control/checks/addr-prepare-request.json",
+  "timeout_seconds": 300
+}

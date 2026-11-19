@@ -1,0 +1,7 @@
+{
+  "producer": "reports/loop-control/checks/impl-producer.json",
+  "build": "reports/loop-control/checks/impl-build.json",
+  "quality": "reports/loop-control/checks/impl-quality.json",
+  "security": "reports/loop-control/checks/impl-security.json",
+  "traceability": "reports/loop-control/checks/impl-traceability.json"
+}

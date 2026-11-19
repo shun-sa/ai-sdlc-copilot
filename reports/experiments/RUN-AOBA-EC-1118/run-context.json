@@ -1,0 +1,15 @@
+{
+  "run_id": "RUN-AOBA-EC-1118",
+  "sdlc_completed_at": "2026-11-19T19:57:00.508773+00:00",
+  "status": "COMPLETE_WITH_UNRESOLVED",
+  "measurement_window": {
+    "start": "2026-11-19T05:08:53.585156+00:00",
+    "end": "2026-11-19T19:41:38.627778+00:00",
+    "elapsed_seconds": 52365.042622,
+    "integration_result": "CONTINUE_WITH_UNRESOLVED",
+    "quality_pass_elapsed_seconds": null,
+    "finalized": true,
+    "unallocated_seconds": 0.093667,
+    "clock_anomalies": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "TEST_ERROR",
+    "artifact": "app/tests/unit",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "unit_test_code_ruff_violations"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "ut-lint-run-0",
+  "validation_result": "reports/loop-control/checks/impl-build.json",
+  "repair": "",
+  "impact": "テストコードのruff指摘67件(E501等)でbuildチェックFAIL(Steering: ruff 0件)",
+  "recommended_route": "UNIT_TEST",
+  "errors": [
+    "build: command exit code 1"
+  ]
+}

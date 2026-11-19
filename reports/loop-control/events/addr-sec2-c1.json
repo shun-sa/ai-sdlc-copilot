@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr/ADDR-004.md",
+    "requirement_reference": "FR-002",
+    "test_case": "",
+    "stable_error_type": "submit_token_reuse_password_oracle_SR-ADDR-R3-001"
+  },
+  "action": "RESOLVED",
+  "cycle": 1,
+  "run_id": "addr-sec2-run-1",
+  "validation_result": "reports/security-review/validation-result.json",
+  "repair": "ADDR-004 r4",
+  "impact": "解消",
+  "recommended_route": "ADDR"
+}

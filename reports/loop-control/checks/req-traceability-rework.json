@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "audit_scope": "REQUIREMENTS",
+  "method": "inline-annotation",
+  "source_baseline_sha256": "1367b1490416a2b66203cd0aab5e4a324059258095e8a461f1f8aac07597667d",
+  "errors": [],
+  "warnings": [],
+  "issues": []
+}

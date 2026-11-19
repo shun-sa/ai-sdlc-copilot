@@ -1,0 +1,13 @@
+# Python のコーディング規約の確認（NFR-EN-11：PEP 8 準拠、指摘0件）
+target-version = "py312"
+line-length = 120
+extend-exclude = [".venv", "**/migrations/**", ".github", "reports"]
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "BLE"]
+
+[lint.per-file-ignores]
+"app/tests/settings_test.py" = ["F403", "E402"]
+
+[lint.isort]
+known-first-party = ["accounts", "audit", "carts", "catalog", "common", "config", "initial_data", "orders", "payments", "promotions", "test_support", "tests"]

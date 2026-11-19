@@ -1,0 +1,865 @@
+{
+  "status": "BLOCKED",
+  "result": "PARTIAL_SUCCESS",
+  "run_id": "RUN-AOBA-EC-1118",
+  "phase": "ADDR",
+  "generated_by": "ADDR Agent（RUN-AOBA-EC-1118）",
+  "generated_at": "2026-11-19T19:11:27+09:00",
+  "source_revision": "958677fe4a672dc82902289cfd4b0da5cfac39e5+worktree(RUN-AOBA-EC-1118 requirements 2026-11-19)",
+  "design_input_path": "reports/architecture/design-manifest.json",
+  "design_input_sha256": "fea9a82a98b5e04a5b79e5e0fbbff4cddf37a3b19748634ee5d47b7bbe69865c",
+  "workflow_version": 2,
+  "addr_request_path": "reports/architecture/addr-request.json",
+  "addr_request_present": false,
+  "output_artifacts": [
+    {
+      "addr_id": "ADDR-001",
+      "path": "docs/addr/ADDR-001.md",
+      "sha256": "52824d31572c9e1d087d34a7760546c855682c434c2d1dfa625aba2222665fdb",
+      "status": "ACTIVE",
+      "design_type": "外部インターフェース",
+      "target_id": "application"
+    },
+    {
+      "addr_id": "ADDR-002",
+      "path": "docs/addr/ADDR-002.md",
+      "sha256": "9ed64e68cf2ed44d7c551da4053f1ab990041e4abb02ba6966b400e3a610acde",
+      "status": "ACTIVE",
+      "design_type": "権限・認証",
+      "target_id": "application"
+    },
+    {
+      "addr_id": "ADDR-003",
+      "path": "docs/addr/ADDR-003.md",
+      "sha256": "62e31943d689e31781042f2abccddc6659a4b637e7586266159cc1fb32f476b2",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "data-model"
+    },
+    {
+      "addr_id": "ADDR-004",
+      "path": "docs/addr/ADDR-004.md",
+      "sha256": "6e173ad5921e36271c4dcca44f8a7c717c2c59294ef5045aa069f41a94270fa4",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "application"
+    },
+    {
+      "addr_id": "ADDR-005",
+      "path": "docs/addr/ADDR-005.md",
+      "sha256": "1c7ab68a9412ff95d9f8214bfade2fc03e4f0ee1acdc07f9ee2aaad6b9a6aeed",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "data-model"
+    },
+    {
+      "addr_id": "ADDR-006",
+      "path": "docs/addr/ADDR-006.md",
+      "sha256": "fff52e17f1a6fa0c5634a6bc1dd9a031b3784f914046c10cb3b4b55e72842262",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "data-model"
+    },
+    {
+      "addr_id": "ADDR-007",
+      "path": "docs/addr/ADDR-007.md",
+      "sha256": "fdd0b391a19fdb99a89a619c2d2b0af47f94d59eee84e99193d14feb43b8671a",
+      "status": "ACTIVE",
+      "design_type": "外部インターフェース",
+      "target_id": "data-model"
+    },
+    {
+      "addr_id": "ADDR-008",
+      "path": "docs/addr/ADDR-008.md",
+      "sha256": "dafea9c8afcde75da0848ea2c2fad654aaf5e1f3f466cf23dd9211b693177e98",
+      "status": "ACTIVE",
+      "design_type": "外部インターフェース",
+      "target_id": "application"
+    },
+    {
+      "addr_id": "ADDR-009",
+      "path": "docs/addr/ADDR-009.md",
+      "sha256": "f1e7a0945995758dccc7271745e5a69d892e6513f09db87979023f4ff3b463eb",
+      "status": "ACTIVE",
+      "design_type": "外部インターフェース",
+      "target_id": "initial-data-file"
+    },
+    {
+      "addr_id": "ADDR-010",
+      "path": "docs/addr/ADDR-010.md",
+      "sha256": "1e7651dfdad3528d460fafd07dac46d8c459b08de8ecd2fb31b629c8239e7bf7",
+      "status": "ACTIVE",
+      "design_type": "バッチ",
+      "target_id": "initial-data-file"
+    },
+    {
+      "addr_id": "ADDR-011",
+      "path": "docs/addr/ADDR-011.md",
+      "sha256": "8c1f12437498665a5b725f2b0a41e8bc73c97d49eeb4efe94624f5ee4d6d12ca",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "application"
+    },
+    {
+      "addr_id": "ADDR-012",
+      "path": "docs/addr/ADDR-012.md",
+      "sha256": "fefa381f0f5165ea5ceba4e80afd52b3fd74c9cb88e85cbc6f3057e77a6e7267",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "application"
+    },
+    {
+      "addr_id": "ADDR-013",
+      "path": "docs/addr/ADDR-013.md",
+      "sha256": "c0c585628b4eaf8820316e836590d0bee3d418176af97cebf2395d6266792494",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "application"
+    },
+    {
+      "addr_id": "ADDR-014",
+      "path": "docs/addr/ADDR-014.md",
+      "sha256": "9882f040c2d596ed283a34f67a223ac6c7863c19198c29b9d8145d78bcf4f3f7",
+      "status": "ACTIVE",
+      "design_type": "非機能",
+      "target_id": "application"
+    }
+  ],
+  "addr_creation_results": [
+    {
+      "candidate_key": "api-contract",
+      "target_id": "application",
+      "needed": true,
+      "reason": "機能要件 1.2 は Web API の呼出し方式を定義せず、Steering 5章が正本とする docs/specifications/api-contract.md は未格納（OQ-PJ-001）。Steering の事前指定（REST/JSON、/api・/api/admin、snake_case、Bearer）だけではエラー応答・ステータス対応・ページング表現・パスが一意に定まらないため、事前指定を制約として本システムの契約を判断した（外部契約資料の内容は推測していない。格納時は同資料を正とし新 ADDR で置換：ASM-RESULT-001）",
+      "addr_id": "ADDR-001",
+      "design_type": "外部インターフェース",
+      "title": "Web API 契約の方式（パス・電文形式・認証ヘッダー・エラー応答・ページング・HTTP ステータス）",
+      "primary_decision": "提供済み API 契約が未格納のため、Steering の事前指定を制約として Web API の電文・エラー・ページング・ステータス・パスの規約と、要求・応答の項目キー・検索条件・並び順・エラー理由の外部値（r2 追加）を確定する。あわせて GET（参照用要求）で業務データを変えない原則の唯一の例外として、FR-020 の利用中カートの作成の範囲・冪等性・一意性・CSRF 上の位置づけと、共通表示の合計点数での FR-020 の実行を担う Task（TASK-012）を確定する（r3 追加、r4 改訂）"
+    },
+    {
+      "candidate_key": "authentication-session",
+      "target_id": "application",
+      "needed": true,
+      "reason": "要件は有効期間・推測困難性・多重ログイン・個別ログアウト・無操作30分・固定化防止・CSRF 対策・削除指定時の無効化を定めるが、保持・失効・CSRF 対策の方式と論理モデルへの追加要否（OQ-LDB-005）は定めていない。複数の現実的方式（DB 保持の不透明値、JWT、DRF authtoken、API の Cookie セッション）があるため判断した。ログイン状態は業務 Entity に追加しない（Architecture への差し戻し不要）",
+      "addr_id": "ADDR-002",
+      "design_type": "権限・認証",
+      "title": "ログイン状態（画面セッション・Web API の Bearer）の保持・失効と CSRF 対策の方式",
+      "primary_decision": "画面はデータベース保持の Django セッション、Web API はデータベースに照合値を保持する不透明な Bearer 値とし、失効判定・CSRF 対策・削除指定時の無効化をこの保持方式で実現する"
+    },
+    {
+      "candidate_key": "password-storage",
+      "target_id": "data-model",
+      "needed": true,
+      "reason": "NFR-SC-01・CMN-06 は不可逆・保持値の相違のみを確定し方式を設計に委ねる（OQ-LDB-001）。PBKDF2・Argon2id・bcrypt の現実的選択肢があり、NFR-PF-09 の応答時間と依存管理（NFR-SC-11、NFR-EN-12）に影響するため判断した。r2 改訂：Django 標準 PBKDF2 の HMAC 鍵の0埋めにより末尾 NUL を付けた別のパスワードが一致する（FR-002 6.2.4 手順5・E-002-02 違反）ため、入力規則（NFR-SC-16、FR-001、FR-060）を変えずに鍵を SHA-256 の16進64文字へ固定長化する独自ハッシャーへ変更した",
+      "addr_id": "ADDR-003",
+      "design_type": "非機能",
+      "title": "パスワード（照合用）の保持方式",
+      "primary_decision": "パスワード（照合用）を、UTF-8 で符号化したパスワードの SHA-256 を小文字16進64文字へ固定長化してから Django 標準の PBKDF2-HMAC-SHA256（利用者ごとの乱数ソルト、Django 5.2 既定の反復回数）で計算する独自方式名（pbkdf2_sha256_sha256hex）のハッシャーで保持し、平文・復号可能な形式で保持しない。HMAC の鍵の0埋めにより末尾に NUL を付けたパスワードが一致と判定される Django 標準 PBKDF2 の特性を、入力規則を追加せずに解消する（r2 改訂）"
+    },
+    {
+      "candidate_key": "concurrency-transaction",
+      "target_id": "application",
+      "needed": true,
+      "reason": "CMN-19〜CMN-23・NFR-PF-07・NFR-US-10 は逐次実行と同じ結果・全件成功か無変更・二重反映防止を求めるが、ロック・制約・分離レベル・トランザクション境界・画面の二重送信防止の方式は定めていない（OQ-LDB-011）。悲観ロック・SERIALIZABLE・楽観ロック等の選択肢があるため判断した",
+      "addr_id": "ADDR-004",
+      "design_type": "非機能",
+      "title": "同時実行制御とトランザクション境界の方式",
+      "primary_decision": "更新を伴う業務処理を1データベーストランザクション（READ COMMITTED）とし、親となる行の悲観ロック→在庫単位の識別子昇順ロックの順で直列化し、条件付き一意制約と画面の1回限りの送信トークンで二重反映を防ぐ。送信トークンは操作種別と結び付けて業務処理より前の独立したトランザクションで消費を確定し、同じトークンの要求をアドバイザリロックで直列化して、先着がロールバックで終わっても処理完了前の繰り返し操作の反映・決済要求の送信・失敗の記録を1回分に限る。使用済みトークンの要求は受付時点のデータで再判定し Web API と同じ判定順序で通知するが、ログインだけは入力値による検索・照合を一切行わず先着の記録済みの結果を通知し、パスワードを照合した要求の失敗は必ず監査ログに記録する（r4 改訂）"
+    },
+    {
+      "candidate_key": "order-number-issuance",
+      "target_id": "data-model",
+      "needed": true,
+      "reason": "D-10-02 は PO-＋8桁・確定順に増加・欠番許容・一意を定めるが、同時確定で確定順を保つ採番方式は設計に委ねられている（data_requirements.md 1.2、OQ-LDB-004）。シーケンス単独ではコミット順と逆転しうるため判断した",
+      "addr_id": "ADDR-005",
+      "design_type": "非機能",
+      "title": "注文番号の採番方式",
+      "primary_decision": "注文番号を PostgreSQL のシーケンスから、注文確定トランザクション内のアドバイザリロック取得後に払い出し、PO-＋8桁ゼロ埋めで確定順に増加させる"
+    },
+    {
+      "candidate_key": "identifier-assignment",
+      "target_id": "data-model",
+      "needed": true,
+      "reason": "識別子は1以上の整数・システム付与のみ確定し、採番方式・同値の並び順の判定・削除指定後の再付与の可否に明示の定めがない（OQ-LDB-002、OQ-FILE-005）。監査ログの対象の利用者の解釈と削除前ログイン状態の認証エラー（FR-060 6.26.9）に影響するため判断した（再利用しない）",
+      "addr_id": "ADDR-006",
+      "design_type": "非機能",
+      "title": "システム付与識別子の採番・表現と再利用しない方針",
+      "primary_decision": "システム付与識別子をテーブルごとのデータベース自動採番（1以上の整数）とし、削除指定の後も含めて値を再利用せず、登録順・記録順を識別子の昇順で判定する"
+    },
+    {
+      "candidate_key": "code-value-assignment",
+      "target_id": "data-model",
+      "needed": true,
+      "reason": "data_requirements.md 4章が CD-01〜CD-05・CD-07・CD-08 の外部に出る値を「設計で決定」としている（OQ-LDB-003）。Steering 6.2 の buyer・admin を根拠に値の体系を判断した",
+      "addr_id": "ADDR-007",
+      "design_type": "外部インターフェース",
+      "title": "コード値（CD-01〜CD-05、CD-07、CD-08）の外部に出る値の割当て",
+      "primary_decision": "設計で決定とされたコード値を英小文字 snake_case の固定文字列に割り当て、保持値・Web API・定義ファイルで同じ値を用い、表示名は要件の日本語名とする"
+    },
+    {
+      "candidate_key": "mock-payment-interface",
+      "target_id": "application",
+      "needed": true,
+      "reason": "IFR-001 の方式と認証方式は「設計で決定」（external_interface_requirements.md 4章、IF-01-SEC-01）。業務条件（同期・10秒・自動再送なし・応答検証）は確定済みだが、呼出しの形・打切りの実現・検証の配置・差替え境界（NFR-PF-17）は未定のため判断した",
+      "addr_id": "ADDR-008",
+      "design_type": "外部インターフェース",
+      "title": "決済要求（IFR-001）の呼出し方式と決済サービス（模擬）の分離",
+      "primary_decision": "決済要求を決済ゲートウェイの抽象境界越しのプロセス内同期呼出しとし、呼出し側が別スレッドで実行して10秒で打ち切り、応答検証も呼出し側で行う。模擬機能はその境界の1実装とする"
+    },
+    {
+      "candidate_key": "initial-data-file-format",
+      "target_id": "initial-data-file",
+      "needed": true,
+      "reason": "FR-060 は「設計で定める記載形式」とし、Steering は UTF-8/JSON のみ指定。JSON の構造・キー名・値表現・日時表記・BOM は FILE-001 で未確定（OQ-FILE-001）のため判断した",
+      "addr_id": "ADDR-009",
+      "design_type": "外部インターフェース",
+      "title": "初期データ定義ファイル（FILE-001）の記載形式",
+      "primary_decision": "定義ファイルを、6種類のデータ名をキーとし各データを行オブジェクトの配列とする1つの JSON オブジェクトとし、項目キー名・値表現・日時表記・BOM の扱いを確定する"
+    },
+    {
+      "candidate_key": "initial-data-invocation",
+      "target_id": "initial-data-file",
+      "needed": true,
+      "reason": "FR-060 は運用者がサーバー上で実行し画面・API から起動できないことを定めるが、実行方法・指定方法・結果の提示先・逐次化は未指定（OQ-FILE-002）。Steering 7章の --reset の名称を根拠に起動手段を判断した",
+      "addr_id": "ADDR-010",
+      "design_type": "バッチ",
+      "title": "初期データ一括投入の起動手段と結果の提示",
+      "primary_decision": "初期データ一括投入を Django の管理コマンドとしてサーバー上（app コンテナ内）でだけ起動し、定義ファイルのパスと --reset を引数で指定し、結果を標準出力・標準エラーと終了コード・LOG-05 で示す"
+    },
+    {
+      "candidate_key": "test-state-control",
+      "target_id": "application",
+      "needed": true,
+      "reason": "NFR-OM-06 (1)〜(3) を ENV-01 で設定でき本番で設定不可とする方式と、使い捨て試験用 DB（Disposable Test DB）への切替方式は要件・Steering で指定されていないため判断した",
+      "addr_id": "ADDR-011",
+      "design_type": "非機能",
+      "title": "試験用状態の設定手段・本番での無効化と使い捨て試験用 DB への切替方式",
+      "primary_decision": "試験用状態（現在時刻・模擬決済の異常応答・注文確定途中の障害）を開発用機能フラグで有効時だけ組み込まれる試験支援モジュールに集約し、管理コマンドと自動テストから設定する。自動テストは環境変数で接続先を切り替えた使い捨ての PostgreSQL 16 で実行する"
+    },
+    {
+      "candidate_key": "application-structure",
+      "target_id": "application",
+      "needed": true,
+      "reason": "Steering は単一 Django プロジェクトと業務規則の画面側重複禁止を指定するが内部モジュール分割・依存方向は未指定。画面と API の同一判定（CMN-34、VUL-07）、NFR-PF-16・NFR-PF-17 が構成に依存するため判断した",
+      "addr_id": "ADDR-012",
+      "design_type": "非機能",
+      "title": "画面と Web API が業務規則を共有するアプリケーション構成",
+      "primary_decision": "単一 Django プロジェクト内を業務領域ごとのアプリに分け、各アプリの業務処理層を画面（テンプレートビュー）と Web API（DRF ビュー）の双方から呼ぶ一方向の依存とし、決済連携は境界の内側に閉じ込める。フレームワーク付属の特権経路（管理サイト・特権フラグ・管理者作成コマンド）は構成に含めない（r2 追加）"
+    },
+    {
+      "candidate_key": "application-logging",
+      "target_id": "application",
+      "needed": true,
+      "reason": "NFR-OM-01・NFR-OM-11・NFR-OM-18・NFR-SC-06 はログの種類・必須項目・禁止項目・追跡を定めるが、出力形式・出力先・要求の識別子・機密除外の方式は未指定。既定ロガー・AP サーバーのアクセスログが検索条件や例外内の値を出力しうるため判断した",
+      "addr_id": "ADDR-013",
+      "design_type": "非機能",
+      "title": "アプリケーションログの出力形式・要求の識別子・機密項目の除外",
+      "primary_decision": "LOG-01〜LOG-03・LOG-05・LOG-06 をアプリケーションが1行1件の JSON で標準出力へ出力し、要求ごとにサーバーが生成する識別子を全行に付け、要求先は検索条件を除いたパスだけ、例外は種類と発生箇所だけを出力する"
+    },
+    {
+      "candidate_key": "retention-deletion",
+      "target_id": "data-model",
+      "needed": false,
+      "reason": "ADDR 不要。保存期間経過データ（カート1年・監査ログ1年・注文関連7年）の削除は、data_requirements.md UPD-19・UPD-30・UPD-32・DCN-03 で「運用者が年1回、手順に従って手動で行う（自動削除の機能は本リリースの対象外）」と一意に定まっており、対応する FR もない。削除の条件・関連データの同時削除（DQ-50、LDR-012）・NFR-SC-23 の限定は要件と LDB-001 で確定済みで、実施手段は本番運用手順書（NFR-OM-19 後段、本番基盤の選定後）の事項である。運用用の機能を追加することは要件外の機能追加（Requirements への変更要求が必要）であり、ADDR で比較・決定すべき設計上の選択肢が存在しない。手順で使う参照整合性を保った削除順序は LDB-001 PHY-HO-007 の物理設計の引継ぎ事項として既に記録されている",
+      "addr_id": null
+    },
+    {
+      "candidate_key": "environment-configuration",
+      "target_id": "application",
+      "needed": true,
+      "reason": "NFR-EN-08 は Web/AP サーバーを設計で選定するとし、設定値の管理方式、本番での開発用機能・デバッグ表示の無効化の保証、本番 HTTPS のアプリ側設定、依存の版固定・記録の方式が未指定（ARCH-CI-012・ARCH-CI-017・ARCH-CI-022）のため判断した",
+      "addr_id": "ADDR-014",
+      "design_type": "非機能",
+      "title": "環境別設定値の管理・本番構成（Web/AP サーバー・HTTPS・開発用機能の無効化）と依存の版固定の方式",
+      "primary_decision": "同一のプログラム・コンテナイメージを環境変数だけで環境ごとに切り替え、本番プロファイルでは安全側の設定を起動時に強制し、Gunicorn＋WhiteNoise で起動し、依存はハッシュ付きの版固定とダイジェスト固定のイメージで再現する"
+    }
+  ],
+  "unused_addr_ids": [],
+  "artifact_link_updates": [
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-001",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-002",
+        "TASK-006",
+        "TASK-007",
+        "TASK-010",
+        "TASK-012",
+        "TASK-014",
+        "TASK-015",
+        "TASK-016",
+        "TASK-018",
+        "TASK-020"
+      ],
+      "requirement_id": "FR-001",
+      "reference_section": "docs/addr/ADDR-001.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-002",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-001",
+        "TASK-002",
+        "TASK-006",
+        "TASK-011",
+        "TASK-020"
+      ],
+      "requirement_id": "FR-002",
+      "reference_section": "docs/addr/ADDR-002.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "LDB-001",
+      "target_id": "data-model",
+      "related_addr_id": "ADDR-003",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "ENT-001"
+      ],
+      "requirement_id": "NFR-SC-01",
+      "reference_section": "docs/addr/ADDR-003.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-004",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-002",
+        "TASK-005",
+        "TASK-006",
+        "TASK-011",
+        "TASK-012",
+        "TASK-014",
+        "TASK-015",
+        "TASK-016",
+        "TASK-018",
+        "TASK-019",
+        "TASK-020"
+      ],
+      "requirement_id": "NFR-PF-07",
+      "reference_section": "docs/addr/ADDR-004.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "LDB-001",
+      "target_id": "data-model",
+      "related_addr_id": "ADDR-005",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "ENT-010"
+      ],
+      "requirement_id": "FR-030",
+      "reference_section": "docs/addr/ADDR-005.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "LDB-001",
+      "target_id": "data-model",
+      "related_addr_id": "ADDR-006",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003",
+        "ENT-004",
+        "ENT-006",
+        "ENT-008",
+        "ENT-009",
+        "ENT-010",
+        "ENT-013",
+        "ENT-014",
+        "ENT-015"
+      ],
+      "requirement_id": "FR-060",
+      "reference_section": "docs/addr/ADDR-006.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "LDB-001",
+      "target_id": "data-model",
+      "related_addr_id": "ADDR-007",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "ENT-001",
+        "ENT-007",
+        "ENT-008",
+        "ENT-010",
+        "ENT-013",
+        "ENT-014",
+        "ENT-015"
+      ],
+      "requirement_id": "FR-060",
+      "reference_section": "docs/addr/ADDR-007.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-008",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-008",
+        "TASK-015",
+        "TASK-017"
+      ],
+      "requirement_id": "FR-031",
+      "reference_section": "docs/addr/ADDR-008.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "FDEF-001",
+      "target_id": "initial-data-file",
+      "related_addr_id": "ADDR-009",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "FILE-001"
+      ],
+      "requirement_id": "FR-060",
+      "reference_section": "docs/addr/ADDR-009.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "FDEF-001",
+      "target_id": "initial-data-file",
+      "related_addr_id": "ADDR-010",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "FILE-001"
+      ],
+      "requirement_id": "FR-060",
+      "reference_section": "docs/addr/ADDR-010.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-011",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-001",
+        "TASK-002",
+        "TASK-008",
+        "TASK-014",
+        "TASK-017",
+        "TASK-019",
+        "TASK-020"
+      ],
+      "requirement_id": "NFR-OM-06",
+      "reference_section": "docs/addr/ADDR-011.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-012",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-001",
+        "TASK-002",
+        "TASK-003",
+        "TASK-006",
+        "TASK-007",
+        "TASK-008",
+        "TASK-009",
+        "TASK-010",
+        "TASK-012",
+        "TASK-014",
+        "TASK-015",
+        "TASK-016",
+        "TASK-018"
+      ],
+      "requirement_id": "NFR-LG-06",
+      "reference_section": "docs/addr/ADDR-012.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-013",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-002",
+        "TASK-008",
+        "TASK-011",
+        "TASK-018",
+        "TASK-020"
+      ],
+      "requirement_id": "NFR-OM-11",
+      "reference_section": "docs/addr/ADDR-013.md 2章 関連要件・参照成果物"
+    },
+    {
+      "artifact_id": "PLAN-001",
+      "target_id": "application",
+      "related_addr_id": "ADDR-014",
+      "requested_action": "LINK_ADDR",
+      "element_ids": [
+        "TASK-001",
+        "TASK-002",
+        "TASK-017",
+        "TASK-019",
+        "TASK-021"
+      ],
+      "requirement_id": "NFR-OM-17",
+      "reference_section": "docs/addr/ADDR-014.md 2章 関連要件・参照成果物"
+    }
+  ],
+  "design_change_requests": [],
+  "assumptions": [
+    {
+      "assumption_id": "ASM-RESULT-001",
+      "statement": "提供済み API 契約（docs/specifications/api-contract.md）が未格納（OQ-PJ-001）の間は、ADDR-001 4.3 の1〜13（電文・エラー・ページング・ステータス・パスの規約、項目キー・検索条件・並び順・エラー理由の外部値）と ADDR-007 のコード値を、本システムの Web API 契約の正とする。格納された場合は同資料を正とし、差異を新 ADDR で置換して影響 Task を ADDR から再開する",
+      "basis_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-004",
+        "NFR-SC-08",
+        "NFR-US-04",
+        "NFR-PF-08"
+      ],
+      "affected_target_ids": [
+        "application",
+        "data-model"
+      ],
+      "reversible": true,
+      "verification_method": "OQ-PJ-001 の解決時（api-contract.md の格納時）に、同資料と ADDR-001 4.3 の9〜12（項目キー・検索条件・並び順・エラー理由）および ADDR-007 4.3 のコード値を突合し、差異があれば新 ADDR で置換する",
+      "source": "ADDR-001 ASM-001、ADDR-007 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-002",
+      "statement": "Django 5.2 既定の反復回数の PBKDF2（ADDR-003 r2 の鍵の事前変換 SHA-256 1回を含む）による照合計算で、ENV-01 のピーク負荷でも認証系 API の95パーセンタイル2.0秒以内を満たせる。満たさない場合は反復回数を下げず、方式を新 ADDR で再判断する",
+      "basis_ids": [
+        "NFR-PF-09",
+        "NFR-SC-01"
+      ],
+      "affected_target_ids": [
+        "data-model"
+      ],
+      "reversible": true,
+      "verification_method": "試験工程の性能テスト（NFR-PF-09 の方法）",
+      "source": "ADDR-003 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-003",
+      "statement": "支払で決済サービス（模擬）の応答待ち（通常1秒以内、最大10秒）の間、注文行のロックを保持しても、同一注文への同時操作は稀なため更新系 API の応答時間目標を満たせる。実決済への差替え時に再判断する",
+      "basis_ids": [
+        "FR-031",
+        "NFR-PF-02",
+        "NFR-PF-17"
+      ],
+      "affected_target_ids": [
+        "application"
+      ],
+      "reversible": true,
+      "verification_method": "性能テスト（NFR-PF-02）と同時支払・支払とキャンセルの同時実行の結合テスト",
+      "source": "ADDR-004 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-004",
+      "statement": "本番のログ保管・検索（90日）は本番基盤のログ収集・保管で実現し、アプリケーションは標準出力へ JSON で出力するだけとする（本番基盤 NOQ-01・NOQ-02 未決）",
+      "basis_ids": [
+        "NFR-OM-02",
+        "NFR-OM-11"
+      ],
+      "affected_target_ids": [
+        "application"
+      ],
+      "reversible": true,
+      "verification_method": "本番基盤の選定時の構成・設定レビューと、稼働後90日時点の運用時測定（NFR-OM-02）",
+      "source": "ADDR-013 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-005",
+      "statement": "本番では前段の終端装置が HTTPS を終端し HTTPS であったことを示すヘッダーを付ける。アプリケーションは Secure Cookie・HSTS・非 HTTPS 要求の拒否だけを担う（NOQ-01・NOQ-04 未決）",
+      "basis_ids": [
+        "NFR-SC-02",
+        "NFR-SC-19"
+      ],
+      "affected_target_ids": [
+        "application"
+      ],
+      "reversible": true,
+      "verification_method": "本番環境の構築時の運用時測定（NFR-SC-02・NFR-SC-19）と構成・設定レビュー",
+      "source": "ADDR-014 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-006",
+      "statement": "画面の無操作30分は、最後の受付時刻から30分ちょうど以降の要求を切断後とする（29分継続・31分切断を満たす安全側の解釈）",
+      "basis_ids": [
+        "NFR-SC-09"
+      ],
+      "affected_target_ids": [
+        "application"
+      ],
+      "reversible": true,
+      "verification_method": "AC-UC-002-015 のセキュリティテスト（試験用の現在時刻で29分・30分・31分を確認）",
+      "source": "ADDR-002 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-007",
+      "statement": "本番でも初期データ一括投入は本システムの実行環境（コンテナ）内でサーバーにログインした運用者が管理コマンドで実行する（本番基盤 NOQ-01 未決）",
+      "basis_ids": [
+        "FR-060",
+        "NFR-SC-15",
+        "NFR-OM-19"
+      ],
+      "affected_target_ids": [
+        "initial-data-file"
+      ],
+      "reversible": true,
+      "verification_method": "移行リハーサル（NFR-MG-08）と本番基盤決定時の手順書レビュー",
+      "source": "ADDR-010 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-008",
+      "statement": "ENV-01 での試験用状態（NFR-OM-06 (1)〜(3)）の設定はサーバー上の管理コマンドと自動テストの関数で足り、HTTP の設定経路は不要とする",
+      "basis_ids": [
+        "NFR-OM-06",
+        "NFR-OM-17"
+      ],
+      "affected_target_ids": [
+        "application"
+      ],
+      "reversible": true,
+      "verification_method": "ENV-01 で (1)〜(3) を管理コマンドで設定し再現する運用テスト",
+      "source": "ADDR-011 ASM-001"
+    },
+    {
+      "assumption_id": "ASM-RESULT-009",
+      "statement": "UNRESOLVED-32af0f4a0ca9c80f（BOQ-08 本番の模擬決済、NOQ-08 総当たり対策、NOQ-10 管理者の無効化手段）は業務判断が未決のため、要件の暫定扱い（現行 FR・FR-OUT-01・FR-OUT-09・FR-OUT-11 どおり）で判断し、ADDR で範囲を拡大・業務決定しない",
+      "basis_ids": [
+        "FR-002",
+        "FR-031",
+        "FR-043",
+        "FR-060",
+        "NFR-SC-12",
+        "NFR-SC-15"
+      ],
+      "affected_target_ids": [
+        "application",
+        "data-model",
+        "initial-data-file"
+      ],
+      "reversible": true,
+      "verification_method": "PJ Owner の決定・受容の記録時に Requirements→Architecture→ADDR の順で影響を再判定する",
+      "source": "ADDR-002・ADDR-003・ADDR-008・ADDR-009 の対象外欄"
+    },
+    {
+      "assumption_id": "ASM-RESULT-010",
+      "statement": "画面の「ログイン」の繰り返し操作で、先着の応答をブラウザが受け取らなかった場合、後着は入力値を参照せず先着の記録済みの結果だけを通知し新たなログイン状態を作らないため、利用者は未ログインのまま遷移し、新たに表示したログイン画面からのログインは新たな操作とする。r2 の「E-031-08 では後着が新たな決済要求を送り得る」は要件（FR-031 6.16.9、CMN-22）の例外になるため撤回し、ADDR-004 DD-010・DD-013・DD-015 で決済要求を1回分に限る。r3 の「使用済みトークンのログイン要求でもパスワードを照合する」は監査ログなしの照合を許すため撤回し、ADDR-004 DD-016・DD-017 で使用済みトークンのログイン要求では検索・照合を行わない（r4）",
+      "basis_ids": [
+        "FR-002",
+        "FR-031",
+        "NFR-US-10",
+        "NFR-SC-22"
+      ],
+      "affected_target_ids": [
+        "application"
+      ],
+      "reversible": true,
+      "verification_method": "画面の同一トークンの同時送信の結合テスト（NFR-US-10）とセキュリティテスト（NFR-SC-22 の方法）：先着の応答を受け取らない状態で繰り返した「ログイン」の後着が新たなログイン状態・監査ログを作らないこと、先着が E-002-02 で終わる間の繰り返し「ログイン」でログイン失敗の監査ログが1件だけであること、使用済みのトークンで入力を変えて（存在しない利用者・管理者・正誤のパスワード）再利用しても通知が先着の結果と同一で監査ログ・ログイン状態が増えないこと、未登録の任意値・別の操作で使用済みのトークン・トークンなしのログインは照合され失敗が監査ログに1件記録されること、E-031-08 を発生させた間の繰り返し「支払う」で決済要求が1回だけ送信されること",
+      "source": "ADDR-004 ASM-002（r4 改訂）"
+    },
+    {
+      "assumption_id": "ASM-RESULT-011",
+      "statement": "SCR-901（システムエラー）を表示する際の共通表示（UI-05）で FR-020 自体が E-020-03 となった場合に限り、利用中カートの作成を取り消し、合計点数を表示せずに SCR-901 を表示する。それ以外の画面での E-020-03 は FR-020 6.8.7 どおり SCR-901 とする",
+      "basis_ids": [
+        "FR-020"
+      ],
+      "affected_target_ids": [
+        "application"
+      ],
+      "reversible": true,
+      "verification_method": "SCR-901 の表示中に FR-020 のデータベース参照を失敗させる結合テストで、SCR-901 が合計点数なしで表示され利用中カートが作成されていないことを確認する。要件で扱いが定められた場合はそれに合わせて ADDR-001 ASM-002 を更新する",
+      "source": "ADDR-001 ASM-002（r3）"
+    }
+  ],
+  "blocking_issues": [
+    {
+      "issue_id": "BLK-ADDR-001",
+      "type": "MISSING_INPUT_CONTRACT",
+      "description": "reports/architecture/addr-request.json（予約IDプール・target_criticality・recovery_policy・attempt）が存在しない。設計Gate reports/architecture/design-gate.json が不成立（ARCHITECTURE は CONTINUE_WITH_UNRESOLVED、ARCHITECTURE Scope の Quality・Security Assurance が FAIL）のため validate_addr.py --prepare-request が FAIL し、request を作成できない。request は自作・捏造していない",
+      "impact": "ADDR-001〜ADDR-014 は予約されていない候補番号（docs/addr・docs/adr に既存判断がないため ADDR-001 からの連番）であり、unused_addr_ids は算出できない（[] は未算出の意味）。validate_addr.py --final は request 欠落で FAIL する。handoff・実装引渡しGate は作成できない",
+      "required_action": "親が設計Gateを成立させた後に --prepare-request を実行する。現在 docs/addr に未公開の ADDR-001〜ADDR-014 が存在するため、そのまま prepare-request を実行すると既存IDとして扱われ ADDR-015 以降が予約される。親は未公開候補を履歴へ退避してから request を発行し、予約IDで本判断を再出力（内容は同一でよい）し、addr-result を予約IDプールと照合して再検証する",
+      "owner": "SDLCOrchestrator",
+      "blocking": true
+    },
+    {
+      "issue_id": "BLK-ADDR-002",
+      "type": "UPSTREAM_UNRESOLVED",
+      "description": "Architecture の未解決 UNRESOLVED-60a549ca11f16034（QR-ARCH-R3-001：NFR-SC-05・NFR-EN-05・NFR-SC-23・NFR-LG-05 が Task の完了条件・検証に未記載）と UNRESOLVED-0b5694db22a0bead（SR-ARCH-R3-001：XSS・CSRF・SQL/OS コマンドインジェクション、VUL-04〜VUL-06 が Task の完了条件に未記載）が残存。ADDR はこれらを実装拘束として ADDR-001（INV-002・INV-003・DD-009）、ADDR-002（DD-008・INV-004）、ADDR-004（INV-002）、ADDR-008（DD-004・DD-005・INV-003）、ADDR-010（INV-001・DD-008）、ADDR-011（DD-008）、ADDR-012（DD-007〜DD-009）、ADDR-014（INV-003）に MUST／MUST_NOT で記録したが、Task 本文（完了条件・検証方法）は Architecture の所有であり変更していない",
+      "impact": "設計Gate不成立の原因の一部。実装引渡しGateには Architecture 側の解消または親の継続判定が必要",
+      "required_action": "既知原因として共通3回ループの台帳（issue ID・回数）を維持したまま親が継続判定する。ADDR からは新しい design_change_requests を発行しない（同一原因の別ループ化を避けるため）",
+      "owner": "SDLCOrchestrator / ARCHITECTURE",
+      "blocking": true
+    }
+  ],
+  "human_intervention_requested": false,
+  "autonomous_recovery": {
+    "action": "RETURN_TO_ORCHESTRATOR",
+    "attempt": 3,
+    "max_attempts": 3,
+    "note": "共通3回ループの修正cycle=3/3（Quality 指摘は最終回）。Security の新規指摘 SR-ADDR-R3-001 は同じ台帳で cycle=1/3 として扱う（親の台帳の値を維持）。ADDR Scope 再検査の SR-ADDR-R3-001（HIGH：ADDR-004 r3 の使用済みトークンのログイン要求で監査ログなしのパスワード照合が可能）、QR-ADDR-R3-001（ADDR-004 の primary_decision が r2 のまま）、QR-ADDR-R3-002（ADDR-004 1章に FR-002・FR-003 がない）、QR-ADDR-R3-003（ADDR-011 と ADDR-014 r3 の本番の開発用機能フラグの表現の食い違い）に対応し、ADDR-004 を r4、ADDR-011 を r3 に改訂、本ファイルを UTF-8 で再出力した（全14件の title・design_type・target_id・primary_decision を本文 front matter と再照合、sha256 を再計算）。addr-request.json の不在（BLK-ADDR-001）は設計Gate不成立による既知の未解決であり、ADDR では request を作成しないため status=BLOCKED を維持する。Quality 指摘は本回で上限に達したため、再検査で未解消が残れば親が上限到達として扱う。issue ID・ループ回数はリセットしない。【QR-IMPL-001（Implementation 後の Quality Review、修正cycle=1/3、親の台帳の値を維持）】ADDR-001 を r3、ADDR-002 を r2 に改訂し、本ファイルを UTF-8 で再出力した（output_artifacts の sha256 を全件再計算、addr_creation_results の title・primary_decision を本文 front matter から再取得）。BLK-ADDR-001（addr-request.json の不在）は既知の未解決で、ADDR では request を作成しないため status=BLOCKED を維持する。issue ID・ループ回数はリセットしない。【上流変更の入力照合（2026-11-19、run_id=RUN-AOBA-EC-1118）】FINAL manifest 再発行（1367b1490416… → fea9a82a98b5…、generated_at=2026-11-19T18:12:34+09:00。変更は expected-fr.txt の EXCLUDE FR-OUT-01〜16 と先頭注記の追記、cross-artifact-consistency.md 3章・11章の記載のみ）に対し、sources 26件・artifacts 4件のハッシュ一致、委譲候補15件・対象3件の網羅、ADDR-001〜014 の構造・要件ID・設計要素ID・関連付け、ADDR 内の FR-OUT 参照（FR-OUT-06・09・11）と EXCLUDE 行の一致を照合し、判断の変更は不要と確認した（実装対象26 FR・要件本文・UC/AC・Steering・設計本文は不変）。design_input_sha256 を新 manifest へ更新。BLK-ADDR-001 は未解決のまま。【QR-IMPL-001系 修正cycle=2/3（ADDR Scope 再レビュー QR-ADDR-R4-001〜003、親の台帳の値を維持）】ADDR-001 を r4、ADDR-004 を r5 に改訂し、本ファイルを UTF-8 で再出力した（output_artifacts の sha256 を全件再計算、addr_creation_results の title・primary_decision を本文 front matter から再取得）。Task 本文・依存の変更は不要と判断し design_change_requests は []。BLK-ADDR-001 は未解決のまま。issue ID・ループ回数はリセットしない。【ADR_REQUIRED（QR-IMPL-R2-001 起因、2026-11-19、run_id=RUN-AOBA-EC-1118）】ADDR-003 を r2 に改訂（パスワード保持方式を鍵の固定長化付き PBKDF2-HMAC-SHA256 の独自ハッシャーへ変更、入力規則は不変）し、本ファイルを UTF-8 で再出力した（ADDR-003 の sha256 を再計算、primary_decision を本文 front matter と同期）。新 ADDR による置換ではなく版改訂としたのは、中心判断（パスワード（照合用）の保持方式）と design_type・target_id が同一であり、かつ BLK-ADDR-001（addr-request.json 不在）で予約ID がなく新 ADDR を採番できないため。design_change_requests は []。BLK-ADDR-001 は未解決のため status=BLOCKED を維持する。issue ID・ループ回数はリセットしない"
+  },
+  "review_issue_resolutions": [
+    {
+      "issue_id": "QR-ADDR-R1-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-004"
+      ],
+      "change": "DD-010 を改訂し、使用済みトークンの要求も業務処理を省略せず受付時点のデータで FR の判定順序どおりに再判定し、Web API の再送信と同じ通知を返すようにした。DD-013・DD-014・DC-007・INV-005・ASM-002 を追加し、DD-002 のロック順序の先頭に送信トークンを追加した（r2）"
+    },
+    {
+      "issue_id": "QR-ADDR-R1-002",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-001"
+      ],
+      "change": "4.3 の9〜13に項目キーの命名規則・対応表、検索条件の名前、並び順 sort の4値、業務エラーの reason（ERR-02 と1対1）・values・fields[].reason を定め、ARCH-CI-009 の API 設計資料は作らないと判断した。DD-011〜DD-014・DC-006 を追加。design_change_requests なし（r2）"
+    },
+    {
+      "issue_id": "QR-ADDR-R1-003",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-004"
+      ],
+      "change": "2章の設計資料と artifact_link_updates に TASK-002 を追加し、9章で TASK-002 を送信トークンの共通部品（ADDR-012 の common）の Task と明記した（r2）"
+    },
+    {
+      "issue_id": "QR-ADDR-R1-004",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-008",
+        "ADDR-011"
+      ],
+      "change": "試験用状態の読取りを要求処理スレッドのデータベース接続に限定し、送信スレッドはデータベースに接続しない（読取りも行わない）ことを ADDR-008 DD-002・INV-002、ADDR-011 DD-003 に定めた。複数接続の同時実行試験は transaction=True で行う（ADDR-011 DD-010）（r2）"
+    },
+    {
+      "issue_id": "SR-ADDR-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-012"
+      ],
+      "change": "4.3 の10と DD-010〜DD-012・DC-005 を追加し、django.contrib.admin と管理サイトの URL を組み込まず、is_staff・is_superuser・グループ・個別権限を持たせず管理者の判定を user_type=admin だけで行い、createsuperuser・changepassword 等の付属コマンドを同名コマンドで置き換えて拒否するとした。2章と artifact_link_updates に TASK-001・TASK-003 を追加（r2）"
+    },
+    {
+      "issue_id": "SR-ADDR-002",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-014"
+      ],
+      "change": "MINICOMMERCE_ENV を必須・既定なしとし、未設定・空・development／production 以外の値（大文字違い・前後空白付きを含む）で起動を拒否する fail-closed を DD-002・INV-001・6章・9章に追加した（r2）"
+    },
+    {
+      "issue_id": "SR-ADDR-003",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-014"
+      ],
+      "change": "DB_USER を秘密情報として必須・既定なしとし、.env.example に値を書かず、compose.yaml の db サービスも同じ環境変数の参照（値・既定値なし）とした（4.3 の1、DD-002、DD-010）（r2）"
+    },
+    {
+      "issue_id": "QR-ADDR-R2-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-004"
+      ],
+      "change": "送信トークンの扱いを r3 に改訂した。トークン単位のセッションアドバイザリロックで同じトークンの要求を直列化し、トークンの消費を業務処理より前の独立トランザクションで確定（業務処理の成否にかかわらず残る）、終了時に通知した結果を記録する（4.3 の2・9・11、DD-002・DD-010・DD-015）。使用済みの要求は再判定し、FR-002 は照合の成否にかかわらずログイン状態・監査ログ（ログイン失敗を含む）を作らず、FR-031 は注文受付でも決済要求を送信せず先着の結果（E-031-06／07／08）を通知する（DD-013、DD-007 補足、INV-005）。ASM-002 の「E-031-08 では後着が新たな決済要求を送り得る」を撤回した。実在の選択肢として OPT-005（r2 の業務トランザクション内登録）・OPT-006（セーブポイント方式）・OPT-007（画面のボタン無効化のみ）を比較し不採用の理由を記録。DC-005・6章の検証方法・9章を更新。要件変更・design_change_requests なし"
+    },
+    {
+      "issue_id": "QR-ADDR-R2-002",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-001",
+        "ADDR-004"
+      ],
+      "change": "本ファイルを Python（encoding=utf-8、ensure_ascii=False）で再出力し、ASM-RESULT-001・ASM-RESULT-010 の statement・verification_method・source、autonomous_recovery.note、review_issue_resolutions[].change を正本 ADDR（ADDR-001 ASM-001、ADDR-007 ASM-001、ADDR-004 ASM-002 r3）に基づいて復元した。0x3F の連続・U+FFFD が0件であることを検証"
+    },
+    {
+      "issue_id": "SR-ADDR-R2-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-014"
+      ],
+      "change": "DJANGO_DEBUG・MINICOMMERCE_DEV_FEATURES は未設定時 false、設定時は小文字の true・false だけを受理し、それ以外の表記は環境を問わず起動を拒否する。本番の禁止の検査は環境変数の文字列ではなく解釈後の実効値に対して行う（4.3 の1・2、DD-002、DD-011 追加、INV-001、6章、9章）。ADDR-011 は定義を ADDR-014 に委ねているため変更なし"
+    },
+    {
+      "issue_id": "SR-ADDR-R3-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-004"
+      ],
+      "change": "ADDR-004 を r4 に改訂。ログインの使用済みトークンの要求では FR-002 の手順1〜9をいずれも行わず（入力値を参照せず、利用者の検索・パスワードの照合・ログイン状態の開始・監査ログの記録をしない）、先着の記録済みの結果だけを通知するため、入力を変えて使い回しても応答が変わらず照合の成否・利用者の存在を判別できない。照合は先着（未登録のトークン）とトークンなしの要求でだけ行い、必ず FR-002 手順4・6・8 どおり成否の監査ログを1件記録する（4.3 の11、DD-013 改訂、DD-016（MUST）・DD-017（MUST_NOT）・DC-008・INV-006 追加）。送信トークンは暗号論的乱数128ビット以上とし、（操作種別、トークンの SHA-256 照合値）で消費を記録して操作種別に結び付け、値そのもの・入力値は記録しない（DD-010、DD-002）。サーバー発行の確認はしないが、未登録の任意値は通常どおり全手順を行うため手順・記録を省略させられない。CMN-22 との両立：正規の繰り返し操作は同じ入力で、先着の1回分だけが反映・記録される。実在の選択肢として OPT-008（使用済みでも照合し失敗を記録：失敗の監査ログが重複し CMN-22・FR-002 6.2.9 に反する）、OPT-009（サーバー発行の記録・セッションとの結び付け：自分のトークンの使い回しを防げず、ログイン時のセッション識別子の再生成（ADDR-002 DD-005）と両立しない）を比較し不採用。6章・9章に「入力を変えて再利用しても応答が変わらず監査ログ・ログイン状態が増えない」「未登録値・別操作のトークン・トークンなしは照合され失敗が1件記録される」の検証を追加。ASM-002・ASM-RESULT-010 を改訂。要件変更・design_change_requests なし"
+    },
+    {
+      "issue_id": "QR-ADDR-R3-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-004"
+      ],
+      "change": "ADDR-004 の front matter primary_decision を r4 の中心判断に更新し、本ファイルの addr_creation_results の全14件の title・design_type・target_id・primary_decision を本文 front matter から再取得して一致を確認した（不一致は ADDR-004 の primary_decision のみだった）"
+    },
+    {
+      "issue_id": "QR-ADDR-R3-002",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-004"
+      ],
+      "change": "1章の対象機能・業務に FR-002（ログイン）・FR-003（ログアウト）を追加し、2章の要件に FR-003・NFR-SC-14・NFR-SC-22・VUL-11・FR-003 6.3.9 を追加した"
+    },
+    {
+      "issue_id": "QR-ADDR-R3-003",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-011"
+      ],
+      "change": "ADDR-011 の 2章の関連ADDR、4.3 の1、6章の実装・設定上の制約の「本番では false が強制」を、ADDR-014 r3（4.3 の2・DD-002・DD-011）に合わせ「本番で解釈後の値が true の場合は起動を拒否する」に統一した（ADDR-011 r3）。ADDR-014 は変更なし"
+    },
+    {
+      "issue_id": "QR-IMPL-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-001",
+        "ADDR-002"
+      ],
+      "change": "ADDR-001 を r3 に改訂。DD-009（GET では業務データを変更しない）に唯一の例外として FR-020 の利用中カートの作成を明示し（DD-009 改訂）、DD-015（FR-020 を実行するすべての GET：GET /api/cart/、SCR-005・SCR-006 の表示、共通表示 UI-05 の合計点数で、E-020-01・E-020-02 を通過し利用中カートがない場合に限り明細0件・クーポンなしの1件を作成。VUL-06 の更新操作に当たらず CSRF トークンを要求しない）、DD-016（何回・同時でも1件、後着は既存を返す。ADDR-004 4.3 の4 の条件付き一意制約と読み直し、1業務処理内で作成し E-020-03 で取消し、冪等キーなし）、INV-005（GET で他の業務データを変えない、作成は FR-020 の業務処理からだけ）、DC-007、ASM-002（SCR-901 表示中の共通表示の失敗）、4.3 の14、6章の冪等性、9章を追加。1 ADDR＝1中心判断を保つため例外の明示は採用済み OPT-001（SELECTED は1件のまま）に含め、実在の代替として OPT-005（保存しない空カートを返す：FR-020 6.8.4 手順4・6.8.5・6.8.6・ST-CART-01・UPD-11・AC-UC-004-020 に反し不採用）、OPT-006（FR-020 を POST 化：REST 規約・画面遷移・UI-05 に合わず不採用）を比較。ADDR-002 を r2 に改訂し、4.3 の5・DD-008・INV-004 に FR-020 の作成は画面の更新操作に当たらず ADDR-001 DD-015 に従う旨を追記（方式の変更なし）。ADDR-004 は 4.3 の4 が既に同時作成の一意性を定めているため変更なし。要件変更・design_change_requests なし。実装への拘束：get_cart・CartApi.get・cart_view・checkout_view(GET) は DD-015・DD-016 に適合し変更不要。共通表示の合計点数（app/common/context_processors.py の site_header が参照のみの cart_item_count で作成を省略）は DD-015・4.3 の14 に反するため FR-020 の業務処理に置き換える変更が必要",
+      "cycle": 1,
+      "max_cycles": 3
+    },
+    {
+      "issue_id": "QR-ADDR-R4-001",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-001"
+      ],
+      "change": "ADDR-001 を r4 に改訂。共通表示（UI-05）の合計点数での FR-020 の実行（作成を含む）を、FR-020 の業務処理を持つ TASK-012 に割り当て直し、TASK-012 が結果の合計点数を共通表示へ供給する部品を用意し、TASK-002 の共通レイアウトは表示枠だけを持ちカートを参照・作成しないとした（2章 設計資料、4.3 の14 に Task の割当てを追加、9章 実装・テスト、front matter primary_decision）。依存は TASK-012→TASK-006 等→TASK-002 の既存の方向だけで成立し循環しない。TASK-012 の In Scope「FR-020〜FR-025 の処理・例外」は FR-020 6.8.1 の起動契機（共通表示の合計点数）を含むため Task 本文・依存の変更は不要と判断し、design_change_requests は [] のまま。artifact_link_updates（PLAN-001：TASK-002・TASK-012・TASK-014・TASK-020 を含む）は変更なし",
+      "cycle": 2,
+      "max_cycles": 3
+    },
+    {
+      "issue_id": "QR-ADDR-R4-002",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-001"
+      ],
+      "change": "ADDR-001 INV-005 の第2文を「GET の要求での利用中カートの作成は FR-020 の業務処理からだけ行う」に限定し、GET 以外の FR-021（POST）・FR-025（DELETE）が要件（ST-CART-01）どおり作成することは対象外で禁じない旨を追記した（r4 改訂）",
+      "cycle": 2,
+      "max_cycles": 3
+    },
+    {
+      "issue_id": "QR-ADDR-R4-003",
+      "status": "FIXED",
+      "addr_ids": [
+        "ADDR-004"
+      ],
+      "change": "ADDR-004 を r5 に改訂。DD-014（MUST_NOT）の対象をログイン（FR-002）以外の機能に限定し、ログインの使用済みトークンの要求は DD-013・DD-016・DD-017・INV-005 に従い FR-002 の手順1〜9を行わず先着の記録済みの結果を通知する（通知は省略しない）と明記して、r4 の DD-013・DD-016 との字面上の衝突を解消した。判断内容の変更なし",
+      "cycle": 2,
+      "max_cycles": 3
+    },
+    {
+      "issue_id": "QR-IMPL-R2-001",
+      "status": "DECIDED",
+      "addr_ids": [
+        "ADDR-003"
+      ],
+      "change": "Implementation の ADR_REQUIRED（QR-IMPL-R2-001 で要件外の NUL 拒否を外した結果、ADDR-003 r1 DD-001 の Django 標準 PBKDF2 で末尾 NUL 付きの別パスワードが一致する）を判断し、ADDR-003 を r2 に改訂した。OPT-007（PBKDF2PasswordHasher を継承し鍵を SHA-256 の小文字16進64文字へ固定長化する独自方式名 pbkdf2_sha256_sha256hex のハッシャー）を選定。案1（NUL の入力エラー化：要件にない判定の追加）、案2（現状許容：FR-002 違反）、Django 標準 scrypt（同じ同一視）、Argon2id（依存追加）は不採用。DD-001 改訂、DD-005 に中間値を追加、DD-006・DD-007・INV-004・INV-005・DC-005・DC-006 を追加。設計本文（LDB-001・PLAN-001・FDEF-001）は方式名を規定しないため変更不要（design_change_requests は []）。回数は親の台帳の値を維持し ADDR では採番・リセットしない",
+      "cycle": null,
+      "max_cycles": 3
+    }
+  ]
+}

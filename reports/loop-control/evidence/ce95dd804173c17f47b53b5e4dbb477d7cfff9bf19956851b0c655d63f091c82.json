@@ -1,0 +1,92 @@
+{
+  "status": "FAIL",
+  "audit_scope": "ADDR",
+  "method": "inline-annotation",
+  "source_baseline_sha256": null,
+  "errors": [
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate snapshot coverage differs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate assurance: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate requires three independent Assurance results（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'（差し戻し先: ADDR）"
+  ],
+  "warnings": [],
+  "issues": [
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate requires ARCHITECTURE PASS",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate: expected object array",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate snapshot coverage differs",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Gate assurance: expected object array",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Gate requires three independent Assurance results",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Implementation handoff differs from frozen Architecture/ADDR inputs",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'",
+      "route": "ADDR"
+    }
+  ]
+}

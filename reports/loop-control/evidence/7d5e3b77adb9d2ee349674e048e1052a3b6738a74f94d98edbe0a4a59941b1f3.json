@@ -1,0 +1,9 @@
+{
+  "status": "BLOCKED",
+  "check_id": "producer",
+  "audit_scope": "ADDR",
+  "agent": "ADDR",
+  "result": "PARTIAL_SUCCESS",
+  "reason": "addr-request.json absent (design gate not established due to ARCHITECTURE unresolved); ADDR-001..014 created",
+  "related_issue": "UNRESOLVED-60a549ca11f16034"
+}

@@ -1,0 +1,28 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "nul_char_input_db_error_SEC-IMPL-001"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "it-validator-run-2",
+  "validation_result": "reports/loop-control/checks/it-validator-detail.json",
+  "repair": "",
+  "impact": "結合試験it-exec-2でIT-058(既知原因)FAIL",
+  "recommended_route": "IMPLEMENTATION",
+  "errors": [
+    "Applicable criterion is not PASS: error-handling",
+    "IT-058: final AUTOMATABLE case result is 'FAIL', expected PASS.",
+    "IT-DEF-001: defect is unresolved.",
+    "IT-DEF-001: rerun.target_cases must be PASS.",
+    "IT-DEF-001: rerun.related_cases must be PASS.",
+    "IT-DEF-001: rerun.full_suite must be PASS.",
+    "IT-058: error-report contains unresolved error.",
+    "JUnit pass rate 98.99% < required 100.00%.",
+    "JUnit failed tests 1 > allowed 0."
+  ]
+}

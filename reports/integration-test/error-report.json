@@ -1,0 +1,624 @@
+{
+  "run_id": "RUN-AOBA-EC-1118",
+  "generated_at": "2026-11-19T19:15:42+00:00",
+  "summary": {
+    "total_errors": 19,
+    "errors_by_origin": {
+      "AI_GENERATED": 19,
+      "EXTERNAL": 0
+    },
+    "errors_by_stage": {
+      "AI_GENERATED/INITIAL": 8,
+      "AI_GENERATED/GAP_FILL": 11
+    },
+    "errors_by_cause": {
+      "IMPLEMENTATION_ERROR": 1,
+      "TEST_ERROR": 18
+    },
+    "final_execution": {
+      "failed_cases": 1,
+      "failed_cases_by_stage": {
+        "AI_GENERATED/INITIAL": 1,
+        "AI_GENERATED/GAP_FILL": 0,
+        "EXTERNAL": 0
+      },
+      "unique_defects": 1,
+      "unresolved_defects": 1
+    },
+    "test_errors_fixed_during_implementation": 18,
+    "defect_detection": {
+      "COMMON_DEFECT": 0,
+      "AI_ONLY_DEFECT": 1,
+      "EXTERNAL_ONLY_DEFECT": 0
+    }
+  },
+  "defects": [
+    {
+      "defect_id": "IT-DEF-001",
+      "classification": "IMPLEMENTATION_ERROR",
+      "known_issue": "UNRESOLVED-6de5eec64599b907",
+      "detected_by_cases": [
+        "IT-058"
+      ],
+      "detected_by_stage": {
+        "IT-058": "INITIAL"
+      },
+      "detection_source": "AI_ONLY_DEFECT",
+      "requirement_id": "NFR-SC-04",
+      "related_adr": "ADDR-012, ADDR-014",
+      "expected": "Content-Type の charset が復号に使えない指定（undefined・idna）で非 ASCII のクエリを伴う要求も、rot13 と同じく 400 入力エラーとし、500 にしない（NFR-SC-04、ADDR-001 4.3 の7、RC-100）",
+      "actual": "AssertionError: charset 指定の要求が 400 にならない: {('undefined', '/api/products/'): 500, ('undefined', '/'): 500, ('idna', '/api/products/'): 500, ('idna', '/'): 500}（全結果 {('rot13', '/api/products/'): 400, ('rot13', '/'): 400, ('undefined', '/api/products/'): 500, ('undefined', '/'): 500, ('idna', '/api/products/'): 500, ('idna', '/'): 500}）",
+      "root_cause": "config.wsgi.application が呼ぶ common.middleware.is_unusable_charset は codecs の _is_text_encoding が偽の符号化方式（rot13 等）だけを除外し、テキスト用として登録されているが入力を復号できない 'undefined'・'idna' を通過させる。このため Django の WSGIRequest 生成時（クエリ文字列の復号）に UnicodeError となり、RequestCharsetMiddleware・WebExceptionMiddleware を経ずにアプリケーション外へ例外が送出される（AP サーバーでは 500、LOG-03 も出力されない）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "WSGI 入口・共通ミドルウェア",
+        "files": [
+          "app/config/wsgi.py",
+          "app/common/middleware.py"
+        ],
+        "symbols": [
+          "config.wsgi.application",
+          "common.middleware.is_unusable_charset"
+        ],
+        "api": "全要求（/api/products/、/ ほか。Content-Type に charset=undefined／idna とクエリを伴う GET）",
+        "database": "該当なし"
+      },
+      "recommended_route": "IMPLEMENTATION",
+      "fix": "Production Code は変更していない（Integration Test Agent の責務外）。既知の未解決 UNRESOLVED-6de5eec64599b907 のため新しい3回ループにせず、IMPLEMENTATION_FIX_REQUIRED として親へ返す。修正候補：is_unusable_charset で空文字列・非 ASCII を実際に復号して失敗する指定も入力エラーとする",
+      "resolved": false,
+      "loop": {
+        "new_loop_started": false,
+        "reason": "既知の未解決（3回修正済み）。後続工程の再検出として OBSERVE"
+      },
+      "rerun": {
+        "target_cases": "NOT_EXECUTED",
+        "related_cases": "NOT_EXECUTED",
+        "full_suite": "NOT_EXECUTED",
+        "reason": "Production Code の修正が行われていないため修正後の再試験は未実行（結果を PASS にしない）"
+      }
+    }
+  ],
+  "errors": [
+    {
+      "case_id": "IT-058",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "final_execution（it-exec-7）",
+      "classification": "IMPLEMENTATION_ERROR",
+      "defect_id": "IT-DEF-001",
+      "known_issue": "UNRESOLVED-6de5eec64599b907",
+      "requirement_id": "NFR-SC-04",
+      "related_adr": "ADDR-012, ADDR-014",
+      "expected": "Content-Type の charset が復号に使えない指定（undefined・idna）で非 ASCII のクエリを伴う要求も、rot13 と同じく 400 入力エラーとし、500 にしない（NFR-SC-04、ADDR-001 4.3 の7、RC-100）",
+      "actual": "AssertionError: charset 指定の要求が 400 にならない: {('undefined', '/api/products/'): 500, ('undefined', '/'): 500, ('idna', '/api/products/'): 500, ('idna', '/'): 500}（全結果 {('rot13', '/api/products/'): 400, ('rot13', '/'): 400, ('undefined', '/api/products/'): 500, ('undefined', '/'): 500, ('idna', '/api/products/'): 500, ('idna', '/'): 500}）",
+      "cause": "config.wsgi.application が呼ぶ common.middleware.is_unusable_charset は codecs の _is_text_encoding が偽の符号化方式（rot13 等）だけを除外し、テキスト用として登録されているが入力を復号できない 'undefined'・'idna' を通過させる。このため Django の WSGIRequest 生成時（クエリ文字列の復号）に UnicodeError となり、RequestCharsetMiddleware・WebExceptionMiddleware を経ずにアプリケーション外へ例外が送出される（AP サーバーでは 500、LOG-03 も出力されない）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "WSGI 入口・共通ミドルウェア",
+        "files": [
+          "app/config/wsgi.py",
+          "app/common/middleware.py"
+        ],
+        "symbols": [
+          "config.wsgi.application",
+          "common.middleware.is_unusable_charset"
+        ],
+        "api": "全要求（/api/products/、/ ほか。Content-Type に charset=undefined／idna とクエリを伴う GET）",
+        "database": "該当なし"
+      },
+      "fix": "Production Code は変更していない（Integration Test Agent の責務外）。既知の未解決 UNRESOLVED-6de5eec64599b907 のため新しい3回ループにせず、IMPLEMENTATION_FIX_REQUIRED として親へ返す。修正候補：is_unusable_charset で空文字列・非 ASCII を実際に復号して失敗する指定も入力エラーとする",
+      "retest": {
+        "target_cases": "NOT_EXECUTED",
+        "related_cases": "NOT_EXECUTED",
+        "full_suite": "NOT_EXECUTED",
+        "reason": "Production Code の修正が行われていないため修正後の再試験は未実行（結果を PASS にしない）"
+      },
+      "resolved": false
+    },
+    {
+      "case_id": "IT-020",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-024, FR-025, FR-026",
+      "related_adr": "ADDR-001, ADDR-011",
+      "expected": "1) 422 cart_empty 2) 422 below_minimum_purchase_amount（values に minimum_purchase_amount=3000・subtotal=2999） 3) 422 coupon_not_yet_valid 4) 200、割引500 5) 422 coupon_already_applied 6) クーポンは残り割引0・is_applicable=false・not_applicable_reason=below_minimum_purchase_amount 7) 割引500 8) 割引500 9) 割引0・not_applicable_reason=expired 10) 200 coupon null・割引0、再解除もエラーにならない",
+      "actual": "固定した現在日時（2027年）より前の実時刻で発行した Bearer が有効期限切れとなり 401（試験データの不備）",
+      "cause": "固定した現在日時（2027年）より前の実時刻で発行した Bearer が有効期限切れとなり 401（試験データの不備）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_cart.py"
+        ],
+        "symbols": [
+          "test_it_020_coupon_apply_validity_recalc_remove"
+        ]
+      },
+      "fix": "固定日時ごとにログイン状態を発行し直すよう試験手順を修正（期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "IT-031",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-032, FR-033, FR-030",
+      "related_adr": "ADDR-001",
+      "expected": "1) A の注文だけ、注文日時降順（同値は注文番号降順）、page_size=20・total_pages=2、page=3 は空 2) 400 3) 明細は追加順・確定時の単価（価格変更の影響なし）、状態履歴は昇順、未発生日時 null、can_pay/can_cancel、payments を含まない 4) 404",
+      "actual": "注文詳細の coupon に ADDR-001 R-4 の discount_type_label があるのに完全一致で比較していた（期待値の記述誤り）",
+      "cause": "注文詳細の coupon に ADDR-001 R-4 の discount_type_label があるのに完全一致で比較していた（期待値の記述誤り）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_orders.py"
+        ],
+        "symbols": [
+          "test_it_031_history_and_detail_contents"
+        ]
+      },
+      "fix": "R-4 どおり値と _label の両方を確認する比較に修正（要件の期待値に合わせた。弱体化なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "IT-051",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-060, FR-002, FR-011, FR-040",
+      "related_adr": "ADDR-009, ADDR-010, ADDR-003",
+      "expected": "1) 成功（終了コード0） 2) データ別投入件数（商品分類所属を含む）が定義ファイルと一致、出力にメール・パスワード・氏名を含まない 3) 管理者・購入者とも記載パスワードで 200 4) 非公開商品は商品一覧に出ず在庫単位一覧に出る、省略項目は既定値（説明0文字・公開） 5) initial_data_load・success・対象利用者 null・詳細に件数、個人情報なし",
+      "actual": "manage.py 実行（run_from_argv）が終了時に DB 接続を閉じ、ロールバック方式の試験トランザクションが失われた（試験環境の不備）",
+      "cause": "manage.py 実行（run_from_argv）が終了時に DB 接続を閉じ、ロールバック方式の試験トランザクションが失われた（試験環境の不備）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_initial_data.py"
+        ],
+        "symbols": [
+          "test_it_051_load_then_login_and_listings"
+        ]
+      },
+      "fix": "コマンドを実行するケースを transaction=True（コミット方式、ADDR-011 DD-010 と同じ）に変更",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "IT-052",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010, ADDR-002, ADDR-004",
+      "expected": "1) 成功 2) 監査ログ以外の既存データ（注文・カート・決済記録・履歴を含む）は削除され定義ファイルの件数だけ、監査ログは保持＋1件 3) 401",
+      "actual": "同上（コマンド終了時の DB 接続の切断）",
+      "cause": "同上（コマンド終了時の DB 接続の切断）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_initial_data.py"
+        ],
+        "symbols": [
+          "test_it_052_reset_deletes_all_and_invalidates_tokens"
+        ]
+      },
+      "fix": "transaction=True に変更",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "IT-053",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-009, ADDR-010",
+      "expected": "1) 失敗（終了コード1）、違反を全件（データ名・行番号・項目名・理由）示し値を示さない 2) 失敗 3) 既存データは削除・追加されない、監査ログに失敗（件数0）が各1件",
+      "actual": "同上（コマンド終了時の DB 接続の切断）",
+      "cause": "同上（コマンド終了時の DB 接続の切断）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_initial_data.py"
+        ],
+        "symbols": [
+          "test_it_053_violations_reported_nothing_loaded"
+        ]
+      },
+      "fix": "transaction=True に変更",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "IT-054",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010",
+      "expected": "1) いずれも失敗（終了コード1）、理由を示す 2) 既存データ不変、監査ログに失敗が実行ごとに1件",
+      "actual": "同上（コマンド終了時の DB 接続の切断）",
+      "cause": "同上（コマンド終了時の DB 接続の切断）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_initial_data.py"
+        ],
+        "symbols": [
+          "test_it_054_argument_read_and_format_errors"
+        ]
+      },
+      "fix": "transaction=True に変更",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-009",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-009, ADDR-010",
+      "expected": "1) 成功 2) 利用者・仕入先・商品分類・商品・在庫単位・クーポンの件数が定義ファイルの件数と一致",
+      "actual": "同上（コマンド終了時の DB 接続の切断）",
+      "cause": "同上（コマンド終了時の DB 接続の切断）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill.py"
+        ],
+        "symbols": [
+          "test_gf_009_seed_file_loadable"
+        ]
+      },
+      "fix": "transaction=True に変更",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-002",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-004",
+      "expected": "1) 302 で / 2) 先着の結果（成功）と同じ遷移先へ 302（入力値に依存しない） 3) login_success が1件のみ、login_failure は記録されない 4) 再送したブラウザにはログイン状態が付与されず SCR-004（required）へ遷移、先着のブラウザはログイン中",
+      "actual": "二重送信の再現で、先着の応答で更新された CSRF Cookie を後着に使い 403（二重送信は先着の応答前の Cookie で送られる）",
+      "cause": "二重送信の再現で、先着の応答で更新された CSRF Cookie を後着に使い 403（二重送信は先着の応答前の Cookie で送られる）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill.py"
+        ],
+        "symbols": [
+          "test_gf_002_web_login_double_submit_same_token"
+        ]
+      },
+      "fix": "先着の応答前の Cookie を複製したクライアントから後着を送るよう再現手順を修正（期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "IT-058",
+      "origin": "AI_GENERATED",
+      "generation_stage": "INITIAL",
+      "phase": "implementation_trial_run（一時 JUnit。正式結果ではない、it-exec-1 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-SC-04",
+      "related_adr": "ADDR-012, ADDR-014",
+      "expected": "1) いずれも 400（入力エラー）、500 にしない（UNRESOLVED-6de5eec64599b907 の対象を含む）",
+      "actual": "ASCII だけのクエリでは idna で復号でき『復号に使えない指定』の条件を満たさず、試験データが条件を再現していなかった",
+      "cause": "ASCII だけのクエリでは idna で復号でき『復号に使えない指定』の条件を満たさず、試験データが条件を再現していなかった",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_cross_cutting.py"
+        ],
+        "symbols": [
+          "test_it_058_wsgi_unusable_charset_with_query"
+        ]
+      },
+      "fix": "非 ASCII（UTF-8 のあ）を含むクエリに変更（期待値 400 は変更なし）。修正後は IT-DEF-001（既知の未解決）として FAIL",
+      "retest": {
+        "target_case": "FAIL",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-034",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "cycle1_trial_run（一時 JUnit。正式結果ではない、it-exec-2 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-US-10, FR-030, FR-031",
+      "related_adr": "ADDR-004, ADDR-008, ADDR-012",
+      "expected": "1) 注文1件、先着は注文完了へ、後着（使用済みトークン）は再判定どおりカートが空としてカートへ遷移（ADDR-004 DD-010・DD-013、AC-UC-006-021） 2) 決済記録 承認1件、模擬機能への要求1回 3) 決済記録は否認・承認の2件、要求2回、支払済",
+      "actual": "使用済みトークンの注文確定の後着に先着と同じ遷移先を期待していたが、ADDR-004 DD-010・DD-013 では注文確定は省略対象外で再判定の結果（カートが空、AC-UC-006-021）を通知する（期待値の導出誤り）",
+      "cause": "使用済みトークンの注文確定の後着に先着と同じ遷移先を期待していたが、ADDR-004 DD-010・DD-013 では注文確定は省略対象外で再判定の結果（カートが空、AC-UC-006-021）を通知する（期待値の導出誤り）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_flows.py"
+        ],
+        "symbols": [
+          "test_gf_034_double_submit_place_pay"
+        ]
+      },
+      "fix": "後着はカートへ遷移（cart_empty）と ADDR-004 どおりに修正。注文1件の確認は変更なし（弱体化なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-028",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "cycle1_trial_run（一時 JUnit。正式結果ではない、it-exec-2 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-SC-12, FR-002, FR-011, FR-012",
+      "related_adr": "ADDR-002, ADDR-003",
+      "expected": "1) 200、利用者区分どおり 2) API は同じ 401 本文（type=authentication_failed）、画面は同じ文言（メールアドレスまたはパスワード） 3) 200",
+      "actual": "ログイン失敗の種類を error.reason で比較していた（ADDR-001 の封筒では type=authentication_failed、reason は null）",
+      "cause": "ログイン失敗の種類を error.reason で比較していた（ADDR-001 の封筒では type=authentication_failed、reason は null）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_nfr_web.py"
+        ],
+        "symbols": [
+          "test_gf_028_auth_means"
+        ]
+      },
+      "fix": "error.type で比較するよう修正（2つの失敗の本文が同一であることの確認は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-024",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "cycle1_trial_run（一時 JUnit。正式結果ではない、it-exec-2 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-PF-10, NFR-MG-01, NFR-MG-02, NFR-MG-03, NFR-MG-04, NFR-MG-08, NFR-OM-04, FR-060",
+      "related_adr": "ADDR-009, ADDR-010",
+      "expected": "1) 失敗し何も変わらない（監査ログに失敗1件） 2) 成功、60秒以内、通知の件数が定義と一致、LOG-05 成功 3) 利用者7・仕入先20・商品分類30・商品300・在庫単位800、業務キー（メールアドレス・仕入先コード・分類コード・商品コード・SKU）全件一致、注文・カート・決済記録・状態履歴0件、2) の実行前の監査ログが残り1件増加 4) 7名とも成功",
+      "actual": "注文を含む定義ファイルの拒否（監査ログに失敗1件）より前に監査ログを記録し、移行リハーサルの実行で1件増加の判定に失敗を含めていた",
+      "cause": "注文を含む定義ファイルの拒否（監査ログに失敗1件）より前に監査ログを記録し、移行リハーサルの実行で1件増加の判定に失敗を含めていた",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_nfr_batch.py"
+        ],
+        "symbols": [
+          "test_gf_024_vdc04_rehearsal"
+        ]
+      },
+      "fix": "拒否の失敗1件を別に確認し、--reset の実行直前の監査ログに対して1件増加を判定するよう修正",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-039",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "cycle2_trial_run（一時 JUnit。正式結果ではない、it-exec-3 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-US-10, FR-031",
+      "related_adr": "ADDR-004, ADDR-008, ADDR-011",
+      "expected": "決済要求は各注文1回だけ。承認：先着 302 で注文詳細・「支払が完了しました。」、後着 302 で注文詳細・「この注文は支払できません（現在の状態：支払済）。」（E-031-05）、決済記録 承認1件（合計金額）、支払済・支払日時あり、履歴 注文受付→支払済。否認：先着・後着とも 422 で「決済が承認されませんでした。…再度お支払いください。」（後着は先着の結果 E-031-06）、決済記録 否認1件、注文受付のまま・履歴1件。送信トークンの記録は1件で先着の結果を保持",
+      "actual": "送信トークンの記録の確認で、同じ操作種別（order_pay）の記録が試験全体で1件と仮定していた（承認・否認の2注文で2件。試験コードの誤り）",
+      "cause": "送信トークンの記録の確認で、同じ操作種別（order_pay）の記録が試験全体で1件と仮定していた（承認・否認の2注文で2件。試験コードの誤り）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_inflight.py"
+        ],
+        "symbols": [
+          "test_gf_039_inflight_repeat_pay_approved_declined"
+        ]
+      },
+      "fix": "対象トークン（操作種別＋照合値）の記録が1件であることだけを確認するよう修正（期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-040",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "cycle2_trial_run（一時 JUnit。正式結果ではない、it-exec-3 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-US-10, FR-031",
+      "related_adr": "ADDR-004, ADDR-008, ADDR-011",
+      "expected": "(a) 決済要求1回、先着・後着とも 500 システムエラー（後着は先着の結果 E-031-08）、決済記録0件・注文受付のまま・履歴1件、送信トークンの結果は E-031-08。5) 新しい送信トークンで新たな支払となり 302・支払済、決済要求は計2回・決済記録 承認1件 (b) 決済要求1回、先着・後着とも 500 システムエラー（後着は先着の結果の記録がないため E-031-08 とし再送信しない）、決済記録0件・注文受付のまま、送信トークンの結果は記録なし",
+      "actual": "システムエラー画面の文言を「システムエラーが発生しました。」（句点付き）で照合したが、画面は見出し（句点なし）と本文に分けて表示する（試験コードの照合文字列の誤り）",
+      "cause": "システムエラー画面の文言を「システムエラーが発生しました。」（句点付き）で照合したが、画面は見出し（句点なし）と本文に分けて表示する（試験コードの照合文字列の誤り）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_inflight.py"
+        ],
+        "symbols": [
+          "test_gf_040_inflight_repeat_pay_system_error_and_interrupted"
+        ]
+      },
+      "fix": "ERR-08 の本文「時間をおいて再度操作してください。解消しない場合は当社までお問い合わせください。」と 500 で照合（期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-050",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "trace_c10_cycle1_trial_run（一時 JUnit。正式結果ではない、UNRESOLVED-e1d9dfe900863622、it-exec-5 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-EN-03, NFR-OM-05, NFR-EN-08",
+      "related_adr": "ADDR-014",
+      "expected": "1) app・db の2サービス、db はダイジェスト固定の postgres:16・pg_isready の正常性確認、app は db の正常性確認後に migrate→collectstatic→exec gunicorn、開発用サーバー（runserver）なし 2) CMD は gunicorn、wsgi_app=config.wsgi:application・bind 0.0.0.0:8000・sync、gunicorn を固定、クラウド基盤の SDK なし 3) 200 で商品一覧画面（起動確認の商品）",
+      "actual": "Dockerfile に開発用サーバーが無いことを、コメント行（「runserver を起動構成に含めない」）を含む全文で判定していた（試験コードの判定対象の誤り）",
+      "cause": "Dockerfile に開発用サーバーが無いことを、コメント行（「runserver を起動構成に含めない」）を含む全文で判定していた（試験コードの判定対象の誤り）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_nfr_config.py"
+        ],
+        "symbols": [
+          "test_gf_050_compose_single_start_gunicorn"
+        ]
+      },
+      "fix": "コメントを除く Dockerfile の命令行で判定するよう修正（起動定義に runserver を含まないという期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-059",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "trace_c10_cycle2_trial_run（一時 JUnit。正式結果ではない、UNRESOLVED-e1d9dfe900863622、it-exec-6 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-US-01, NFR-US-02, NFR-US-06",
+      "related_adr": "ADDR-012, ADDR-014",
+      "expected": "1) Windows 11（ビルド 22000 以上） 2)〜4) 全画面（14画面）が想定の状態（SCR-901 は 404、他は 200）・遷移先で表示され、資源の読込失敗・スクリプトの例外・コンソールのエラー・外部への要求が0件、文書の幅が表示領域の幅以下で表示領域外の要素なし、lang=ja・UTF-8。確認ダイアログは各ブラウザで4回（注文確定・キャンセル・出荷登録・配達完了登録） 5) 配達完了2件・支払済2件",
+      "actual": "購入者のログインフォームをエラー画面（SCR-901）の表示中に送信し、カートに入れるフォームを商品詳細を表示せずに送信していた（試験手順の誤り）",
+      "cause": "購入者のログインフォームをエラー画面（SCR-901）の表示中に送信し、カートに入れるフォームを商品詳細を表示せずに送信していた（試験手順の誤り）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_nfr_browser.py"
+        ],
+        "symbols": [
+          "test_gf_059_browser_compatibility"
+        ]
+      },
+      "fix": "ログイン画面・商品詳細を表示してからフォームを送信するよう修正（全画面の表示・代表操作・横スクロールなしの期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-068",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "trace_c10_cycle2_trial_run（一時 JUnit。正式結果ではない、UNRESOLVED-e1d9dfe900863622、it-exec-6 前）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-OM-02",
+      "related_adr": "ADDR-008, ADDR-010, ADDR-013",
+      "expected": "1) LOG-01・02・03・05・06 が出力 2) 全行が1行の JSON・日時（+09:00、ミリ秒）・種類あり、要求のログに要求の識別子、ハンドラーはStreamHandler（標準出力）・NullHandler だけでファイル型なし、ログの削除・ローテーションの処理なし",
+      "actual": "LOG-05 を manage.py の起動経路（execute_from_command_line）で発生させたため、ログ設定の読み直しで捕捉用のハンドラーが外れ、LOG-05 を捕捉できなかった（試験コードの誤り）",
+      "cause": "LOG-05 を manage.py の起動経路（execute_from_command_line）で発生させたため、ログ設定の読み直しで捕捉用のハンドラーが外れ、LOG-05 を捕捉できなかった（試験コードの誤り）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_nfr_ops.py"
+        ],
+        "symbols": [
+          "test_gf_068_application_log_output"
+        ]
+      },
+      "fix": "初期データ一括投入を call_command で実行するよう修正（LOG-01〜03・05・06 の出力の期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    },
+    {
+      "case_id": "GF-062",
+      "origin": "AI_GENERATED",
+      "generation_stage": "GAP_FILL",
+      "phase": "formal_execution（it-exec-6）",
+      "classification": "TEST_ERROR",
+      "requirement_id": "NFR-PF-05, NFR-PF-04, NFR-PF-14, NFR-PF-15, NFR-PF-03",
+      "related_adr": "ADDR-001, ADDR-011",
+      "expected": "システムエラー（5xx・接続失敗）0件、全要求が想定の成功応答、照会 1.0秒・更新 2.0秒・認証 2.0秒以内（95パーセンタイル）、到着した注文確定（20件）が全件 201、ブラウザ表示が全件 200 で95パーセンタイル 2.0秒以内、資源使用量の記録あり。最初と最後の60秒の95パーセンタイル・メモリ使用量を記録（参考計測）",
+      "actual": "仮想利用者（_Buyer）がカートのクーポンの適用状態を応答から同期せず、カートの明細を全て削除した時点で「クーポンなし」とみなしていた。カートの明細の削除ではクーポンは外れない（carts.services.delete_item）ため、適用中のカートへ再びクーポン適用を要求し、業務エラー（E-024-05 クーポンは1注文につき1枚まで、422）を2件発生させた。測定条件の「業務エラーとならない条件で要求する」を試験側が満たしていなかった（試験コードの誤り。Production Code の不具合ではない）",
+      "cause": "仮想利用者（_Buyer）がカートのクーポンの適用状態を応答から同期せず、カートの明細を全て削除した時点で「クーポンなし」とみなしていた。カートの明細の削除ではクーポンは外れない（carts.services.delete_item）ため、適用中のカートへ再びクーポン適用を要求し、業務エラー（E-024-05 クーポンは1注文につき1枚まで、422）を2件発生させた。測定条件の「業務エラーとならない条件で要求する」を試験側が満たしていなかった（試験コードの誤り。Production Code の不具合ではない）",
+      "error_location_identifiable": true,
+      "error_location": {
+        "layer": "Test Code",
+        "files": [
+          "app/tests/integration/test_it_gap_fill_nfr_perf.py"
+        ],
+        "symbols": [
+          "_Buyer（_update の cart_delete・coupon_apply）"
+        ]
+      },
+      "fix": "カートの応答（明細追加・数量変更・削除・クーポン適用/解除・カート照会）の coupon からクーポンの適用状態を同期するよう修正（業務エラー0件・システムエラー0件・95パーセンタイルの期待値は変更なし）",
+      "retest": {
+        "target_case": "PASS",
+        "related_cases": "同じ試験ファイルの GF-061・GF-063 を含む",
+        "full_suite": "it-exec-7 で全134件を実行"
+      },
+      "resolved": true
+    }
+  ]
+}

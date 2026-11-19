@@ -1,0 +1,57 @@
+# MiniCommerce の実行・検証環境（ENV-01）。app・db の2サービス（Steering 3章・4章、ADDR-014）。
+# 秘密情報（DJANGO_SECRET_KEY・DB_USER・DB_PASSWORD）は .env（リポジトリに含めない）から与える。
+# 値・既定値を本ファイルに書かない（未設定なら起動を失敗させる参照形式）。
+name: minicommerce
+
+services:
+  db:
+    image: postgres:16@sha256:3950ad7c3148ca2175ef1b6c36c9efbf78957ae8fbe8b3a5d7c35af50500382f
+    environment:
+      POSTGRES_DB: ${DB_NAME:?DB_NAME must be set in .env}
+      POSTGRES_USER: ${DB_USER:?DB_USER must be set in .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set in .env}
+      TZ: Asia/Tokyo
+      PGTZ: Asia/Tokyo
+      POSTGRES_INITDB_ARGS: --encoding=UTF8
+    ports:
+      # ホストのループバックだけに公開する（他の端末から DB へ直接接続させない）
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+      args:
+        INSTALL_DEV: "true"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      TZ: Asia/Tokyo
+    ports:
+      # ホストのループバックだけに公開する（http://localhost:8000/）
+      - "127.0.0.1:8000:8000"
+    # ENV-01 では起動時にマイグレーションを適用してから Gunicorn を起動する（1回の起動操作：NFR-OM-05）
+    command:
+      - sh
+      - -c
+      - python manage.py migrate --noinput && python manage.py collectstatic --noinput --verbosity 0 && exec gunicorn --config gunicorn.conf.py
+    volumes:
+      # 自動テスト（app/tests/）と試験設定（app/pytest.ini）はイメージに含めず、app コンテナから実行できるようにする
+      - ./app/tests:/srv/minicommerce/app/tests:ro
+      - ./app/pytest.ini:/srv/minicommerce/app/pytest.ini:ro
+      - ./ruff.toml:/srv/minicommerce/ruff.toml:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:

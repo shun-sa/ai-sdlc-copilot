@@ -1,0 +1,26 @@
+{
+  "commands": [
+    [
+      ".venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-c",
+      "app/pytest.ini",
+      "--rootdir=.",
+      "app/tests/unit",
+      "-p",
+      "no:cacheprovider",
+      "-o",
+      "junit_family=xunit2",
+      "--junitxml=reports/unit-test/junit.xml",
+      "--cov=app",
+      "--cov-branch",
+      "--cov-config=app/tests/unit/coverage.ini",
+      "--cov-report=json:reports/unit-test/coverage.json",
+      "--cov-report=term"
+    ]
+  ],
+  "coverage": "reports/unit-test/coverage.json",
+  "junit": "reports/unit-test/junit.xml",
+  "timeout_seconds": 1200
+}

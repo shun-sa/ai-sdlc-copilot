@@ -1,0 +1,56 @@
+{
+  "users": [
+    {"email": "admin01@example.com", "password": "Kanri01Pass", "name": "管理 一郎", "user_type": "admin"},
+    {"email": "admin02@example.com", "password": "Shukka02Pass", "name": "出荷 花子", "user_type": "admin"},
+    {"email": "buyer01@example.com", "password": "Kounyu01Pass", "name": "購入 太郎", "user_type": "buyer"},
+    {"email": "buyer02@example.com", "password": "Kounyu02Pass", "name": "見本 次郎", "user_type": "buyer"},
+    {"email": "buyer03@example.com", "password": "Kounyu03Pass", "name": "試験 三子", "user_type": "buyer"}
+  ],
+  "suppliers": [
+    {"supplier_code": "SUP-001", "name": "あおば陶器工房（架空）"},
+    {"supplier_code": "SUP-002", "name": "みどり木工所（架空）"},
+    {"supplier_code": "SUP-003", "name": "そら布製品店（架空）"}
+  ],
+  "categories": [
+    {"category_code": "kitchen", "name": "キッチン", "display_order": 1},
+    {"category_code": "tableware", "name": "食器", "parent_category_code": "kitchen", "display_order": 1},
+    {"category_code": "mug", "name": "マグカップ", "parent_category_code": "tableware", "display_order": 1},
+    {"category_code": "plate", "name": "皿", "parent_category_code": "tableware", "display_order": 2},
+    {"category_code": "cookware", "name": "調理道具", "parent_category_code": "kitchen", "display_order": 2},
+    {"category_code": "interior", "name": "インテリア", "display_order": 2},
+    {"category_code": "fabric", "name": "布小物", "parent_category_code": "interior", "display_order": 1},
+    {"category_code": "wood", "name": "木製小物", "parent_category_code": "interior", "display_order": 2}
+  ],
+  "products": [
+    {"product_code": "MUG-001", "name": "あおばマグカップ", "description": "毎日使いやすい陶器のマグカップです。\n電子レンジ対応。", "category_codes": ["mug"], "registered_at": "2027-03-01T10:00:00+09:00"},
+    {"product_code": "MUG-002", "name": "Blue Mug（ブルーマグ）", "description": "深い青の釉薬が特徴のマグカップです。", "category_codes": ["mug"], "registered_at": "2027-03-02T10:00:00+09:00"},
+    {"product_code": "PLT-001", "name": "白磁プレート", "description": "料理が映える白磁の平皿です。", "category_codes": ["plate", "tableware"], "registered_at": "2027-03-03T10:00:00"},
+    {"product_code": "CKW-001", "name": "木べら", "description": "天然木の木べらです。", "category_codes": ["cookware", "wood"], "registered_at": "2027-03-04T10:00:00+09:00"},
+    {"product_code": "FAB-001", "name": "リネンのランチョンマット", "category_codes": ["fabric"], "registered_at": "2027-03-05T10:00:00+09:00"},
+    {"product_code": "FAB-002", "name": "コットンの鍋つかみ", "description": "厚手のコットンで熱に強い鍋つかみです。", "category_codes": ["fabric", "cookware"], "registered_at": "2027-03-05T10:00:00+09:00"},
+    {"product_code": "WOD-001", "name": "木製コースター", "description": "在庫切れの確認用の商品です。", "category_codes": ["wood"], "registered_at": "2027-03-06T10:00:00+09:00"},
+    {"product_code": "WOD-002", "name": "木製トレイ（販売準備中）", "description": "非公開の確認用の商品です。", "visibility": "private", "category_codes": ["wood"], "registered_at": "2027-03-07T10:00:00+09:00"},
+    {"product_code": "GFT-001", "name": "ギフトボックス", "description": "所属分類なしの確認用の商品です。"}
+  ],
+  "stock_units": [
+    {"sku": "MUG-001-WH", "product_code": "MUG-001", "supplier_code": "SUP-001", "variant_name": "ホワイト", "price_excluding_tax": 1500, "stock_quantity": 30},
+    {"sku": "MUG-001-BL", "product_code": "MUG-001", "supplier_code": "SUP-001", "variant_name": "ブルー", "price_excluding_tax": 1500, "stock_quantity": 3},
+    {"sku": "MUG-002-M", "product_code": "MUG-002", "supplier_code": "SUP-001", "variant_name": "M", "price_excluding_tax": 1800, "stock_quantity": 12},
+    {"sku": "MUG-002-L", "product_code": "MUG-002", "supplier_code": "SUP-001", "variant_name": "L", "price_excluding_tax": 2200, "stock_quantity": 1},
+    {"sku": "PLT-001-S", "product_code": "PLT-001", "supplier_code": "SUP-001", "variant_name": "小", "price_excluding_tax": 999, "stock_quantity": 50},
+    {"sku": "PLT-001-L", "product_code": "PLT-001", "supplier_code": "SUP-001", "variant_name": "大", "price_excluding_tax": 2500, "stock_quantity": 20},
+    {"sku": "CKW-001-NA", "product_code": "CKW-001", "supplier_code": "SUP-002", "variant_name": "ナチュラル", "price_excluding_tax": 800, "stock_quantity": 40},
+    {"sku": "FAB-001-GR", "product_code": "FAB-001", "supplier_code": "SUP-003", "variant_name": "グリーン", "price_excluding_tax": 1200, "stock_quantity": 15},
+    {"sku": "FAB-001-BE", "product_code": "FAB-001", "supplier_code": "SUP-003", "variant_name": "ベージュ", "price_excluding_tax": 1200, "stock_quantity": 5},
+    {"sku": "FAB-002-RD", "product_code": "FAB-002", "supplier_code": "SUP-003", "variant_name": "レッド", "price_excluding_tax": 900, "stock_quantity": 25},
+    {"sku": "WOD-001-RD", "product_code": "WOD-001", "supplier_code": "SUP-002", "variant_name": "丸型", "price_excluding_tax": 600, "stock_quantity": 0},
+    {"sku": "WOD-002-SQ", "product_code": "WOD-002", "supplier_code": "SUP-002", "variant_name": "角型", "price_excluding_tax": 3000, "stock_quantity": 10},
+    {"sku": "GFT-001-ST", "product_code": "GFT-001", "supplier_code": "SUP-003", "variant_name": "標準", "price_excluding_tax": 300, "stock_quantity": 100}
+  ],
+  "coupons": [
+    {"coupon_code": "WELCOME500", "name": "新規会員500円引き", "discount_type": "fixed_amount", "discount_value": 500, "minimum_purchase_amount": 3000, "valid_from": "2026-01-01T00:00:00+09:00", "valid_to": "2030-12-31T23:59:59+09:00"},
+    {"coupon_code": "SPRING10", "name": "春の10%引き", "discount_type": "percentage", "discount_value": 10, "valid_from": "2026-01-01T00:00:00+09:00", "valid_to": "2030-12-31T23:59:59+09:00"},
+    {"coupon_code": "EXPIRED15", "name": "終了済み15%引き", "discount_type": "percentage", "discount_value": 15, "valid_from": "2025-01-01T00:00:00+09:00", "valid_to": "2025-12-31T23:59:59+09:00"},
+    {"coupon_code": "FUTURE1000", "name": "開始前1000円引き", "discount_type": "fixed_amount", "discount_value": 1000, "minimum_purchase_amount": 0, "valid_from": "2031-01-01T00:00:00+09:00", "valid_to": "2031-12-31T23:59:59+09:00"}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "impl_quality_QR-IMPL-001-003"
+  },
+  "action": "RESOLVED",
+  "cycle": 3,
+  "run_id": "impl-qr-run-3",
+  "validation_result": "reports/loop-control/checks/impl-quality.json",
+  "repair": "ログインNUL→E-002-02、ADDR-003 r2ハッシャー、識別子fullmatch",
+  "impact": "解消",
+  "recommended_route": "IMPLEMENTATION"
+}

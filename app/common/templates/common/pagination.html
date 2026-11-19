@@ -1,0 +1,17 @@
+{# trace: ADDR-001, ADDR-012 #}
+{% if page_info and page_info.total_pages > 1 %}
+<nav class="pagination" aria-label="ページ移動">
+  <span>{{ page_info.page }}ページ目／全{{ page_info.total_pages }}ページ</span>
+  {% if page_info.page > 1 %}
+    <a href="?{{ page_query }}page=1">先頭</a>
+    <a href="?{{ page_query }}page={{ page_info.page|add:'-1' }}">前へ</a>
+  {% endif %}
+  {% for number in page_numbers %}
+    {% if number == page_info.page %}<strong aria-current="page">{{ number }}</strong>{% else %}<a href="?{{ page_query }}page={{ number }}">{{ number }}</a>{% endif %}
+  {% endfor %}
+  {% if page_info.page < page_info.total_pages %}
+    <a href="?{{ page_query }}page={{ page_info.page|add:'1' }}">次へ</a>
+    <a href="?{{ page_query }}page={{ page_info.total_pages }}">最終</a>
+  {% endif %}
+</nav>
+{% endif %}

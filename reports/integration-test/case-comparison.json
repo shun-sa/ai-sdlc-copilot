@@ -1,0 +1,1993 @@
+{
+  "run_id": "RUN-AOBA-EC-1118",
+  "generated_at": "2026-11-19T19:01:46+00:00",
+  "basis": "Required Coverage に対する AI INITIAL と External の比較（GAP_FILL は比較対象外で別欄）",
+  "external_input": {
+    "provided": false,
+    "user_confirmed_without_external_cases": true
+  },
+  "summary": {
+    "required": 163,
+    "common": 0,
+    "ai_only": 94,
+    "external_only": 0,
+    "missing": 69
+  },
+  "items": [
+    {
+      "coverage_id": "RC-001",
+      "coverage_key": "FR-001, FR-002|API>accounts.services>DB|API|end-to-end-flow|register-then-login",
+      "requirement_id": "FR-001, FR-002",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-001"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-002",
+      "coverage_key": "FR-001|API>accounts.services>DB(unique)|DATABASE|database|duplicate-normalized-email",
+      "requirement_id": "FR-001",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-005"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-003",
+      "coverage_key": "FR-001|MultiConnection>DB(unique)|CONCURRENCY|database|concurrent-same-email",
+      "requirement_id": "FR-001",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-045"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-004",
+      "coverage_key": "FR-001|API>accounts.services|API|api|input-errors-all-fields",
+      "requirement_id": "FR-001",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-005"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-005",
+      "coverage_key": "FR-002, FR-004|API>BearerAuthentication>accounts.services|AUTH|authentication|login-token-me",
+      "requirement_id": "FR-002, FR-004",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-001"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-006",
+      "coverage_key": "FR-002|API>accounts.services>AuditLog|DATABASE|database|audit-login-success-failure",
+      "requirement_id": "FR-002",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-001",
+        "IT-002"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-007",
+      "coverage_key": "FR-002|API>accounts.services|AUTH|authentication|failure-indistinguishable",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-002"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-008",
+      "coverage_key": "FR-003|API>BearerAuthentication>accounts.services|AUTH|authentication|logout-invalidates-only-own",
+      "requirement_id": "FR-003",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-003"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-009",
+      "coverage_key": "FR-002, FR-004|API>BearerAuthentication>Clock(TestState)|AUTH|authentication|token-expiry-24h-boundary",
+      "requirement_id": "FR-002, FR-004",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-004"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-010",
+      "coverage_key": "FR-004, FR-020, FR-030, FR-040, FR-041|API>BearerAuthentication>Permission|AUTH|authentication|permission-matrix",
+      "requirement_id": "FR-004, FR-020, FR-030, FR-040, FR-041",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-006"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-011",
+      "coverage_key": "FR-021|API>BearerAuthentication>Validation|AUTH|authentication|auth-before-input",
+      "requirement_id": "FR-021",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-006"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-012",
+      "coverage_key": "FR-020|API>CookieSession(rejected)|AUTH|authentication|api-rejects-cookie-session",
+      "requirement_id": "FR-020",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-006"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-013",
+      "coverage_key": "FR-001|Web>CSRF>accounts.services>DB|WEB|end-to-end-flow|web-register-redirect-login",
+      "requirement_id": "FR-001",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-007"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-014",
+      "coverage_key": "FR-001|Web>accounts.services|WEB|api|web-register-input-error-retains",
+      "requirement_id": "FR-001",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-001"
+      ]
+    },
+    {
+      "coverage_id": "RC-015",
+      "coverage_key": "FR-002|Web>Session>accounts.services|AUTH|authentication|web-login-home-by-type",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-007",
+        "IT-008"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-016",
+      "coverage_key": "FR-002|Web>Session>Redirect(next)|AUTH|authentication|web-return-to-original",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-008"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-017",
+      "coverage_key": "FR-002|Web>Session>Cookie|AUTH|authentication|session-cookie-httponly",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-007"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-018",
+      "coverage_key": "FR-002|Web>accounts.services|AUTH|authentication|web-login-failure-message",
+      "requirement_id": "FR-002",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-001"
+      ]
+    },
+    {
+      "coverage_id": "RC-019",
+      "coverage_key": "FR-003|Web>Session>AuditLog|AUTH|end-to-end-flow|web-logout",
+      "requirement_id": "FR-003",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-007"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-020",
+      "coverage_key": "FR-002, FR-020|Web>IdleTimeoutMiddleware>Clock(TestState)|AUTH|authentication|idle-timeout-30min",
+      "requirement_id": "FR-002, FR-020",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-009"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-021",
+      "coverage_key": "FR-040, FR-020|Web>Permission|AUTH|authentication|web-permission-scr901",
+      "requirement_id": "FR-040, FR-020",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-008"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-022",
+      "coverage_key": "FR-021|Web>CSRF|AUTH|error-handling|csrf-reject",
+      "requirement_id": "FR-021",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-010"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-023",
+      "coverage_key": "FR-002|Web>SubmitToken>accounts.services>AuditLog|DATABASE|database|login-double-submit",
+      "requirement_id": "FR-002",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-002"
+      ]
+    },
+    {
+      "coverage_id": "RC-024",
+      "coverage_key": "FR-010|API>catalog.services>DB|API|api|category-tree-order",
+      "requirement_id": "FR-010",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-011"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-025",
+      "coverage_key": "FR-011|API>catalog.services>DB|API|api|product-search-target-filter",
+      "requirement_id": "FR-011",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-012"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-026",
+      "coverage_key": "FR-011|API>catalog.services>DB|API|api|product-search-sort-paging",
+      "requirement_id": "FR-011",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-012"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-027",
+      "coverage_key": "FR-011|API>catalog.services|API|api|product-search-input-errors",
+      "requirement_id": "FR-011",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-013"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-028",
+      "coverage_key": "FR-012|API>catalog.services>DB|API|api|product-detail-contract",
+      "requirement_id": "FR-012",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-014"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-029",
+      "coverage_key": "FR-012|API>catalog.services|API|error-handling|product-detail-not-found",
+      "requirement_id": "FR-012",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-014"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-030",
+      "coverage_key": "FR-011, FR-012|Web/API>catalog.services|E2E|end-to-end-flow|same-result-all-actors-and-screen",
+      "requirement_id": "FR-011, FR-012",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-015"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-031",
+      "coverage_key": "FR-020|API>carts.services>DB|DATABASE|database|get-cart-creates-single",
+      "requirement_id": "FR-020",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-016"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-032",
+      "coverage_key": "FR-020|MultiConnection>DB(partial unique)|CONCURRENCY|database|concurrent-get-cart",
+      "requirement_id": "FR-020",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-046"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-033",
+      "coverage_key": "FR-021|API>carts.services>DB|API|database|add-merge-limit-stock",
+      "requirement_id": "FR-021",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-017"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-034",
+      "coverage_key": "FR-021|API>carts.services>DB|API|api|add-not-found-unpublished",
+      "requirement_id": "FR-021",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-017"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-035",
+      "coverage_key": "FR-021|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-add-limit",
+      "requirement_id": "FR-021",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-046"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-036",
+      "coverage_key": "FR-022, FR-023|API>carts.services>DB|API|api|change-delete-ownership",
+      "requirement_id": "FR-022, FR-023",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-018"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-011"
+      ]
+    },
+    {
+      "coverage_id": "RC-037",
+      "coverage_key": "FR-026, FR-020|API>carts.services>carts.pricing|API|api|amounts-shipping-tax",
+      "requirement_id": "FR-026, FR-020",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-019"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-038",
+      "coverage_key": "FR-024|API>carts.services>Clock(TestState)>DB|STATE|state-transition|coupon-validity-boundaries",
+      "requirement_id": "FR-024",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-020"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-010"
+      ]
+    },
+    {
+      "coverage_id": "RC-039",
+      "coverage_key": "FR-024|API>carts.services>DB|API|api|coupon-errors",
+      "requirement_id": "FR-024",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-020"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-010"
+      ]
+    },
+    {
+      "coverage_id": "RC-040",
+      "coverage_key": "FR-024, FR-025, FR-026|API>carts.services>carts.pricing|STATE|state-transition|coupon-applicability-recalc",
+      "requirement_id": "FR-024, FR-025, FR-026",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-020"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-041",
+      "coverage_key": "FR-025|API>carts.services>DB|API|api|coupon-remove",
+      "requirement_id": "FR-025",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-020"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-042",
+      "coverage_key": "FR-020, FR-021, FR-022, FR-023, FR-024, FR-025|Web>carts.services>DB|WEB|end-to-end-flow|web-cart-operations",
+      "requirement_id": "FR-020, FR-021, FR-022, FR-023, FR-024, FR-025",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-021"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-043",
+      "coverage_key": "FR-021|Web/API>carts.services|API|api|same-rule-web-api",
+      "requirement_id": "FR-021",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-022"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-044",
+      "coverage_key": "FR-021|Web>SubmitToken>carts.services|DATABASE|database|cart-add-double-submit",
+      "requirement_id": "FR-021",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-003"
+      ]
+    },
+    {
+      "coverage_id": "RC-045",
+      "coverage_key": "FR-030, FR-026|API>orders.services>DB|DATABASE|database|place-order-persistence",
+      "requirement_id": "FR-030, FR-026",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-023"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-046",
+      "coverage_key": "FR-030|API>orders.services|API|api|place-order-input-errors",
+      "requirement_id": "FR-030",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-024"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-047",
+      "coverage_key": "FR-030|API>orders.services>DB|STATE|state-transition|place-order-empty-and-resend",
+      "requirement_id": "FR-030",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-026"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-048",
+      "coverage_key": "FR-030|API>orders.services>DB|DATABASE|database|place-order-business-errors-no-change",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-025"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-049",
+      "coverage_key": "FR-030|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-place-stock1",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-039"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-050",
+      "coverage_key": "FR-030|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-place-10",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-040"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-051",
+      "coverage_key": "FR-030|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-same-cart",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-047"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-052",
+      "coverage_key": "FR-030|API>orders.services>FaultPoint(TestState)>DB|ERROR|error-handling|place-order-fault-rollback",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-027"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-053",
+      "coverage_key": "FR-030, FR-033|Web>orders.services|WEB|end-to-end-flow|web-checkout-complete",
+      "requirement_id": "FR-030, FR-033",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-049"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-054",
+      "coverage_key": "FR-030|Web>orders.services|WEB|api|web-checkout-input-error-retains",
+      "requirement_id": "FR-030",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-004"
+      ]
+    },
+    {
+      "coverage_id": "RC-055",
+      "coverage_key": "FR-030|Web>SubmitToken>orders.services|DATABASE|database|web-place-double-submit",
+      "requirement_id": "FR-030",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-050"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-056",
+      "coverage_key": "FR-031|API>orders.services>payments.gateway(mock)>DB|STATE|state-transition|pay-approved",
+      "requirement_id": "FR-031",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-028"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-057",
+      "coverage_key": "FR-031|API>orders.services>payments.gateway(mock)>DB|STATE|state-transition|pay-declined-then-retry",
+      "requirement_id": "FR-031",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-028"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-058",
+      "coverage_key": "FR-031|API>orders.services>payments.client(timeout 10s)|ERROR|error-handling|pay-timeout",
+      "requirement_id": "FR-031",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-029"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-059",
+      "coverage_key": "FR-031|API>orders.services>payments.client(response check)|ERROR|error-handling|pay-invalid-response",
+      "requirement_id": "FR-031",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-029"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-060",
+      "coverage_key": "FR-031|API>orders.services|STATE|state-transition|pay-invalid-status",
+      "requirement_id": "FR-031",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-030"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-061",
+      "coverage_key": "FR-031|API>orders.services|AUTH|authentication|pay-ownership-permission",
+      "requirement_id": "FR-031",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-030"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-062",
+      "coverage_key": "FR-031|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-pay",
+      "requirement_id": "FR-031",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-041"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-063",
+      "coverage_key": "FR-031, FR-034|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-pay-cancel",
+      "requirement_id": "FR-031, FR-034",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-042"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-019"
+      ]
+    },
+    {
+      "coverage_id": "RC-064",
+      "coverage_key": "FR-031|Web>orders.services>payments.gateway(mock)|WEB|end-to-end-flow|web-payment",
+      "requirement_id": "FR-031",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-049"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-065",
+      "coverage_key": "FR-031|Web>SubmitToken>payments.gateway(mock)|DATABASE|database|web-pay-double-submit",
+      "requirement_id": "FR-031",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-050"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-066",
+      "coverage_key": "FR-032|API>orders.services>DB|API|api|history-own-desc-paging",
+      "requirement_id": "FR-032",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-031"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-067",
+      "coverage_key": "FR-033|API>orders.services>DB|API|api|detail-contents",
+      "requirement_id": "FR-033",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-031"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-068",
+      "coverage_key": "FR-033, FR-030|API>orders.services>DB|DATABASE|database|price-fixed-at-confirm",
+      "requirement_id": "FR-033, FR-030",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-031"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-069",
+      "coverage_key": "FR-034|API>orders.services>DB|STATE|state-transition|buyer-cancel",
+      "requirement_id": "FR-034",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-032"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-070",
+      "coverage_key": "FR-034|API>orders.services|STATE|state-transition|buyer-cancel-invalid",
+      "requirement_id": "FR-034",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-032"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-071",
+      "coverage_key": "FR-034|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-cancel",
+      "requirement_id": "FR-034",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-043"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-072",
+      "coverage_key": "FR-034|Web>orders.services|WEB|end-to-end-flow|web-buyer-cancel",
+      "requirement_id": "FR-034",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-005"
+      ]
+    },
+    {
+      "coverage_id": "RC-073",
+      "coverage_key": "FR-040|API>catalog.services>DB|API|api|stock-list-filter-paging",
+      "requirement_id": "FR-040",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-033"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-074",
+      "coverage_key": "FR-040|API>catalog.services|API|api|stock-list-input-errors",
+      "requirement_id": "FR-040",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-006"
+      ]
+    },
+    {
+      "coverage_id": "RC-075",
+      "coverage_key": "FR-040, FR-030, FR-034|API>orders.services>catalog.services>DB|E2E|end-to-end-flow|stock-reflects-orders",
+      "requirement_id": "FR-040, FR-030, FR-034",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-033"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-076",
+      "coverage_key": "FR-041|API>orders.services>DB|API|api|admin-order-search",
+      "requirement_id": "FR-041",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-034"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-077",
+      "coverage_key": "FR-041|API>orders.services|API|api|admin-order-search-errors",
+      "requirement_id": "FR-041",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-007"
+      ]
+    },
+    {
+      "coverage_id": "RC-078",
+      "coverage_key": "FR-042|API>orders.services>DB|API|api|admin-detail-contents",
+      "requirement_id": "FR-042",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-035"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-079",
+      "coverage_key": "FR-043|API>orders.services>DB|STATE|state-transition|ship",
+      "requirement_id": "FR-043",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-035"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-080",
+      "coverage_key": "FR-043|API>orders.services|API|api|ship-tracking-validation",
+      "requirement_id": "FR-043",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-008"
+      ]
+    },
+    {
+      "coverage_id": "RC-081",
+      "coverage_key": "FR-044|API>orders.services>DB|STATE|state-transition|deliver",
+      "requirement_id": "FR-044",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-035"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-082",
+      "coverage_key": "FR-045, FR-033|API>orders.services>DB|E2E|end-to-end-flow|admin-cancel-visible-to-buyer",
+      "requirement_id": "FR-045, FR-033",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-036"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-083",
+      "coverage_key": "FR-031, FR-034, FR-043, FR-044, FR-045|API>orders.services|STATE|state-transition|invalid-transitions-matrix",
+      "requirement_id": "FR-031, FR-034, FR-043, FR-044, FR-045",
+      "criterion": "state-transition",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-037"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-084",
+      "coverage_key": "FR-043, FR-045|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-ship-and-cancel-ship",
+      "requirement_id": "FR-043, FR-045",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-044"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-021"
+      ]
+    },
+    {
+      "coverage_id": "RC-085",
+      "coverage_key": "FR-045, FR-034|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-admin-buyer-cancel",
+      "requirement_id": "FR-045, FR-034",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-043"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-020"
+      ]
+    },
+    {
+      "coverage_id": "RC-086",
+      "coverage_key": "FR-041, FR-042, FR-043, FR-044, FR-045|Web>orders.services(admin)|WEB|end-to-end-flow|web-admin-operations",
+      "requirement_id": "FR-041, FR-042, FR-043, FR-044, FR-045",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-038"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-087",
+      "coverage_key": "FR-001, FR-002, FR-011, FR-012, FR-021, FR-024, FR-030, FR-031, FR-032, FR-033, FR-041, FR-042, FR-043, FR-044|API(all)>Services>DB|E2E|end-to-end-flow|api-full-flow",
+      "requirement_id": "FR-001, FR-002, FR-011, FR-012, FR-021, FR-024, FR-030, FR-031, FR-032, FR-033, FR-041, FR-042, FR-043, FR-044",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-048"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-088",
+      "coverage_key": "FR-002, FR-012, FR-021, FR-030, FR-031, FR-033, FR-043, FR-044|Web(all)>Services>DB|E2E|end-to-end-flow|web-full-flow",
+      "requirement_id": "FR-002, FR-012, FR-021, FR-030, FR-031, FR-033, FR-043, FR-044",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-049"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-089",
+      "coverage_key": "FR-060, FR-002|ManagementCommand>initial_data.loader>DB>AuditLog|BATCH|end-to-end-flow|load-success-login",
+      "requirement_id": "FR-060, FR-002",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-051"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-090",
+      "coverage_key": "FR-060, FR-011, FR-040|ManagementCommand>initial_data.loader>DB>API|BATCH|end-to-end-flow|load-defaults-visibility",
+      "requirement_id": "FR-060, FR-011, FR-040",
+      "criterion": "end-to-end-flow",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-051"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-091",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|database|reset-deletes-all",
+      "requirement_id": "FR-060",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-052"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-018"
+      ]
+    },
+    {
+      "coverage_id": "RC-092",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|error-handling|violations-all-no-insert",
+      "requirement_id": "FR-060",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-053"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-093",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|error-handling|duplicate-existing-key",
+      "requirement_id": "FR-060",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-053"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-094",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>AuditLog|BATCH|error-handling|args-read-format-errors",
+      "requirement_id": "FR-060",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-054"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-095",
+      "coverage_key": "FR-060|Web/API>URLRouting|AUTH|authentication|no-web-api-entry",
+      "requirement_id": "FR-060",
+      "criterion": "authentication",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-055"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-096",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|database|seed-file-loadable",
+      "requirement_id": "FR-060",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-009"
+      ]
+    },
+    {
+      "coverage_id": "RC-097",
+      "coverage_key": "NFR-OM-18, NFR-OM-01|Middleware>AppLog|LOGGING|api|request-id-correlation",
+      "requirement_id": "NFR-OM-18, NFR-OM-01",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-056"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-098",
+      "coverage_key": "NFR-SC-06|Service>AppLog|LOGGING|error-handling|no-sensitive-in-logs",
+      "requirement_id": "NFR-SC-06",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-056"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-099",
+      "coverage_key": "NFR-SC-10|API/Web>ExceptionHandler|ERROR|error-handling|error-envelope-no-internals",
+      "requirement_id": "NFR-SC-10",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-027",
+        "IT-057"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-100",
+      "coverage_key": "NFR-SC-04|WSGI(config.wsgi.application)>RequestCharsetMiddleware|ERROR|error-handling|wsgi-unusable-charset",
+      "requirement_id": "NFR-SC-04",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-058"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-101",
+      "coverage_key": "NFR-SC-04|API>Validation>DB|ERROR|error-handling|nul-char-input",
+      "requirement_id": "NFR-SC-04",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-059"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-102",
+      "coverage_key": "NFR-SC-05|Web>Template(rendering)|WEB|api|xss-escape",
+      "requirement_id": "NFR-SC-05",
+      "criterion": "api",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-060"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-103",
+      "coverage_key": "NFR-OM-06|ManagementCommand(test_state)>TestState>Clock|DATABASE|database|test-state-command",
+      "requirement_id": "NFR-OM-06",
+      "criterion": "database",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-061"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-104",
+      "coverage_key": "FR-012, FR-022, FR-033, FR-042|API>URLRouting>Services|API|error-handling|uninterpretable-id-404",
+      "requirement_id": "FR-012, FR-022, FR-033, FR-042",
+      "criterion": "error-handling",
+      "classification": "AI_ONLY",
+      "ai_initial_cases": [
+        "IT-057"
+      ],
+      "external_cases": [],
+      "gap_fill_cases": []
+    },
+    {
+      "coverage_id": "RC-105",
+      "coverage_key": "FR-045, FR-031|MultiConnection>DB(lock)>payments.gateway(mock)|CONCURRENCY|database|concurrent-admin-cancel-and-pay",
+      "requirement_id": "FR-045, FR-031",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-012"
+      ]
+    },
+    {
+      "coverage_id": "RC-106",
+      "coverage_key": "FR-012, FR-021, FR-002|Web>Session>Redirect(next)>carts.services|AUTH|authentication|visitor-cart-add-login-return",
+      "requirement_id": "FR-012, FR-021, FR-002",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-013"
+      ]
+    },
+    {
+      "coverage_id": "RC-107",
+      "coverage_key": "NFR-OM-18, NFR-OM-11, FR-031|API>orders.services>payments.client>AppLog|LOGGING|api|payment-request-id-trace",
+      "requirement_id": "NFR-OM-18, NFR-OM-11, FR-031",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-014"
+      ]
+    },
+    {
+      "coverage_id": "RC-108",
+      "coverage_key": "FR-031, NFR-SC-24, NFR-EN-05|API>orders.services>payments.client>gateway(mock)|API|api|payment-request-contents-no-external",
+      "requirement_id": "FR-031, NFR-SC-24, NFR-EN-05",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-015"
+      ]
+    },
+    {
+      "coverage_id": "RC-109",
+      "coverage_key": "FR-030, NFR-PF-07, NFR-LG-06|MultiConnection>DB(lock, advisory lock, sequence)|CONCURRENCY|database|ten-parallel-ten-trials-order-number",
+      "requirement_id": "FR-030, NFR-PF-07, NFR-LG-06",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-016"
+      ]
+    },
+    {
+      "coverage_id": "RC-110",
+      "coverage_key": "FR-030|API>orders.services>FaultPoint(TestState)>DB(sequence)|ERROR|error-handling|fault-order-number-gap",
+      "requirement_id": "FR-030",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-017"
+      ]
+    },
+    {
+      "coverage_id": "RC-111",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB(sequence, identity)>Session|BATCH|database|reset-no-rewind-web-session",
+      "requirement_id": "FR-060",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-018"
+      ]
+    },
+    {
+      "coverage_id": "RC-112",
+      "coverage_key": "NFR-PF-01, NFR-PF-02, NFR-PF-09|API(all)>Services>DB|API|api|response-time-p95-reference",
+      "requirement_id": "NFR-PF-01, NFR-PF-02, NFR-PF-09",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-022"
+      ]
+    },
+    {
+      "coverage_id": "RC-113",
+      "coverage_key": "NFR-PF-08|API>catalog/orders.services>DB(paging)|API|api|list-response-cap",
+      "requirement_id": "NFR-PF-08",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-023"
+      ]
+    },
+    {
+      "coverage_id": "RC-114",
+      "coverage_key": "NFR-PF-10, NFR-MG-01, NFR-MG-02, NFR-MG-03, NFR-MG-04, NFR-MG-08, NFR-OM-04|ManagementCommand>initial_data.loader>DB>API|BATCH|end-to-end-flow|vdc04-rehearsal",
+      "requirement_id": "NFR-PF-10, NFR-MG-01, NFR-MG-02, NFR-MG-03, NFR-MG-04, NFR-MG-08, NFR-OM-04",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-024"
+      ]
+    },
+    {
+      "coverage_id": "RC-115",
+      "coverage_key": "NFR-OM-13, NFR-MG-07|ManagementCommand>initial_data.loader>DB>AuditLog|BATCH|error-handling|failed-load-corrected-rerun",
+      "requirement_id": "NFR-OM-13, NFR-MG-07",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-025"
+      ]
+    },
+    {
+      "coverage_id": "RC-116",
+      "coverage_key": "NFR-OM-11|Services>AppLog/AuditLog/OrderStatusHistory|LOGGING|api|log-types-output",
+      "requirement_id": "NFR-OM-11",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-026"
+      ]
+    },
+    {
+      "coverage_id": "RC-117",
+      "coverage_key": "NFR-OM-17|Environment>config.settings>Middleware/INSTALLED_APPS|CONFIG|end-to-end-flow|env-specific-settings",
+      "requirement_id": "NFR-OM-17",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-027"
+      ]
+    },
+    {
+      "coverage_id": "RC-118",
+      "coverage_key": "NFR-SC-12|API/Web>accounts.services|AUTH|authentication|auth-means",
+      "requirement_id": "NFR-SC-12",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-028"
+      ]
+    },
+    {
+      "coverage_id": "RC-119",
+      "coverage_key": "NFR-US-03|Web>accounts/orders.services>DB>Template|WEB|end-to-end-flow|jis-level3-4-roundtrip",
+      "requirement_id": "NFR-US-03",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-029"
+      ]
+    },
+    {
+      "coverage_id": "RC-120",
+      "coverage_key": "NFR-US-04|Web>accounts/orders.services|WEB|api|input-error-identifiable-all",
+      "requirement_id": "NFR-US-04",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-030"
+      ]
+    },
+    {
+      "coverage_id": "RC-121",
+      "coverage_key": "NFR-US-05, NFR-US-07, NFR-LG-08|Web>Template(HTML structure)|WEB|api|accessible-html-structure",
+      "requirement_id": "NFR-US-05, NFR-US-07, NFR-LG-08",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-031"
+      ]
+    },
+    {
+      "coverage_id": "RC-122",
+      "coverage_key": "NFR-US-08|Web(SCR-001→002→005→006→007→008→010)|WEB|end-to-end-flow|purchase-screen-count",
+      "requirement_id": "NFR-US-08",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-032"
+      ]
+    },
+    {
+      "coverage_id": "RC-123",
+      "coverage_key": "NFR-US-09|Web>Template(data-confirm)>site.js|WEB|api|confirm-before-irreversible",
+      "requirement_id": "NFR-US-09",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-033"
+      ]
+    },
+    {
+      "coverage_id": "RC-124",
+      "coverage_key": "NFR-US-10|Web>SubmitToken>orders.services>payments.gateway(mock)|WEB|database|double-submit-place-pay",
+      "requirement_id": "NFR-US-10",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-034",
+        "GF-039",
+        "GF-041"
+      ]
+    },
+    {
+      "coverage_id": "RC-125",
+      "coverage_key": "NFR-EN-01, NFR-EN-02, NFR-EN-09|Runtime>Django>PostgreSQL|CONFIG|database|tech-stack-versions",
+      "requirement_id": "NFR-EN-01, NFR-EN-02, NFR-EN-09",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-035"
+      ]
+    },
+    {
+      "coverage_id": "RC-126",
+      "coverage_key": "NFR-LG-02|Web>Template(price display)|WEB|end-to-end-flow|tax-inclusive-display",
+      "requirement_id": "NFR-LG-02",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-036"
+      ]
+    },
+    {
+      "coverage_id": "RC-127",
+      "coverage_key": "NFR-LG-09|API/Web>orders.services(prefecture)|API|api|jis-x0401-prefectures",
+      "requirement_id": "NFR-LG-09",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-037"
+      ]
+    },
+    {
+      "coverage_id": "RC-128",
+      "coverage_key": "NFR-PF-17|orders.services>payments.client>PaymentGateway(substitute)|API|end-to-end-flow|gateway-substitution",
+      "requirement_id": "NFR-PF-17",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-038"
+      ]
+    },
+    {
+      "coverage_id": "RC-129",
+      "coverage_key": "NFR-US-10, FR-031|Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services>payments.gateway(mock)|CONCURRENCY|database|inflight-repeat-pay",
+      "requirement_id": "NFR-US-10, FR-031",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-039"
+      ]
+    },
+    {
+      "coverage_id": "RC-130",
+      "coverage_key": "NFR-US-10, FR-031|Web(同一トークン×別接続)>SubmitToken(advisory lock・outcome)>orders.services>payments.gateway(mock)|CONCURRENCY|error-handling|inflight-repeat-pay-system-error-interrupted",
+      "requirement_id": "NFR-US-10, FR-031",
+      "criterion": "error-handling",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-040"
+      ]
+    },
+    {
+      "coverage_id": "RC-131",
+      "coverage_key": "NFR-US-10, FR-030|Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services(place_order)>DB|CONCURRENCY|database|inflight-repeat-place-order",
+      "requirement_id": "NFR-US-10, FR-030",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-041"
+      ]
+    },
+    {
+      "coverage_id": "RC-132",
+      "coverage_key": "NFR-US-10, FR-021|Web(同一トークン×別接続)>SubmitToken(advisory lock)>carts.services(add_item)>DB|CONCURRENCY|database|inflight-repeat-cart-add",
+      "requirement_id": "NFR-US-10, FR-021",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-042"
+      ]
+    },
+    {
+      "coverage_id": "RC-133",
+      "coverage_key": "NFR-US-10, FR-002|Web(同一トークン×別接続)>SubmitToken(advisory lock)>accounts.services(login_web)>AuditLog|AUTH|authentication|inflight-repeat-login-failure",
+      "requirement_id": "NFR-US-10, FR-002",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-043"
+      ]
+    },
+    {
+      "coverage_id": "RC-134",
+      "coverage_key": "NFR-PF-12, NFR-AV-01|compose.yaml(app,db)>Dockerfile>requirements*.txt>manage.py commands|CONFIG|end-to-end-flow|no-scheduled-batch",
+      "requirement_id": "NFR-PF-12, NFR-AV-01",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-044"
+      ]
+    },
+    {
+      "coverage_id": "RC-135",
+      "coverage_key": "NFR-SC-28|API(JsonBodyParser)/Web(Template)>Models|API|api|no-file-upload",
+      "requirement_id": "NFR-SC-28",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-045"
+      ]
+    },
+    {
+      "coverage_id": "RC-136",
+      "coverage_key": "NFR-SC-13, NFR-SC-14|API/Web>accounts.services>AuditLog|AUTH|authentication|single-factor-no-lockout",
+      "requirement_id": "NFR-SC-13, NFR-SC-14",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-046"
+      ]
+    },
+    {
+      "coverage_id": "RC-137",
+      "coverage_key": "NFR-SC-13, NFR-SC-17, NFR-LG-04|URLconf(API/Web)>management commands>Template|WEB|api|out-of-scope-functions-absent",
+      "requirement_id": "NFR-SC-13, NFR-SC-17, NFR-LG-04",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-047"
+      ]
+    },
+    {
+      "coverage_id": "RC-138",
+      "coverage_key": "NFR-SC-27|API/Web>Middleware>DRF settings|API|api|no-per-source-rate-limit",
+      "requirement_id": "NFR-SC-27",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-048"
+      ]
+    },
+    {
+      "coverage_id": "RC-139",
+      "coverage_key": "NFR-AV-10, NFR-LG-10|orders.services>payments.client>payments.gateway>payments.mock|API|api|in-process-mock-payment-only",
+      "requirement_id": "NFR-AV-10, NFR-LG-10",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-049"
+      ]
+    },
+    {
+      "coverage_id": "RC-140",
+      "coverage_key": "NFR-EN-03, NFR-OM-05, NFR-EN-08|compose.yaml(app,db)>Dockerfile>gunicorn.conf>config.wsgi|CONFIG|end-to-end-flow|compose-single-start-gunicorn",
+      "requirement_id": "NFR-EN-03, NFR-OM-05, NFR-EN-08",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-050"
+      ]
+    },
+    {
+      "coverage_id": "RC-141",
+      "coverage_key": "NFR-EN-07|app(production code)>Python stdlib>Dockerfile|CONFIG|end-to-end-flow|os-independent-code",
+      "requirement_id": "NFR-EN-07",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-051"
+      ]
+    },
+    {
+      "coverage_id": "RC-142",
+      "coverage_key": "NFR-SC-21, NFR-EN-10|requirements*.txt>Dockerfile>compose.yaml>.venv>dependency-inventory|CONFIG|end-to-end-flow|pinned-reproducible-dependencies",
+      "requirement_id": "NFR-SC-21, NFR-EN-10",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-052"
+      ]
+    },
+    {
+      "coverage_id": "RC-143",
+      "coverage_key": "NFR-EN-12|requirements*.txt>.venv(package metadata)|CONFIG|end-to-end-flow|dependency-licenses",
+      "requirement_id": "NFR-EN-12",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-053"
+      ]
+    },
+    {
+      "coverage_id": "RC-144",
+      "coverage_key": "NFR-EN-11|ruff.toml>ruff>repository sources|CONFIG|end-to-end-flow|static-analysis-zero",
+      "requirement_id": "NFR-EN-11",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-054"
+      ]
+    },
+    {
+      "coverage_id": "RC-145",
+      "coverage_key": "NFR-PF-16|gunicorn.conf(GUNICORN_WORKERS)>SessionStore(DB)>ApiLoginState(DB)>Cart(DB)|CONFIG|database|scale-out-state-preserved",
+      "requirement_id": "NFR-PF-16",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-055"
+      ]
+    },
+    {
+      "coverage_id": "RC-146",
+      "coverage_key": "NFR-SC-25|seed/initial_data.json>tests fixtures|CONFIG|database|fictional-initial-data",
+      "requirement_id": "NFR-SC-25",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-056"
+      ]
+    },
+    {
+      "coverage_id": "RC-147",
+      "coverage_key": "NFR-OM-19|README(ENV-01 手順)>.env.example>compose.yaml>manage.py>pytest/ruff|CONFIG|end-to-end-flow|dev-procedure-document",
+      "requirement_id": "NFR-OM-19",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-057"
+      ]
+    },
+    {
+      "coverage_id": "RC-148",
+      "coverage_key": "NFR-LG-03|API>orders.services>DB(OrderItem/ShippingAddress/PaymentRecord/OrderStatusHistory)|DATABASE|state-transition|order-records-immutable",
+      "requirement_id": "NFR-LG-03",
+      "criterion": "state-transition",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-058"
+      ]
+    },
+    {
+      "coverage_id": "RC-149",
+      "coverage_key": "NFR-US-01, NFR-US-02, NFR-US-06|Browser(Edge/Chrome, Windows 11)>Web>Static|WEB|end-to-end-flow|browser-display-and-operation",
+      "requirement_id": "NFR-US-01, NFR-US-02, NFR-US-06",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-059"
+      ]
+    },
+    {
+      "coverage_id": "RC-150",
+      "coverage_key": "NFR-PF-03|Browser(Edge/Chrome)>Web>Static|PERF|end-to-end-flow|screen-display-time-reference",
+      "requirement_id": "NFR-PF-03",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-060"
+      ]
+    },
+    {
+      "coverage_id": "RC-151",
+      "coverage_key": "NFR-PF-06|API/Web>services>DB(3年後データ量)|PERF|database|three-year-data-volume-reference",
+      "requirement_id": "NFR-PF-06",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-061"
+      ]
+    },
+    {
+      "coverage_id": "RC-152",
+      "coverage_key": "NFR-PF-05, NFR-PF-04, NFR-PF-14, NFR-PF-15, NFR-PF-03|VirtualUsers(155)>HTTP>Web/API>DB|PERF|end-to-end-flow|concurrent-users-reference",
+      "requirement_id": "NFR-PF-05, NFR-PF-04, NFR-PF-14, NFR-PF-15, NFR-PF-03",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-062"
+      ]
+    },
+    {
+      "coverage_id": "RC-153",
+      "coverage_key": "NFR-PF-11|VirtualUsers(310)>HTTP>API>orders.services>DB|PERF|database|overload-consistency-reference",
+      "requirement_id": "NFR-PF-11",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-063"
+      ]
+    },
+    {
+      "coverage_id": "RC-154",
+      "coverage_key": "NFR-SC-11|requirements*.txt>OSV(公開脆弱性情報)>PyPI|CONFIG|end-to-end-flow|dependency-known-vulnerabilities",
+      "requirement_id": "NFR-SC-11",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-064"
+      ]
+    },
+    {
+      "coverage_id": "RC-155",
+      "coverage_key": "NFR-LG-01|API/Web>services>Logging>URLconf>socket|SECURITY|authentication|personal-information-handling",
+      "requirement_id": "NFR-LG-01",
+      "criterion": "authentication",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-065"
+      ]
+    },
+    {
+      "coverage_id": "RC-156",
+      "coverage_key": "NFR-SC-29, NFR-LG-07|Web/API(全要求先)>Middleware>services|SECURITY|api|dynamic-probe-all-endpoints",
+      "requirement_id": "NFR-SC-29, NFR-LG-07",
+      "criterion": "api",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-066"
+      ]
+    },
+    {
+      "coverage_id": "RC-157",
+      "coverage_key": "NFR-SC-20|settings>Models>Sessions>Logging>production code|CONFIG|database|persistent-data-only-in-database",
+      "requirement_id": "NFR-SC-20",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-067"
+      ]
+    },
+    {
+      "coverage_id": "RC-158",
+      "coverage_key": "NFR-OM-02|Logging(stdout JSON)>gunicorn.conf>production code|CONFIG|end-to-end-flow|application-log-output",
+      "requirement_id": "NFR-OM-02",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-068"
+      ]
+    },
+    {
+      "coverage_id": "RC-159",
+      "coverage_key": "NFR-OM-03|AuditLog(DB)>initial_data(--reset)>production code|DATABASE|database|audit-log-retention-premise",
+      "requirement_id": "NFR-OM-03",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-069"
+      ]
+    },
+    {
+      "coverage_id": "RC-160",
+      "coverage_key": "NFR-SC-26|URLconf>HttpsOnlyMiddleware>gunicorn.conf>Dockerfile|CONFIG|end-to-end-flow|single-https-user-service",
+      "requirement_id": "NFR-SC-26",
+      "criterion": "end-to-end-flow",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-070"
+      ]
+    },
+    {
+      "coverage_id": "RC-161",
+      "coverage_key": "NFR-MG-05|load_initial_data>loader>StockUnit|DATABASE|database|initial-load-stock-sheet",
+      "requirement_id": "NFR-MG-05",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-071"
+      ]
+    },
+    {
+      "coverage_id": "RC-162",
+      "coverage_key": "NFR-AV-04, NFR-AV-07, NFR-AV-08, NFR-AV-12, NFR-PF-13|DB(PostgreSQL 16)>pg_dump/pg_restore>API/Web/initial_data|DATABASE|database|backup-restore-resume",
+      "requirement_id": "NFR-AV-04, NFR-AV-07, NFR-AV-08, NFR-AV-12, NFR-PF-13",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-072"
+      ]
+    },
+    {
+      "coverage_id": "RC-163",
+      "coverage_key": "NFR-OM-15|migrations(catalog 0002)>pg_dump/pg_restore>Web/API|CONFIG|database|update-and-rollback",
+      "requirement_id": "NFR-OM-15",
+      "criterion": "database",
+      "classification": "MISSING",
+      "ai_initial_cases": [],
+      "external_cases": [],
+      "gap_fill_cases": [
+        "GF-073"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "status": "FAIL",
+  "junit": {
+    "total": 99,
+    "passed": 98,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "criteria": [
+    "api",
+    "authentication",
+    "database",
+    "end-to-end-flow",
+    "error-handling",
+    "state-transition"
+  ],
+  "coverage": {
+    "required": 128,
+    "common": 0,
+    "ai_only": 94,
+    "external_only": 0,
+    "missing": 34,
+    "ai_initial_coverage_rate": 73.44,
+    "external_coverage_rate": null,
+    "combined_initial_coverage_rate": 73.44,
+    "final_covered": 128,
+    "final_missing": 0,
+    "final_coverage_rate": 100.0
+  },
+  "case_counts": {
+    "total": 99,
+    "ai_initial": 61,
+    "ai_gap_fill": 38,
+    "external": 0
+  },
+  "errors": [
+    "Applicable criterion is not PASS: error-handling",
+    "IT-058: final AUTOMATABLE case result is 'FAIL', expected PASS.",
+    "IT-DEF-001: defect is unresolved.",
+    "IT-DEF-001: rerun.target_cases must be PASS.",
+    "IT-DEF-001: rerun.related_cases must be PASS.",
+    "IT-DEF-001: rerun.full_suite must be PASS.",
+    "IT-058: error-report contains unresolved error.",
+    "JUnit pass rate 98.99% < required 100.00%.",
+    "JUnit failed tests 1 > allowed 0."
+  ]
+}

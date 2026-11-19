@@ -1,0 +1,7 @@
+{
+  "producer": "reports/loop-control/checks/requirements-producer.json",
+  "requirements": "reports/loop-control/checks/requirements-validator.json",
+  "quality": "reports/loop-control/checks/req-quality-rework.json",
+  "security": "reports/loop-control/checks/req-security-rework.json",
+  "traceability": "reports/loop-control/checks/req-traceability-rework.json"
+}

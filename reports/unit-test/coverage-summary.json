@@ -1,0 +1,35 @@
+{
+  "source": "reports/unit-test/coverage.json",
+  "tool": "coverage.py 7.15.4 (pytest-cov, branch=True)",
+  "coverage_json_timestamp": "2026-11-20T04:42:49.900505",
+  "total": {
+    "statements": {
+      "covered": 3659,
+      "total": 3705,
+      "pct": 98.76
+    },
+    "branches": {
+      "covered": 927,
+      "total": 956,
+      "pct": 96.97
+    },
+    "functions": {
+      "covered": 347,
+      "total": 349,
+      "pct": 99.43
+    },
+    "lines": {
+      "covered": 3659,
+      "total": 3705,
+      "pct": 98.76
+    }
+  },
+  "measured_files": 86,
+  "excluded": [
+    "app/tests/*",
+    "*/migrations/*",
+    "app/manage.py",
+    "app/gunicorn.conf.py"
+  ],
+  "execution_event_id": "unit-exec-10"
+}

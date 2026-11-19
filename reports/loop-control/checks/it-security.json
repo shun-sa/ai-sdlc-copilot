@@ -1,0 +1,36 @@
+{
+  "status": "FAIL",
+  "audit_scope": "INTEGRATION_TEST",
+  "source_baseline_sha256": "3aa404db5388705c1b0fde26026198be039c7962e3ead7340a5889ae57305b70",
+  "criteria": {
+    "discovered": [
+      "authentication-authorization",
+      "cross-phase-security-consistency",
+      "data-protection",
+      "dependency-configuration",
+      "error-logging",
+      "input-validation-injection",
+      "secret-credentials",
+      "security-test-coverage"
+    ],
+    "total": 8,
+    "pass": 2,
+    "not_applicable": 0,
+    "fail": 6
+  },
+  "issues": {
+    "total": 0,
+    "unresolved": 0,
+    "blocking": 0
+  },
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "Integration Test validation-result status is not PASS: 'FAIL'",
+    "Applicable criterion is not PASS: authentication-authorization",
+    "Applicable criterion is not PASS: cross-phase-security-consistency",
+    "Applicable criterion is not PASS: dependency-configuration",
+    "Applicable criterion is not PASS: error-logging",
+    "Applicable criterion is not PASS: input-validation-injection",
+    "Applicable criterion is not PASS: secret-credentials"
+  ]
+}

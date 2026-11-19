@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "FAILURE",
+  "cycle": 3,
+  "run_id": "arch-qr-run-3",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "全NFR×Task照合、ログ/画面NFR/EN-12割当、ADDR候補根拠追加",
+  "impact": "QR-ARCH-R3-001: NFR-SC-05/EN-05/SC-23/LG-05がTask完了条件・検証に未記載(Scope/Constraintsのみ)。R3-002 LOW検証担い手未記載。Implementation/Testで要件から直接検証すること",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Unresolved blocking Quality Review Issue(s): 1"
+  ]
+}

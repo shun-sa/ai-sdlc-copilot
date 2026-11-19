@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "addr-prep-run-1",
+  "validation_result": "reports/loop-control/checks/addr-prepare-request.json",
+  "repair": "",
+  "impact": "設計Gate不成立によりADDR prepare-request不成立。ADDR予約IDなしで判断記録を実施",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "addr_prepare_request: command exit code 1"
+  ]
+}

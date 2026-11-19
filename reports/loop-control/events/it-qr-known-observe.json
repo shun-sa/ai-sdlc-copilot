@@ -1,0 +1,23 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "nul_char_input_db_error_SEC-IMPL-001"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "it-qr-known-run-1",
+  "validation_result": "reports/loop-control/checks/it-quality.json",
+  "repair": "",
+  "impact": "INTEGRATION Quality Validatorの上流(UT/IT validator)FAILは既知原因",
+  "recommended_route": "IMPLEMENTATION",
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "Integration Test validation-result status is not PASS: 'FAIL'",
+    "Applicable criterion is not PASS: integration-test-quality",
+    "Unresolved blocking Quality Review Issue(s): 4"
+  ]
+}

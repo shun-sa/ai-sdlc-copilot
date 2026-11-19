@@ -1,0 +1,9 @@
+{
+  "check_id": "integration_test",
+  "command": [
+    "python",
+    ".github/skills/integration-test/scripts/validate_integration_test.py"
+  ],
+  "result_path": "reports/loop-control/checks/it-validator.json",
+  "timeout_seconds": 300
+}

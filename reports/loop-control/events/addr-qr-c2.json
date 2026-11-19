@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "addr_quality_QR-ADDR-R1-001-004"
+  },
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "addr-qr-run-2",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "ADDR-004 r3, addr-result UTF-8再出力, ADDR-014真偽値厳格化",
+  "impact": "QR-ADDR-R3-001 addr-result.json ADDR-004要約がr2のまま",
+  "recommended_route": "ADDR",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Unresolved blocking Quality Review Issue(s): 1"
+  ]
+}

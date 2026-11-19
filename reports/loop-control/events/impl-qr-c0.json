@@ -1,0 +1,22 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "impl_quality_QR-IMPL-001-003"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "impl-qr-run-0",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "",
+  "impact": "QR-IMPL-001 FR-020 GETカート作成とADDR-001 DD-009矛盾(ADDR), 002 テスト配置がSteering 4章と不一致(Orchestrator指示ミス→IMPLEMENTATIONで是正), 003 分類名一意DB制約なし",
+  "recommended_route": "ADDR",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Applicable criterion is not PASS: cross-phase-consistency",
+    "Unresolved blocking Quality Review Issue(s): 2"
+  ]
+}

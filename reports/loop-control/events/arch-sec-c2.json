@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_design_gaps_SR-ARCH-001-003"
+  },
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "arch-sec-run-2",
+  "validation_result": "reports/security-review/validation-result.json",
+  "repair": "manifest UTF-8化、TASK-001/021依存脆弱性、TASK-002/018アクセスログ",
+  "impact": "SR-ARCH-R2-001 NFR-SC-02/SC-19 本番HTTPS・セッション値の暗号化通信限定のTask/ADDR引渡し欠落",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: dependency-configuration",
+    "Unresolved blocking Security Review Issue(s): 1"
+  ]
+}

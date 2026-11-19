@@ -1,0 +1,33 @@
+{
+  "run_id": "RUN-AOBA-EC-1118",
+  "recorded_at": "2026-11-19T14:12:50+00:00",
+  "recorded_before_gap_fill": true,
+  "ai_initial_case_count": 61,
+  "external_case_count": 0,
+  "external_input": {
+    "provided": false,
+    "user_confirmed_without_external_cases": true
+  },
+  "initial_metrics": {
+    "required": 104,
+    "common": 0,
+    "ai_only": 94,
+    "external_only": 0,
+    "missing": 10,
+    "ai_initial_coverage_rate": 90.38,
+    "external_coverage_rate": null,
+    "combined_initial_coverage_rate": 90.38
+  },
+  "missing_coverage_ids": [
+    "RC-014",
+    "RC-018",
+    "RC-023",
+    "RC-044",
+    "RC-054",
+    "RC-072",
+    "RC-074",
+    "RC-077",
+    "RC-080",
+    "RC-096"
+  ]
+}

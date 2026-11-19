@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "INTEGRATION_TEST",
+    "classification": "TEST_ERROR",
+    "artifact": "reports/integration-test/required-coverage.json",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "integration_coverage_gaps_QR-IT-1118-001-006"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "it-qr-run-0",
+  "validation_result": "reports/loop-control/checks/it-quality.json",
+  "repair": "",
+  "impact": "",
+  "recommended_route": "INTEGRATION_TEST",
+  "errors": [
+    "Unresolved blocking Quality Review Issue(s): 4"
+  ]
+}

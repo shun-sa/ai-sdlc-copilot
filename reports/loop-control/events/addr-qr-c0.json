@@ -1,0 +1,22 @@
+{
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "addr_quality_QR-ADDR-R1-001-004"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "addr-qr-run-0",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "",
+  "impact": "QR-ADDR-R1-001 二重送信時の通知矛盾, 002 API項目単位契約未決",
+  "recommended_route": "ADDR",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Applicable criterion is not PASS: cross-phase-consistency",
+    "Unresolved blocking Quality Review Issue(s): 2"
+  ]
+}

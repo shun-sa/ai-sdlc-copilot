@@ -1,0 +1,8 @@
+{
+  "status": "FAIL",
+  "exit_code": 1,
+  "check_id": "unit_test",
+  "errors": [
+    "unit_test: command exit code 1"
+  ]
+}

@@ -1,0 +1,439 @@
+{
+  "GF-065_personal_information": {
+    "log_lines": 61,
+    "leaked": {},
+    "attachments": [],
+    "export_like_routes": [],
+    "outbound_connections": [],
+    "denied": {
+      "other_buyer_api": 404,
+      "visitor_api": 401,
+      "other_buyer_admin_api": 403,
+      "other_buyer_screen": 404,
+      "visitor_screen": 302
+    },
+    "url_patterns": 44,
+    "not_checked": "利用目的の特定・表示（本システム外）、本番の通信の暗号化（NFR-SC-02）、検証環境で本番データを使わない運用（NFR-SC-25）、法令適合の判断"
+  },
+  "GF-066_dynamic_probe": {
+    "url_patterns": 44,
+    "probes": 417,
+    "payloads": [
+      "<script>alert('mc-xss')</script>",
+      "\"><img src=x onerror=alert('mc-xss')>",
+      "' OR '1'='1",
+      "1; DROP TABLE orders_order;--",
+      "../../../../etc/passwd",
+      "${7*7}{{7*7}}",
+      "a\u0000b",
+      "９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９９"
+    ],
+    "access_matrix": {
+      "/api/auth/register/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/auth/login/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/auth/logout/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/auth/me/": {
+        "visitor": 401,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/api/categories/": {
+        "visitor": 200,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/api/products/": {
+        "visitor": 200,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/api/products/<str:product_id>/": {
+        "visitor": 200,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/api/cart/": {
+        "visitor": 401,
+        "buyer": 200,
+        "other": 200,
+        "admin": 403
+      },
+      "/api/cart/items/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/cart/items/<str:cart_item_id>/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/cart/coupon/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/orders/": {
+        "visitor": 401,
+        "buyer": 200,
+        "other": 200,
+        "admin": 403
+      },
+      "/api/orders/<str:order_id>/": {
+        "visitor": 401,
+        "buyer": 200,
+        "other": 404,
+        "admin": 403
+      },
+      "/api/orders/<str:order_id>/payment/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/orders/<str:order_id>/cancel/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/admin/stock-units/": {
+        "visitor": 401,
+        "buyer": 403,
+        "other": 403,
+        "admin": 200
+      },
+      "/api/admin/orders/": {
+        "visitor": 401,
+        "buyer": 403,
+        "other": 403,
+        "admin": 200
+      },
+      "/api/admin/orders/<str:order_id>/": {
+        "visitor": 401,
+        "buyer": 403,
+        "other": 403,
+        "admin": 200
+      },
+      "/api/admin/orders/<str:order_id>/ship/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/admin/orders/<str:order_id>/deliver/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/api/admin/orders/<str:order_id>/cancel/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/": {
+        "visitor": 200,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/products/<str:product_id>/": {
+        "visitor": 200,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/register/": {
+        "visitor": 200,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/login/": {
+        "visitor": 200,
+        "buyer": 200,
+        "other": 200,
+        "admin": 200
+      },
+      "/logout/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/cart/": {
+        "visitor": 302,
+        "buyer": 200,
+        "other": 200,
+        "admin": 403
+      },
+      "/cart/items/add/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/cart/items/<str:cart_item_id>/quantity/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/cart/items/<str:cart_item_id>/delete/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/cart/coupon/apply/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/cart/coupon/remove/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/checkout/": {
+        "visitor": 302,
+        "buyer": 200,
+        "other": 302,
+        "admin": 403
+      },
+      "/orders/": {
+        "visitor": 302,
+        "buyer": 200,
+        "other": 200,
+        "admin": 403
+      },
+      "/orders/<str:order_id>/": {
+        "visitor": 302,
+        "buyer": 200,
+        "other": 404,
+        "admin": 403
+      },
+      "/orders/<str:order_id>/complete/": {
+        "visitor": 302,
+        "buyer": 200,
+        "other": 404,
+        "admin": 403
+      },
+      "/orders/<str:order_id>/payment/": {
+        "visitor": 302,
+        "buyer": 200,
+        "other": 404,
+        "admin": 403
+      },
+      "/orders/<str:order_id>/cancel/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/manage/stock-units/": {
+        "visitor": 302,
+        "buyer": 403,
+        "other": 403,
+        "admin": 200
+      },
+      "/manage/orders/": {
+        "visitor": 302,
+        "buyer": 403,
+        "other": 403,
+        "admin": 200
+      },
+      "/manage/orders/<str:order_id>/": {
+        "visitor": 302,
+        "buyer": 403,
+        "other": 403,
+        "admin": 200
+      },
+      "/manage/orders/<str:order_id>/ship/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/manage/orders/<str:order_id>/deliver/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "/manage/orders/<str:order_id>/cancel/": {
+        "visitor": 405,
+        "buyer": 405,
+        "other": 405,
+        "admin": 405
+      },
+      "__updates__": {
+        "visitor POST /api/cart/items/": 401,
+        "visitor PATCH /api/cart/items/55/": 401,
+        "visitor DELETE /api/cart/items/55/": 401,
+        "visitor POST /api/cart/coupon/": 401,
+        "visitor DELETE /api/cart/coupon/": 401,
+        "visitor POST /api/orders/": 401,
+        "visitor POST /api/orders/38/payment/": 401,
+        "visitor POST /api/orders/38/cancel/": 401,
+        "visitor POST /api/admin/orders/39/ship/": 401,
+        "buyer POST /api/admin/orders/39/ship/": 403,
+        "visitor POST /api/admin/orders/39/deliver/": 401,
+        "buyer POST /api/admin/orders/39/deliver/": 403,
+        "visitor POST /api/admin/orders/39/cancel/": 401,
+        "buyer POST /api/admin/orders/39/cancel/": 403
+      }
+    },
+    "csrf_without_token": {
+      "/register/": 403,
+      "/login/": 403,
+      "/logout/": 403,
+      "/cart/items/add/": 403,
+      "/cart/items/55/quantity/": 403,
+      "/cart/items/55/delete/": 403,
+      "/cart/coupon/apply/": 403,
+      "/cart/coupon/remove/": 403,
+      "/checkout/": 403,
+      "/orders/38/payment/": 403,
+      "/orders/38/cancel/": 403,
+      "/manage/orders/39/ship/": 403,
+      "/manage/orders/39/deliver/": 403,
+      "/manage/orders/39/cancel/": 403
+    },
+    "reference_get": {
+      "/register/": 200,
+      "/login/": 200,
+      "/logout/": 405,
+      "/cart/items/add/": 405,
+      "/cart/items/55/quantity/": 405,
+      "/cart/items/55/delete/": 405,
+      "/cart/coupon/apply/": 405,
+      "/cart/coupon/remove/": 405,
+      "/checkout/": 200,
+      "/orders/38/payment/": 200,
+      "/orders/38/cancel/": 405,
+      "/manage/orders/39/ship/": 405,
+      "/manage/orders/39/deliver/": 405,
+      "/manage/orders/39/cancel/": 405
+    },
+    "network_client_imports": [],
+    "findings": [],
+    "not_checked": "脆弱性診断ツールによる網羅的な動的診断と指摘の対処・再診断（NFR-SC-29）、VUL-02/03/08/09/10/11 の診断（NFR-LG-07 の残り）"
+  },
+  "GF-070_network_exposure_application_side": {
+    "http_rejected_in_production": {
+      "/": 403,
+      "/api/admin/orders/": 403,
+      "/api/admin/orders/80/": 403,
+      "/api/admin/orders/80/cancel/": 403,
+      "/api/admin/orders/80/deliver/": 403,
+      "/api/admin/orders/80/ship/": 403,
+      "/api/admin/stock-units/": 403,
+      "/api/auth/login/": 403,
+      "/api/auth/logout/": 403,
+      "/api/auth/me/": 403,
+      "/api/auth/register/": 403,
+      "/api/cart/": 403,
+      "/api/cart/coupon/": 403,
+      "/api/cart/items/": 403,
+      "/api/cart/items/80/": 403,
+      "/api/categories/": 403,
+      "/api/orders/": 403,
+      "/api/orders/80/": 403,
+      "/api/orders/80/cancel/": 403,
+      "/api/orders/80/payment/": 403,
+      "/api/products/": 403,
+      "/api/products/80/": 403,
+      "/cart/": 403,
+      "/cart/coupon/apply/": 403,
+      "/cart/coupon/remove/": 403,
+      "/cart/items/80/delete/": 403,
+      "/cart/items/80/quantity/": 403,
+      "/cart/items/add/": 403,
+      "/checkout/": 403,
+      "/login/": 403,
+      "/logout/": 403,
+      "/manage/orders/": 403,
+      "/manage/orders/80/": 403,
+      "/manage/orders/80/cancel/": 403,
+      "/manage/orders/80/deliver/": 403,
+      "/manage/orders/80/ship/": 403,
+      "/manage/stock-units/": 403,
+      "/orders/": 403,
+      "/orders/80/": 403,
+      "/orders/80/cancel/": 403,
+      "/orders/80/complete/": 403,
+      "/orders/80/payment/": 403,
+      "/products/80/": 403,
+      "/register/": 403
+    },
+    "https_served_in_production": {
+      "/": 200,
+      "/api/products/": 200,
+      "/products/80/": 200
+    },
+    "gunicorn_bind": [
+      "\"0.0.0.0:8000\""
+    ],
+    "dockerfile_expose": [
+      "EXPOSE 8000"
+    ],
+    "remote_login_software": [],
+    "admin_like_routes": [],
+    "installed_apps_admin": false,
+    "relation_to_known_issue": "compose.yaml（ENV-01）のポート公開範囲は既知の未解決 UNRESOLVED-6de5eec64599b907 の SEC-IMPL-002（compose 公開範囲）の対象であり、本ケースの判定に用いない（新しいループにしない）",
+    "not_checked": "本番環境（ENV-02）のネットワーク設定：外部から到達できる範囲が HTTPS の利用者向けサービスだけであること、データベースへ外部から到達できないこと、サーバーへのログインが社内ネットワークからに限られること"
+  },
+  "GF-064_dependency_vulnerabilities": {
+    "fetched_at": "2026-11-19T18:40:29+00:00",
+    "packages": 23,
+    "vulnerabilities": [],
+    "high": [],
+    "unknown_severity": [],
+    "not_checked": "コンテナイメージ（python:3.12-slim・postgres:16）の OS パッケージ、リリース前の再照合（TASK-021）"
+  },
+  "GF-067_persistent_data_location": {
+    "databases": [
+      "default"
+    ],
+    "engine": "django.db.backends.postgresql",
+    "file_fields": [],
+    "session_engine": "common.sessions",
+    "message_storage": "django.contrib.messages.storage.session.SessionStorage",
+    "caches": {
+      "default": "django.core.cache.backends.locmem.LocMemCache"
+    },
+    "log_handlers": {
+      "stdout": "logging.StreamHandler",
+      "null": "logging.NullHandler"
+    },
+    "file_writes_in_production_code": [],
+    "not_checked": "本番環境のデータベースの保存媒体・バックアップの暗号化の設定（ENV-02、DIF-07）"
+  }
+}

@@ -1,0 +1,6 @@
+# 実行時の直接依存（ADDR-014 DD-008：pip-compile --generate-hashes で requirements.txt を生成する）
+Django>=5.2,<5.3
+djangorestframework>=3.15
+psycopg[binary]>=3.2
+gunicorn
+whitenoise

@@ -1,0 +1,8 @@
+{
+  "status": "BLOCKED",
+  "check_id": "producer",
+  "audit_scope": "REQUIREMENTS",
+  "agent": "Requirements",
+  "reason": "cycle3: BOQ-08/NOQ-08/NOQ-10 require EC business owner decision or risk acceptance; artifacts produced and structure validator PASS",
+  "related_issue": "UNRESOLVED-32af0f4a0ca9c80f"
+}

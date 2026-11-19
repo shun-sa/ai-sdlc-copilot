@@ -1,0 +1,10 @@
+{
+  "check_id": "ut_def_003_target",
+  "command": [
+    "python",
+    "c:/Users/shuns/.copilot/session-state/fa23b5a5-9622-40bc-b755-628cfb1eb7fb/files/run_target_test.py",
+    "tests/unit/test_web_views.py::test_cart_page_quantity_input_error_shows_item_reason"
+  ],
+  "result_path": "reports/loop-control/checks/ut-def-003-target.json",
+  "timeout_seconds": 600
+}

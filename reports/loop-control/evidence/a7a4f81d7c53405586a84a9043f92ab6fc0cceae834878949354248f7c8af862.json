@@ -1,0 +1,560 @@
+{
+  "status": "FAIL",
+  "audit_scope": "IMPLEMENTATION",
+  "method": "inline-annotation",
+  "source_baseline_sha256": "1367b1490416a2b66203cd0aab5e4a324059258095e8a461f1f8aac07597667d",
+  "errors": [
+    "[C01] reports/addr/implementation-handoff.json: design sources: stale hash C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\docs\\requirements\\expected-fr.txt（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate snapshot coverage differs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate assurance: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate requires three independent Assurance results（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'（差し戻し先: ADDR）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\architecture-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\architecture-gate.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate is not PASS（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: design sources: stale hash C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\docs\\requirements\\expected-fr.txt（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate snapshot coverage differs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate assurance: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate requires three independent Assurance results（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Implementation release requires an independent ADDR Gate（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate snapshot coverage differs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate assurance: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate requires three Assurance results（差し戻し先: ARCHITECTURE）",
+    "[C12] docs/requirements/expected-fr.txt:28: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-01: ?????????????????????????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:29: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-02: ?????????????????????????Web API ????????????????????????????????FR-060 ??????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:30: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-03: ??????????????????????????????????????????? FR-060 ????????????? FOQ-01 ????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:31: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-04: ???????????????????????????????????????????? EC??????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:32: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-05: ??????????????????????????????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:33: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-06: ???????????????????????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:34: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-07: ?????????????????????????????????????????????FR-043?FR-044 ????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:35: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-08: ??????????????????????????????Web API ??????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:36: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-09: ?????????????????????????????????????????EC?????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:37: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-10: ??????????????????????????????????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:38: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-11: ??????????????????????????????????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:39: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-12: ???????????????????????????????????????????FR-034?FR-045 ??????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:40: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-13: ??????????????????????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:41: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-14: ??????????????????????? PC ???????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:42: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-15: ???PDF?CSV ??????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:43: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-16: ?????????????????????????????????????????????????????'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-01 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-02 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-03 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-04 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-05 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-06 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-07 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-08 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-09 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-10 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-11 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-12 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-13 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-14 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-15 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-16 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C11] reports/traceability/trace-map.json: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+    "[C11] reports/traceability/traceability-report.json: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）",
+    "[C11] reports/traceability/traceability-report.md: 正本から再生成した内容と一致しません。（差し戻し先: TRACEABILITY_REGENERATE）"
+  ],
+  "warnings": [],
+  "issues": [
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "design sources: stale hash C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\docs\\requirements\\expected-fr.txt",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate requires ARCHITECTURE PASS",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate: expected object array",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate snapshot coverage differs",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Gate assurance: expected object array",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Gate requires three independent Assurance results",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Implementation handoff differs from frozen Architecture/ADDR inputs",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\architecture-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\architecture-gate.json'",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate is not PASS",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "design sources: stale hash C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\docs\\requirements\\expected-fr.txt",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Design Gate requires ARCHITECTURE PASS",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Design Gate: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Design Gate snapshot coverage differs",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Gate assurance: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Gate requires three independent Assurance results",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Implementation handoff differs from frozen Architecture/ADDR inputs",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Implementation release requires an independent ADDR Gate",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate snapshot coverage differs",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Gate assurance: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate requires three Assurance results",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:28",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-01: ?????????????????????????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:29",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-02: ?????????????????????????Web API ????????????????????????????????FR-060 ??????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:30",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-03: ??????????????????????????????????????????? FR-060 ????????????? FOQ-01 ????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:31",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-04: ???????????????????????????????????????????? EC??????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:32",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-05: ??????????????????????????????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:33",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-06: ???????????????????????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:34",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-07: ?????????????????????????????????????????????FR-043?FR-044 ????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:35",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-08: ??????????????????????????????Web API ??????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:36",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-09: ?????????????????????????????????????????EC?????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:37",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-10: ??????????????????????????????????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:38",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-11: ??????????????????????????????????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:39",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-12: ???????????????????????????????????????????FR-034?FR-045 ??????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:40",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-13: ??????????????????????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:41",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-14: ??????????????????????? PC ???????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:42",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-15: ???PDF?CSV ??????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:43",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-16: ?????????????????????????????????????????????????????'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-01 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-02 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-03 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-04 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-05 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-06 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-07 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-08 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-09 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-10 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-11 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-12 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-13 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-14 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-15 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-16 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C11",
+      "level": "FAIL",
+      "classification": "DERIVED_ARTIFACT_OUTDATED",
+      "location": "reports/traceability/trace-map.json",
+      "message": "正本から再生成した内容と一致しません。",
+      "route": "TRACEABILITY_REGENERATE"
+    },
+    {
+      "check": "C11",
+      "level": "FAIL",
+      "classification": "DERIVED_ARTIFACT_OUTDATED",
+      "location": "reports/traceability/traceability-report.json",
+      "message": "正本から再生成した内容と一致しません。",
+      "route": "TRACEABILITY_REGENERATE"
+    },
+    {
+      "check": "C11",
+      "level": "FAIL",
+      "classification": "DERIVED_ARTIFACT_OUTDATED",
+      "location": "reports/traceability/traceability-report.md",
+      "message": "正本から再生成した内容と一致しません。",
+      "route": "TRACEABILITY_REGENERATE"
+    }
+  ]
+}

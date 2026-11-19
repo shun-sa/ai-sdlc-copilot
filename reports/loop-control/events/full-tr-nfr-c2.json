@@ -1,0 +1,32 @@
+{
+  "signature": {
+    "origin_phase": "FULL",
+    "classification": "TEST_ERROR",
+    "artifact": "docs/requirements/non_functional_requirements.md",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "nfr_test_traceability_missing_C10"
+  },
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "full-tr-nfr-run-2",
+  "validation_result": "reports/loop-control/checks/full-traceability.json",
+  "repair": "GF-059〜073追加(ブラウザ実機/性能参考計測/脆弱性照合/バックアップ復元等の部分検証)",
+  "impact": "FULL C10: NFR 13件にテスト到達なし(本番環境・運用記録が必要10、該当なし3)",
+  "recommended_route": "INTEGRATION_TEST",
+  "errors": [
+    "[C10] docs/requirements/non_functional_requirements.md:107: NFR-AV-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:106: NFR-AV-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:108: NFR-AV-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:111: NFR-AV-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:114: NFR-AV-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:290: NFR-EN-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:300: NFR-EN-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:206: NFR-MG-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:147: NFR-OM-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:148: NFR-OM-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:149: NFR-OM-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:156: NFR-OM-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:159: NFR-OM-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）"
+  ]
+}

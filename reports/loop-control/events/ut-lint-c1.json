@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "TEST_ERROR",
+    "artifact": "app/tests/unit",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "unit_test_code_ruff_violations"
+  },
+  "action": "RESOLVED",
+  "cycle": 1,
+  "run_id": "ut-lint-run-1",
+  "validation_result": "reports/loop-control/checks/impl-build.json",
+  "repair": "テストコード整形でruff 0件",
+  "impact": "解消",
+  "recommended_route": "UNIT_TEST"
+}

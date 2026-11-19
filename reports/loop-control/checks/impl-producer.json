@@ -1,0 +1,7 @@
+{
+  "status": "SUCCESS",
+  "check_id": "producer",
+  "audit_scope": "IMPLEMENTATION",
+  "agent": "Implementation",
+  "errors": []
+}

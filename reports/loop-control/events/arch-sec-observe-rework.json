@@ -1,0 +1,23 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_design_gaps_SR-ARCH-001-003"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "arch-sec-rework-run-1",
+  "validation_result": "reports/loop-control/checks/arch-security-rework.json",
+  "repair": "",
+  "impact": "同一原因の再観測: Security NFR(SC-05/SC-04/VUL-04〜06に加えSR-ARCH-R4-001 NFR-SC-15利用者区分固定/変更手段0件)がTask完了条件に未記載。実装・テストで要件から直接検証",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: authentication-authorization",
+    "Applicable criterion is not PASS: cross-phase-security-consistency",
+    "Applicable criterion is not PASS: input-validation-injection",
+    "Unresolved blocking Security Review Issue(s): 4"
+  ]
+}

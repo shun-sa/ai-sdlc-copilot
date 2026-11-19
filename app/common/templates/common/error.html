@@ -1,0 +1,7 @@
+{# trace: ADDR-012 #}
+{% extends "common/base.html" %}
+{% block content %}
+<h1>{{ heading }}</h1>
+<p>{{ message }}</p>
+<p><a href="{% if header_is_admin %}/manage/orders/{% else %}/{% endif %}">トップへ戻る</a></p>
+{% endblock %}

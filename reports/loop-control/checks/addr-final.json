@@ -1,0 +1,8 @@
+{
+  "status": "FAIL",
+  "exit_code": 1,
+  "check_id": "addr_validation",
+  "errors": [
+    "addr_validation: command exit code 1"
+  ]
+}

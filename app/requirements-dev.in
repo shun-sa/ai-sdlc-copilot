@@ -1,0 +1,6 @@
+# 開発・試験用の直接依存（ENV-01 の app コンテナで自動テスト・静的解析を実行するため）
+-c requirements.txt
+pytest
+pytest-django
+ruff
+pip-tools

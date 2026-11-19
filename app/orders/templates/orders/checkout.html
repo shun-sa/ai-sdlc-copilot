@@ -1,0 +1,75 @@
+{# trace: ADDR-012, ADDR-004, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>注文手続き（配送先入力・確認）</h1>
+<h2>注文内容</h2>
+<table>
+  <thead><tr><th scope="col">商品名</th><th scope="col">規格名</th><th scope="col">SKU</th><th scope="col">単価</th><th scope="col">数量</th><th scope="col">明細金額</th></tr></thead>
+  <tbody>
+  {% for item in cart.items %}
+    <tr><td>{{ item.product_name }}</td><td>{{ item.variant_name }}</td><td>{{ item.sku }}</td><td>{{ item.unit_price_excluding_tax|price_pair }}</td><td>{{ item.quantity }}</td><td>{{ item.line_amount|yen }}（税抜）</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p>合計点数：{{ cart.total_quantity }}点</p>
+<h2>クーポン</h2>
+{% if cart.coupon %}
+  <p>{{ cart.coupon.coupon_code }}　{{ cart.coupon.name }}　{{ cart.coupon|discount_text }}　{% if cart.coupon.is_applicable %}適用中{% else %}適用条件を満たしていません{% endif %}</p>
+  {% if not cart.coupon.is_applicable %}<p class="field-error">適用中のクーポンは適用条件を満たしていません（{{ cart.coupon.not_applicable_reason|reason_label }}）。カートでクーポンを解除するか、条件を満たしてから注文してください。</p>{% endif %}
+{% else %}
+  <p>クーポンなし</p>
+{% endif %}
+<h2>金額</h2>
+<table>
+  <tbody>
+    <tr><th scope="row">小計（税抜）</th><td>{{ cart.amounts.subtotal|yen }}</td></tr>
+    <tr><th scope="row">割引額</th><td>{{ cart.amounts.discount_amount|yen }}</td></tr>
+    <tr><th scope="row">割引後小計</th><td>{{ cart.amounts.discounted_subtotal|yen }}</td></tr>
+    <tr><th scope="row">送料</th><td>{{ cart.amounts.shipping_fee|yen }}</td></tr>
+    <tr><th scope="row">消費税額</th><td>{{ cart.amounts.tax_amount|yen }}</td></tr>
+    <tr><th scope="row">合計（税込）</th><td>{{ cart.amounts.total_amount|yen }}</td></tr>
+  </tbody>
+</table>
+<p>注文を確定すると在庫を確保します。金額は注文確定時点の価格で確定します。</p>
+<h2>配送先</h2>
+<form method="post" action="/checkout/" novalidate data-confirm="合計（税込）{{ cart.amounts.total_amount|yen }}で注文を確定します。よろしいですか？">
+  {% csrf_token %}
+  <input type="hidden" name="submit_token" value="{{ submit_token }}">
+  <div class="form-row">
+    <label for="recipient_name" class="required-mark">受取人氏名</label>
+    <input id="recipient_name" type="text" name="recipient_name" value="{{ values.recipient_name }}">
+    {% for e in errors.shipping_address__recipient_name %}<span class="field-error">受取人氏名：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="postal_code" class="required-mark">郵便番号</label>
+    <input id="postal_code" type="text" name="postal_code" value="{{ values.postal_code }}">
+    {% for e in errors.shipping_address__postal_code %}<span class="field-error">郵便番号：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="prefecture" class="required-mark">都道府県</label>
+    <select id="prefecture" name="prefecture">
+      <option value="">選択してください</option>
+      {% for code, name in prefectures %}<option value="{{ code }}"{% if code == values.prefecture %} selected{% endif %}>{{ name }}</option>{% endfor %}
+    </select>
+    {% for e in errors.shipping_address__prefecture %}<span class="field-error">都道府県：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="address_line1" class="required-mark">住所1（市区町村・番地）</label>
+    <input id="address_line1" type="text" name="address_line1" value="{{ values.address_line1 }}">
+    {% for e in errors.shipping_address__address_line1 %}<span class="field-error">住所1：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="address_line2">住所2（建物名・部屋番号）</label>
+    <input id="address_line2" type="text" name="address_line2" value="{{ values.address_line2 }}">
+    {% for e in errors.shipping_address__address_line2 %}<span class="field-error">住所2：{{ e }}</span>{% endfor %}
+  </div>
+  <div class="form-row">
+    <label for="phone_number" class="required-mark">電話番号</label>
+    <input id="phone_number" type="tel" name="phone_number" value="{{ values.phone_number }}">
+    {% for e in errors.shipping_address__phone_number %}<span class="field-error">電話番号：{{ e }}</span>{% endfor %}
+  </div>
+  <button type="submit">注文を確定する</button>
+</form>
+<p><a href="/cart/">カートに戻る</a></p>
+{% endblock %}

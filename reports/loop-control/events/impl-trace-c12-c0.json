@@ -1,0 +1,35 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "REQUIREMENT_ERROR",
+    "artifact": "docs/requirements/expected-fr.txt",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "expected_fr_scope_undeclared_FR-OUT"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "impl-trace-run-0",
+  "validation_result": "reports/traceability/validation-result.json",
+  "repair": "",
+  "impact": "expected-fr.txtにFR-OUT-01〜16の対象/対象外分類なし(C12 16件)",
+  "recommended_route": "REQUIREMENTS",
+  "errors": [
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-01 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-02 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-03 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-04 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-05 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-06 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-07 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-08 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-09 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-10 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-11 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-12 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-13 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-14 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-15 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-16 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）"
+  ]
+}

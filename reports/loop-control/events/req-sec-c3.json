@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "REQUIREMENTS",
+    "classification": "REQUIREMENT_ERROR",
+    "artifact": "docs/requirements",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_requirement_gaps_SEC-REQ-001-005"
+  },
+  "action": "FAILURE",
+  "cycle": 3,
+  "run_id": "req-sec-run-3",
+  "validation_result": "reports/security-review/validation-result.json",
+  "repair": "入力資料に根拠なしを確認、持越しを明記",
+  "impact": "SEC-REQ-001(HIGH)/002/003 Blocking: BOQ-08,NOQ-08,NOQ-10 EC事業責任者の決定/受容記録なし。本リリースは現行FR/Out of Scopeどおり実装し稼働判定へ持越し",
+  "recommended_route": "REQUIREMENTS",
+  "errors": [
+    "Applicable criterion is not PASS: authentication-authorization",
+    "Unresolved blocking Security Review Issue(s): 3"
+  ]
+}

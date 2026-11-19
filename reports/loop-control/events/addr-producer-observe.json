@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "addr-producer-run-1",
+  "validation_result": "reports/loop-control/checks/addr-producer.json",
+  "repair": "",
+  "impact": "設計Gate不成立→ADDR request欠落でADDR Producer BLOCKED(PARTIAL_SUCCESS)",
+  "recommended_route": "ARCHITECTURE"
+}

@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "REQUIREMENTS",
+    "classification": "REQUIREMENT_ERROR",
+    "artifact": "docs/requirements/use-cases",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "undefined_ac_reference_in_gap_note"
+  },
+  "action": "RESOLVED",
+  "cycle": 1,
+  "run_id": "req-trace-run-1",
+  "validation_result": "reports/traceability/validation-result.json",
+  "repair": "欠番注記をID文字列を含まない表現へ変更",
+  "impact": "解消",
+  "recommended_route": "REQUIREMENTS"
+}

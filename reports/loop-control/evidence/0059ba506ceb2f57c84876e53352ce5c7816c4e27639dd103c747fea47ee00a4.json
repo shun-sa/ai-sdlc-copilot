@@ -1,0 +1,30 @@
+{
+  "source_baseline_sha256": null,
+  "status": "FAIL",
+  "audit_scope": "INTEGRATION_TEST",
+  "criteria": {
+    "discovered": [
+      "architecture-quality",
+      "cross-phase-consistency",
+      "implementation-quality",
+      "integration-test-quality",
+      "requirements-quality",
+      "unit-test-quality"
+    ],
+    "total": 6,
+    "pass": 5,
+    "not_applicable": 0,
+    "fail": 1
+  },
+  "issues": {
+    "total": 1,
+    "unresolved": 1,
+    "blocking": 1
+  },
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "Integration Test validation-result status is not PASS: 'FAIL'",
+    "Applicable criterion is not PASS: integration-test-quality",
+    "Unresolved blocking Quality Review Issue(s): 1"
+  ]
+}

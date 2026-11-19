@@ -1,0 +1,9 @@
+{
+  "producer": "reports/loop-control/checks/addr-producer.json",
+  "addr_validation": "reports/loop-control/checks/addr-final.json",
+  "handoff": "reports/loop-control/checks/addr-handoff.json",
+  "quality": "reports/loop-control/checks/addr-quality-rework.json",
+  "security": "reports/loop-control/checks/addr-security-rework.json",
+  "traceability": "reports/loop-control/checks/addr-traceability-rework.json",
+  "addr_gate": "reports/loop-control/checks/addr-gate.json"
+}

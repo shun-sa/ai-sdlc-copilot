@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "arch-qr-run-2",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "manifest UTF-8化、AC依存TASK-020、TASK-021",
+  "impact": "QR-ARCH-R2-001 NFR(OM-11/18,US-01/05/07,EN-12)Task未割当, R2-002 ADDR候補根拠にNFR-PF-09/16/17,OM-11/18欠落",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Unresolved blocking Quality Review Issue(s): 2"
+  ]
+}

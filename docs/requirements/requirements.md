@@ -23,6 +23,7 @@
 - [use-cases/UC-011.md](use-cases/UC-011.md)
 - [use-cases/UC-012.md](use-cases/UC-012.md)
 - [use-cases/UC-013.md](use-cases/UC-013.md)
+- [Project AI Steering](../../.github/project-context/project-ai-steering.md)
 
 ## 機能要件
 - FR-001: [会員登録](functional_requirements.md)

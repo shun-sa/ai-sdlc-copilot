@@ -1,0 +1,59 @@
+{
+  "run_id": "RUN-AOBA-EC-1118",
+  "current_phase": "COMPLETE",
+  "phase_status": "COMPLETE_WITH_UNRESOLVED",
+  "last_successful_phase": null,
+  "phase_results": {
+    "REQUIREMENTS": "CONTINUE_WITH_UNRESOLVED",
+    "ARCHITECTURE": "CONTINUE_WITH_UNRESOLVED",
+    "ADDR": "CONTINUE_WITH_UNRESOLVED",
+    "IMPLEMENTATION": "CONTINUE_WITH_UNRESOLVED",
+    "UNIT_TEST": "CONTINUE_WITH_UNRESOLVED",
+    "INTEGRATION_TEST": "CONTINUE_WITH_UNRESOLVED",
+    "FULL": "CONTINUE_WITH_UNRESOLVED"
+  },
+  "invalidated_phases": [],
+  "waiting_for_user": false,
+  "failure_count": 3,
+  "unresolved_issue_ids": [
+    "UNRESOLVED-32af0f4a0ca9c80f",
+    "UNRESOLVED-0b5694db22a0bead",
+    "UNRESOLVED-60a549ca11f16034",
+    "UNRESOLVED-34471205dd0539bc",
+    "UNRESOLVED-6de5eec64599b907",
+    "UNRESOLVED-c0b4f02168099ecc",
+    "UNRESOLVED-05b079507f12a077",
+    "UNRESOLVED-e1d9dfe900863622"
+  ],
+  "repair_cycles_by_signature": {
+    "UNRESOLVED-42477496467a3b16": 0,
+    "UNRESOLVED-32af0f4a0ca9c80f": 3,
+    "UNRESOLVED-5f30bbac9b032d25": 0,
+    "UNRESOLVED-0b5694db22a0bead": 3,
+    "UNRESOLVED-60a549ca11f16034": 3,
+    "UNRESOLVED-0f2af4c13e804828": 0,
+    "UNRESOLVED-1c122b65b9bd1cda": 2,
+    "UNRESOLVED-8c8bf5f37abf9f5d": 0,
+    "UNRESOLVED-34471205dd0539bc": 3,
+    "UNRESOLVED-6de5eec64599b907": 3,
+    "UNRESOLVED-947d834186b03556": 2,
+    "UNRESOLVED-9b95e532d99aa2aa": 0,
+    "UNRESOLVED-263e9af7025a4175": 0,
+    "UNRESOLVED-c0b4f02168099ecc": 3,
+    "UNRESOLVED-05b079507f12a077": 3,
+    "UNRESOLVED-e1d9dfe900863622": 3
+  },
+  "resume_from": null,
+  "external_cases_confirmed_absent": true,
+  "external_cases_confirmed_absent_basis": "User explicit instruction 2026-11-19: ?????????????????",
+  "open_questions": [
+    "OQ-PJ-001 docs/specifications/api-contract.md absent on branch; not imported from other-run branches"
+  ],
+  "gates": {
+    "design_gate": "NOT_ESTABLISHED",
+    "addr_request": "NOT_ESTABLISHED",
+    "implementation_handoff": "NOT_ESTABLISHED",
+    "implementation_gate": "NOT_ESTABLISHED (continuation decisions ARCHITECTURE/ADDR verified)"
+  },
+  "quality_status": "FAIL"
+}

@@ -1,0 +1,28 @@
+{
+  "source_baseline_sha256": "2576c7cc374200f9ffe4763167237aaa1587cd98822b9c9fecf3df06283918fa",
+  "status": "FAIL",
+  "audit_scope": "UNIT_TEST",
+  "criteria": {
+    "discovered": [
+      "architecture-quality",
+      "cross-phase-consistency",
+      "implementation-quality",
+      "integration-test-quality",
+      "requirements-quality",
+      "unit-test-quality"
+    ],
+    "total": 6,
+    "pass": 5,
+    "not_applicable": 1,
+    "fail": 0
+  },
+  "issues": {
+    "total": 0,
+    "unresolved": 0,
+    "blocking": 0
+  },
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "quality-review-report.json reports PASS, but deterministic validation found errors."
+  ]
+}

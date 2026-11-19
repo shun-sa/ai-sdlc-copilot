@@ -1,10 +1,10 @@
 ---
 document_type: "画面・帳票要件レイアウト/一覧"
 system_name: "MiniCommerce"
-version: "1.1"
+version: "1.2"
 status: "レビュー中"
 created: "2026-10-09"
-last_updated: "2026-11-09"
+last_updated: "2026-11-19"
 author: "MiniCommerce 要件定義チーム"
 ---
 
@@ -18,6 +18,7 @@ author: "MiniCommerce 要件定義チーム"
 |---|---|---|---|
 | 1.0 | 2026-10-09 | 初版作成 | MiniCommerce 要件定義チーム |
 | 1.1 | 2026-11-09 | 設計情報（API物理仕様・物理名・実装方式・画面配置等）を削除し要件表現に整理 | MiniCommerce 要件定義チーム |
+| 1.2 | 2026-11-19 | 2.1 UI-02 の対象OSを、非機能要件の正本 NFR-US-06（PC の Windows 11）に一致させた（要件レビューの指摘対応）。ブラウザ・画面幅・画面の項目・操作は変更しない | Requirements Agent（RUN-AOBA-EC-1118） |
 
 ## 1. 本書の目的と適用範囲
 
@@ -55,7 +56,7 @@ MiniCommerce は、株式会社あおば雑貨（以下「当社」）が会員�
 | ID | 項目 | 要件 |
 |---|---|---|
 | UI-01 | 対象デバイス | PC |
-| UI-02 | 対象OS・ブラウザ | ブラウザ：Google Chrome 最新版、Microsoft Edge 最新版（いずれもリリース判定時点の最新の安定版）。OS：限定しない（左記ブラウザが動作するPC用OS） |
+| UI-02 | 対象OS・ブラウザ | ブラウザ：Google Chrome 最新版、Microsoft Edge 最新版（いずれもリリース判定時点の最新の安定版）。OS：PC の Windows 11（非機能要件 NFR-US-06。互換性・操作性の確認も Windows 11 の PC で行う） |
 | UI-03 | 想定画面サイズ | 最小画面幅 1280px 〜 最大画面幅 制限なし。画面幅1280px以上で横スクロールなく表示する |
 | UI-04 | レスポンシブ対応 | 不要 |
 

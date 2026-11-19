@@ -1,0 +1,27 @@
+{# trace: ADDR-012, ADDR-004, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>注文詳細</h1>
+<dl>
+  <dt>注文番号</dt><dd>{{ order.order_number }}</dd>
+  <dt>状態</dt><dd>{{ order.status_label }}</dd>
+  <dt>注文日時</dt><dd>{{ order.ordered_at|jst }}</dd>
+  <dt>支払日時</dt><dd>{{ order.paid_at|jst }}</dd>
+  <dt>出荷日時</dt><dd>{{ order.shipped_at|jst }}</dd>
+  <dt>配達完了日時</dt><dd>{{ order.delivered_at|jst }}</dd>
+  <dt>キャンセル日時</dt><dd>{{ order.cancelled_at|jst }}</dd>
+  <dt>配送伝票番号</dt><dd>{{ order.tracking_number|dash }}</dd>
+</dl>
+{% include "orders/_order_body.html" with show_actor_id=False %}
+{% if order.status == "paid" or order.status == "cancelled" and order.paid_at %}<p>支払済の注文をキャンセルした場合、返金は当社が5営業日以内に行います。</p>{% endif %}
+{% if order.can_pay %}<p><a href="/orders/{{ order.order_id }}/payment/">支払う</a></p>{% endif %}
+{% if order.can_cancel %}
+  <form method="post" action="/orders/{{ order.order_id }}/cancel/" data-confirm="注文 {{ order.order_number }} をキャンセルします。よろしいですか？{% if order.status == 'paid' %}返金は当社が5営業日以内に行います。{% endif %}">
+    {% csrf_token %}
+    <input type="hidden" name="submit_token" value="{{ submit_token }}">
+    <button type="submit">キャンセルする</button>
+  </form>
+{% endif %}
+<p><a href="/orders/">注文履歴へ戻る</a></p>
+{% endblock %}

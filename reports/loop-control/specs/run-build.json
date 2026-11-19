@@ -1,0 +1,9 @@
+{
+  "check_id": "build",
+  "command": [
+    "python",
+    "c:/Users/shuns/.copilot/session-state/fa23b5a5-9622-40bc-b755-628cfb1eb7fb/files/build_check.py"
+  ],
+  "result_path": "reports/loop-control/checks/impl-build.json",
+  "timeout_seconds": 600
+}

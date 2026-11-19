@@ -1,0 +1,6 @@
+# app コンテナのイメージ（app/Dockerfile、build context はリポジトリ直下）に含めないもの。
+# 自動テスト（app/tests/）と試験設定（app/pytest.ini）は本番イメージに含めず、ENV-01 では compose.yaml でマウントする。
+app/tests
+app/pytest.ini
+**/__pycache__
+**/.pytest_cache

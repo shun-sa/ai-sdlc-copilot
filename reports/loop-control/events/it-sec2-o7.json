@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_design_gaps_SR-ARCH-001-003"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "it-sec2-o7",
+  "validation_result": "reports/loop-control/checks/it-security.json",
+  "repair": "",
+  "impact": "IT Security: dependency-configuration(設計Security未解決/Gate不成立)",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: dependency-configuration"
+  ]
+}

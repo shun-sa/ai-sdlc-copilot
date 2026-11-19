@@ -1,10 +1,10 @@
 ---
 document_type: "仕様品質チェックリスト"
 system_name: "MiniCommerce"
-version: "1.2"
+version: "1.6"
 status: "作成中"
 created: "2026-10-09"
-last_updated: "2026-11-09"
+last_updated: "2026-11-19"
 author: "MiniCommerce 要件定義チーム"
 ---
 
@@ -18,6 +18,10 @@ author: "MiniCommerce 要件定義チーム"
 |---|---|---|---|
 | 1.1 | 2026-10-21 | テンプレート改訂に合わせて構成を更新 | MiniCommerce 要件定義チーム |
 | 1.2 | 2026-11-09 | 設計情報（API物理仕様・物理名・実装方式・画面配置等）を削除し要件表現に整理 | MiniCommerce 要件定義チーム |
+| 1.3 | 2026-11-19 | 3章の対象版をデータ要件1.2・外部IF要件1.2・用語集1.3・UC-007 1.3に更新（ID正規化に伴う改版）。レビュー結果・判定は変更しない（人レビュー未実施） | Requirements Agent（RUN-AOBA-EC-1118） |
+| 1.4 | 2026-11-19 | 3章の対象版を、要件レビュー（Traceability・品質・セキュリティ）の指摘対応による改版（業務要件1.2、機能要件1.2、非機能要件1.2、データ要件1.3、画面・帳票要件1.2、UC-003〜UC-006・UC-008・UC-010・UC-011 1.3、UC-007 1.4）に更新。レビュー結果・判定は変更しない（人レビュー未実施） | Requirements Agent（RUN-AOBA-EC-1118） |
+| 1.5 | 2026-11-19 | 3章の対象版を、要件レビュー（セキュリティ再レビュー・品質）の指摘対応による改版（業務要件1.3、機能要件1.3、非機能要件1.3、データ要件1.4、UC-013 1.3）に更新。レビュー結果・判定は変更しない（人レビュー未実施） | Requirements Agent（RUN-AOBA-EC-1118） |
+| 1.6 | 2026-11-19 | 3章の対象版を、要件レビュー（セキュリティ再レビュー最終修正）の指摘対応による改版（業務要件1.4、機能要件1.4、非機能要件1.4）に更新。レビュー結果・判定は変更しない（人レビュー未実施） | Requirements Agent（RUN-AOBA-EC-1118） |
 
 ## 1. 本書の目的と適用範囲
 
@@ -48,27 +52,27 @@ author: "MiniCommerce 要件定義チーム"
 
 | Artifact ID / Path | Artifact Type | Version / Status | 備考 |
 |---|---|---|---|
-| business_requirements.md（業務要件定義書） | 業務要件 | 1.1 / レビュー中 | レビュー未実施 |
-| functional_requirements.md（機能要件定義書） | 機能要件 | 1.1 / レビュー中 | レビュー未実施 |
-| non_functional_requirements.md（非機能要件定義書） | 非機能要件 | 1.1 / レビュー中 | レビュー未実施 |
-| data_requirements.md（データ要件定義書） | データ要件 | 1.1 / レビュー中 | レビュー未実施 |
-| external_interface_requirements.md（外部インターフェース要件一覧） | 外部IF要件 | 1.1 / レビュー中 | レビュー未実施 |
-| ui_report_requirements.md（画面・帳票要件レイアウト/一覧） | 画面帳票要件 | 1.1 / レビュー中 | レビュー未実施 |
+| business_requirements.md（業務要件定義書） | 業務要件 | 1.4 / レビュー中 | レビュー未実施 |
+| functional_requirements.md（機能要件定義書） | 機能要件 | 1.4 / レビュー中 | レビュー未実施 |
+| non_functional_requirements.md（非機能要件定義書） | 非機能要件 | 1.4 / レビュー中 | レビュー未実施 |
+| data_requirements.md（データ要件定義書） | データ要件 | 1.4 / レビュー中 | レビュー未実施 |
+| external_interface_requirements.md（外部インターフェース要件一覧） | 外部IF要件 | 1.2 / レビュー中 | レビュー未実施 |
+| ui_report_requirements.md（画面・帳票要件レイアウト/一覧） | 画面帳票要件 | 1.2 / レビュー中 | レビュー未実施 |
 | use-case-user-story-index.md（ユースケース／ユーザーストーリー一覧） | Use Case | 1.2 / 作成中 | レビュー未実施 |
 | use-cases/UC-001.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
 | use-cases/UC-002.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-003.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-004.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-005.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-006.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-007.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-008.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
+| use-cases/UC-003.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
+| use-cases/UC-004.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
+| use-cases/UC-005.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
+| use-cases/UC-006.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
+| use-cases/UC-007.md（ユースケース定義書） | Use Case | 1.4 / 作成中 | レビュー未実施 |
+| use-cases/UC-008.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
 | use-cases/UC-009.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-010.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-011.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
+| use-cases/UC-010.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
+| use-cases/UC-011.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
 | use-cases/UC-012.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| use-cases/UC-013.md（ユースケース定義書） | Use Case | 1.2 / 作成中 | レビュー未実施 |
-| glossary.md（用語集） | Glossary | 1.2 / 作成中 | レビュー未実施 |
+| use-cases/UC-013.md（ユースケース定義書） | Use Case | 1.3 / 作成中 | レビュー未実施 |
+| glossary.md（用語集） | Glossary | 1.3 / 作成中 | レビュー未実施 |
 | requirements.md（要件索引） | その他 | 版なし / 該当なし | レビュー未実施 |
 
 ## 4. 判定基準

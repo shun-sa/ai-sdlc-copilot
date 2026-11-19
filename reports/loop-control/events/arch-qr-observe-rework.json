@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "arch-qr-rework-run-1",
+  "validation_result": "reports/loop-control/checks/arch-quality-rework.json",
+  "repair": "",
+  "impact": "同一原因の再観測: QR-ARCH-R3-001(NFR-SC-05/EN-05/SC-23/LG-05/SC-15/SC-03/VUL-12がTask完了条件未記載)",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Unresolved blocking Quality Review Issue(s): 1"
+  ]
+}

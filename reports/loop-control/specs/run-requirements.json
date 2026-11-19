@@ -1,0 +1,9 @@
+{
+    "timeout_seconds":  300,
+    "command":  [
+                    "python",
+                    ".github/skills/requirements/scripts/validate_requirements_structure.py"
+                ],
+    "result_path":  "reports/loop-control/checks/requirements-validator.json",
+    "check_id":  "requirements"
+}

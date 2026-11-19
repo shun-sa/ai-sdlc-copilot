@@ -1,0 +1,31 @@
+{
+  "status": "FAIL",
+  "audit_scope": "UNIT_TEST",
+  "source_baseline_sha256": "0ae435d407bf9447a24c7c008836e754c2617c8471c9c898c615216852611334",
+  "criteria": {
+    "discovered": [
+      "authentication-authorization",
+      "cross-phase-security-consistency",
+      "data-protection",
+      "dependency-configuration",
+      "error-logging",
+      "input-validation-injection",
+      "secret-credentials",
+      "security-test-coverage"
+    ],
+    "total": 8,
+    "pass": 6,
+    "not_applicable": 0,
+    "fail": 2
+  },
+  "issues": {
+    "total": 1,
+    "unresolved": 1,
+    "blocking": 0
+  },
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "Applicable criterion is not PASS: error-logging",
+    "Applicable criterion is not PASS: input-validation-injection"
+  ]
+}

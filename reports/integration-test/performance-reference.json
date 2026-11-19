@@ -1,0 +1,1116 @@
+{
+  "GF-061_three_year_data_volume": {
+    "condition": "3年後データ量（VDC-01〜VDC-03 の件数）を COPY で生成し ANALYZE 後、単一利用者・逐次で計測（試験クライアント、試験用トランザクション内）。ピーク負荷（同時155利用者）・ENV-01・ブラウザの資源読込は含まない参考計測",
+    "measured_at": "2026-11-19T19:03:15+0000",
+    "generated_counts": {
+      "User": 10007,
+      "Supplier": 35,
+      "Category": 45,
+      "Product": 600,
+      "ProductCategory": 600,
+      "StockUnit": 1600,
+      "Coupon": 150,
+      "Order": 110000,
+      "OrderItem": 330000,
+      "ShippingAddress": 110000,
+      "PaymentRecord": 119868,
+      "OrderStatusHistory": 357585
+    },
+    "generation_seconds": 5.2,
+    "summary": {
+      "read.admin_order_detail": {
+        "requests": 50,
+        "p95_seconds": 0.027,
+        "max_seconds": 0.0459,
+        "limit_seconds": 1.0
+      },
+      "read.admin_orders": {
+        "requests": 50,
+        "p95_seconds": 0.395,
+        "max_seconds": 0.4103,
+        "limit_seconds": 1.0
+      },
+      "read.cart": {
+        "requests": 50,
+        "p95_seconds": 0.0137,
+        "max_seconds": 0.017,
+        "limit_seconds": 1.0
+      },
+      "read.categories": {
+        "requests": 50,
+        "p95_seconds": 0.002,
+        "max_seconds": 0.0051,
+        "limit_seconds": 1.0
+      },
+      "read.order_detail": {
+        "requests": 50,
+        "p95_seconds": 0.0089,
+        "max_seconds": 0.0129,
+        "limit_seconds": 1.0
+      },
+      "read.order_history": {
+        "requests": 50,
+        "p95_seconds": 0.0105,
+        "max_seconds": 0.0322,
+        "limit_seconds": 1.0
+      },
+      "read.product_detail": {
+        "requests": 50,
+        "p95_seconds": 0.0052,
+        "max_seconds": 0.0261,
+        "limit_seconds": 1.0
+      },
+      "read.products": {
+        "requests": 50,
+        "p95_seconds": 0.0133,
+        "max_seconds": 0.0239,
+        "limit_seconds": 1.0
+      },
+      "read.stock_units": {
+        "requests": 50,
+        "p95_seconds": 0.0103,
+        "max_seconds": 0.0112,
+        "limit_seconds": 1.0
+      },
+      "screen.SCR-001": {
+        "requests": 50,
+        "p95_seconds": 0.0259,
+        "max_seconds": 0.0452,
+        "limit_seconds": 2.0
+      },
+      "screen.SCR-002": {
+        "requests": 50,
+        "p95_seconds": 0.0156,
+        "max_seconds": 0.0284,
+        "limit_seconds": 2.0
+      },
+      "screen.SCR-009": {
+        "requests": 50,
+        "p95_seconds": 0.0167,
+        "max_seconds": 0.083,
+        "limit_seconds": 2.0
+      },
+      "screen.SCR-010": {
+        "requests": 50,
+        "p95_seconds": 0.018,
+        "max_seconds": 0.0357,
+        "limit_seconds": 2.0
+      },
+      "screen.SCR-101": {
+        "requests": 50,
+        "p95_seconds": 0.0189,
+        "max_seconds": 0.0212,
+        "limit_seconds": 2.0
+      },
+      "screen.SCR-102": {
+        "requests": 50,
+        "p95_seconds": 0.3924,
+        "max_seconds": 0.3953,
+        "limit_seconds": 2.0
+      },
+      "screen.SCR-103": {
+        "requests": 50,
+        "p95_seconds": 0.0207,
+        "max_seconds": 0.021,
+        "limit_seconds": 2.0
+      },
+      "update.cart_add": {
+        "requests": 150,
+        "p95_seconds": 0.0157,
+        "max_seconds": 0.0215,
+        "limit_seconds": 2.0
+      },
+      "update.pay": {
+        "requests": 50,
+        "p95_seconds": 0.0172,
+        "max_seconds": 0.0255,
+        "limit_seconds": 2.0
+      },
+      "update.place": {
+        "requests": 50,
+        "p95_seconds": 0.0301,
+        "max_seconds": 0.0332,
+        "limit_seconds": 2.0
+      },
+      "update.ship": {
+        "requests": 50,
+        "p95_seconds": 0.0147,
+        "max_seconds": 0.0227,
+        "limit_seconds": 2.0
+      }
+    }
+  },
+  "GF-062_concurrent_users": {
+    "condition": "仮想利用者 155（購入者 150・管理者 5）、思考時間 5〜15秒、300秒間、照会：更新＝8：2＋認証系。注文確定の到着 4件/分（要求ごとに異なる購入者、3明細・5点）。live_server（Django の試験用サーバー）と使い捨て PostgreSQL 16、小データ量（在庫単位 200）、負荷の発生元・ブラウザは同じ PC（DIF-09）。要件の測定時間（NFR-PF-04 60分・NFR-PF-15 2時間）・3年後データ量・ENV-01 の判定ではない参考計測",
+    "measured_at": "2026-11-19T19:12:32+0000",
+    "duration_seconds": 300.0,
+    "virtual_users": {
+      "buyers": 150,
+      "admins": 5
+    },
+    "requests": 3624,
+    "system_errors": 0,
+    "unexpected_responses": [],
+    "summary": {
+      "auth": {
+        "requests": 515,
+        "p95_seconds": 0.515,
+        "max_seconds": 0.625,
+        "statuses": {
+          "200": 336,
+          "204": 94,
+          "201": 85
+        }
+      },
+      "auth.login": {
+        "requests": 244,
+        "p95_seconds": 0.531,
+        "max_seconds": 0.625,
+        "statuses": {
+          "200": 244
+        }
+      },
+      "auth.logout": {
+        "requests": 94,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.079,
+        "statuses": {
+          "204": 94
+        }
+      },
+      "auth.me": {
+        "requests": 92,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.109,
+        "statuses": {
+          "200": 92
+        }
+      },
+      "auth.register": {
+        "requests": 85,
+        "p95_seconds": 0.344,
+        "max_seconds": 0.375,
+        "statuses": {
+          "201": 85
+        }
+      },
+      "read": {
+        "requests": 2372,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.141,
+        "statuses": {
+          "200": 2372
+        }
+      },
+      "read.admin_order_detail": {
+        "requests": 20,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.079,
+        "statuses": {
+          "200": 20
+        }
+      },
+      "read.admin_orders": {
+        "requests": 37,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.109,
+        "statuses": {
+          "200": 37
+        }
+      },
+      "read.cart": {
+        "requests": 391,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.141,
+        "statuses": {
+          "200": 391
+        }
+      },
+      "read.categories": {
+        "requests": 408,
+        "p95_seconds": 0.032,
+        "max_seconds": 0.094,
+        "statuses": {
+          "200": 408
+        }
+      },
+      "read.order_detail": {
+        "requests": 109,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.14,
+        "statuses": {
+          "200": 109
+        }
+      },
+      "read.order_history": {
+        "requests": 679,
+        "p95_seconds": 0.032,
+        "max_seconds": 0.109,
+        "statuses": {
+          "200": 679
+        }
+      },
+      "read.product_detail": {
+        "requests": 389,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.125,
+        "statuses": {
+          "200": 389
+        }
+      },
+      "read.products": {
+        "requests": 317,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.078,
+        "statuses": {
+          "200": 317
+        }
+      },
+      "read.stock_units": {
+        "requests": 22,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.063,
+        "statuses": {
+          "200": 22
+        }
+      },
+      "update": {
+        "requests": 737,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.125,
+        "statuses": {
+          "200": 628,
+          "201": 109
+        }
+      },
+      "update.admin_cancel": {
+        "requests": 20,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.047,
+        "statuses": {
+          "200": 20
+        }
+      },
+      "update.arrival_cart_add": {
+        "requests": 60,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.11,
+        "statuses": {
+          "200": 60
+        }
+      },
+      "update.arrival_place": {
+        "requests": 20,
+        "p95_seconds": 0.062,
+        "max_seconds": 0.078,
+        "statuses": {
+          "201": 20
+        }
+      },
+      "update.buyer_cancel": {
+        "requests": 24,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.079,
+        "statuses": {
+          "200": 24
+        }
+      },
+      "update.cart_add": {
+        "requests": 274,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.125,
+        "statuses": {
+          "200": 274
+        }
+      },
+      "update.cart_change": {
+        "requests": 60,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.125,
+        "statuses": {
+          "200": 60
+        }
+      },
+      "update.cart_delete": {
+        "requests": 58,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.062,
+        "statuses": {
+          "200": 58
+        }
+      },
+      "update.coupon_apply": {
+        "requests": 43,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.078,
+        "statuses": {
+          "200": 43
+        }
+      },
+      "update.coupon_remove": {
+        "requests": 12,
+        "p95_seconds": 0.046,
+        "max_seconds": 0.046,
+        "statuses": {
+          "200": 12
+        }
+      },
+      "update.deliver": {
+        "requests": 19,
+        "p95_seconds": 0.078,
+        "max_seconds": 0.078,
+        "statuses": {
+          "200": 19
+        }
+      },
+      "update.pay": {
+        "requests": 32,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.094,
+        "statuses": {
+          "200": 32
+        }
+      },
+      "update.place": {
+        "requests": 89,
+        "p95_seconds": 0.078,
+        "max_seconds": 0.078,
+        "statuses": {
+          "201": 89
+        }
+      },
+      "update.ship": {
+        "requests": 26,
+        "p95_seconds": 0.062,
+        "max_seconds": 0.063,
+        "statuses": {
+          "200": 26
+        }
+      }
+    },
+    "pf04_arrivals": {
+      "interval_seconds": 15.0,
+      "placed": [
+        {
+          "status": 201,
+          "elapsed": 0.078,
+          "at": 0.1,
+          "order_id": 649
+        },
+        {
+          "status": 201,
+          "elapsed": 0.047,
+          "at": 15.1,
+          "order_id": 650
+        },
+        {
+          "status": 201,
+          "elapsed": 0.062,
+          "at": 30.2,
+          "order_id": 653
+        },
+        {
+          "status": 201,
+          "elapsed": 0.062,
+          "at": 45.1,
+          "order_id": 654
+        },
+        {
+          "status": 201,
+          "elapsed": 0.046,
+          "at": 60.1,
+          "order_id": 660
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 75.1,
+          "order_id": 663
+        },
+        {
+          "status": 201,
+          "elapsed": 0.047,
+          "at": 90.1,
+          "order_id": 674
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 105.1,
+          "order_id": 680
+        },
+        {
+          "status": 201,
+          "elapsed": 0.046,
+          "at": 120.1,
+          "order_id": 687
+        },
+        {
+          "status": 201,
+          "elapsed": 0.046,
+          "at": 135.1,
+          "order_id": 694
+        },
+        {
+          "status": 201,
+          "elapsed": 0.062,
+          "at": 150.1,
+          "order_id": 700
+        },
+        {
+          "status": 201,
+          "elapsed": 0.047,
+          "at": 165.1,
+          "order_id": 706
+        },
+        {
+          "status": 201,
+          "elapsed": 0.046,
+          "at": 180.1,
+          "order_id": 711
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 195.1,
+          "order_id": 715
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 210.1,
+          "order_id": 723
+        },
+        {
+          "status": 201,
+          "elapsed": 0.047,
+          "at": 225.1,
+          "order_id": 729
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 240.2,
+          "order_id": 740
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 255.1,
+          "order_id": 744
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 270.1,
+          "order_id": 748
+        },
+        {
+          "status": 201,
+          "elapsed": 0.031,
+          "at": 285.1,
+          "order_id": 755
+        }
+      ],
+      "succeeded": 20,
+      "p95_seconds": 0.062
+    },
+    "pf15_trend": {
+      "window_seconds": 60.0,
+      "by_group": {
+        "all": {
+          "first_window_p95": 0.48499999998603016,
+          "last_window_p95": 0.31200000003445894,
+          "degradation_ratio": -0.3567
+        },
+        "read": {
+          "first_window_p95": 0.046999999904073775,
+          "last_window_p95": 0.0470000000204891,
+          "degradation_ratio": 0.0
+        },
+        "update": {
+          "first_window_p95": 0.062000000034458935,
+          "last_window_p95": 0.06299999996554106,
+          "degradation_ratio": 0.0161
+        },
+        "auth": {
+          "first_window_p95": 0.5320000000065193,
+          "last_window_p95": 0.3440000000409782,
+          "degradation_ratio": -0.3534
+        }
+      },
+      "app_working_set_first_last": [
+        237887488,
+        283430912
+      ],
+      "db_mem_percent_first_last": [
+        0.89,
+        0.88
+      ]
+    },
+    "pf14_resources": {
+      "cpu_count": 24,
+      "physical_memory_bytes": 137167691776,
+      "samples": [
+        {
+          "at": 13.1,
+          "app_working_set_bytes": 237887488,
+          "db": {
+            "cpu_percent": 10.56,
+            "mem_percent": 0.89,
+            "mem_usage": "568.6MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 5.804,
+          "app_cpu_percent_of_host": 24.18
+        },
+        {
+          "at": 25.2,
+          "app_working_set_bytes": 237875200,
+          "db": {
+            "cpu_percent": 9.32,
+            "mem_percent": 0.89,
+            "mem_usage": "568.7MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.513,
+          "app_cpu_percent_of_host": 2.14
+        },
+        {
+          "at": 37.2,
+          "app_working_set_bytes": 238215168,
+          "db": {
+            "cpu_percent": 6.8,
+            "mem_percent": 0.88,
+            "mem_usage": "566.4MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.681,
+          "app_cpu_percent_of_host": 2.84
+        },
+        {
+          "at": 48.7,
+          "app_working_set_bytes": 238129152,
+          "db": {
+            "cpu_percent": 16.6,
+            "mem_percent": 0.88,
+            "mem_usage": "565.9MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.414,
+          "app_cpu_percent_of_host": 1.73
+        },
+        {
+          "at": 60.3,
+          "app_working_set_bytes": 238063616,
+          "db": {
+            "cpu_percent": 11.44,
+            "mem_percent": 0.88,
+            "mem_usage": "566.8MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.402,
+          "app_cpu_percent_of_host": 1.67
+        },
+        {
+          "at": 71.8,
+          "app_working_set_bytes": 237965312,
+          "db": {
+            "cpu_percent": 13.57,
+            "mem_percent": 0.88,
+            "mem_usage": "567.6MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.514,
+          "app_cpu_percent_of_host": 2.14
+        },
+        {
+          "at": 83.4,
+          "app_working_set_bytes": 238051328,
+          "db": {
+            "cpu_percent": 11.03,
+            "mem_percent": 0.88,
+            "mem_usage": "564.6MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.342,
+          "app_cpu_percent_of_host": 1.43
+        },
+        {
+          "at": 95.2,
+          "app_working_set_bytes": 237932544,
+          "db": {
+            "cpu_percent": 17.67,
+            "mem_percent": 0.88,
+            "mem_usage": "564.9MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.411,
+          "app_cpu_percent_of_host": 1.71
+        },
+        {
+          "at": 107.2,
+          "app_working_set_bytes": 237961216,
+          "db": {
+            "cpu_percent": 7.52,
+            "mem_percent": 0.89,
+            "mem_usage": "568MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.452,
+          "app_cpu_percent_of_host": 1.89
+        },
+        {
+          "at": 118.8,
+          "app_working_set_bytes": 238153728,
+          "db": {
+            "cpu_percent": 12.43,
+            "mem_percent": 0.88,
+            "mem_usage": "565.5MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.355,
+          "app_cpu_percent_of_host": 1.48
+        },
+        {
+          "at": 130.3,
+          "app_working_set_bytes": 238538752,
+          "db": {
+            "cpu_percent": 8.62,
+            "mem_percent": 0.88,
+            "mem_usage": "564.8MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.435,
+          "app_cpu_percent_of_host": 1.81
+        },
+        {
+          "at": 142.0,
+          "app_working_set_bytes": 241389568,
+          "db": {
+            "cpu_percent": 12.73,
+            "mem_percent": 0.88,
+            "mem_usage": "565.1MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.314,
+          "app_cpu_percent_of_host": 1.31
+        },
+        {
+          "at": 153.5,
+          "app_working_set_bytes": 244752384,
+          "db": {
+            "cpu_percent": 7.78,
+            "mem_percent": 0.88,
+            "mem_usage": "565.1MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.452,
+          "app_cpu_percent_of_host": 1.88
+        },
+        {
+          "at": 165.3,
+          "app_working_set_bytes": 247635968,
+          "db": {
+            "cpu_percent": 9.45,
+            "mem_percent": 0.88,
+            "mem_usage": "565.1MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.429,
+          "app_cpu_percent_of_host": 1.79
+        },
+        {
+          "at": 177.3,
+          "app_working_set_bytes": 250769408,
+          "db": {
+            "cpu_percent": 8.11,
+            "mem_percent": 0.88,
+            "mem_usage": "565.2MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.325,
+          "app_cpu_percent_of_host": 1.36
+        },
+        {
+          "at": 188.8,
+          "app_working_set_bytes": 254136320,
+          "db": {
+            "cpu_percent": 7.32,
+            "mem_percent": 0.88,
+            "mem_usage": "564.9MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.359,
+          "app_cpu_percent_of_host": 1.49
+        },
+        {
+          "at": 200.4,
+          "app_working_set_bytes": 257429504,
+          "db": {
+            "cpu_percent": 10.5,
+            "mem_percent": 0.88,
+            "mem_usage": "564.8MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.368,
+          "app_cpu_percent_of_host": 1.53
+        },
+        {
+          "at": 211.9,
+          "app_working_set_bytes": 260657152,
+          "db": {
+            "cpu_percent": 9.04,
+            "mem_percent": 0.88,
+            "mem_usage": "565.3MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.363,
+          "app_cpu_percent_of_host": 1.51
+        },
+        {
+          "at": 223.5,
+          "app_working_set_bytes": 263933952,
+          "db": {
+            "cpu_percent": 9.66,
+            "mem_percent": 0.88,
+            "mem_usage": "564.9MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.33,
+          "app_cpu_percent_of_host": 1.37
+        },
+        {
+          "at": 235.4,
+          "app_working_set_bytes": 267431936,
+          "db": {
+            "cpu_percent": 7.96,
+            "mem_percent": 0.88,
+            "mem_usage": "567.7MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.574,
+          "app_cpu_percent_of_host": 2.39
+        },
+        {
+          "at": 247.3,
+          "app_working_set_bytes": 270659584,
+          "db": {
+            "cpu_percent": 4.55,
+            "mem_percent": 0.88,
+            "mem_usage": "567.3MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.304,
+          "app_cpu_percent_of_host": 1.27
+        },
+        {
+          "at": 258.9,
+          "app_working_set_bytes": 272437248,
+          "db": {
+            "cpu_percent": 6.99,
+            "mem_percent": 0.88,
+            "mem_usage": "565.2MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.414,
+          "app_cpu_percent_of_host": 1.72
+        },
+        {
+          "at": 270.5,
+          "app_working_set_bytes": 275668992,
+          "db": {
+            "cpu_percent": 5.41,
+            "mem_percent": 0.88,
+            "mem_usage": "564.9MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.357,
+          "app_cpu_percent_of_host": 1.49
+        },
+        {
+          "at": 282.0,
+          "app_working_set_bytes": 278970368,
+          "db": {
+            "cpu_percent": 5.81,
+            "mem_percent": 0.88,
+            "mem_usage": "565MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.453,
+          "app_cpu_percent_of_host": 1.89
+        },
+        {
+          "at": 293.6,
+          "app_working_set_bytes": 281939968,
+          "db": {
+            "cpu_percent": 8.86,
+            "mem_percent": 0.88,
+            "mem_usage": "565.1MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.241,
+          "app_cpu_percent_of_host": 1.0
+        },
+        {
+          "at": 305.4,
+          "app_working_set_bytes": 283430912,
+          "db": {
+            "cpu_percent": 0.01,
+            "mem_percent": 0.88,
+            "mem_usage": "564.7MiB / 62.67GiB"
+          },
+          "app_cpu_cores_used": 0.253,
+          "app_cpu_percent_of_host": 1.05
+        }
+      ]
+    },
+    "pf03_browser_under_load": {
+      "browser": "edge",
+      "error": null,
+      "screens": {
+        "SCR-001": {
+          "loads": 234,
+          "p95_display_complete_ms": 80.2,
+          "statuses": [
+            200
+          ]
+        },
+        "SCR-002": {
+          "loads": 234,
+          "p95_display_complete_ms": 63.9,
+          "statuses": [
+            200
+          ]
+        },
+        "SCR-005": {
+          "loads": 234,
+          "p95_display_complete_ms": 73.7,
+          "statuses": [
+            200
+          ]
+        },
+        "SCR-009": {
+          "loads": 234,
+          "p95_display_complete_ms": 61.4,
+          "statuses": [
+            200
+          ]
+        }
+      }
+    }
+  },
+  "GF-063_overload": {
+    "condition": "仮想利用者 310（購入者 300・管理者 10。想定 155 の2倍）、思考時間 5〜15秒、120秒間。在庫数量 5 の在庫単位 40 件に注文を集中させ在庫不足（業務エラー）を発生させる。live_server と使い捨て PostgreSQL 16。要件の 10分間・3年後データ量・ENV-01 の判定ではない参考計測",
+    "measured_at": "2026-11-19T19:14:51+0000",
+    "duration_seconds": 120.0,
+    "requests": 3432,
+    "system_errors": 0,
+    "system_error_ratio": 0.0,
+    "business_errors": 101,
+    "orders": 84,
+    "negative_stock_units": [],
+    "amount_inconsistent_orders": [],
+    "stock_conservation_violations": [],
+    "summary": {
+      "auth": {
+        "requests": 635,
+        "p95_seconds": 0.969,
+        "max_seconds": 1.141,
+        "statuses": {
+          "200": 468,
+          "204": 90,
+          "201": 77
+        }
+      },
+      "auth.login": {
+        "requests": 390,
+        "p95_seconds": 1.0,
+        "max_seconds": 1.141,
+        "statuses": {
+          "200": 390
+        }
+      },
+      "auth.logout": {
+        "requests": 90,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.078,
+        "statuses": {
+          "204": 90
+        }
+      },
+      "auth.me": {
+        "requests": 78,
+        "p95_seconds": 0.032,
+        "max_seconds": 0.047,
+        "statuses": {
+          "200": 78
+        }
+      },
+      "auth.register": {
+        "requests": 77,
+        "p95_seconds": 0.344,
+        "max_seconds": 0.562,
+        "statuses": {
+          "201": 77
+        }
+      },
+      "read": {
+        "requests": 2211,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.188,
+        "statuses": {
+          "200": 2211
+        }
+      },
+      "read.admin_order_detail": {
+        "requests": 11,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.047,
+        "statuses": {
+          "200": 11
+        }
+      },
+      "read.admin_orders": {
+        "requests": 47,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.063,
+        "statuses": {
+          "200": 47
+        }
+      },
+      "read.cart": {
+        "requests": 395,
+        "p95_seconds": 0.062,
+        "max_seconds": 0.188,
+        "statuses": {
+          "200": 395
+        }
+      },
+      "read.categories": {
+        "requests": 369,
+        "p95_seconds": 0.032,
+        "max_seconds": 0.079,
+        "statuses": {
+          "200": 369
+        }
+      },
+      "read.order_detail": {
+        "requests": 24,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.063,
+        "statuses": {
+          "200": 24
+        }
+      },
+      "read.order_history": {
+        "requests": 691,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.187,
+        "statuses": {
+          "200": 691
+        }
+      },
+      "read.product_detail": {
+        "requests": 377,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.109,
+        "statuses": {
+          "200": 377
+        }
+      },
+      "read.products": {
+        "requests": 280,
+        "p95_seconds": 0.062,
+        "max_seconds": 0.109,
+        "statuses": {
+          "200": 280
+        }
+      },
+      "read.stock_units": {
+        "requests": 17,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.047,
+        "statuses": {
+          "200": 17
+        }
+      },
+      "update": {
+        "requests": 586,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.141,
+        "statuses": {
+          "200": 441,
+          "422": 101,
+          "201": 44
+        }
+      },
+      "update.admin_cancel": {
+        "requests": 10,
+        "p95_seconds": 0.078,
+        "max_seconds": 0.078,
+        "statuses": {
+          "200": 10
+        }
+      },
+      "update.buyer_cancel": {
+        "requests": 9,
+        "p95_seconds": 0.078,
+        "max_seconds": 0.078,
+        "statuses": {
+          "200": 9
+        }
+      },
+      "update.cart_add": {
+        "requests": 354,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.141,
+        "statuses": {
+          "200": 281,
+          "422": 73
+        }
+      },
+      "update.cart_change": {
+        "requests": 35,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.078,
+        "statuses": {
+          "422": 11,
+          "200": 24
+        }
+      },
+      "update.cart_delete": {
+        "requests": 46,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.062,
+        "statuses": {
+          "200": 46
+        }
+      },
+      "update.coupon_apply": {
+        "requests": 32,
+        "p95_seconds": 0.109,
+        "max_seconds": 0.109,
+        "statuses": {
+          "200": 32
+        }
+      },
+      "update.coupon_remove": {
+        "requests": 1,
+        "p95_seconds": 0.031,
+        "max_seconds": 0.031,
+        "statuses": {
+          "200": 1
+        }
+      },
+      "update.deliver": {
+        "requests": 11,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.047,
+        "statuses": {
+          "200": 11
+        }
+      },
+      "update.pay": {
+        "requests": 12,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.047,
+        "statuses": {
+          "200": 12
+        }
+      },
+      "update.place": {
+        "requests": 61,
+        "p95_seconds": 0.063,
+        "max_seconds": 0.14,
+        "statuses": {
+          "201": 44,
+          "422": 17
+        }
+      },
+      "update.ship": {
+        "requests": 15,
+        "p95_seconds": 0.047,
+        "max_seconds": 0.047,
+        "statuses": {
+          "200": 15
+        }
+      }
+    }
+  }
+}

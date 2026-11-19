@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "audit_scope": "ADDR",
+  "source_baseline_sha256": null,
+  "criteria": {
+    "discovered": [
+      "authentication-authorization",
+      "cross-phase-security-consistency",
+      "data-protection",
+      "dependency-configuration",
+      "error-logging",
+      "input-validation-injection",
+      "secret-credentials",
+      "security-test-coverage"
+    ],
+    "total": 8,
+    "pass": 7,
+    "not_applicable": 1,
+    "fail": 0
+  },
+  "issues": {
+    "total": 0,
+    "unresolved": 0,
+    "blocking": 0
+  },
+  "errors": []
+}

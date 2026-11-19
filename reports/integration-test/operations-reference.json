@@ -1,0 +1,67 @@
+{
+  "GF-068_application_log_output": {
+    "minicommerce_handlers": [
+      "StreamHandler"
+    ],
+    "all_handlers": [
+      "NullHandler",
+      "StreamHandler"
+    ],
+    "stream": "ext://sys.stdout",
+    "log_types": {
+      "LOG-01": 14,
+      "LOG-02": 1,
+      "LOG-03": 7,
+      "LOG-05": 1,
+      "LOG-06": 2
+    },
+    "malformed": [],
+    "log_deletion_in_production_code": [],
+    "not_checked": "ENV-02 のログ基盤での90日保管と期間内の検索（稼働後90日経過時点の確認）"
+  },
+  "GF-069_audit_log_retention": {
+    "audit_logs_before_reset": 3,
+    "audit_logs_after_reset": 4,
+    "append_only_blocked": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "foreign_keys": 0,
+    "relation_fields": [],
+    "deletion_paths_in_production_code": [],
+    "not_checked": "ENV-02 での1年保管と、運用手順書の削除手順が1年以内の監査ログを削除しない条件であること"
+  },
+  "GF-071_initial_load_stock_sheet": {
+    "load_1": {
+      "at": "2027-03-29T12:30+09:00",
+      "file_stock": [
+        12,
+        0,
+        7
+      ],
+      "stored": {
+        "MG05-P0-1": 12,
+        "MG05-P1-1": 0,
+        "MG05-P2-1": 7
+      },
+      "exit_code": 0
+    },
+    "load_2": {
+      "at": "2027-03-31T17:30+09:00",
+      "file_stock": [
+        9,
+        30,
+        0
+      ],
+      "stored": {
+        "MG05-P0-1": 9,
+        "MG05-P1-1": 30,
+        "MG05-P2-1": 0
+      },
+      "exit_code": 0
+    },
+    "not_checked": "移行計画の実施日（2027-03-29〜31）・実施者・在庫数量の確定時刻の記載（構成・設定レビュー）"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "quality": "reports/loop-control/checks/full-quality.json",
+  "security": "reports/loop-control/checks/full-security.json",
+  "traceability": "reports/loop-control/checks/full-traceability.json"
+}

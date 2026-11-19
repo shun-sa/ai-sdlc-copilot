@@ -1,0 +1,22 @@
+{
+  "signature": {
+    "origin_phase": "IMPLEMENTATION",
+    "classification": "IMPLEMENTATION_ERROR",
+    "artifact": "app",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "nul_char_input_db_error_SEC-IMPL-001"
+  },
+  "action": "FAILURE",
+  "cycle": 1,
+  "run_id": "impl-sec-run-1",
+  "validation_result": "reports/loop-control/checks/impl-security.json",
+  "repair": "NUL/サロゲート文字の入力エラー化、composeポート127.0.0.1限定",
+  "impact": "SEC-IMPL-R2-001 parse_int/parse_identifierに桁数上限なし→4300桁超でValueError 500",
+  "recommended_route": "IMPLEMENTATION",
+  "errors": [
+    "Applicable criterion is not PASS: cross-phase-security-consistency",
+    "Applicable criterion is not PASS: input-validation-injection",
+    "Unresolved blocking Security Review Issue(s): 1"
+  ]
+}

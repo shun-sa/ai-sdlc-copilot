@@ -1,0 +1,21 @@
+{
+  "signature": {
+    "origin_phase": "REQUIREMENTS",
+    "classification": "REQUIREMENT_ERROR",
+    "artifact": "docs/requirements",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_requirement_gaps_SEC-REQ-001-005"
+  },
+  "action": "FAILURE",
+  "cycle": 1,
+  "run_id": "req-sec-run-1",
+  "validation_result": "reports/security-review/validation-result.json",
+  "repair": "SEC-REQ-005修正、002矛盾修正、001/003/004を未決事項登録",
+  "impact": "SEC-REQ-001..003 Blocking残(業務判断待ち)",
+  "recommended_route": "REQUIREMENTS",
+  "errors": [
+    "Applicable criterion is not PASS: authentication-authorization",
+    "Unresolved blocking Security Review Issue(s): 3"
+  ]
+}

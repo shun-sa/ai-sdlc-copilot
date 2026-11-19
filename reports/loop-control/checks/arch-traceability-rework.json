@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "audit_scope": "ARCHITECTURE",
+  "method": "inline-annotation",
+  "source_baseline_sha256": "fea9a82a98b5e04a5b79e5e0fbbff4cddf37a3b19748634ee5d47b7bbe69865c",
+  "errors": [],
+  "warnings": [],
+  "issues": []
+}

@@ -1,0 +1,44 @@
+{# trace: ADDR-012, ADDR-001 #}
+{% load mc_format %}
+<h2>注文明細</h2>
+<table>
+  <thead><tr><th scope="col">SKU</th><th scope="col">商品名</th><th scope="col">規格名</th><th scope="col">単価</th><th scope="col">数量</th><th scope="col">明細金額</th></tr></thead>
+  <tbody>
+  {% for i in order.items %}
+    <tr><td>{{ i.sku }}</td><td>{{ i.product_name }}</td><td>{{ i.variant_name }}</td><td>{{ i.unit_price_excluding_tax|price_pair }}</td><td>{{ i.quantity }}</td><td>{{ i.line_amount|yen }}（税抜）</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<h2>クーポン</h2>
+<p>{% if order.coupon %}{{ order.coupon.coupon_code }}（{{ order.coupon|discount_text }}）{% else %}クーポンなし{% endif %}</p>
+<h2>金額</h2>
+<table>
+  <tbody>
+    <tr><th scope="row">小計（税抜）</th><td>{{ order.amounts.subtotal|yen }}</td></tr>
+    <tr><th scope="row">割引額</th><td>{{ order.amounts.discount_amount|yen }}</td></tr>
+    <tr><th scope="row">割引後小計</th><td>{{ order.amounts.discounted_subtotal|yen }}</td></tr>
+    <tr><th scope="row">送料</th><td>{{ order.amounts.shipping_fee|yen }}</td></tr>
+    <tr><th scope="row">消費税額</th><td>{{ order.amounts.tax_amount|yen }}</td></tr>
+    <tr><th scope="row">合計（税込）</th><td>{{ order.amounts.total_amount|yen }}</td></tr>
+  </tbody>
+</table>
+<h2>配送先</h2>
+{% with a=order.shipping_address %}
+<dl>
+  <dt>受取人氏名</dt><dd>{{ a.recipient_name }}</dd>
+  <dt>郵便番号</dt><dd>{{ a.postal_code|postal }}</dd>
+  <dt>都道府県</dt><dd>{{ a.prefecture_label|dash }}</dd>
+  <dt>住所1（市区町村・番地）</dt><dd>{{ a.address_line1 }}</dd>
+  <dt>住所2（建物名・部屋番号）</dt><dd>{{ a.address_line2|dash }}</dd>
+  <dt>電話番号</dt><dd>{{ a.phone_number }}</dd>
+</dl>
+{% endwith %}
+<h2>状態履歴</h2>
+<table>
+  <thead><tr><th scope="col">変更日時</th><th scope="col">変更前状態</th><th scope="col">変更後状態</th><th scope="col">実行者の利用者区分</th>{% if show_actor_id %}<th scope="col">実行者の利用者ID</th>{% endif %}</tr></thead>
+  <tbody>
+  {% for h in order.status_history %}
+    <tr><td>{{ h.changed_at|jst }}</td><td>{{ h.from_status_label|dash }}</td><td>{{ h.to_status_label }}</td><td>{{ h.actor_user_type_label }}</td>{% if show_actor_id %}<td>{{ h.actor_user_id }}</td>{% endif %}</tr>
+  {% endfor %}
+  </tbody>
+</table>

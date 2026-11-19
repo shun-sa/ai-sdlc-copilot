@@ -1,0 +1,23 @@
+{
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "TEST_ERROR",
+    "artifact": "app/tests/unit",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "unit_test_quality_QR-UT-1118-001-006"
+  },
+  "action": "FAILURE",
+  "cycle": 2,
+  "run_id": "ut-qr-run-2",
+  "validation_result": "reports/loop-control/checks/ut-quality.json",
+  "repair": "FR-045/044/043/034/031 異常系不変・障害注入・再送信テスト追加、固定版.venv",
+  "impact": "QR-UT-1118-R2-001 支払済キャンセル時の支払日時・決済記録不変のAssertion不足, R2-002 LOW FR-031手順10/11",
+  "recommended_route": "UNIT_TEST",
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "Applicable criterion is not PASS: implementation-quality",
+    "Applicable criterion is not PASS: unit-test-quality",
+    "Unresolved blocking Quality Review Issue(s): 1"
+  ]
+}

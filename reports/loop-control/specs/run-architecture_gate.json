@@ -1,0 +1,10 @@
+{
+  "check_id": "architecture_gate",
+  "command": [
+    "python",
+    ".github/skills/architecture/scripts/validate_design.py",
+    "--write-design-gate"
+  ],
+  "result_path": "reports/loop-control/checks/arch-design-gate.json",
+  "timeout_seconds": 300
+}

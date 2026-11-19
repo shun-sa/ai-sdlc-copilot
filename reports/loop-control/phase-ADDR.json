@@ -1,0 +1,326 @@
+{
+  "status": "CONTINUE_WITH_UNRESOLVED",
+  "quality_pass": false,
+  "phase": "ADDR",
+  "checks": {
+    "producer": {
+      "source": "reports/loop-control/checks/addr-producer.json",
+      "path": "reports/loop-control/evidence/7d5e3b77adb9d2ee349674e048e1052a3b6738a74f94d98edbe0a4a59941b1f3.json",
+      "sha256": "7d5e3b77adb9d2ee349674e048e1052a3b6738a74f94d98edbe0a4a59941b1f3"
+    },
+    "addr_validation": {
+      "source": "reports/loop-control/checks/addr-final.json",
+      "path": "reports/loop-control/evidence/fe042e21b8da1c5537779eea10a749ad6c82c310d7df5aa774ca01109ac6892c.json",
+      "sha256": "fe042e21b8da1c5537779eea10a749ad6c82c310d7df5aa774ca01109ac6892c"
+    },
+    "handoff": {
+      "source": "reports/loop-control/checks/addr-handoff.json",
+      "path": "reports/loop-control/evidence/dac20a7a5127f5561949c4e2f7df028b1336b757744f4b7067612549bafa0173.json",
+      "sha256": "dac20a7a5127f5561949c4e2f7df028b1336b757744f4b7067612549bafa0173"
+    },
+    "quality": {
+      "source": "reports/loop-control/checks/addr-quality-rework.json",
+      "path": "reports/loop-control/evidence/8e79ea45175be05432c869b7232822456413b64d6f607fefe8de213c2afc1537.json",
+      "sha256": "8e79ea45175be05432c869b7232822456413b64d6f607fefe8de213c2afc1537"
+    },
+    "security": {
+      "source": "reports/loop-control/checks/addr-security-rework.json",
+      "path": "reports/loop-control/evidence/c5fd37c4d8d8c05a0df2369e11f45008be858d0d240d77d734dc65e4d8b67aa1.json",
+      "sha256": "c5fd37c4d8d8c05a0df2369e11f45008be858d0d240d77d734dc65e4d8b67aa1"
+    },
+    "traceability": {
+      "source": "reports/loop-control/checks/addr-traceability-rework.json",
+      "path": "reports/loop-control/evidence/ce95dd804173c17f47b53b5e4dbb477d7cfff9bf19956851b0c655d63f091c82.json",
+      "sha256": "ce95dd804173c17f47b53b5e4dbb477d7cfff9bf19956851b0c655d63f091c82"
+    },
+    "addr_gate": {
+      "source": "reports/loop-control/checks/addr-gate.json",
+      "path": "reports/loop-control/evidence/0f44249d6c46d95258bcf67b27f8ab7cb2725da0a8621c892562a6885b673875.json",
+      "sha256": "0f44249d6c46d95258bcf67b27f8ab7cb2725da0a8621c892562a6885b673875"
+    }
+  },
+  "unresolved_ids": [
+    "UNRESOLVED-32af0f4a0ca9c80f",
+    "UNRESOLVED-0b5694db22a0bead",
+    "UNRESOLVED-60a549ca11f16034",
+    "UNRESOLVED-34471205dd0539bc",
+    "UNRESOLVED-6de5eec64599b907",
+    "UNRESOLVED-c0b4f02168099ecc",
+    "UNRESOLVED-05b079507f12a077",
+    "UNRESOLVED-e1d9dfe900863622"
+  ],
+  "sources": [
+    {
+      "path": ".github/project-context/project-ai-steering.md",
+      "sha256": "41e1b3a2185ec7dc01ce4f39f1c04bafa207c029cf6f03c740abd192eaa950db"
+    },
+    {
+      "path": ".github/project-context/templates/project-ai-steering.md",
+      "sha256": "1fc7b957118f05eb748f9e295d74c7437a62e81bae2ee43bdfa5ab095c8d2a7d"
+    },
+    {
+      "path": ".github/skills/addr/templates/addr.md",
+      "sha256": "75530622fd2c6b15981f71ac9366f2871939419edd3639626b371415b9d13115"
+    },
+    {
+      "path": ".github/skills/architecture/templates/cross-artifact-consistency-analysis.template.md",
+      "sha256": "47316f3fa9356925043ccdfcb7422eb039e3336fffbae9c6890a32e058470d4d"
+    },
+    {
+      "path": ".github/skills/architecture/templates/file-definition.template.md",
+      "sha256": "2318171b8506d906644da2487e889a17c065fb0abd371d700f437a8b8b4332ce"
+    },
+    {
+      "path": ".github/skills/architecture/templates/implementation-task-list.template.md",
+      "sha256": "e3dc75b8627b67024d7e2f1d63162bbaf930b07eab5a3933ae27e957760b44c4"
+    },
+    {
+      "path": ".github/skills/architecture/templates/logical-database-design.template.md",
+      "sha256": "a3daff336857db24f9d3e86098849e6f59cfccf6ba8bb31f7e7fab5c6271eb70"
+    },
+    {
+      "path": ".github/skills/failure-triage/policy/loop-policy.json",
+      "sha256": "8fc9ce7b9d695b25aea4dc0a8035f0de996e37ec190d8b031ef8c5a944d7194d"
+    },
+    {
+      "path": ".github/skills/requirements/templates/business_requirements.md",
+      "sha256": "b608a590c048ae49e83c02cba10bfd49e6767343ddbf70da8732da29a2e5a556"
+    },
+    {
+      "path": ".github/skills/requirements/templates/data_requirements.md",
+      "sha256": "94bd242ff3446f19d83e170a02aee275e4397ecf7900468012ef2c57a0d5678c"
+    },
+    {
+      "path": ".github/skills/requirements/templates/external_interface_requirements.md",
+      "sha256": "5fd5e1a48383ffbd78d42cd2dbbc67cca914d97a244b998d1047dd68fb32e4cc"
+    },
+    {
+      "path": ".github/skills/requirements/templates/functional_requirements.md",
+      "sha256": "0c1308e840b3c230de777c2cedff61e7033d5253cffa96a10e78845e5f21cb95"
+    },
+    {
+      "path": ".github/skills/requirements/templates/glossary.md",
+      "sha256": "1a0ee6d23c64aa26c39d28ae620f73530dd3bb5391a930570d79e4a1bd0beb49"
+    },
+    {
+      "path": ".github/skills/requirements/templates/non_functional_requirements.md",
+      "sha256": "46ccb663381bdf0eac64d542921357b69fb9d6243a1d02292ca9bdfa4ff6a476"
+    },
+    {
+      "path": ".github/skills/requirements/templates/requirements_quality_checklist.md",
+      "sha256": "d8481871fa3006c5f9f843a9fc95840a996cfaf9bc0274c7d11b2e9ef5e2a851"
+    },
+    {
+      "path": ".github/skills/requirements/templates/ui_report_requirements.md",
+      "sha256": "9a29c0fd0ac17e54a0e8e5c0114f77b39157a40789c9ee08666b02f23f34f680"
+    },
+    {
+      "path": ".github/skills/requirements/templates/use_case_detail.md",
+      "sha256": "5a28937c48b2b69bf8cf118216d92db811040b867bb3b86c21e1affae49c10a4"
+    },
+    {
+      "path": ".github/skills/requirements/templates/use_case_user_story_list.md",
+      "sha256": "fe4f7c5f732483049dd8e37aa1ee36d7a43f3420a218e51306894e6e38eeaf0b"
+    },
+    {
+      "path": "docs/addr/ADDR-001.md",
+      "sha256": "52824d31572c9e1d087d34a7760546c855682c434c2d1dfa625aba2222665fdb"
+    },
+    {
+      "path": "docs/addr/ADDR-002.md",
+      "sha256": "9ed64e68cf2ed44d7c551da4053f1ab990041e4abb02ba6966b400e3a610acde"
+    },
+    {
+      "path": "docs/addr/ADDR-003.md",
+      "sha256": "62e31943d689e31781042f2abccddc6659a4b637e7586266159cc1fb32f476b2"
+    },
+    {
+      "path": "docs/addr/ADDR-004.md",
+      "sha256": "6e173ad5921e36271c4dcca44f8a7c717c2c59294ef5045aa069f41a94270fa4"
+    },
+    {
+      "path": "docs/addr/ADDR-005.md",
+      "sha256": "1c7ab68a9412ff95d9f8214bfade2fc03e4f0ee1acdc07f9ee2aaad6b9a6aeed"
+    },
+    {
+      "path": "docs/addr/ADDR-006.md",
+      "sha256": "fff52e17f1a6fa0c5634a6bc1dd9a031b3784f914046c10cb3b4b55e72842262"
+    },
+    {
+      "path": "docs/addr/ADDR-007.md",
+      "sha256": "fdd0b391a19fdb99a89a619c2d2b0af47f94d59eee84e99193d14feb43b8671a"
+    },
+    {
+      "path": "docs/addr/ADDR-008.md",
+      "sha256": "dafea9c8afcde75da0848ea2c2fad654aaf5e1f3f466cf23dd9211b693177e98"
+    },
+    {
+      "path": "docs/addr/ADDR-009.md",
+      "sha256": "f1e7a0945995758dccc7271745e5a69d892e6513f09db87979023f4ff3b463eb"
+    },
+    {
+      "path": "docs/addr/ADDR-010.md",
+      "sha256": "1e7651dfdad3528d460fafd07dac46d8c459b08de8ecd2fb31b629c8239e7bf7"
+    },
+    {
+      "path": "docs/addr/ADDR-011.md",
+      "sha256": "8c1f12437498665a5b725f2b0a41e8bc73c97d49eeb4efe94624f5ee4d6d12ca"
+    },
+    {
+      "path": "docs/addr/ADDR-012.md",
+      "sha256": "fefa381f0f5165ea5ceba4e80afd52b3fd74c9cb88e85cbc6f3057e77a6e7267"
+    },
+    {
+      "path": "docs/addr/ADDR-013.md",
+      "sha256": "c0c585628b4eaf8820316e836590d0bee3d418176af97cebf2395d6266792494"
+    },
+    {
+      "path": "docs/addr/ADDR-014.md",
+      "sha256": "9882f040c2d596ed283a34f67a223ac6c7863c19198c29b9d8145d78bcf4f3f7"
+    },
+    {
+      "path": "docs/architecture/db-logical-design.md",
+      "sha256": "a94084d6028f441f9acae063c3d4a1401c0abe9366714036407dae17a9ff5dbc"
+    },
+    {
+      "path": "docs/architecture/files/FILE-001.md",
+      "sha256": "1ba05f0badcf32da34ac95efd5f2f4cecd4845d85c4e563b469deb5e319a3f2e"
+    },
+    {
+      "path": "docs/architecture/implementation-task-list.md",
+      "sha256": "13eef307ccd12f8383bfe834664c1e926238603aac07941ae87ead660c15c94f"
+    },
+    {
+      "path": "docs/requirements/business_requirements.md",
+      "sha256": "c1be4645ffd62b89241ad99e53a1a72935a94699171c97b4cd0d5bc596950d23"
+    },
+    {
+      "path": "docs/requirements/data_requirements.md",
+      "sha256": "8a611e62a376d67fdf91e886fb7ae47c48c03a76da7ae209656b9044507c255c"
+    },
+    {
+      "path": "docs/requirements/expected-fr.txt",
+      "sha256": "2d07108fb6310d11bb8a55b6be0e1690f860c61233a5e7e3dc2ad6738165cd2b"
+    },
+    {
+      "path": "docs/requirements/external_interface_requirements.md",
+      "sha256": "10f2f74445c75edbda1b3db8d7f9d8152b37aacbbb1b69b23611a60feee3dfba"
+    },
+    {
+      "path": "docs/requirements/functional_requirements.md",
+      "sha256": "9df54714e91bbe1a7cf543e500e3bc05520cfbb64643a69cefefa55bf8a869ae"
+    },
+    {
+      "path": "docs/requirements/glossary.md",
+      "sha256": "9d1f91bc1e8935ec4a7438a395c44788dbed23060a8754e56115286bf0b44e85"
+    },
+    {
+      "path": "docs/requirements/non_functional_requirements.md",
+      "sha256": "b9f5df11a4458e6b86db216411ced9745a187be6aa9855f5c7d1e8895168fef5"
+    },
+    {
+      "path": "docs/requirements/requirements.md",
+      "sha256": "79f13953a9fb85cd611a6e64589076199c2ea275685590342901d4a755d80d1d"
+    },
+    {
+      "path": "docs/requirements/requirements_quality_checklist.md",
+      "sha256": "eefbb4b2430f3fdcbcbcbf9c302a609fa043e6a2a4690fb91e9f082dbfb13f06"
+    },
+    {
+      "path": "docs/requirements/ui_report_requirements.md",
+      "sha256": "9b0c3affff05341ca260f803d03059d36666ff770576ec3e61e2466b0af8834f"
+    },
+    {
+      "path": "docs/requirements/use-case-user-story-index.md",
+      "sha256": "da7e51f68d95a84f75b9b7ab855080a933ae96012c7a02c3a78bbeee43fa3547"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-001.md",
+      "sha256": "bec417d03d78ecdde7e1b1931bf3059971b0426f5225ec650d8d07aef1144ee6"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-002.md",
+      "sha256": "40b6f4790dae10a9b4c85191c6b324434089ab2c944796a765b7eb419fd1ea13"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-003.md",
+      "sha256": "291b3733f1ec671d97df44a939dd6d0f4eba0d52416e5f72958f8d3d346d8b1e"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-004.md",
+      "sha256": "6cec59bb0d930a3a997f240794e044fd510f99ddeaf9d50bfa4c251a74a36b9c"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-005.md",
+      "sha256": "7a8e909d58c1ebedb2ee3a89ad5fbab1e01f831770baf6cba1cce87f731e4fde"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-006.md",
+      "sha256": "bd3126ed45eb3e2d9de69901e2cf14641cfe72b5818ec48f536da53c93886261"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-007.md",
+      "sha256": "500404a2855dffe1076b09ea9863acc526bdb98e06ff5a013157f70e8aa091ae"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-008.md",
+      "sha256": "633a6a8c7b131893fff2028e3253b82d04a034c942769aa89ca0c8cc95c2f7dd"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-009.md",
+      "sha256": "664713981ebf2a33fcbe1d1a61a11d025bf9cbcbae3643c315c2adc8a171cc7c"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-010.md",
+      "sha256": "44728770d4232501dbdde054a1a3311e046f8f8c5b0964e6845bd6ee42ce86cc"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-011.md",
+      "sha256": "98bced33b231f80056173b5a57b6cfbee37b37aa977e660a9373034f11a9d571"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-012.md",
+      "sha256": "ebe027752d88003d627278517270d3cc219bb9e31723532f7f16437086fa7057"
+    },
+    {
+      "path": "docs/requirements/use-cases/UC-013.md",
+      "sha256": "131b5c643df33e6fa96a1e360aabd824913a7aaa04b6c965613cb74683b9240c"
+    },
+    {
+      "path": "reports/addr/implementation-handoff.json",
+      "sha256": null
+    },
+    {
+      "path": "reports/architecture/addr-request.json",
+      "sha256": null
+    },
+    {
+      "path": "reports/architecture/addr-result.json",
+      "sha256": "1f03c9ab7bef2407d0f3ad6445481c05d6dc88d76b817e9fd2a4b62ccd0e56b6"
+    },
+    {
+      "path": "reports/architecture/architecture-gate.json",
+      "sha256": null
+    },
+    {
+      "path": "reports/architecture/cross-artifact-consistency.md",
+      "sha256": "acea9ac7809e35c50abba02948ee804351a9955d1d240b5990ff4991a69aec8b"
+    },
+    {
+      "path": "reports/architecture/design-gate.json",
+      "sha256": null
+    },
+    {
+      "path": "reports/architecture/design-input.json",
+      "sha256": null
+    },
+    {
+      "path": "reports/architecture/design-manifest.json",
+      "sha256": "fea9a82a98b5e04a5b79e5e0fbbff4cddf37a3b19748634ee5d47b7bbe69865c"
+    },
+    {
+      "path": "reports/requirements/input-mapping.md",
+      "sha256": "9ff9128420b5cd5c19f4c9da5dde76547eb2d16340df7bf8c2610633acfa4bf0"
+    }
+  ]
+}

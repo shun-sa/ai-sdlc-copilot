@@ -1,0 +1,22 @@
+{
+  "signature": {
+    "origin_phase": "ADDR",
+    "classification": "ADR_REQUIRED",
+    "artifact": "docs/addr",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "addr_quality_QR-ADDR-R1-001-004"
+  },
+  "action": "FAILURE",
+  "cycle": 1,
+  "run_id": "addr-qr-run-1",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "ADDR-001/004/008/011改訂r2",
+  "impact": "QR-ADDR-R2-001 ロールバック時の二重反映経路, R2-002 addr-result.json文字化け",
+  "recommended_route": "ADDR",
+  "errors": [
+    "Applicable criterion is not PASS: architecture-quality",
+    "Applicable criterion is not PASS: cross-phase-consistency",
+    "Unresolved blocking Quality Review Issue(s): 2"
+  ]
+}

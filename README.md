@@ -1,3 +1,115 @@
+# MiniCommerce（開発・検証環境の手順）
+
+株式会社あおば雑貨の会員向け EC サイト MiniCommerce のアプリケーションは `app/`（単一の Django プロジェクト）にあります。
+本節は開発・検証環境（ENV-01）向けの手順書です（NFR-OM-19 前段）。本番運用手順書は本番基盤の選定後に作成します。
+
+## 構成
+
+| パス | 内容 |
+| --- | --- |
+| `app/` | Django 5.2 LTS・Django REST Framework のプロジェクト（画面：Django テンプレート、Web API：`/api/`・`/api/admin/`） |
+| `app/seed/initial_data.json` | 検証用の初期データ定義ファイル（架空のデータのみ。本番投入用の定義ファイルはリポジトリに置かない） |
+| `app/tests/unit/`・`app/tests/integration/` | 単体テスト・結合テスト（`test_*.py`）。`app/pytest.ini`・`app/tests/settings_test.py` が試験設定（本番イメージには含めない） |
+| `compose.yaml` | Docker Compose（`app`：Gunicorn、localhost:8000／`db`：PostgreSQL 16、localhost:5432。いずれもホストの 127.0.0.1 にだけ公開） |
+| `.env.example` | 設定値の一覧と記入例（秘密情報の値は空欄）。`.env` はリポジトリに含めない |
+| `docs/operations/dependency-inventory.md` | 依存ライブラリ・実行環境の版・取得元・ライセンス・サポート期限・脆弱性照合結果 |
+
+## 設定値（環境変数）
+
+| 名称 | 必須 | 既定 | 内容 |
+| --- | --- | --- | --- |
+| `MINICOMMERCE_ENV` | 必須 | なし | `development`（ENV-01）または `production`。それ以外・未設定は起動しない |
+| `DJANGO_SECRET_KEY` | 必須 | なし | 秘密鍵（秘密情報） |
+| `DJANGO_DEBUG` | 任意 | false | 小文字の `true`／`false` のみ。production では true にできない |
+| `DJANGO_ALLOWED_HOSTS` | 任意 | development：`localhost,127.0.0.1` | カンマ区切りのホスト名（production では必ず設定する） |
+| `DB_HOST`・`DB_PORT`・`DB_NAME` | 任意 | `localhost`・`5432`・`minicommerce` | 接続先データベース |
+| `DB_USER`・`DB_PASSWORD` | 必須 | なし | 接続の利用者名・パスワード（秘密情報） |
+| `MINICOMMERCE_DEV_FEATURES` | 任意 | false | 開発用機能（試験用状態の設定手段）。小文字の `true`／`false` のみ。production では true にできない |
+| `MINICOMMERCE_TRUSTED_PROXY_SSL_HEADER` | 任意 | なし | HTTPS を終端する前段のヘッダー名と値（例 `X-Forwarded-Proto=https`） |
+| `GUNICORN_WORKERS` | 任意 | 2 | 実行単位内のプロセス数（処理能力の増強はこの値、または同じイメージの実行単位の追加で行う） |
+
+## 起動・停止（1回の操作）
+
+```text
+# 1. 設定の作成：.env.example をコピーして .env を作り、DJANGO_SECRET_KEY・DB_USER・DB_PASSWORD を設定する
+#    （ENV-01 で試験用状態を使う場合は MINICOMMERCE_DEV_FEATURES=true）
+cp .env.example .env
+
+# 2. 構築・起動（db の起動待ち→マイグレーション→ Gunicorn 起動）。http://localhost:8000/ で応答する
+docker compose up -d --build
+
+# 3. 停止
+docker compose down
+
+# データベースの初期化（ボリュームごと削除して再作成する）
+docker compose down -v && docker compose up -d --build
+```
+
+## 初期データ一括投入（FR-060）
+
+運用者がサーバー上（app コンテナ内）で1回実行します。Web 画面・Web API からは実行できません。
+
+```text
+# 既存データに追加する（業務キーが登録済みのデータと重複する行は違反）
+docker compose exec app python manage.py load_initial_data seed/initial_data.json
+
+# 既存データ（監査ログを除く）を削除してから投入する（検証環境の初期化用。稼働開始後の本番環境では使わない）
+docker compose exec app python manage.py load_initial_data seed/initial_data.json --reset
+```
+
+- 成功：標準出力に「初期データ一括投入が成功しました。」とデータ別の投入件数、終了コード 0。
+- 失敗：標準エラーに理由・何も投入しなかった旨・違反の全件（データ名・行番号・項目名・理由。値は示さない）、終了コード 1。
+  違反が1件でもあれば何も削除・登録しない。監査ログには成功・失敗とも1件記録される。
+- 定義ファイルの形式（ADDR-009）：UTF-8（BOM 可）の JSON。最上位のキーは `users`・`suppliers`・`categories`・`products`・
+  `stock_units`・`coupons`、各値は行オブジェクトの配列。項目キー・値表現は `app/seed/initial_data.json` を参照。
+- 検証用の利用者（架空）：`app/seed/initial_data.json` の `users` を参照（管理者 `admin01@example.com` ほか）。
+
+## 自動テスト・静的解析
+
+```text
+# app コンテナ内で全自動テストを1回の操作で実行する（試験用 DB test_<DB_NAME> を作成・破棄する）
+# 作業ディレクトリは app/ に対応し、compose.yaml が app/tests・app/pytest.ini をマウントする
+docker compose exec app pytest
+
+# 静的解析（指摘0件）
+docker compose exec -w /srv/minicommerce app ruff check .
+```
+
+ホスト上で実行する場合は Python 3.12 の仮想環境に `app/requirements.txt`・`app/requirements-dev.txt` を入れ、
+使い捨ての PostgreSQL 16 を指定して実行します（本番・検証の DB を指定しない）。
+
+```text
+docker run -d --rm --name mc-test-db -e POSTGRES_USER=<任意> -e POSTGRES_PASSWORD=<任意> -p 127.0.0.1:55432:5432 postgres:16
+# DB_HOST=localhost DB_PORT=55432 DB_USER=<任意> DB_PASSWORD=<任意> を環境変数に設定して
+# リポジトリ直下から（単体・結合とも rootdir をリポジトリ直下に揃え、JUnit の classname を app.tests.unit.test_xxx・
+# app.tests.integration.test_xxx とする。追跡監査 trace_check.py がテストファイルのパスと照合できる）
+python -m pytest -c app/pytest.ini --rootdir=. app/tests/unit
+python -m pytest -c app/pytest.ini --rootdir=. app/tests/integration
+ruff check .
+docker stop mc-test-db
+```
+
+## 試験用状態（開発用機能フラグが true の ENV-01 のみ）
+
+```text
+docker compose exec app python manage.py test_state set --now 2027-04-30T23:59:59+09:00
+docker compose exec app python manage.py test_state set --payment-delay 11 --payment-mode normal
+docker compose exec app python manage.py test_state set --payment-mode invalid_transaction_ref
+docker compose exec app python manage.py test_state set --order-fault after_stock_decrement
+docker compose exec app python manage.py test_state show
+docker compose exec app python manage.py test_state clear
+```
+
+本番（`MINICOMMERCE_ENV=production`）では開発用機能を有効にできず、`test_state` コマンドは存在しません。
+
+## ログ
+
+アプリケーションログ（LOG-01〜LOG-03・LOG-05・LOG-06）は1行1件の JSON で標準出力へ出力します（`docker compose logs app`）。
+全行に要求の識別子（`request_id`。応答ヘッダー `X-Request-ID`）を付け、パスワード・ログイン状態を示す情報・個人情報・
+検索条件を出力しません。ENV-01 の保持は Docker のログ機能、本番の90日保管は本番基盤の収集・保管で行います。
+
+---
+
 # AI SDLC Agent Framework
 
 通常工程は **Requirements → Architecture（設計資料）→ ADDR（重要判断）→ Implementation** です。

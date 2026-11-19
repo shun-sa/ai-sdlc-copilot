@@ -1,0 +1,8 @@
+{
+  "status": "BLOCKED",
+  "check_id": "producer",
+  "audit_scope": "REQUIREMENTS",
+  "agent": "Requirements",
+  "reason": "rework (from IMPLEMENTATION C12): expected-fr EXCLUDE FR-OUT-01..16 added; C12 unresolvable on requirements side (toolchain). Prior BLOCKED cause (BOQ-08/NOQ-08/NOQ-10) also persists",
+  "related_issue": "UNRESOLVED-32af0f4a0ca9c80f"
+}

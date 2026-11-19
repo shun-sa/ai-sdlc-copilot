@@ -1,0 +1,17 @@
+{
+  "signature": {
+    "origin_phase": "REQUIREMENTS",
+    "classification": "REQUIREMENT_ERROR",
+    "artifact": "docs/requirements",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "requirements_quality_QR-REQ-001-003"
+  },
+  "action": "RESOLVED",
+  "cycle": 1,
+  "run_id": "req-qr-run-1",
+  "validation_result": "reports/quality-review/validation-result.json",
+  "repair": "矛盾修正と未決事項登録",
+  "impact": "解消(業務判断は未決事項として明示)",
+  "recommended_route": "REQUIREMENTS"
+}

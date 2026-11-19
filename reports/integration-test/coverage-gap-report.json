@@ -1,0 +1,3095 @@
+{
+  "run_id": "RUN-AOBA-EC-1118",
+  "generated_at": "2026-11-19T19:01:46+00:00",
+  "initial_metrics": {
+    "required": 163,
+    "common": 0,
+    "ai_only": 94,
+    "external_only": 0,
+    "missing": 69,
+    "ai_initial_coverage_rate": 57.67,
+    "external_coverage_rate": null,
+    "combined_initial_coverage_rate": 57.67
+  },
+  "initial_metrics_basis": "Required Coverage Revision 5（RC-001〜RC-163、163件）に対する、固定済み AI INITIAL（61件）と External（未提供）の分類",
+  "initial_metrics_revision1_frozen": {
+    "source": "reports/integration-test/initial-coverage-metrics.json（Gap Fill 前に保存、変更しない）",
+    "metrics": {
+      "required": 104,
+      "common": 0,
+      "ai_only": 94,
+      "external_only": 0,
+      "missing": 10,
+      "ai_initial_coverage_rate": 90.38,
+      "external_coverage_rate": null,
+      "combined_initial_coverage_rate": 90.38
+    },
+    "note": "Revision 1 の AI INITIAL Coverage Rate 90.38% には、INITIAL の宣言が一部条件を検証していなかった RC-036・RC-038・RC-039（GF-010・GF-011 で補完）、RC-063・RC-084・RC-085（GF-019〜GF-021 で補完）、RC-091（GF-018 で補完）の過大宣言分が含まれる（値は変更しない）"
+  },
+  "final_metrics": {
+    "covered": 163,
+    "missing": 0,
+    "final_coverage_rate": 100.0,
+    "ai_gap_fill_case_count": 73
+  },
+  "gaps": [
+    {
+      "gap_id": "GAP-001",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-014",
+      "coverage_key": "FR-001|Web>accounts.services|WEB|api|web-register-input-error-retains",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-012",
+      "criterion": "api",
+      "missing": "画面の会員登録の入力エラーは項目ごとに理由を表示し、入力値を保持（パスワードは保持しない）（CMN-17、UI-19、AC-UC-001-018）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-001"
+      ]
+    },
+    {
+      "gap_id": "GAP-002",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-018",
+      "coverage_key": "FR-002|Web>accounts.services|AUTH|authentication|web-login-failure-message",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-012",
+      "criterion": "authentication",
+      "missing": "画面ログイン失敗は SCR-004 に区別しないメッセージ、メールアドレスを保持しパスワードは保持しない（AC-UC-002-017）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-001"
+      ]
+    },
+    {
+      "gap_id": "GAP-003",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-023",
+      "coverage_key": "FR-002|Web>SubmitToken>accounts.services>AuditLog|DATABASE|database|login-double-submit",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-004",
+      "criterion": "database",
+      "missing": "同じ送信トークンのログイン再送は照合・監査ログ記録・新たなログイン状態の開始を行わず、先着の結果を通知する（ADDR-004 DD-013/016、CMN-22）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-004",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-044",
+      "coverage_key": "FR-021|Web>SubmitToken>carts.services|DATABASE|database|cart-add-double-submit",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-004",
+      "criterion": "database",
+      "missing": "同じ送信トークンの「カートに入れる」再送は数量を加算しない（ADDR-004 DD-013、UI-15）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-005",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-054",
+      "coverage_key": "FR-030|Web>orders.services|WEB|api|web-checkout-input-error-retains",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-012",
+      "criterion": "api",
+      "missing": "画面の配送先不備は項目ごとの理由を表示し入力値を保持して再表示する（AC-UC-006-028）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-004"
+      ]
+    },
+    {
+      "gap_id": "GAP-006",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-072",
+      "coverage_key": "FR-034|Web>orders.services|WEB|end-to-end-flow|web-buyer-cancel",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-012",
+      "criterion": "end-to-end-flow",
+      "missing": "画面（SCR-010）のキャンセルで完了メッセージを表示し、在庫が戻る（AC-UC-009-003）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-007",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-074",
+      "coverage_key": "FR-040|API>catalog.services|API|api|stock-list-input-errors",
+      "requirement_id": "FR-040",
+      "related_adr": "ADDR-001",
+      "criterion": "api",
+      "missing": "未登録の仕入先・低在庫のみの値不正・ページ不正は 400 input_error で全項目（AC-UC-010-009）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-006"
+      ]
+    },
+    {
+      "gap_id": "GAP-008",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-077",
+      "coverage_key": "FR-041|API>orders.services|API|api|admin-order-search-errors",
+      "requirement_id": "FR-041",
+      "related_adr": "ADDR-001",
+      "criterion": "api",
+      "missing": "注文日（開始）＞注文日（終了）、日付形式不正、注文番号形式不正は 400 input_error（AC-UC-011-005）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-007"
+      ]
+    },
+    {
+      "gap_id": "GAP-009",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-080",
+      "coverage_key": "FR-043|API>orders.services|API|api|ship-tracking-validation",
+      "requirement_id": "FR-043",
+      "related_adr": "ADDR-001",
+      "criterion": "api",
+      "missing": "配送伝票番号は30文字まで受け付け、31文字・不正な文字は 400 input_error（AC-UC-011-013）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-008"
+      ]
+    },
+    {
+      "gap_id": "GAP-010",
+      "required_coverage_revision": 1,
+      "coverage_id": "RC-096",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|database|seed-file-loadable",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-009, ADDR-010",
+      "criterion": "database",
+      "missing": "提供済みの定義ファイル（app/seed/initial_data.json）を投入でき、データ別件数が定義ファイルと一致する（Steering 4章、FR-060）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-009"
+      ]
+    },
+    {
+      "gap_id": "GAP-011",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-105",
+      "coverage_key": "FR-045, FR-031|MultiConnection>DB(lock)>payments.gateway(mock)|CONCURRENCY|database|concurrent-admin-cancel-and-pay",
+      "requirement_id": "FR-045, FR-031",
+      "related_adr": "ADDR-004",
+      "criterion": "database",
+      "missing": "管理者キャンセルと購入者の支払（承認）の同時実行で、(a) キャンセル先着：支払は invalid_status（キャンセル済）、決済記録0件・支払日時なし・履歴2件（2件目 注文受付→キャンセル済、実行者 管理者）、(b) 支払先着：承認1件不変・支払日時あり・履歴3件（注文受付→支払済 購入者、支払済→キャンセル済 管理者）、いずれも最終キャンセル済・在庫+2。10試行（AC-UC-012-011、ADDR-004 DD-006）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-012"
+      ]
+    },
+    {
+      "gap_id": "GAP-012",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-106",
+      "coverage_key": "FR-012, FR-021, FR-002|Web>Session>Redirect(next)>carts.services|AUTH|authentication|visitor-cart-add-login-return",
+      "requirement_id": "FR-012, FR-021, FR-002",
+      "related_adr": "ADDR-002, ADDR-012",
+      "criterion": "authentication",
+      "missing": "来訪者が SCR-002 で「カートに入れる」を操作すると SCR-004（ログインが必要）へ遷移し、ログイン後に SCR-002（商品詳細）へ戻る。未ログイン時の追加は自動実行されず、カート・カート明細の件数・在庫は不変、カート（0点）（AC-UC-003-018、AC-UC-004-024）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-013"
+      ]
+    },
+    {
+      "gap_id": "GAP-013",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-107",
+      "coverage_key": "NFR-OM-18, NFR-OM-11, FR-031|API>orders.services>payments.client>AppLog|LOGGING|api|payment-request-id-trace",
+      "requirement_id": "NFR-OM-18, NFR-OM-11, FR-031",
+      "related_adr": "ADDR-013, ADDR-008",
+      "criterion": "api",
+      "missing": "支払要求1件の X-Request-ID で LOG-01・LOG-03・LOG-06（request/response：order_number・amount・currency=JPY・result・transaction_ref・duration_ms）を、連携エラー時は LOG-02 も漏れなく抽出でき、機密項目を含まない（NFR-OM-18 測定条件、ADDR-013 DC-002・検証方法、ADDR-008 DD-008）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-014"
+      ]
+    },
+    {
+      "gap_id": "GAP-014",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-108",
+      "coverage_key": "FR-031, NFR-SC-24, NFR-EN-05|API>orders.services>payments.client>gateway(mock)|API|api|payment-request-contents-no-external",
+      "requirement_id": "FR-031, NFR-SC-24, NFR-EN-05",
+      "related_adr": "ADDR-008",
+      "criterion": "api",
+      "missing": "決済サービス（模擬）が受けた決済要求は1件で、注文番号・決済金額（注文合計）・通貨 JPY・模擬決済指示の4項目だけ（個人情報なし）、支払処理中の外部ネットワーク宛て通信0件、送信から応答受信まで1秒以内（AC-UC-007-016、ADDR-008 DD-004/005）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-015"
+      ]
+    },
+    {
+      "gap_id": "GAP-015",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-109",
+      "coverage_key": "FR-030, NFR-PF-07, NFR-LG-06|MultiConnection>DB(lock, advisory lock, sequence)|CONCURRENCY|database|ten-parallel-ten-trials-order-number",
+      "requirement_id": "FR-030, NFR-PF-07, NFR-LG-06",
+      "related_adr": "ADDR-005, ADDR-004",
+      "criterion": "database",
+      "missing": "在庫数量5の同一在庫単位を1個ずつカートに入れた10名の同時確定を10回繰り返し、各回 成功5・在庫不足5・在庫0以上・引当合計5以下、成功した注文番号は重複せずコミットの順に増加する（NFR-PF-07 測定条件、ADDR-005 4.3・検証方法）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-016"
+      ]
+    },
+    {
+      "gap_id": "GAP-016",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-110",
+      "coverage_key": "FR-030|API>orders.services>FaultPoint(TestState)>DB(sequence)|ERROR|error-handling|fault-order-number-gap",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-005, ADDR-011",
+      "criterion": "error-handling",
+      "missing": "注文番号の払い出し後の障害で取り消された番号は再使用されず欠番となり、次の注文番号はそれより大きい（ADDR-005 DD-003、AC-UC-006-022）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-017"
+      ]
+    },
+    {
+      "gap_id": "GAP-017",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-111",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB(sequence, identity)>Session|BATCH|database|reset-no-rewind-web-session",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-005, ADDR-006, ADDR-002",
+      "criterion": "database",
+      "missing": "--reset 指定の投入後も注文番号・各識別子（利用者・カート・注文・在庫単位等）を巻き戻さず再利用しない。削除前の画面のログイン状態も無効（ADDR-005 DD-003、ADDR-006 DD-002、ADDR-002 4.3 の6、AC-UC-013-004）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-018"
+      ]
+    },
+    {
+      "gap_id": "GAP-018",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-112",
+      "coverage_key": "NFR-PF-01, NFR-PF-02, NFR-PF-09|API(all)>Services>DB|API|api|response-time-p95-reference",
+      "requirement_id": "NFR-PF-01, NFR-PF-02, NFR-PF-09",
+      "related_adr": "ADDR-001",
+      "criterion": "api",
+      "missing": "照会系・更新系・認証系 API の種別ごとの応答時間の95パーセンタイルが 1.0秒／2.0秒／2.0秒以内で、システムエラー・業務エラー0件（結合試験の条件：単一利用者・小データ量での参考計測。ピーク負荷・3年後データ量の判定は性能試験）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-022"
+      ]
+    },
+    {
+      "gap_id": "GAP-019",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-113",
+      "coverage_key": "NFR-PF-08|API>catalog/orders.services>DB(paging)|API|api|list-response-cap",
+      "requirement_id": "NFR-PF-08",
+      "related_adr": "ADDR-001",
+      "criterion": "api",
+      "missing": "分割表示の一覧（商品一覧・注文履歴・在庫単位一覧・注文一覧（管理））は先頭ページ・最終ページとも1回の応答が50件以下、商品分類一覧は分割しない",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-023"
+      ]
+    },
+    {
+      "gap_id": "GAP-020",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-114",
+      "coverage_key": "NFR-PF-10, NFR-MG-01, NFR-MG-02, NFR-MG-03, NFR-MG-04, NFR-MG-08, NFR-OM-04|ManagementCommand>initial_data.loader>DB>API|BATCH|end-to-end-flow|vdc04-rehearsal",
+      "requirement_id": "NFR-PF-10, NFR-MG-01, NFR-MG-02, NFR-MG-03, NFR-MG-04, NFR-MG-08, NFR-OM-04",
+      "related_adr": "ADDR-009, ADDR-010",
+      "criterion": "end-to-end-flow",
+      "missing": "VDC-04 相当（管理者7・仕入先20・商品分類30・商品300・在庫単位800、計1,157件）の定義ファイルを注文作成後の環境へ --reset で1回の実行で投入し、60秒以内、件数照合・業務キーの内容照合で不一致0、管理者7名がログイン可、注文・カート・決済記録・注文状態履歴0件、実行前の監査ログが残り1件増加。定義ファイルに注文等のデータを含める指定は受け付けない",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-024"
+      ]
+    },
+    {
+      "gap_id": "GAP-021",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-115",
+      "coverage_key": "NFR-OM-13, NFR-MG-07|ManagementCommand>initial_data.loader>DB>AuditLog|BATCH|error-handling|failed-load-corrected-rerun",
+      "requirement_id": "NFR-OM-13, NFR-MG-07",
+      "related_adr": "ADDR-010",
+      "criterion": "error-handling",
+      "missing": "違反1件を含む定義ファイルは投入件数0（--reset でも既存データを削除しない）・監査ログに失敗1件、修正版を同じ指定で再実行すると件数が定義と一致し重複しない、再々実行しても重複しない、切戻し（失敗後の再実行）が1時間以内",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-025"
+      ]
+    },
+    {
+      "gap_id": "GAP-022",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-116",
+      "coverage_key": "NFR-OM-11|Services>AppLog/AuditLog/OrderStatusHistory|LOGGING|api|log-types-output",
+      "requirement_id": "NFR-OM-11",
+      "related_adr": "ADDR-013, ADDR-007",
+      "criterion": "api",
+      "missing": "全機能の実行で LOG-01〜LOG-07 が定めた内容で出力・記録される（LOG-01〜03・05・06 は JSON 行、LOG-04 は監査ログ、LOG-07 は注文状態履歴）。保管期間は対象外",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-026"
+      ]
+    },
+    {
+      "gap_id": "GAP-023",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-117",
+      "coverage_key": "NFR-OM-17|Environment>config.settings>Middleware/INSTALLED_APPS|CONFIG|end-to-end-flow|env-specific-settings",
+      "requirement_id": "NFR-OM-17",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "環境ごとに異なる設定値（接続先・許可ホスト・環境プロファイル・開発用機能）を環境変数だけで変更でき、本番プロファイルでは開発用機能・デバッグを有効にできない。設定の記入例（.env.example）に秘密情報の値を含まない",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-027"
+      ]
+    },
+    {
+      "gap_id": "GAP-024",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-118",
+      "coverage_key": "NFR-SC-12|API/Web>accounts.services|AUTH|authentication|auth-means",
+      "requirement_id": "NFR-SC-12",
+      "related_adr": "ADDR-002, ADDR-003",
+      "criterion": "authentication",
+      "missing": "購入者・管理者はメールアドレス＋パスワードで認証でき、誤ったメールアドレス・誤ったパスワードは区別しない同一応答、来訪者は認証なしで商品を閲覧できる",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-028"
+      ]
+    },
+    {
+      "gap_id": "GAP-025",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-119",
+      "coverage_key": "NFR-US-03|Web>accounts/orders.services>DB>Template|WEB|end-to-end-flow|jis-level3-4-roundtrip",
+      "requirement_id": "NFR-US-03",
+      "related_adr": "ADDR-012",
+      "criterion": "end-to-end-flow",
+      "missing": "氏名・配送先に JIS 第3・第4水準の漢字を入力して登録し、画面・API で同じ文字が表示される。画面は日本語（lang=ja）・UTF-8",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-029"
+      ]
+    },
+    {
+      "gap_id": "GAP-026",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-120",
+      "coverage_key": "NFR-US-04|Web>accounts/orders.services|WEB|api|input-error-identifiable-all",
+      "requirement_id": "NFR-US-04",
+      "related_adr": "ADDR-012",
+      "criterion": "api",
+      "missing": "会員登録・注文手続きの画面で複数項目を誤って送信すると、誤りのある全項目分の理由を項目を識別できる形で1回で表示し、入力値を保持（パスワード除く）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-030"
+      ]
+    },
+    {
+      "gap_id": "GAP-027",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-121",
+      "coverage_key": "NFR-US-05, NFR-US-07, NFR-LG-08|Web>Template(HTML structure)|WEB|api|accessible-html-structure",
+      "requirement_id": "NFR-US-05, NFR-US-07, NFR-LG-08",
+      "related_adr": "ADDR-012",
+      "criterion": "api",
+      "missing": "全画面の HTML が適合レベル A の機械判定可能な達成基準（言語・ページタイトル・フォーム部品のラベル・表見出し・キーボード操作可能なネイティブ部品・正の tabindex なし）を満たす（チェックリストによる目視・ブラウザ操作の確認は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-031"
+      ]
+    },
+    {
+      "gap_id": "GAP-028",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-122",
+      "coverage_key": "NFR-US-08|Web(SCR-001→002→005→006→007→008→010)|WEB|end-to-end-flow|purchase-screen-count",
+      "requirement_id": "NFR-US-08",
+      "related_adr": "ADDR-012",
+      "criterion": "end-to-end-flow",
+      "missing": "ログイン済みの購入者が商品一覧から支払完了までを画面のリンク・フォームだけで操作し、経由する画面は7画面以内",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-032"
+      ]
+    },
+    {
+      "gap_id": "GAP-029",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-123",
+      "coverage_key": "NFR-US-09|Web>Template(data-confirm)>site.js|WEB|api|confirm-before-irreversible",
+      "requirement_id": "NFR-US-09",
+      "related_adr": "ADDR-012",
+      "criterion": "api",
+      "missing": "取消できない5操作（注文確定・注文キャンセル・出荷登録・配達完了登録・カート明細の削除）のフォームに確認文言があり、確認を求める画面の補助が読み込まれる（ブラウザの確認ダイアログの操作は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-033"
+      ]
+    },
+    {
+      "gap_id": "GAP-030",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-124",
+      "coverage_key": "NFR-US-10|Web>SubmitToken>orders.services>payments.gateway(mock)|WEB|database|double-submit-place-pay",
+      "requirement_id": "NFR-US-10",
+      "related_adr": "ADDR-004",
+      "criterion": "database",
+      "missing": "注文確定・支払（承認）を処理完了前に繰り返しても注文・決済記録は1件、否認の後の支払は新たな支払として扱う",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-034",
+        "GF-039",
+        "GF-041"
+      ]
+    },
+    {
+      "gap_id": "GAP-031",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-125",
+      "coverage_key": "NFR-EN-01, NFR-EN-02, NFR-EN-09|Runtime>Django>PostgreSQL|CONFIG|database|tech-stack-versions",
+      "requirement_id": "NFR-EN-01, NFR-EN-02, NFR-EN-09",
+      "related_adr": "ADDR-014",
+      "criterion": "database",
+      "missing": "実行環境が Python 3.12・Django 5.2・Django REST Framework 3.15 以上で、接続先が PostgreSQL 16。画面は Django テンプレートで、SPA・フロントエンドのビルド工程を持たない",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-035"
+      ]
+    },
+    {
+      "gap_id": "GAP-032",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-126",
+      "coverage_key": "NFR-LG-02|Web>Template(price display)|WEB|end-to-end-flow|tax-inclusive-display",
+      "requirement_id": "NFR-LG-02",
+      "related_adr": "ADDR-012",
+      "criterion": "end-to-end-flow",
+      "missing": "商品価格は税込価格を主に表示し税抜価格を併記、カート・注文手続き・注文完了・注文詳細に消費税額と税込の合計を表示する",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-036"
+      ]
+    },
+    {
+      "gap_id": "GAP-033",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-127",
+      "coverage_key": "NFR-LG-09|API/Web>orders.services(prefecture)|API|api|jis-x0401-prefectures",
+      "requirement_id": "NFR-LG-09",
+      "related_adr": "ADDR-001, ADDR-012",
+      "criterion": "api",
+      "missing": "配送先の都道府県は JIS X 0401 の47コード（01〜47）だけを受け付け、それ以外は入力エラー。画面の選択肢は47件で、名称で表示する",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-037"
+      ]
+    },
+    {
+      "gap_id": "GAP-034",
+      "required_coverage_revision": 2,
+      "coverage_id": "RC-128",
+      "coverage_key": "NFR-PF-17|orders.services>payments.client>PaymentGateway(substitute)|API|end-to-end-flow|gateway-substitution",
+      "requirement_id": "NFR-PF-17",
+      "related_adr": "ADDR-008",
+      "criterion": "end-to-end-flow",
+      "missing": "決済連携部分（ゲートウェイの実装）だけを別実装に差し替えても、注文・在庫・金額・状態遷移の処理が変更なしで支払が完了する",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-038"
+      ]
+    },
+    {
+      "gap_id": "GAP-035",
+      "required_coverage_revision": 3,
+      "coverage_id": "RC-129",
+      "coverage_key": "NFR-US-10, FR-031|Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services>payments.gateway(mock)|CONCURRENCY|database|inflight-repeat-pay",
+      "requirement_id": "NFR-US-10, FR-031",
+      "related_adr": "ADDR-004, ADDR-008, ADDR-011",
+      "criterion": "database",
+      "missing": "支払（承認・否認）の処理中（決済応答待ち）に同じ送信トークンの「支払う」を別接続から繰り返すと、後着は送信トークンのロックで先着の終了まで待ち、決済要求は1回分だけ送信される。承認では後着は再判定どおり E-031-05、否認では後着は先着の結果（E-031-06）を通知し、決済記録は1件（NFR-US-10、BR-UC-007-014、ADDR-004 DD-002・DD-010・DD-013、4.4 検証方法）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-039"
+      ]
+    },
+    {
+      "gap_id": "GAP-036",
+      "required_coverage_revision": 3,
+      "coverage_id": "RC-130",
+      "coverage_key": "NFR-US-10, FR-031|Web(同一トークン×別接続)>SubmitToken(advisory lock・outcome)>orders.services>payments.gateway(mock)|CONCURRENCY|error-handling|inflight-repeat-pay-system-error-interrupted",
+      "requirement_id": "NFR-US-10, FR-031",
+      "related_adr": "ADDR-004, ADDR-008, ADDR-011",
+      "criterion": "error-handling",
+      "missing": "先着が承認の反映途中の障害（E-031-08）で終わる間、および先着が結果の記録前に中断した場合の繰り返し「支払う」でも決済要求は1回だけ送信し、後着は E-031-08 を通知する。決済記録・注文状態は変化せず、その後に新たに表示した支払画面からの操作は新たな支払（ADDR-004 DD-013・DD-015、4.3 の11、4.4 検証方法）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-040"
+      ]
+    },
+    {
+      "gap_id": "GAP-037",
+      "required_coverage_revision": 3,
+      "coverage_id": "RC-131",
+      "coverage_key": "NFR-US-10, FR-030|Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services(place_order)>DB|CONCURRENCY|database|inflight-repeat-place-order",
+      "requirement_id": "NFR-US-10, FR-030",
+      "related_adr": "ADDR-004, ADDR-011",
+      "criterion": "database",
+      "missing": "注文確定の処理中に同じ送信トークンの「注文を確定する」を別接続から繰り返すと、注文は1件・在庫の減算は1回分で、後着はカートが空（E-030-04）としてカート画面へ遷移する（AC-UC-006-021・AC-UC-006-026、BR-UC-006-012、ADDR-004 DD-010・DD-013）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-041"
+      ]
+    },
+    {
+      "gap_id": "GAP-038",
+      "required_coverage_revision": 3,
+      "coverage_id": "RC-132",
+      "coverage_key": "NFR-US-10, FR-021|Web(同一トークン×別接続)>SubmitToken(advisory lock)>carts.services(add_item)>DB|CONCURRENCY|database|inflight-repeat-cart-add",
+      "requirement_id": "NFR-US-10, FR-021",
+      "related_adr": "ADDR-004, ADDR-011",
+      "criterion": "database",
+      "missing": "「カートに入れる」の処理中に同じ送信トークンで別接続から繰り返しても数量は1回分だけ加算され、後着は先着の結果（成功）を通知する（NFR-US-10、ADDR-004 DD-013、4.4 検証方法）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-042"
+      ]
+    },
+    {
+      "gap_id": "GAP-039",
+      "required_coverage_revision": 3,
+      "coverage_id": "RC-133",
+      "coverage_key": "NFR-US-10, FR-002|Web(同一トークン×別接続)>SubmitToken(advisory lock)>accounts.services(login_web)>AuditLog|AUTH|authentication|inflight-repeat-login-failure",
+      "requirement_id": "NFR-US-10, FR-002",
+      "related_adr": "ADDR-004, ADDR-011",
+      "criterion": "authentication",
+      "missing": "先着が E-002-02 で終わる間の繰り返し「ログイン」で、ログイン失敗の監査ログは1件、後着は照合せず先着の結果（E-002-02）を通知しログイン状態を作らない。送信トークンの記録に入力値を残さない（ADDR-004 DD-013・DD-016、4.4 検証方法）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-043"
+      ]
+    },
+    {
+      "gap_id": "GAP-040",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-134",
+      "coverage_key": "NFR-PF-12, NFR-AV-01|compose.yaml(app,db)>Dockerfile>requirements*.txt>manage.py commands|CONFIG|end-to-end-flow|no-scheduled-batch",
+      "requirement_id": "NFR-PF-12, NFR-AV-01",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "定期的に実行するバッチ処理・定期ジョブの定義を持たない（NFR-PF-12「該当なし」の根拠の前提）。起動定義（compose のサービスは app・db のみ、app の起動は移行適用・静的ファイル収集・Gunicorn だけ、Dockerfile に定期実行の仕組みなし）、依存に定期実行のライブラリなし、管理コマンドは手動実行の初期データ一括投入・試験用状態と無効化した Django 付属の2件だけ。NFR-AV-01 の代替確認（計画停止以外にサービス停止を要する定期処理が無い）のうちリポジトリ内の起動定義の範囲",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-044"
+      ]
+    },
+    {
+      "gap_id": "GAP-041",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-135",
+      "coverage_key": "NFR-SC-28|API(JsonBodyParser)/Web(Template)>Models|API|api|no-file-upload",
+      "requirement_id": "NFR-SC-28",
+      "related_adr": "ADDR-001, ADDR-012",
+      "criterion": "api",
+      "missing": "画面・API にファイルをアップロードする機能が無い（NFR-SC-28「該当なし」の根拠の前提）。ファイルを保存する項目を持つデータが無く、画面にファイル選択部品・multipart のフォームが無く、業務処理がアップロードされたファイルを参照せず、Web API は JSON の本文だけを解釈し、ファイルを伴う multipart の要求は 400 input_error でデータを変更しない（ADDR-001 4.3 の7）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-045"
+      ]
+    },
+    {
+      "gap_id": "GAP-042",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-136",
+      "coverage_key": "NFR-SC-13, NFR-SC-14|API/Web>accounts.services>AuditLog|AUTH|authentication|single-factor-no-lockout",
+      "requirement_id": "NFR-SC-13, NFR-SC-14",
+      "related_adr": "ADDR-002, ADDR-003",
+      "criterion": "authentication",
+      "missing": "購入者はメールアドレス＋パスワードだけで1回の要求でログインが完了し追加の認証要素を求めない（NFR-SC-13「該当なし」の前提）。誤ったパスワードでの失敗を API・画面で各10回続けた後も正しいパスワードでログインでき（アカウントロック・試行回数制限なし：NFR-SC-14「該当なし」の前提）、失敗は監査ログに1回につき1件、対象利用者付きで記録される（NFR-SC-14 の根拠）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-046"
+      ]
+    },
+    {
+      "gap_id": "GAP-043",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-137",
+      "coverage_key": "NFR-SC-13, NFR-SC-17, NFR-LG-04|URLconf(API/Web)>management commands>Template|WEB|api|out-of-scope-functions-absent",
+      "requirement_id": "NFR-SC-13, NFR-SC-17, NFR-LG-04",
+      "related_adr": "ADDR-001, ADDR-012",
+      "criterion": "api",
+      "missing": "画面・API に多要素認証・パスワードの変更／再設定・特定商取引法に基づく表記の要求先が無く（該当しそうな要求は 404）、Django 付属の changepassword は何も変更せずにエラー終了し、画面に特定商取引法の表記が無い（NFR-SC-13・NFR-SC-17（FR-OUT-09）・NFR-LG-04（FR-OUT-16）の「該当なし」・対象外の前提）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-047"
+      ]
+    },
+    {
+      "gap_id": "GAP-044",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-138",
+      "coverage_key": "NFR-SC-27|API/Web>Middleware>DRF settings|API|api|no-per-source-rate-limit",
+      "requirement_id": "NFR-SC-27",
+      "related_adr": "ADDR-001",
+      "criterion": "api",
+      "missing": "同一の送信元からの短時間の連続要求（商品一覧 API・商品一覧画面・ログイン API）を送信元単位で制限しない（429 を返さない。NFR-SC-27「該当なし」の根拠の前提）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-048"
+      ]
+    },
+    {
+      "gap_id": "GAP-045",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-139",
+      "coverage_key": "NFR-AV-10, NFR-LG-10|orders.services>payments.client>payments.gateway>payments.mock|API|api|in-process-mock-payment-only",
+      "requirement_id": "NFR-AV-10, NFR-LG-10",
+      "related_adr": "ADDR-008",
+      "criterion": "api",
+      "missing": "決済サービスは本システム内の模擬機能だけで（使用する実装はプログラム内の既定で模擬機能）、決済の部品に外部通信のモジュールを使わず、実在の決済サービスの接続先・認証情報の設定項目・連携ライブラリを持たない（NFR-AV-10・NFR-LG-10 の「該当なし」の根拠の前提。外部通信0件は RC-108）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-049"
+      ]
+    },
+    {
+      "gap_id": "GAP-046",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-140",
+      "coverage_key": "NFR-EN-03, NFR-OM-05, NFR-EN-08|compose.yaml(app,db)>Dockerfile>gunicorn.conf>config.wsgi|CONFIG|end-to-end-flow|compose-single-start-gunicorn",
+      "requirement_id": "NFR-EN-03, NFR-OM-05, NFR-EN-08",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "Docker Compose の定義で全構成要素（アプリケーション・データベース）を1回の起動操作で起動する（app は db の正常性確認後に、移行適用→静的ファイル収集→Gunicorn を1つの起動コマンドで行う）。起動定義は本番運用向けの AP サーバー（Gunicorn）で Django 付属の開発用サーバーを含まず、Gunicorn の設定が指す WSGI アプリケーションが商品一覧画面を返す。依存に特定のクラウド基盤の SDK を含まない（compose での実際の起動・本番環境の構成は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-050"
+      ]
+    },
+    {
+      "gap_id": "GAP-047",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-141",
+      "coverage_key": "NFR-EN-07|app(production code)>Python stdlib>Dockerfile|CONFIG|end-to-end-flow|os-independent-code",
+      "requirement_id": "NFR-EN-07",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "Production Code が特定の OS に固有のモジュールを読み込まず、OS 固有の絶対パスを書かない。OS はコンテナのベースイメージ（python:3.12-slim、ダイジェスト固定）だけで決まる",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-051"
+      ]
+    },
+    {
+      "gap_id": "GAP-048",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-142",
+      "coverage_key": "NFR-SC-21, NFR-EN-10|requirements*.txt>Dockerfile>compose.yaml>.venv>dependency-inventory|CONFIG|end-to-end-flow|pinned-reproducible-dependencies",
+      "requirement_id": "NFR-SC-21, NFR-EN-10",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "依存ライブラリ・実行環境の取得元と版が特定でき同じ構成を再現できる（VUL-10、NFR-SC-21 の対策方針の一部）：依存は全件が版固定とハッシュ付き、イメージ構築は --require-hashes、ベースイメージ・DB イメージはダイジェスト固定、試験環境の版が固定した版と一致し、依存の一覧の版と一致する。採用製品の版が NFR-EN-10 のサポート期限の前提の版（Django 5.2 LTS 2028-04、Python 3.12 2028-10、PostgreSQL 16 2028-11）である（更新計画は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-052"
+      ]
+    },
+    {
+      "gap_id": "GAP-049",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-143",
+      "coverage_key": "NFR-EN-12|requirements*.txt>.venv(package metadata)|CONFIG|end-to-end-flow|dependency-licenses",
+      "requirement_id": "NFR-EN-12",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "固定した全依存ライブラリのライセンスがパッケージのメタデータから特定でき（ライセンス不明 0件）、AGPL のものが無い（利用条件の充足の判断は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-053"
+      ]
+    },
+    {
+      "gap_id": "GAP-050",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-144",
+      "coverage_key": "NFR-EN-11|ruff.toml>ruff>repository sources|CONFIG|end-to-end-flow|static-analysis-zero",
+      "requirement_id": "NFR-EN-11",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "リポジトリの規約設定（ruff.toml。pycodestyle の E・W を含む）で全ソースコードを静的解析し違反0件（規則の選択が PEP 8 に一致するかは対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-054"
+      ]
+    },
+    {
+      "gap_id": "GAP-051",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-145",
+      "coverage_key": "NFR-PF-16|gunicorn.conf(GUNICORN_WORKERS)>SessionStore(DB)>ApiLoginState(DB)>Cart(DB)|CONFIG|database|scale-out-state-preserved",
+      "requirement_id": "NFR-PF-16",
+      "related_adr": "ADDR-002, ADDR-014",
+      "criterion": "database",
+      "missing": "処理能力の増強（実行単位内のプロセス数）を環境変数だけで変更でき、画面のログイン状態・Web API のログイン状態・カートの内容がデータベースに保持され、別のプロセスから同じ Cookie・Bearer でログイン中のカートを参照できる（増強手順のレビュー・2倍の負荷は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-055"
+      ]
+    },
+    {
+      "gap_id": "GAP-052",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-146",
+      "coverage_key": "NFR-SC-25|seed/initial_data.json>tests fixtures|CONFIG|database|fictional-initial-data",
+      "requirement_id": "NFR-SC-25",
+      "related_adr": "ADDR-009, ADDR-011",
+      "criterion": "database",
+      "missing": "リポジトリの初期データ（検証用の定義ファイル）の利用者のメールアドレスは全件 example.com（VDC-01 の作成方法）で、それ以外のドメインを含まず、試験用の利用者は予約済みドメイン（example.test）で作る",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-056"
+      ]
+    },
+    {
+      "gap_id": "GAP-053",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-147",
+      "coverage_key": "NFR-OM-19|README(ENV-01 手順)>.env.example>compose.yaml>manage.py>pytest/ruff|CONFIG|end-to-end-flow|dev-procedure-document",
+      "requirement_id": "NFR-OM-19",
+      "related_adr": "ADDR-010, ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "開発・検証環境向けの手順書に、環境ごとの設定（秘密情報を含む）の作成・構築・起動・停止・データベースの初期化・初期データ一括投入・自動テスト・静的解析の手順があり、手順が参照するファイル・サービス・コマンドが存在し、初期データ一括投入の手順（seed/initial_data.json、--reset）が成功する（本番運用手順書・compose での構築・起動の実施は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-057"
+      ]
+    },
+    {
+      "gap_id": "GAP-054",
+      "required_coverage_revision": 4,
+      "coverage_id": "RC-148",
+      "coverage_key": "NFR-LG-03|API>orders.services>DB(OrderItem/ShippingAddress/PaymentRecord/OrderStatusHistory)|DATABASE|state-transition|order-records-immutable",
+      "requirement_id": "NFR-LG-03",
+      "related_adr": "ADDR-004, ADDR-012",
+      "criterion": "state-transition",
+      "missing": "注文明細・配送先・決済記録・注文状態履歴は登録後に変更・削除されず（決済記録・履歴は追記のみ）、注文の登録後の更新は注文状態の遷移（支払・出荷登録・配達完了登録・キャンセル）に伴う注文状態・日時・配送伝票番号だけ（NFR-LG-03 の対応方針の一部。7年保存・削除手順は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-058"
+      ]
+    },
+    {
+      "gap_id": "GAP-055",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-149",
+      "coverage_key": "NFR-US-01, NFR-US-02, NFR-US-06|Browser(Edge/Chrome, Windows 11)>Web>Static|WEB|end-to-end-flow|browser-display-and-operation",
+      "requirement_id": "NFR-US-01, NFR-US-02, NFR-US-06",
+      "related_adr": "ADDR-012, ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "Windows 11 の PC にインストールした Microsoft Edge・Google Chrome で、表示領域 1280×720・表示倍率 100% のとき、全画面（SCR-001〜SCR-010、SCR-101〜SCR-103、SCR-901）が想定の状態コードで表示され、資源の読込失敗・スクリプトの例外・外部への要求が無く、横スクロール（表示領域の幅を超える内容・要素）が無い。来訪者・購入者・管理者の代表操作（会員登録・ログイン・カートに入れる・クーポン適用・注文確定・支払・キャンセル・出荷登録・配達完了登録・ログアウト）をブラウザのフォーム送信と確認ダイアログで行える（ヘッドレス表示。目視の表示崩れ・全操作の網羅・最新版であることは対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-059"
+      ]
+    },
+    {
+      "gap_id": "GAP-056",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-150",
+      "coverage_key": "NFR-PF-03|Browser(Edge/Chrome)>Web>Static|PERF|end-to-end-flow|screen-display-time-reference",
+      "requirement_id": "NFR-PF-03",
+      "related_adr": "ADDR-012",
+      "criterion": "end-to-end-flow",
+      "missing": "全画面（14画面）を各ブラウザで30回以上表示し、画面要求の送信から構成に必要な全資源の読込完了（load イベント終了）までの時間の95パーセンタイルを画面ごとに記録し、単一利用者・小データ量でも 2.0秒以内（ピーク負荷・3年後データ量・ENV-01 の判定は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-060"
+      ]
+    },
+    {
+      "gap_id": "GAP-057",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-151",
+      "coverage_key": "NFR-PF-06|API/Web>services>DB(3年後データ量)|PERF|database|three-year-data-volume-reference",
+      "requirement_id": "NFR-PF-06",
+      "related_adr": "ADDR-001",
+      "criterion": "database",
+      "missing": "3年後相当のデータ量（VDC-01〜VDC-03 の件数：注文 110,000・注文明細 330,000・会員 10,000・商品 600・在庫単位 1,600 等）の DB で、照会系・更新系 API と画面の応答時間の95パーセンタイルを記録し、単一利用者でも目標値（照会 1.0秒・更新 2.0秒・画面 2.0秒）以内（ピーク負荷・ENV-01 の判定は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-061"
+      ]
+    },
+    {
+      "gap_id": "GAP-058",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-152",
+      "coverage_key": "NFR-PF-05, NFR-PF-04, NFR-PF-14, NFR-PF-15, NFR-PF-03|VirtualUsers(155)>HTTP>Web/API>DB|PERF|end-to-end-flow|concurrent-users-reference",
+      "requirement_id": "NFR-PF-05, NFR-PF-04, NFR-PF-14, NFR-PF-15, NFR-PF-03",
+      "related_adr": "ADDR-001, ADDR-011",
+      "criterion": "end-to-end-flow",
+      "missing": "同時155の仮想利用者（購入者・来訪者 150、管理者 5、思考時間 5〜15秒、照会：更新＝8：2＋認証系、業務エラーにならない条件）の負荷で、システムエラー0件・要求の全件成功・照会/更新/認証の95パーセンタイルが目標値以内、注文確定の到着 4件/分（異なる購入者、3明細・5点）の全件成功、負荷中のブラウザ表示の95パーセンタイル 2.0秒以内を確認し、アプリケーション・DB の CPU・メモリ使用量と応答時間の推移を記録する（60分・2時間の連続負荷・3年後データ量・ENV-01 の判定は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-062"
+      ]
+    },
+    {
+      "gap_id": "GAP-059",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-153",
+      "coverage_key": "NFR-PF-11|VirtualUsers(310)>HTTP>API>orders.services>DB|PERF|database|overload-consistency-reference",
+      "requirement_id": "NFR-PF-11",
+      "related_adr": "ADDR-004, ADDR-011",
+      "criterion": "database",
+      "missing": "想定の2倍（310）の仮想利用者で在庫不足が起きる負荷をかけた後、システムエラーとなる応答の割合が 1%以下、在庫数量が0未満の在庫単位 0件、金額整合を満たさない注文 0件、在庫の増減と注文明細（キャンセル以外）が一致（10分間・3年後データ量は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-063"
+      ]
+    },
+    {
+      "gap_id": "GAP-060",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-154",
+      "coverage_key": "NFR-SC-11|requirements*.txt>OSV(公開脆弱性情報)>PyPI|CONFIG|end-to-end-flow|dependency-known-vulnerabilities",
+      "requirement_id": "NFR-SC-11",
+      "related_adr": "ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "固定した全依存ライブラリ（app/requirements.txt・requirements-dev.txt）を開発時に公開脆弱性情報（OSV）と照合し、照合対象が固定した版と一致し、CVSS 7.0以上（または重大度 HIGH/CRITICAL）・重大度不明の既知の脆弱性が0件（リリース前の再照合・コンテナイメージの OS パッケージは対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-064"
+      ]
+    },
+    {
+      "gap_id": "GAP-061",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-155",
+      "coverage_key": "NFR-LG-01|API/Web>services>Logging>URLconf>socket|SECURITY|authentication|personal-information-handling",
+      "requirement_id": "NFR-LG-01",
+      "related_adr": "ADDR-001, ADDR-012, ADDR-013",
+      "criterion": "authentication",
+      "missing": "利用者の個人情報（メールアドレス・氏名・配送先）を扱う一連の操作（会員登録・ログイン・注文確定・支払・照会・管理者の検索）で、ログに個人情報・パスワードを出力せず、ファイルとして出力する要求先・応答が無く、外部へ送信しない。注文の参照は本人と管理者に限られる（利用目的の表示・通信の暗号化・法令適合の判断は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-065"
+      ]
+    },
+    {
+      "gap_id": "GAP-062",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-156",
+      "coverage_key": "NFR-SC-29, NFR-LG-07|Web/API(全要求先)>Middleware>services|SECURITY|api|dynamic-probe-all-endpoints",
+      "requirement_id": "NFR-SC-29, NFR-LG-07",
+      "related_adr": "ADDR-001, ADDR-002, ADDR-012",
+      "criterion": "api",
+      "missing": "全画面・全 API に対し、利用者区分ごとのアクセス制御（VUL-01）、CSRF トークンなしの更新要求と参照用の要求での更新（VUL-06）、検索条件・パス・本文への攻撃文字列（VUL-04・VUL-05・VUL-13）を送り、システムエラー・無害化されない反映・内部情報の露出・セキュリティヘッダーの欠落が無く、外部へ要求を送る部品が無い（VUL-12）（診断ツールによる診断・指摘の対処は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-066"
+      ]
+    },
+    {
+      "gap_id": "GAP-063",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-157",
+      "coverage_key": "NFR-SC-20|settings>Models>Sessions>Logging>production code|CONFIG|database|persistent-data-only-in-database",
+      "requirement_id": "NFR-SC-20",
+      "related_adr": "ADDR-002, ADDR-006, ADDR-013, ADDR-014",
+      "criterion": "database",
+      "missing": "保存データの所在がデータベースだけで（ファイル項目・ファイル型のセッション/キャッシュ・ファイルへの書込み・ログファイルが無い）、データベースとバックアップの暗号化で全保存データが対象になる前提（本番の暗号化の設定は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-067"
+      ]
+    },
+    {
+      "gap_id": "GAP-064",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-158",
+      "coverage_key": "NFR-OM-02|Logging(stdout JSON)>gunicorn.conf>production code|CONFIG|end-to-end-flow|application-log-output",
+      "requirement_id": "NFR-OM-02",
+      "related_adr": "ADDR-008, ADDR-010, ADDR-013",
+      "criterion": "end-to-end-flow",
+      "missing": "LOG-01〜LOG-03・LOG-05・LOG-06 が標準出力へ1行1件の JSON（日本時間の日時・ログの種類・要求の識別子）で出力され、ファイル・ローテーションのハンドラーが無く、アプリケーションがログを削除しない（ENV-02 での90日保管・検索は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-068"
+      ]
+    },
+    {
+      "gap_id": "GAP-065",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-159",
+      "coverage_key": "NFR-OM-03|AuditLog(DB)>initial_data(--reset)>production code|DATABASE|database|audit-log-retention-premise",
+      "requirement_id": "NFR-OM-03",
+      "related_adr": "ADDR-006, ADDR-010, ADDR-012",
+      "criterion": "database",
+      "missing": "監査ログは DB に発生日時付きで追記のみで記録され、更新・削除の操作は拒否され、利用者への外部キーを持たず、初期データ一括投入（--reset）を含む本システムのどの処理も削除しない（1年保管・運用手順書の削除手順は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-069"
+      ]
+    },
+    {
+      "gap_id": "GAP-066",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-160",
+      "coverage_key": "NFR-SC-26|URLconf>HttpsOnlyMiddleware>gunicorn.conf>Dockerfile|CONFIG|end-to-end-flow|single-https-user-service",
+      "requirement_id": "NFR-SC-26",
+      "related_adr": "ADDR-012, ADDR-014",
+      "criterion": "end-to-end-flow",
+      "missing": "利用者向けサービス（画面・API・管理者の画面/API）は1つの待受け（Gunicorn の bind 1件、EXPOSE 8000）だけで提供し、本番プロファイルでは全要求先で HTTPS 以外を拒否し、管理サイト・デバッグ用の要求先・遠隔ログインのソフトウェアが無い（本番のネットワーク設定は対象外。compose.yaml の公開範囲は既知の未解決 SEC-IMPL-002 の対象で根拠に用いない）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-070"
+      ]
+    },
+    {
+      "gap_id": "GAP-067",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-161",
+      "coverage_key": "NFR-MG-05|load_initial_data>loader>StockUnit|DATABASE|database|initial-load-stock-sheet",
+      "requirement_id": "NFR-MG-05",
+      "related_adr": "ADDR-009, ADDR-010",
+      "criterion": "database",
+      "missing": "初期データ一括投入は投入時点の在庫管理表の値（定義ファイルの在庫数量）をそのまま反映し、更新後の在庫管理表の値で再投入（--reset）すると後の値に置き換わる（移行計画の実施日・実施者・確定時刻のレビューは対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-071"
+      ]
+    },
+    {
+      "gap_id": "GAP-068",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-162",
+      "coverage_key": "NFR-AV-04, NFR-AV-07, NFR-AV-08, NFR-AV-12, NFR-PF-13|DB(PostgreSQL 16)>pg_dump/pg_restore>API/Web/initial_data|DATABASE|database|backup-restore-resume",
+      "requirement_id": "NFR-AV-04, NFR-AV-07, NFR-AV-08, NFR-AV-12, NFR-PF-13",
+      "related_adr": "ADDR-001, ADDR-011",
+      "criterion": "database",
+      "missing": "3年後相当のデータで、利用者の要求を処理しながら（全要求が成功）全データ（監査ログを含む）のバックアップを取得でき、全データの喪失後にバックアップから復元すると取得時点のデータ（取得前の注文あり・取得後の注文なし）に戻り、障害前の全業務（来訪者・購入者・管理者の操作、初期データ一括投入）を再開できる。リストア時間を記録する（本番のバックアップ方式・3:00・7世代・保管場所は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-072"
+      ]
+    },
+    {
+      "gap_id": "GAP-069",
+      "required_coverage_revision": 5,
+      "coverage_id": "RC-163",
+      "coverage_key": "NFR-OM-15|migrations(catalog 0002)>pg_dump/pg_restore>Web/API|CONFIG|database|update-and-rollback",
+      "requirement_id": "NFR-OM-15",
+      "related_adr": "ADDR-014",
+      "criterion": "database",
+      "missing": "3年後相当のデータで、データ構造の変更を含む更新（マイグレーションの適用）と起動確認を行い、更新直前のバックアップから切戻すとデータ構造・データが更新前の状態に戻り、所要時間（取得・更新・切戻し）が 120分以内（プログラムの入替え・ENV-01 での実施は対象外）",
+      "ai_initial": "NOT_COVERED",
+      "external": "NOT_PROVIDED",
+      "filled_by_gap_fill_cases": [
+        "GF-073"
+      ]
+    }
+  ],
+  "supplemental_gap_fill": [
+    {
+      "case_id": "GF-010",
+      "coverage_ids": [
+        "RC-038",
+        "RC-039"
+      ],
+      "reason": "INITIAL の確認漏れの補完（supplemental）。対象 RC は INITIAL（IT-020）が Coverage を宣言済みで Initial 時点の MISSING ではない。実装時のテストコードと Required Coverage の照合で一部条件が未検証と判明したため補完する。Initial Coverage Metrics・分類は変更せず、Revision 1 の AI INITIAL Coverage Rate（90.38%）にはこの過大宣言分が含まれる",
+      "initially_declared_by": [
+        "IT-020"
+      ]
+    },
+    {
+      "case_id": "GF-011",
+      "coverage_ids": [
+        "RC-036"
+      ],
+      "reason": "INITIAL の確認漏れの補完（supplemental）。対象 RC は INITIAL（IT-018）が Coverage を宣言済みで Initial 時点の MISSING ではない。実装時のテストコードと Required Coverage の照合で一部条件が未検証と判明したため補完する。Initial Coverage Metrics・分類は変更せず、Revision 1 の AI INITIAL Coverage Rate（90.38%）にはこの過大宣言分が含まれる",
+      "initially_declared_by": [
+        "IT-018"
+      ]
+    },
+    {
+      "case_id": "GF-018",
+      "coverage_ids": [
+        "RC-091"
+      ],
+      "reason": "Required Coverage Revision 2（QR-IT-1118-004、ADDR-005 DD-003、ADDR-006 DD-002）で追加した Coverage の MISSING を補う GAP_FILL。RC-091 は INITIAL（IT-052）の確認漏れ（画面のログイン状態の無効化、SR-IT-R1-001）の補完",
+      "initially_declared_by": [
+        "IT-052"
+      ]
+    },
+    {
+      "case_id": "GF-019",
+      "coverage_ids": [
+        "RC-063"
+      ],
+      "reason": "INITIAL の確認漏れの補完（supplemental、QR-IT-1118-005）。対象 RC は INITIAL（IT-042）が宣言済み。AC の Then の残り項目と測定条件（注文を作り直して10試行）を確認し、行ロック待ちの解放順を固定して両方の逐次順序の Then も確認する（AC-UC-007-019）",
+      "initially_declared_by": [
+        "IT-042"
+      ]
+    },
+    {
+      "case_id": "GF-020",
+      "coverage_ids": [
+        "RC-085"
+      ],
+      "reason": "INITIAL の確認漏れの補完（supplemental、QR-IT-1118-005）。対象 RC は INITIAL（IT-043）が宣言済み。AC の Then の残り項目と測定条件（注文を作り直して10試行）を確認し、行ロック待ちの解放順を固定して両方の逐次順序の Then も確認する（AC-UC-012-009）",
+      "initially_declared_by": [
+        "IT-043"
+      ]
+    },
+    {
+      "case_id": "GF-021",
+      "coverage_ids": [
+        "RC-084"
+      ],
+      "reason": "INITIAL の確認漏れの補完（supplemental、QR-IT-1118-005）。対象 RC は INITIAL（IT-044）が宣言済み。AC の Then の残り項目と測定条件（注文を作り直して10試行）を確認し、行ロック待ちの解放順を固定して両方の逐次順序の Then も確認する（AC-UC-012-010）",
+      "initially_declared_by": [
+        "IT-044"
+      ]
+    }
+  ],
+  "required_coverage": [
+    {
+      "coverage_id": "RC-001",
+      "requirement_id": "FR-001, FR-002",
+      "related_adr": "ADDR-001, ADDR-003",
+      "integration_point": "API>accounts.services>DB",
+      "test_category": "API",
+      "criterion": "end-to-end-flow",
+      "condition": "register-then-login",
+      "expected_behavior": "会員登録（201、利用者区分=購入者、メールアドレスは前後空白除去・英小文字化）した利用者が同じパスワードでログインでき、パスワードは平文で保持されない（FR-001、CMN-06、AC-UC-001-001/003/015）",
+      "coverage_key": "FR-001, FR-002|API>accounts.services>DB|API|end-to-end-flow|register-then-login",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-002",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>accounts.services>DB(unique)",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "duplicate-normalized-email",
+      "expected_behavior": "正規化後に同一となるメールアドレスの登録は 422 business_error/email_already_registered とし利用者は増えない（E-001-02、AC-UC-001-004）",
+      "coverage_key": "FR-001|API>accounts.services>DB(unique)|DATABASE|database|duplicate-normalized-email",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-003",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(unique)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-same-email",
+      "expected_behavior": "同一メールアドレスの同時登録は1件だけ成功し、他方は email_already_registered（CMN-19、AC-UC-001-017、ADDR-004 DD-009）",
+      "coverage_key": "FR-001|MultiConnection>DB(unique)|CONCURRENCY|database|concurrent-same-email",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-004",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>accounts.services",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "input-errors-all-fields",
+      "expected_behavior": "複数項目の入力不備は 400 input_error で fields に全項目を1回で通知し、利用者を作成しない（CMN-16、AC-UC-001-011）",
+      "coverage_key": "FR-001|API>accounts.services|API|api|input-errors-all-fields",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-005",
+      "requirement_id": "FR-002, FR-004",
+      "related_adr": "ADDR-001, ADDR-002",
+      "integration_point": "API>BearerAuthentication>accounts.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "login-token-me",
+      "expected_behavior": "ログイン成功で token・expires_at（ログイン時刻+24時間）・user を返し、その Bearer で利用者情報照会が本人の情報を返す（FR-002、FR-004、AC-UC-002-001/013）",
+      "coverage_key": "FR-002, FR-004|API>BearerAuthentication>accounts.services|AUTH|authentication|login-token-me",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-006",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-004, ADDR-007",
+      "integration_point": "API>accounts.services>AuditLog",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "audit-login-success-failure",
+      "expected_behavior": "ログイン成功・失敗を監査ログ（login_success/login_failure、結果、対象利用者。未登録メールは null）に記録し、入力値・トークンを記録しない（CMN-24/25、AC-UC-002-007）",
+      "coverage_key": "FR-002|API>accounts.services>AuditLog|DATABASE|database|audit-login-success-failure",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-007",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>accounts.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "failure-indistinguishable",
+      "expected_behavior": "誤パスワードと未登録メールアドレスは同一の 401 authentication_failed・同一文言で区別しない（CMN-05、AC-UC-002-005）",
+      "coverage_key": "FR-002|API>accounts.services|AUTH|authentication|failure-indistinguishable",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-008",
+      "requirement_id": "FR-003",
+      "related_adr": "ADDR-002",
+      "integration_point": "API>BearerAuthentication>accounts.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "logout-invalidates-only-own",
+      "expected_behavior": "ログアウト（204）した状態の要求は 401、同じ利用者の別のログイン状態は有効のまま、監査ログに logout（CMN-11/12、AC-UC-002-009/010）",
+      "coverage_key": "FR-003|API>BearerAuthentication>accounts.services|AUTH|authentication|logout-invalidates-only-own",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-009",
+      "requirement_id": "FR-002, FR-004",
+      "related_adr": "ADDR-002, ADDR-011",
+      "integration_point": "API>BearerAuthentication>Clock(TestState)",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "token-expiry-24h-boundary",
+      "expected_behavior": "ログイン時刻+24時間未満は有効、ちょうど24時間で 401 authentication_required（CMN-09/29、AC-UC-002-011）",
+      "coverage_key": "FR-002, FR-004|API>BearerAuthentication>Clock(TestState)|AUTH|authentication|token-expiry-24h-boundary",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-010",
+      "requirement_id": "FR-004, FR-020, FR-030, FR-040, FR-041",
+      "related_adr": "ADDR-001, ADDR-002",
+      "integration_point": "API>BearerAuthentication>Permission",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "permission-matrix",
+      "expected_behavior": "未ログインは 401、購入者の /api/admin/ は 403、管理者のカート・注文（購入者）API は 403（5.1 権限表、CMN-02/03、AC-UC-002-014）",
+      "coverage_key": "FR-004, FR-020, FR-030, FR-040, FR-041|API>BearerAuthentication>Permission|AUTH|authentication|permission-matrix",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-011",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>BearerAuthentication>Validation",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "auth-before-input",
+      "expected_behavior": "未ログインの入力不正の要求は入力エラーより先に認証エラー（401）とする（CMN-14、AC-UC-004-021）",
+      "coverage_key": "FR-021|API>BearerAuthentication>Validation|AUTH|authentication|auth-before-input",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-012",
+      "requirement_id": "FR-020",
+      "related_adr": "ADDR-001, ADDR-002",
+      "integration_point": "API>CookieSession(rejected)",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "api-rejects-cookie-session",
+      "expected_behavior": "/api/ は画面のセッション Cookie を認証に使わず、Bearer なしの要求は 401（ADDR-001 4.3 の3、ADDR-002 4.3 の5）",
+      "coverage_key": "FR-020|API>CookieSession(rejected)|AUTH|authentication|api-rejects-cookie-session",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-013",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-004, ADDR-012",
+      "integration_point": "Web>CSRF>accounts.services>DB",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "web-register-redirect-login",
+      "expected_behavior": "画面（SCR-003）の会員登録完了で SCR-004 へ遷移し完了メッセージを表示する（MSG-02、AC-UC-001-002）",
+      "coverage_key": "FR-001|Web>CSRF>accounts.services>DB|WEB|end-to-end-flow|web-register-redirect-login",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-014",
+      "requirement_id": "FR-001",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>accounts.services",
+      "test_category": "WEB",
+      "criterion": "api",
+      "condition": "web-register-input-error-retains",
+      "expected_behavior": "画面の会員登録の入力エラーは項目ごとに理由を表示し、入力値を保持（パスワードは保持しない）（CMN-17、UI-19、AC-UC-001-018）",
+      "coverage_key": "FR-001|Web>accounts.services|WEB|api|web-register-input-error-retains",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-015",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002, ADDR-012",
+      "integration_point": "Web>Session>accounts.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "web-login-home-by-type",
+      "expected_behavior": "画面ログイン成功で購入者は SCR-001（/）、管理者は SCR-102（/manage/orders/）へ遷移する（AC-UC-002-003）",
+      "coverage_key": "FR-002|Web>Session>accounts.services|AUTH|authentication|web-login-home-by-type",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-016",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002",
+      "integration_point": "Web>Session>Redirect(next)",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "web-return-to-original",
+      "expected_behavior": "未ログインで保護画面を要求すると SCR-004（ログインが必要な旨）へ遷移し、ログイン後に元の画面へ戻る（CMN-02、UI-17、AC-UC-002-016）",
+      "coverage_key": "FR-002|Web>Session>Redirect(next)|AUTH|authentication|web-return-to-original",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-017",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-002",
+      "integration_point": "Web>Session>Cookie",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "session-cookie-httponly",
+      "expected_behavior": "画面のログイン状態の Cookie は HttpOnly（スクリプトから参照不可）・SameSite=Lax（NFR-SC-19、AC-UC-002-021）",
+      "coverage_key": "FR-002|Web>Session>Cookie|AUTH|authentication|session-cookie-httponly",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-018",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>accounts.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "web-login-failure-message",
+      "expected_behavior": "画面ログイン失敗は SCR-004 に区別しないメッセージ、メールアドレスを保持しパスワードは保持しない（AC-UC-002-017）",
+      "coverage_key": "FR-002|Web>accounts.services|AUTH|authentication|web-login-failure-message",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-019",
+      "requirement_id": "FR-003",
+      "related_adr": "ADDR-002, ADDR-012",
+      "integration_point": "Web>Session>AuditLog",
+      "test_category": "AUTH",
+      "criterion": "end-to-end-flow",
+      "condition": "web-logout",
+      "expected_behavior": "画面ログアウトで SCR-001 へ遷移し「ログアウトしました。」、監査ログに logout、以後の保護画面は SCR-004（UI-20、AC-UC-002-018）",
+      "coverage_key": "FR-003|Web>Session>AuditLog|AUTH|end-to-end-flow|web-logout",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-020",
+      "requirement_id": "FR-002, FR-020",
+      "related_adr": "ADDR-002, ADDR-011",
+      "integration_point": "Web>IdleTimeoutMiddleware>Clock(TestState)",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "idle-timeout-30min",
+      "expected_behavior": "画面のログイン状態は無操作30分未満なら継続し、30分経過で切断して SCR-004 へ遷移する（CMN-10、NFR-SC-09、AC-UC-002-015）",
+      "coverage_key": "FR-002, FR-020|Web>IdleTimeoutMiddleware>Clock(TestState)|AUTH|authentication|idle-timeout-30min",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-021",
+      "requirement_id": "FR-040, FR-020",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>Permission",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "web-permission-scr901",
+      "expected_behavior": "購入者の管理画面、管理者の購入者向け画面は SCR-901（権限なし、HTTP 403）（UI-18、CMN-03）",
+      "coverage_key": "FR-040, FR-020|Web>Permission|AUTH|authentication|web-permission-scr901",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-022",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-002",
+      "integration_point": "Web>CSRF",
+      "test_category": "AUTH",
+      "criterion": "error-handling",
+      "condition": "csrf-reject",
+      "expected_behavior": "CSRF トークンを伴わない画面の更新要求は拒否され、業務データは変化しない（NFR-SC-05、ADDR-002 4.3 の5）",
+      "coverage_key": "FR-021|Web>CSRF|AUTH|error-handling|csrf-reject",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-023",
+      "requirement_id": "FR-002",
+      "related_adr": "ADDR-004",
+      "integration_point": "Web>SubmitToken>accounts.services>AuditLog",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "login-double-submit",
+      "expected_behavior": "同じ送信トークンのログイン再送は照合・監査ログ記録・新たなログイン状態の開始を行わず、先着の結果を通知する（ADDR-004 DD-013/016、CMN-22）",
+      "coverage_key": "FR-002|Web>SubmitToken>accounts.services>AuditLog|DATABASE|database|login-double-submit",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-024",
+      "requirement_id": "FR-010",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>catalog.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "category-tree-order",
+      "expected_behavior": "全商品分類を親子の木構造の順（表示順・同値は登録順）で depth・parent_category_id 付きで返す（FR-010、AC-UC-003-001）",
+      "coverage_key": "FR-010|API>catalog.services>DB|API|api|category-tree-order",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-025",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>catalog.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "product-search-target-filter",
+      "expected_behavior": "公開かつ在庫単位を持つ商品だけを返し、分類指定は配下分類を含み重複せず、キーワードは商品名・説明の部分一致（英字大小区別なし）（AC-UC-003-003/004/005）",
+      "coverage_key": "FR-011|API>catalog.services>DB|API|api|product-search-target-filter",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-026",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>catalog.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "product-search-sort-paging",
+      "expected_behavior": "並び順4種（同値は登録順）、1ページ20件、総ページ数を超えるページは空の一覧（AC-UC-003-007/008、CMN-35）",
+      "coverage_key": "FR-011|API>catalog.services>DB|API|api|product-search-sort-paging",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-027",
+      "requirement_id": "FR-011",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>catalog.services",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "product-search-input-errors",
+      "expected_behavior": "不正な並び順・ページ番号・未登録の分類ID・51文字のキーワードは 400 input_error で全項目を通知（AC-UC-003-009〜012）",
+      "coverage_key": "FR-011|API>catalog.services|API|api|product-search-input-errors",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-028",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-001, ADDR-006",
+      "integration_point": "API>catalog.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "product-detail-contract",
+      "expected_behavior": "商品詳細は在庫単位を SKU 昇順で、税込価格（1円未満切捨て）・在庫数量付きで返し、仕入先を含まない（AC-UC-003-013/015、MSG-04）",
+      "coverage_key": "FR-012|API>catalog.services>DB|API|api|product-detail-contract",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-029",
+      "requirement_id": "FR-012",
+      "related_adr": "ADDR-001, ADDR-006",
+      "integration_point": "API>catalog.services",
+      "test_category": "API",
+      "criterion": "error-handling",
+      "condition": "product-detail-not-found",
+      "expected_behavior": "非公開・在庫単位なし・存在しない・識別子として解釈できない商品は 404 not_found で区別しない（AC-UC-003-016、CMN-18）",
+      "coverage_key": "FR-012|API>catalog.services|API|error-handling|product-detail-not-found",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-030",
+      "requirement_id": "FR-011, FR-012",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web/API>catalog.services",
+      "test_category": "E2E",
+      "criterion": "end-to-end-flow",
+      "condition": "same-result-all-actors-and-screen",
+      "expected_behavior": "来訪者・購入者・管理者で同じ結果を返し、画面は税込価格を主表示し税抜価格を併記する（AC-UC-003-017/019、UI-25）",
+      "coverage_key": "FR-011, FR-012|Web/API>catalog.services|E2E|end-to-end-flow|same-result-all-actors-and-screen",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-031",
+      "requirement_id": "FR-020",
+      "related_adr": "ADDR-001, ADDR-004",
+      "integration_point": "API>carts.services>DB",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "get-cart-creates-single",
+      "expected_behavior": "利用中カートがない購入者のカート照会は空のカートを1件だけ作成し、再照会しても1件（AC-UC-004-020、ADDR-001 DD-015/016）",
+      "coverage_key": "FR-020|API>carts.services>DB|DATABASE|database|get-cart-creates-single",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-032",
+      "requirement_id": "FR-020",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(partial unique)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-get-cart",
+      "expected_behavior": "同じ購入者のカート照会を同時に行っても利用中カートは1件（6.8.9、ADDR-004 4.3 の4）",
+      "coverage_key": "FR-020|MultiConnection>DB(partial unique)|CONCURRENCY|database|concurrent-get-cart",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-033",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001, ADDR-004",
+      "integration_point": "API>carts.services>DB",
+      "test_category": "API",
+      "criterion": "database",
+      "condition": "add-merge-limit-stock",
+      "expected_behavior": "明細追加で明細を作成し在庫数量は減らない、同一在庫単位は合算、合算10は可・11は quantity_limit_exceeded、在庫超過は insufficient_stock（AC-UC-004-001〜010）",
+      "coverage_key": "FR-021|API>carts.services>DB|API|database|add-merge-limit-stock",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-034",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>carts.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "add-not-found-unpublished",
+      "expected_behavior": "存在しない在庫単位・非公開商品の在庫単位の追加は 404 not_found（AC-UC-004-013）",
+      "coverage_key": "FR-021|API>carts.services>DB|API|api|add-not-found-unpublished",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-035",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-add-limit",
+      "expected_behavior": "同一在庫単位の同時追加でも合算数量は10個を超えない（AC-UC-004-025）",
+      "coverage_key": "FR-021|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-add-limit",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-036",
+      "requirement_id": "FR-022, FR-023",
+      "related_adr": "ADDR-001, ADDR-006",
+      "integration_point": "API>carts.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "change-delete-ownership",
+      "expected_behavior": "数量変更・削除が反映され金額を再計算、他の購入者・存在しない・注文済カートの明細は 404（AC-UC-004-005/014/015）",
+      "coverage_key": "FR-022, FR-023|API>carts.services>DB|API|api|change-delete-ownership",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-037",
+      "requirement_id": "FR-026, FR-020",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>carts.services>carts.pricing",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "amounts-shipping-tax",
+      "expected_behavior": "小計4,999円は送料500円・消費税額549円・合計6,048円、小計5,000円は送料0円・消費税額500円・合計5,500円（AC-UC-004-017/018）",
+      "coverage_key": "FR-026, FR-020|API>carts.services>carts.pricing|API|api|amounts-shipping-tax",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-038",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-001, ADDR-011",
+      "integration_point": "API>carts.services>Clock(TestState)>DB",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "coupon-validity-boundaries",
+      "expected_behavior": "有効開始日時ちょうど・有効終了日時ちょうどは適用でき、開始1秒前は coupon_not_yet_valid、終了1秒後は coupon_expired（AC-UC-005-012〜015）",
+      "coverage_key": "FR-024|API>carts.services>Clock(TestState)>DB|STATE|state-transition|coupon-validity-boundaries",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-039",
+      "requirement_id": "FR-024",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>carts.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "coupon-errors",
+      "expected_behavior": "空カート（cart_empty）・適用済み（coupon_already_applied）・コードなし（coupon_not_found）・最低購入金額未満（最低購入金額と小計を通知）・形式不正（400）（AC-UC-005-007〜011/017）",
+      "coverage_key": "FR-024|API>carts.services>DB|API|api|coupon-errors",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-040",
+      "requirement_id": "FR-024, FR-025, FR-026",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>carts.services>carts.pricing",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "coupon-applicability-recalc",
+      "expected_behavior": "適用後に数量を減らし最低購入金額を下回ると割引額0・is_applicable=false（クーポンは残る）、再び満たすと割引を算出（AC-UC-005-020/021）",
+      "coverage_key": "FR-024, FR-025, FR-026|API>carts.services>carts.pricing|STATE|state-transition|coupon-applicability-recalc",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-041",
+      "requirement_id": "FR-025",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>carts.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "coupon-remove",
+      "expected_behavior": "クーポン解除で割引額0円に再計算、未適用での解除はエラーにせず変化なし（AC-UC-005-018/019）",
+      "coverage_key": "FR-025|API>carts.services>DB|API|api|coupon-remove",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-042",
+      "requirement_id": "FR-020, FR-021, FR-022, FR-023, FR-024, FR-025",
+      "related_adr": "ADDR-012, ADDR-004",
+      "integration_point": "Web>carts.services>DB",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "web-cart-operations",
+      "expected_behavior": "画面でカートに入れる（完了メッセージ・カート（n点））→数量変更→クーポン適用・解除→削除が反映される（AC-UC-004-023、AC-UC-005-026）",
+      "coverage_key": "FR-020, FR-021, FR-022, FR-023, FR-024, FR-025|Web>carts.services>DB|WEB|end-to-end-flow|web-cart-operations",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-043",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web/API>carts.services",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "same-rule-web-api",
+      "expected_behavior": "画面と Web API で同じ数量上限・在庫の判定結果となる（CMN-34、FCN-09）",
+      "coverage_key": "FR-021|Web/API>carts.services|API|api|same-rule-web-api",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-044",
+      "requirement_id": "FR-021",
+      "related_adr": "ADDR-004",
+      "integration_point": "Web>SubmitToken>carts.services",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "cart-add-double-submit",
+      "expected_behavior": "同じ送信トークンの「カートに入れる」再送は数量を加算しない（ADDR-004 DD-013、UI-15）",
+      "coverage_key": "FR-021|Web>SubmitToken>carts.services|DATABASE|database|cart-add-double-submit",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-045",
+      "requirement_id": "FR-030, FR-026",
+      "related_adr": "ADDR-001, ADDR-004, ADDR-005",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "place-order-persistence",
+      "expected_behavior": "注文確定は 201、注文受付、全明細の在庫減算、注文明細・配送先（正規化）・状態履歴（なし→注文受付）、カート注文済、注文番号 PO-8桁で確定順に増加（AC-UC-006-001/006）",
+      "coverage_key": "FR-030, FR-026|API>orders.services>DB|DATABASE|database|place-order-persistence",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-046",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "place-order-input-errors",
+      "expected_behavior": "配送先の不備は全項目を 400 で通知し何も変更しない（AC-UC-006-008〜012）",
+      "coverage_key": "FR-030|API>orders.services|API|api|place-order-input-errors",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-047",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "place-order-empty-and-resend",
+      "expected_behavior": "空カートは cart_empty（配送先の入力判定が先）、同一カートの再送信は2件目 cart_empty で注文1件（AC-UC-006-013/021）",
+      "coverage_key": "FR-030|API>orders.services>DB|STATE|state-transition|place-order-empty-and-resend",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-048",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-004, ADDR-011",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "place-order-business-errors-no-change",
+      "expected_behavior": "非公開→クーポン条件→在庫の順に判定し、在庫不足は不足する全在庫単位を通知、いずれも何も変更しない（AC-UC-006-014〜018/032）",
+      "coverage_key": "FR-030|API>orders.services>DB|DATABASE|database|place-order-business-errors-no-change",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-049",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-place-stock1",
+      "expected_behavior": "在庫数量1を2名が同時確定すると1件だけ成功し在庫0、他方は insufficient_stock（AC-UC-006-019）",
+      "coverage_key": "FR-030|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-place-stock1",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-050",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-place-10",
+      "expected_behavior": "同一在庫単位への10並列確定で引当合計は在庫数量を超えず在庫は0未満にならない（AC-UC-006-020、NFR-PF-07）",
+      "coverage_key": "FR-030|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-place-10",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-051",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-same-cart",
+      "expected_behavior": "同一カートの同時確定で注文は1件、他方は cart_empty（CMN-23、6.15.9）",
+      "coverage_key": "FR-030|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-same-cart",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-052",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-004, ADDR-011, ADDR-013",
+      "integration_point": "API>orders.services>FaultPoint(TestState)>DB",
+      "test_category": "ERROR",
+      "criterion": "error-handling",
+      "condition": "place-order-fault-rollback",
+      "expected_behavior": "確定途中の障害は 500 system_error（内部情報なし）、在庫・注文・カートは処理前のまま、LOG-02 に記録（E-030-11、AC-UC-006-022）",
+      "coverage_key": "FR-030|API>orders.services>FaultPoint(TestState)>DB|ERROR|error-handling|place-order-fault-rollback",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-053",
+      "requirement_id": "FR-030, FR-033",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>orders.services",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "web-checkout-complete",
+      "expected_behavior": "画面で確定すると SCR-007 に注文番号と合計を表示し、カートの合計点数は0点（MSG-02、6.15.5）",
+      "coverage_key": "FR-030, FR-033|Web>orders.services|WEB|end-to-end-flow|web-checkout-complete",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-054",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>orders.services",
+      "test_category": "WEB",
+      "criterion": "api",
+      "condition": "web-checkout-input-error-retains",
+      "expected_behavior": "画面の配送先不備は項目ごとの理由を表示し入力値を保持して再表示する（AC-UC-006-028）",
+      "coverage_key": "FR-030|Web>orders.services|WEB|api|web-checkout-input-error-retains",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-055",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-004",
+      "integration_point": "Web>SubmitToken>orders.services",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "web-place-double-submit",
+      "expected_behavior": "同じ送信トークンで確定を繰り返しても注文は1件（CMN-22、AC-UC-006-026、ADDR-004 DD-010）",
+      "coverage_key": "FR-030|Web>SubmitToken>orders.services|DATABASE|database|web-place-double-submit",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-056",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-008, ADDR-004, ADDR-007",
+      "integration_point": "API>orders.services>payments.gateway(mock)>DB",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "pay-approved",
+      "expected_behavior": "承認で支払済・支払日時、決済記録 approved（取引参照番号 MOCK-+16文字）、履歴（注文受付→支払済）、在庫不変（AC-UC-007-001/003）",
+      "coverage_key": "FR-031|API>orders.services>payments.gateway(mock)>DB|STATE|state-transition|pay-approved",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-057",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-008",
+      "integration_point": "API>orders.services>payments.gateway(mock)>DB",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "pay-declined-then-retry",
+      "expected_behavior": "否認は 422 payment_declined、注文受付のまま否認の決済記録が残り、再支払（承認）で支払済（AC-UC-007-004/005）",
+      "coverage_key": "FR-031|API>orders.services>payments.gateway(mock)>DB|STATE|state-transition|pay-declined-then-retry",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-058",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-008, ADDR-011",
+      "integration_point": "API>orders.services>payments.client(timeout 10s)",
+      "test_category": "ERROR",
+      "criterion": "error-handling",
+      "condition": "pay-timeout",
+      "expected_behavior": "10秒以内に応答しない場合は 502 integration_error、連携エラーの決済記録、注文受付のまま（AC-UC-007-014）",
+      "coverage_key": "FR-031|API>orders.services>payments.client(timeout 10s)|ERROR|error-handling|pay-timeout",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-059",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-008, ADDR-011",
+      "integration_point": "API>orders.services>payments.client(response check)",
+      "test_category": "ERROR",
+      "criterion": "error-handling",
+      "condition": "pay-invalid-response",
+      "expected_behavior": "応答不正（結果不正・欠落・取引参照番号不正等）は 502 integration_error と連携エラーの決済記録（AC-UC-007-015、IF-01-EXC-04）",
+      "coverage_key": "FR-031|API>orders.services>payments.client(response check)|ERROR|error-handling|pay-invalid-response",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-060",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-001, ADDR-004",
+      "integration_point": "API>orders.services",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "pay-invalid-status",
+      "expected_behavior": "支払済・出荷済・配達完了・キャンセル済への支払は 422 invalid_status（現在の状態を通知）、決済記録は増えない（AC-UC-007-006/007）",
+      "coverage_key": "FR-031|API>orders.services|STATE|state-transition|pay-invalid-status",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-061",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "pay-ownership-permission",
+      "expected_behavior": "他人・存在しない注文は 404、管理者は 403、模擬決済指示の不正は所有判定より先に 400（AC-UC-007-008〜011）",
+      "coverage_key": "FR-031|API>orders.services|AUTH|authentication|pay-ownership-permission",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-062",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-004, ADDR-008",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-pay",
+      "expected_behavior": "同一注文への同時支払で承認の決済記録は1件、後着は invalid_status（AC-UC-007-013）",
+      "coverage_key": "FR-031|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-pay",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-063",
+      "requirement_id": "FR-031, FR-034",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-pay-cancel",
+      "expected_behavior": "同一注文への支払とキャンセルの同時実行は逐次実行のいずれかの順序の結果と一致（AC-UC-007-019）",
+      "coverage_key": "FR-031, FR-034|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-pay-cancel",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-064",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-012, ADDR-008",
+      "integration_point": "Web>orders.services>payments.gateway(mock)",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "web-payment",
+      "expected_behavior": "画面で否認は SCR-008 に理由、続けて承認で SCR-010 へ遷移し支払完了の旨（AC-UC-007-002/005）",
+      "coverage_key": "FR-031|Web>orders.services>payments.gateway(mock)|WEB|end-to-end-flow|web-payment",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-065",
+      "requirement_id": "FR-031",
+      "related_adr": "ADDR-004",
+      "integration_point": "Web>SubmitToken>payments.gateway(mock)",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "web-pay-double-submit",
+      "expected_behavior": "同じ送信トークンで「支払う」を繰り返しても決済要求・決済記録は1回分（UI-15、ADDR-004 DD-013）",
+      "coverage_key": "FR-031|Web>SubmitToken>payments.gateway(mock)|DATABASE|database|web-pay-double-submit",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-066",
+      "requirement_id": "FR-032",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "history-own-desc-paging",
+      "expected_behavior": "本人の注文だけを注文日時降順（同値は注文番号降順）、1ページ20件、総ページ数超過は空、不正ページは 400（AC-UC-008-001〜005）",
+      "coverage_key": "FR-032|API>orders.services>DB|API|api|history-own-desc-paging",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-067",
+      "requirement_id": "FR-033",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "detail-contents",
+      "expected_behavior": "注文詳細は明細（追加順）・金額・クーポン・配送先・状態履歴（昇順）・can_pay/can_cancel、未発生日時は null、決済記録を含まない（AC-UC-008-006〜009/015、MSG-04）",
+      "coverage_key": "FR-033|API>orders.services>DB|API|api|detail-contents",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-068",
+      "requirement_id": "FR-033, FR-030",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "price-fixed-at-confirm",
+      "expected_behavior": "確定後に在庫単位の税抜価格が変わっても注文の単価・金額は確定時点のまま（AC-UC-006-005）",
+      "coverage_key": "FR-033, FR-030|API>orders.services>DB|DATABASE|database|price-fixed-at-confirm",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-069",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "buyer-cancel",
+      "expected_behavior": "注文受付・支払済のキャンセルでキャンセル済、全明細の数量を在庫へ戻し履歴を記録、支払済でも決済記録は不変（AC-UC-009-001/002）",
+      "coverage_key": "FR-034|API>orders.services>DB|STATE|state-transition|buyer-cancel",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-070",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "buyer-cancel-invalid",
+      "expected_behavior": "出荷済・配達完了・キャンセル済は 422 invalid_status、在庫は2回戻らない（AC-UC-009-005/006）",
+      "coverage_key": "FR-034|API>orders.services|STATE|state-transition|buyer-cancel-invalid",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-071",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-cancel",
+      "expected_behavior": "同一注文への同時キャンセルで在庫は1回だけ戻る（AC-UC-009-007）",
+      "coverage_key": "FR-034|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-cancel",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-072",
+      "requirement_id": "FR-034",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>orders.services",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "web-buyer-cancel",
+      "expected_behavior": "画面（SCR-010）のキャンセルで完了メッセージを表示し、在庫が戻る（AC-UC-009-003）",
+      "coverage_key": "FR-034|Web>orders.services|WEB|end-to-end-flow|web-buyer-cancel",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-073",
+      "requirement_id": "FR-040",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>catalog.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "stock-list-filter-paging",
+      "expected_behavior": "非公開を含む全在庫単位を SKU 昇順、SKU 前方一致・商品名部分一致（大小区別なし）・仕入先完全一致・低在庫のみ（5含む6含まない）、1ページ50件（AC-UC-010-001〜007）",
+      "coverage_key": "FR-040|API>catalog.services>DB|API|api|stock-list-filter-paging",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-074",
+      "requirement_id": "FR-040",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>catalog.services",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "stock-list-input-errors",
+      "expected_behavior": "未登録の仕入先・低在庫のみの値不正・ページ不正は 400 input_error で全項目（AC-UC-010-009）",
+      "coverage_key": "FR-040|API>catalog.services|API|api|stock-list-input-errors",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-075",
+      "requirement_id": "FR-040, FR-030, FR-034",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services>catalog.services>DB",
+      "test_category": "E2E",
+      "criterion": "end-to-end-flow",
+      "condition": "stock-reflects-orders",
+      "expected_behavior": "注文確定・キャンセル後の在庫数量が在庫単位一覧に反映される（AC-UC-010-008）",
+      "coverage_key": "FR-040, FR-030, FR-034|API>orders.services>catalog.services>DB|E2E|end-to-end-flow|stock-reflects-orders",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-076",
+      "requirement_id": "FR-041",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "admin-order-search",
+      "expected_behavior": "全購入者の注文を降順、注文番号完全一致、注文状態複数、注文日 JST 両端含む、メール部分一致（大小区別なし）、条件は「かつ」（AC-UC-011-001〜008）",
+      "coverage_key": "FR-041|API>orders.services>DB|API|api|admin-order-search",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-077",
+      "requirement_id": "FR-041",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "admin-order-search-errors",
+      "expected_behavior": "注文日（開始）＞注文日（終了）、日付形式不正、注文番号形式不正は 400 input_error（AC-UC-011-005）",
+      "coverage_key": "FR-041|API>orders.services|API|api|admin-order-search-errors",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-078",
+      "requirement_id": "FR-042",
+      "related_adr": "ADDR-001, ADDR-007",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "admin-detail-contents",
+      "expected_behavior": "注文詳細（管理）は購入者情報・決済記録・状態履歴（actor_user_id）・can_ship/can_deliver を含む（AC-UC-011-009）",
+      "coverage_key": "FR-042|API>orders.services>DB|API|api|admin-detail-contents",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-079",
+      "requirement_id": "FR-043",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "ship",
+      "expected_behavior": "支払済→出荷済、出荷日時・配送伝票番号（省略可）を記録、在庫・決済記録は不変、履歴の実行者は管理者（AC-UC-011-010/012）",
+      "coverage_key": "FR-043|API>orders.services>DB|STATE|state-transition|ship",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-080",
+      "requirement_id": "FR-043",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>orders.services",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "ship-tracking-validation",
+      "expected_behavior": "配送伝票番号は30文字まで受け付け、31文字・不正な文字は 400 input_error（AC-UC-011-013）",
+      "coverage_key": "FR-043|API>orders.services|API|api|ship-tracking-validation",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-081",
+      "requirement_id": "FR-044",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "deliver",
+      "expected_behavior": "出荷済→配達完了、配達完了日時と履歴を記録（AC-UC-011-015）",
+      "coverage_key": "FR-044|API>orders.services>DB|STATE|state-transition|deliver",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-082",
+      "requirement_id": "FR-045, FR-033",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services>DB",
+      "test_category": "E2E",
+      "criterion": "end-to-end-flow",
+      "condition": "admin-cancel-visible-to-buyer",
+      "expected_behavior": "管理者キャンセルで在庫が戻り、購入者が注文詳細でキャンセル済と履歴（実行者=管理者）を確認できる（AC-UC-012-001/002/004）",
+      "coverage_key": "FR-045, FR-033|API>orders.services>DB|E2E|end-to-end-flow|admin-cancel-visible-to-buyer",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-083",
+      "requirement_id": "FR-031, FR-034, FR-043, FR-044, FR-045",
+      "related_adr": "ADDR-004",
+      "integration_point": "API>orders.services",
+      "test_category": "STATE",
+      "criterion": "state-transition",
+      "condition": "invalid-transitions-matrix",
+      "expected_behavior": "遷移表にない遷移は 422 invalid_status（現在の状態）とし、状態・在庫・履歴・決済記録を変更しない（8.1.2）",
+      "coverage_key": "FR-031, FR-034, FR-043, FR-044, FR-045|API>orders.services|STATE|state-transition|invalid-transitions-matrix",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-084",
+      "requirement_id": "FR-043, FR-045",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-ship-and-cancel-ship",
+      "expected_behavior": "同一注文への同時出荷登録は1件だけ成功、管理者キャンセルと出荷登録の同時実行はどちらか一方だけ成功（AC-UC-011-020、AC-UC-012-010）",
+      "coverage_key": "FR-043, FR-045|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-ship-and-cancel-ship",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-085",
+      "requirement_id": "FR-045, FR-034",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-admin-buyer-cancel",
+      "expected_behavior": "管理者キャンセルと購入者キャンセルの同時実行で在庫は1回だけ戻る（AC-UC-012-009）",
+      "coverage_key": "FR-045, FR-034|MultiConnection>DB(lock)|CONCURRENCY|database|concurrent-admin-buyer-cancel",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-086",
+      "requirement_id": "FR-041, FR-042, FR-043, FR-044, FR-045",
+      "related_adr": "ADDR-012, ADDR-004",
+      "integration_point": "Web>orders.services(admin)",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "web-admin-operations",
+      "expected_behavior": "画面で注文一覧（管理）→注文詳細（管理）→出荷登録→配達完了登録、別注文のキャンセルが反映され完了メッセージを表示（AC-UC-011-011、AC-UC-012-003）",
+      "coverage_key": "FR-041, FR-042, FR-043, FR-044, FR-045|Web>orders.services(admin)|WEB|end-to-end-flow|web-admin-operations",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-087",
+      "requirement_id": "FR-001, FR-002, FR-011, FR-012, FR-021, FR-024, FR-030, FR-031, FR-032, FR-033, FR-041, FR-042, FR-043, FR-044",
+      "related_adr": "ADDR-001, ADDR-002, ADDR-004, ADDR-008",
+      "integration_point": "API(all)>Services>DB",
+      "test_category": "E2E",
+      "criterion": "end-to-end-flow",
+      "condition": "api-full-flow",
+      "expected_behavior": "会員登録→ログイン→商品検索→カート→クーポン→注文確定→支払→管理者の出荷・配達完了→購入者の照会まで Web API でデータが引き継がれる",
+      "coverage_key": "FR-001, FR-002, FR-011, FR-012, FR-021, FR-024, FR-030, FR-031, FR-032, FR-033, FR-041, FR-042, FR-043, FR-044|API(all)>Services>DB|E2E|end-to-end-flow|api-full-flow",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-088",
+      "requirement_id": "FR-002, FR-012, FR-021, FR-030, FR-031, FR-033, FR-043, FR-044",
+      "related_adr": "ADDR-012, ADDR-004, ADDR-008",
+      "integration_point": "Web(all)>Services>DB",
+      "test_category": "E2E",
+      "criterion": "end-to-end-flow",
+      "condition": "web-full-flow",
+      "expected_behavior": "画面で購入者の購入〜支払、管理者の出荷・配達完了、購入者の状態確認までが連携する",
+      "coverage_key": "FR-002, FR-012, FR-021, FR-030, FR-031, FR-033, FR-043, FR-044|Web(all)>Services>DB|E2E|end-to-end-flow|web-full-flow",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-089",
+      "requirement_id": "FR-060, FR-002",
+      "related_adr": "ADDR-009, ADDR-010, ADDR-003",
+      "integration_point": "ManagementCommand>initial_data.loader>DB>AuditLog",
+      "test_category": "BATCH",
+      "criterion": "end-to-end-flow",
+      "condition": "load-success-login",
+      "expected_behavior": "投入件数の表示が定義ファイルと一致し、投入した利用者が記載パスワードでログインでき、監査ログに成功（件数、値なし）を記録（AC-UC-013-001/002/008）",
+      "coverage_key": "FR-060, FR-002|ManagementCommand>initial_data.loader>DB>AuditLog|BATCH|end-to-end-flow|load-success-login",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-090",
+      "requirement_id": "FR-060, FR-011, FR-040",
+      "related_adr": "ADDR-009",
+      "integration_point": "ManagementCommand>initial_data.loader>DB>API",
+      "test_category": "BATCH",
+      "criterion": "end-to-end-flow",
+      "condition": "load-defaults-visibility",
+      "expected_behavior": "省略項目は既定値で登録し、非公開の商品は商品一覧に出ず在庫単位一覧には出る（AC-UC-013-003）",
+      "coverage_key": "FR-060, FR-011, FR-040|ManagementCommand>initial_data.loader>DB>API|BATCH|end-to-end-flow|load-defaults-visibility",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-091",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010, ADDR-002, ADDR-004",
+      "integration_point": "ManagementCommand>initial_data.loader>DB",
+      "test_category": "BATCH",
+      "criterion": "database",
+      "condition": "reset-deletes-all",
+      "expected_behavior": "--reset 指定で監査ログ以外（注文・カートを含む）を削除して投入し、削除前のログイン状態は無効（AC-UC-013-004、ADDR-002 4.3 の6）",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|database|reset-deletes-all",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-092",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-009, ADDR-010",
+      "integration_point": "ManagementCommand>initial_data.loader>DB",
+      "test_category": "BATCH",
+      "criterion": "error-handling",
+      "condition": "violations-all-no-insert",
+      "expected_behavior": "値域・参照・定義内重複の違反を全件（データ名・行番号・項目名・理由、値なし）示し何も投入しない、--reset でも削除しない、監査ログに失敗（AC-UC-013-006/007）",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|error-handling|violations-all-no-insert",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-093",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010",
+      "integration_point": "ManagementCommand>initial_data.loader>DB",
+      "test_category": "BATCH",
+      "criterion": "error-handling",
+      "condition": "duplicate-existing-key",
+      "expected_behavior": "削除指定なしで業務キーが既存データと重複するとエラーとなり何も投入しない（AC-UC-013-005）",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|error-handling|duplicate-existing-key",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-094",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010",
+      "integration_point": "ManagementCommand>initial_data.loader>AuditLog",
+      "test_category": "BATCH",
+      "criterion": "error-handling",
+      "condition": "args-read-format-errors",
+      "expected_behavior": "実行時の指定誤り（E-060-01）・読込不可（E-060-02）・記載形式誤り（E-060-03）は失敗とし既存データ不変、監査ログに失敗1件（AC-UC-013-009）",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>AuditLog|BATCH|error-handling|args-read-format-errors",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-095",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-010",
+      "integration_point": "Web/API>URLRouting",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "no-web-api-entry",
+      "expected_behavior": "初期データ一括投入は Web 画面・Web API から実行できない（AC-UC-013-011、NFR-SC-15）",
+      "coverage_key": "FR-060|Web/API>URLRouting|AUTH|authentication|no-web-api-entry",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-096",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-009, ADDR-010",
+      "integration_point": "ManagementCommand>initial_data.loader>DB",
+      "test_category": "BATCH",
+      "criterion": "database",
+      "condition": "seed-file-loadable",
+      "expected_behavior": "提供済みの定義ファイル（app/seed/initial_data.json）を投入でき、データ別件数が定義ファイルと一致する（Steering 4章、FR-060）",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB|BATCH|database|seed-file-loadable",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-097",
+      "requirement_id": "NFR-OM-18, NFR-OM-01",
+      "related_adr": "ADDR-013",
+      "integration_point": "Middleware>AppLog",
+      "test_category": "LOGGING",
+      "criterion": "api",
+      "condition": "request-id-correlation",
+      "expected_behavior": "応答に X-Request-ID、同一要求の全ログ行が同一 request_id、LOG-03 の path は検索条件を含まない（ADDR-013 4.3 の1・2）",
+      "coverage_key": "NFR-OM-18, NFR-OM-01|Middleware>AppLog|LOGGING|api|request-id-correlation",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-098",
+      "requirement_id": "NFR-SC-06",
+      "related_adr": "ADDR-013",
+      "integration_point": "Service>AppLog",
+      "test_category": "LOGGING",
+      "criterion": "error-handling",
+      "condition": "no-sensitive-in-logs",
+      "expected_behavior": "会員登録・ログイン・注文確定のログにメールアドレス・パスワード・ログイン状態を示す情報・氏名・住所・電話番号を出力しない（AC-UC-001-016、AC-UC-002-008、AC-UC-006-023）",
+      "coverage_key": "NFR-SC-06|Service>AppLog|LOGGING|error-handling|no-sensitive-in-logs",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-099",
+      "requirement_id": "NFR-SC-10",
+      "related_adr": "ADDR-001, ADDR-013",
+      "integration_point": "API/Web>ExceptionHandler",
+      "test_category": "ERROR",
+      "criterion": "error-handling",
+      "condition": "error-envelope-no-internals",
+      "expected_behavior": "存在しないパス 404・許可しないメソッド 405・JSON 不正 400 は共通封筒（type/reason/message/fields/values）、システムエラーは内部情報を含まない（ADDR-001 4.3 の6・7）",
+      "coverage_key": "NFR-SC-10|API/Web>ExceptionHandler|ERROR|error-handling|error-envelope-no-internals",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-100",
+      "requirement_id": "NFR-SC-04",
+      "related_adr": "ADDR-012, ADDR-014",
+      "integration_point": "WSGI(config.wsgi.application)>RequestCharsetMiddleware",
+      "test_category": "ERROR",
+      "criterion": "error-handling",
+      "condition": "wsgi-unusable-charset",
+      "expected_behavior": "Content-Type の charset が文字列の符号化方式でない・復号に使えない指定にクエリ等を伴う要求は 400 入力エラーとし 500 にしない（NFR-SC-04、ADDR-001 4.3 の7）",
+      "coverage_key": "NFR-SC-04|WSGI(config.wsgi.application)>RequestCharsetMiddleware|ERROR|error-handling|wsgi-unusable-charset",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-101",
+      "requirement_id": "NFR-SC-04",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>Validation>DB",
+      "test_category": "ERROR",
+      "criterion": "error-handling",
+      "condition": "nul-char-input",
+      "expected_behavior": "NUL 文字を含む入力は 400 input_error とし DB エラー（500）にしない（NFR-SC-04）",
+      "coverage_key": "NFR-SC-04|API>Validation>DB|ERROR|error-handling|nul-char-input",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-102",
+      "requirement_id": "NFR-SC-05",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>Template(rendering)",
+      "test_category": "WEB",
+      "criterion": "api",
+      "condition": "xss-escape",
+      "expected_behavior": "画面に出力する値に含まれるスクリプトはエスケープされ実行されない（NFR-SC-05）",
+      "coverage_key": "NFR-SC-05|Web>Template(rendering)|WEB|api|xss-escape",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-103",
+      "requirement_id": "NFR-OM-06",
+      "related_adr": "ADDR-011",
+      "integration_point": "ManagementCommand(test_state)>TestState>Clock",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "test-state-command",
+      "expected_behavior": "管理コマンド test_state の set・show・clear で試験用状態を設定・確認・解除でき、時刻提供点に反映される（ADDR-011 4.3 の4）",
+      "coverage_key": "NFR-OM-06|ManagementCommand(test_state)>TestState>Clock|DATABASE|database|test-state-command",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-104",
+      "requirement_id": "FR-012, FR-022, FR-033, FR-042",
+      "related_adr": "ADDR-001, ADDR-006",
+      "integration_point": "API>URLRouting>Services",
+      "test_category": "API",
+      "criterion": "error-handling",
+      "condition": "uninterpretable-id-404",
+      "expected_behavior": "識別子として解釈できない値は各 API で 404 not_found（CMN-18）",
+      "coverage_key": "FR-012, FR-022, FR-033, FR-042|API>URLRouting>Services|API|error-handling|uninterpretable-id-404",
+      "revision": 1
+    },
+    {
+      "coverage_id": "RC-105",
+      "requirement_id": "FR-045, FR-031",
+      "related_adr": "ADDR-004",
+      "integration_point": "MultiConnection>DB(lock)>payments.gateway(mock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "concurrent-admin-cancel-and-pay",
+      "expected_behavior": "管理者キャンセルと購入者の支払（承認）の同時実行で、(a) キャンセル先着：支払は invalid_status（キャンセル済）、決済記録0件・支払日時なし・履歴2件（2件目 注文受付→キャンセル済、実行者 管理者）、(b) 支払先着：承認1件不変・支払日時あり・履歴3件（注文受付→支払済 購入者、支払済→キャンセル済 管理者）、いずれも最終キャンセル済・在庫+2。10試行（AC-UC-012-011、ADDR-004 DD-006）",
+      "coverage_key": "FR-045, FR-031|MultiConnection>DB(lock)>payments.gateway(mock)|CONCURRENCY|database|concurrent-admin-cancel-and-pay",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-106",
+      "requirement_id": "FR-012, FR-021, FR-002",
+      "related_adr": "ADDR-002, ADDR-012",
+      "integration_point": "Web>Session>Redirect(next)>carts.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "visitor-cart-add-login-return",
+      "expected_behavior": "来訪者が SCR-002 で「カートに入れる」を操作すると SCR-004（ログインが必要）へ遷移し、ログイン後に SCR-002（商品詳細）へ戻る。未ログイン時の追加は自動実行されず、カート・カート明細の件数・在庫は不変、カート（0点）（AC-UC-003-018、AC-UC-004-024）",
+      "coverage_key": "FR-012, FR-021, FR-002|Web>Session>Redirect(next)>carts.services|AUTH|authentication|visitor-cart-add-login-return",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-107",
+      "requirement_id": "NFR-OM-18, NFR-OM-11, FR-031",
+      "related_adr": "ADDR-013, ADDR-008",
+      "integration_point": "API>orders.services>payments.client>AppLog",
+      "test_category": "LOGGING",
+      "criterion": "api",
+      "condition": "payment-request-id-trace",
+      "expected_behavior": "支払要求1件の X-Request-ID で LOG-01・LOG-03・LOG-06（request/response：order_number・amount・currency=JPY・result・transaction_ref・duration_ms）を、連携エラー時は LOG-02 も漏れなく抽出でき、機密項目を含まない（NFR-OM-18 測定条件、ADDR-013 DC-002・検証方法、ADDR-008 DD-008）",
+      "coverage_key": "NFR-OM-18, NFR-OM-11, FR-031|API>orders.services>payments.client>AppLog|LOGGING|api|payment-request-id-trace",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-108",
+      "requirement_id": "FR-031, NFR-SC-24, NFR-EN-05",
+      "related_adr": "ADDR-008",
+      "integration_point": "API>orders.services>payments.client>gateway(mock)",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "payment-request-contents-no-external",
+      "expected_behavior": "決済サービス（模擬）が受けた決済要求は1件で、注文番号・決済金額（注文合計）・通貨 JPY・模擬決済指示の4項目だけ（個人情報なし）、支払処理中の外部ネットワーク宛て通信0件、送信から応答受信まで1秒以内（AC-UC-007-016、ADDR-008 DD-004/005）",
+      "coverage_key": "FR-031, NFR-SC-24, NFR-EN-05|API>orders.services>payments.client>gateway(mock)|API|api|payment-request-contents-no-external",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-109",
+      "requirement_id": "FR-030, NFR-PF-07, NFR-LG-06",
+      "related_adr": "ADDR-005, ADDR-004",
+      "integration_point": "MultiConnection>DB(lock, advisory lock, sequence)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "ten-parallel-ten-trials-order-number",
+      "expected_behavior": "在庫数量5の同一在庫単位を1個ずつカートに入れた10名の同時確定を10回繰り返し、各回 成功5・在庫不足5・在庫0以上・引当合計5以下、成功した注文番号は重複せずコミットの順に増加する（NFR-PF-07 測定条件、ADDR-005 4.3・検証方法）",
+      "coverage_key": "FR-030, NFR-PF-07, NFR-LG-06|MultiConnection>DB(lock, advisory lock, sequence)|CONCURRENCY|database|ten-parallel-ten-trials-order-number",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-110",
+      "requirement_id": "FR-030",
+      "related_adr": "ADDR-005, ADDR-011",
+      "integration_point": "API>orders.services>FaultPoint(TestState)>DB(sequence)",
+      "test_category": "ERROR",
+      "criterion": "error-handling",
+      "condition": "fault-order-number-gap",
+      "expected_behavior": "注文番号の払い出し後の障害で取り消された番号は再使用されず欠番となり、次の注文番号はそれより大きい（ADDR-005 DD-003、AC-UC-006-022）",
+      "coverage_key": "FR-030|API>orders.services>FaultPoint(TestState)>DB(sequence)|ERROR|error-handling|fault-order-number-gap",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-111",
+      "requirement_id": "FR-060",
+      "related_adr": "ADDR-005, ADDR-006, ADDR-002",
+      "integration_point": "ManagementCommand>initial_data.loader>DB(sequence, identity)>Session",
+      "test_category": "BATCH",
+      "criterion": "database",
+      "condition": "reset-no-rewind-web-session",
+      "expected_behavior": "--reset 指定の投入後も注文番号・各識別子（利用者・カート・注文・在庫単位等）を巻き戻さず再利用しない。削除前の画面のログイン状態も無効（ADDR-005 DD-003、ADDR-006 DD-002、ADDR-002 4.3 の6、AC-UC-013-004）",
+      "coverage_key": "FR-060|ManagementCommand>initial_data.loader>DB(sequence, identity)>Session|BATCH|database|reset-no-rewind-web-session",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-112",
+      "requirement_id": "NFR-PF-01, NFR-PF-02, NFR-PF-09",
+      "related_adr": "ADDR-001",
+      "integration_point": "API(all)>Services>DB",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "response-time-p95-reference",
+      "expected_behavior": "照会系・更新系・認証系 API の種別ごとの応答時間の95パーセンタイルが 1.0秒／2.0秒／2.0秒以内で、システムエラー・業務エラー0件（結合試験の条件：単一利用者・小データ量での参考計測。ピーク負荷・3年後データ量の判定は性能試験）",
+      "coverage_key": "NFR-PF-01, NFR-PF-02, NFR-PF-09|API(all)>Services>DB|API|api|response-time-p95-reference",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-113",
+      "requirement_id": "NFR-PF-08",
+      "related_adr": "ADDR-001",
+      "integration_point": "API>catalog/orders.services>DB(paging)",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "list-response-cap",
+      "expected_behavior": "分割表示の一覧（商品一覧・注文履歴・在庫単位一覧・注文一覧（管理））は先頭ページ・最終ページとも1回の応答が50件以下、商品分類一覧は分割しない",
+      "coverage_key": "NFR-PF-08|API>catalog/orders.services>DB(paging)|API|api|list-response-cap",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-114",
+      "requirement_id": "NFR-PF-10, NFR-MG-01, NFR-MG-02, NFR-MG-03, NFR-MG-04, NFR-MG-08, NFR-OM-04",
+      "related_adr": "ADDR-009, ADDR-010",
+      "integration_point": "ManagementCommand>initial_data.loader>DB>API",
+      "test_category": "BATCH",
+      "criterion": "end-to-end-flow",
+      "condition": "vdc04-rehearsal",
+      "expected_behavior": "VDC-04 相当（管理者7・仕入先20・商品分類30・商品300・在庫単位800、計1,157件）の定義ファイルを注文作成後の環境へ --reset で1回の実行で投入し、60秒以内、件数照合・業務キーの内容照合で不一致0、管理者7名がログイン可、注文・カート・決済記録・注文状態履歴0件、実行前の監査ログが残り1件増加。定義ファイルに注文等のデータを含める指定は受け付けない",
+      "coverage_key": "NFR-PF-10, NFR-MG-01, NFR-MG-02, NFR-MG-03, NFR-MG-04, NFR-MG-08, NFR-OM-04|ManagementCommand>initial_data.loader>DB>API|BATCH|end-to-end-flow|vdc04-rehearsal",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-115",
+      "requirement_id": "NFR-OM-13, NFR-MG-07",
+      "related_adr": "ADDR-010",
+      "integration_point": "ManagementCommand>initial_data.loader>DB>AuditLog",
+      "test_category": "BATCH",
+      "criterion": "error-handling",
+      "condition": "failed-load-corrected-rerun",
+      "expected_behavior": "違反1件を含む定義ファイルは投入件数0（--reset でも既存データを削除しない）・監査ログに失敗1件、修正版を同じ指定で再実行すると件数が定義と一致し重複しない、再々実行しても重複しない、切戻し（失敗後の再実行）が1時間以内",
+      "coverage_key": "NFR-OM-13, NFR-MG-07|ManagementCommand>initial_data.loader>DB>AuditLog|BATCH|error-handling|failed-load-corrected-rerun",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-116",
+      "requirement_id": "NFR-OM-11",
+      "related_adr": "ADDR-013, ADDR-007",
+      "integration_point": "Services>AppLog/AuditLog/OrderStatusHistory",
+      "test_category": "LOGGING",
+      "criterion": "api",
+      "condition": "log-types-output",
+      "expected_behavior": "全機能の実行で LOG-01〜LOG-07 が定めた内容で出力・記録される（LOG-01〜03・05・06 は JSON 行、LOG-04 は監査ログ、LOG-07 は注文状態履歴）。保管期間は対象外",
+      "coverage_key": "NFR-OM-11|Services>AppLog/AuditLog/OrderStatusHistory|LOGGING|api|log-types-output",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-117",
+      "requirement_id": "NFR-OM-17",
+      "related_adr": "ADDR-014",
+      "integration_point": "Environment>config.settings>Middleware/INSTALLED_APPS",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "env-specific-settings",
+      "expected_behavior": "環境ごとに異なる設定値（接続先・許可ホスト・環境プロファイル・開発用機能）を環境変数だけで変更でき、本番プロファイルでは開発用機能・デバッグを有効にできない。設定の記入例（.env.example）に秘密情報の値を含まない",
+      "coverage_key": "NFR-OM-17|Environment>config.settings>Middleware/INSTALLED_APPS|CONFIG|end-to-end-flow|env-specific-settings",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-118",
+      "requirement_id": "NFR-SC-12",
+      "related_adr": "ADDR-002, ADDR-003",
+      "integration_point": "API/Web>accounts.services",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "auth-means",
+      "expected_behavior": "購入者・管理者はメールアドレス＋パスワードで認証でき、誤ったメールアドレス・誤ったパスワードは区別しない同一応答、来訪者は認証なしで商品を閲覧できる",
+      "coverage_key": "NFR-SC-12|API/Web>accounts.services|AUTH|authentication|auth-means",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-119",
+      "requirement_id": "NFR-US-03",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>accounts/orders.services>DB>Template",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "jis-level3-4-roundtrip",
+      "expected_behavior": "氏名・配送先に JIS 第3・第4水準の漢字を入力して登録し、画面・API で同じ文字が表示される。画面は日本語（lang=ja）・UTF-8",
+      "coverage_key": "NFR-US-03|Web>accounts/orders.services>DB>Template|WEB|end-to-end-flow|jis-level3-4-roundtrip",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-120",
+      "requirement_id": "NFR-US-04",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>accounts/orders.services",
+      "test_category": "WEB",
+      "criterion": "api",
+      "condition": "input-error-identifiable-all",
+      "expected_behavior": "会員登録・注文手続きの画面で複数項目を誤って送信すると、誤りのある全項目分の理由を項目を識別できる形で1回で表示し、入力値を保持（パスワード除く）",
+      "coverage_key": "NFR-US-04|Web>accounts/orders.services|WEB|api|input-error-identifiable-all",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-121",
+      "requirement_id": "NFR-US-05, NFR-US-07, NFR-LG-08",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>Template(HTML structure)",
+      "test_category": "WEB",
+      "criterion": "api",
+      "condition": "accessible-html-structure",
+      "expected_behavior": "全画面の HTML が適合レベル A の機械判定可能な達成基準（言語・ページタイトル・フォーム部品のラベル・表見出し・キーボード操作可能なネイティブ部品・正の tabindex なし）を満たす（チェックリストによる目視・ブラウザ操作の確認は対象外）",
+      "coverage_key": "NFR-US-05, NFR-US-07, NFR-LG-08|Web>Template(HTML structure)|WEB|api|accessible-html-structure",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-122",
+      "requirement_id": "NFR-US-08",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web(SCR-001→002→005→006→007→008→010)",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "purchase-screen-count",
+      "expected_behavior": "ログイン済みの購入者が商品一覧から支払完了までを画面のリンク・フォームだけで操作し、経由する画面は7画面以内",
+      "coverage_key": "NFR-US-08|Web(SCR-001→002→005→006→007→008→010)|WEB|end-to-end-flow|purchase-screen-count",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-123",
+      "requirement_id": "NFR-US-09",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>Template(data-confirm)>site.js",
+      "test_category": "WEB",
+      "criterion": "api",
+      "condition": "confirm-before-irreversible",
+      "expected_behavior": "取消できない5操作（注文確定・注文キャンセル・出荷登録・配達完了登録・カート明細の削除）のフォームに確認文言があり、確認を求める画面の補助が読み込まれる（ブラウザの確認ダイアログの操作は対象外）",
+      "coverage_key": "NFR-US-09|Web>Template(data-confirm)>site.js|WEB|api|confirm-before-irreversible",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-124",
+      "requirement_id": "NFR-US-10",
+      "related_adr": "ADDR-004",
+      "integration_point": "Web>SubmitToken>orders.services>payments.gateway(mock)",
+      "test_category": "WEB",
+      "criterion": "database",
+      "condition": "double-submit-place-pay",
+      "expected_behavior": "注文確定・支払（承認）を処理完了前に繰り返しても注文・決済記録は1件、否認の後の支払は新たな支払として扱う",
+      "coverage_key": "NFR-US-10|Web>SubmitToken>orders.services>payments.gateway(mock)|WEB|database|double-submit-place-pay",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-125",
+      "requirement_id": "NFR-EN-01, NFR-EN-02, NFR-EN-09",
+      "related_adr": "ADDR-014",
+      "integration_point": "Runtime>Django>PostgreSQL",
+      "test_category": "CONFIG",
+      "criterion": "database",
+      "condition": "tech-stack-versions",
+      "expected_behavior": "実行環境が Python 3.12・Django 5.2・Django REST Framework 3.15 以上で、接続先が PostgreSQL 16。画面は Django テンプレートで、SPA・フロントエンドのビルド工程を持たない",
+      "coverage_key": "NFR-EN-01, NFR-EN-02, NFR-EN-09|Runtime>Django>PostgreSQL|CONFIG|database|tech-stack-versions",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-126",
+      "requirement_id": "NFR-LG-02",
+      "related_adr": "ADDR-012",
+      "integration_point": "Web>Template(price display)",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "tax-inclusive-display",
+      "expected_behavior": "商品価格は税込価格を主に表示し税抜価格を併記、カート・注文手続き・注文完了・注文詳細に消費税額と税込の合計を表示する",
+      "coverage_key": "NFR-LG-02|Web>Template(price display)|WEB|end-to-end-flow|tax-inclusive-display",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-127",
+      "requirement_id": "NFR-LG-09",
+      "related_adr": "ADDR-001, ADDR-012",
+      "integration_point": "API/Web>orders.services(prefecture)",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "jis-x0401-prefectures",
+      "expected_behavior": "配送先の都道府県は JIS X 0401 の47コード（01〜47）だけを受け付け、それ以外は入力エラー。画面の選択肢は47件で、名称で表示する",
+      "coverage_key": "NFR-LG-09|API/Web>orders.services(prefecture)|API|api|jis-x0401-prefectures",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-128",
+      "requirement_id": "NFR-PF-17",
+      "related_adr": "ADDR-008",
+      "integration_point": "orders.services>payments.client>PaymentGateway(substitute)",
+      "test_category": "API",
+      "criterion": "end-to-end-flow",
+      "condition": "gateway-substitution",
+      "expected_behavior": "決済連携部分（ゲートウェイの実装）だけを別実装に差し替えても、注文・在庫・金額・状態遷移の処理が変更なしで支払が完了する",
+      "coverage_key": "NFR-PF-17|orders.services>payments.client>PaymentGateway(substitute)|API|end-to-end-flow|gateway-substitution",
+      "revision": 2
+    },
+    {
+      "coverage_id": "RC-129",
+      "requirement_id": "NFR-US-10, FR-031",
+      "related_adr": "ADDR-004, ADDR-008, ADDR-011",
+      "integration_point": "Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services>payments.gateway(mock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "inflight-repeat-pay",
+      "expected_behavior": "支払（承認・否認）の処理中（決済応答待ち）に同じ送信トークンの「支払う」を別接続から繰り返すと、後着は送信トークンのロックで先着の終了まで待ち、決済要求は1回分だけ送信される。承認では後着は再判定どおり E-031-05、否認では後着は先着の結果（E-031-06）を通知し、決済記録は1件（NFR-US-10、BR-UC-007-014、ADDR-004 DD-002・DD-010・DD-013、4.4 検証方法）",
+      "coverage_key": "NFR-US-10, FR-031|Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services>payments.gateway(mock)|CONCURRENCY|database|inflight-repeat-pay",
+      "revision": 3
+    },
+    {
+      "coverage_id": "RC-130",
+      "requirement_id": "NFR-US-10, FR-031",
+      "related_adr": "ADDR-004, ADDR-008, ADDR-011",
+      "integration_point": "Web(同一トークン×別接続)>SubmitToken(advisory lock・outcome)>orders.services>payments.gateway(mock)",
+      "test_category": "CONCURRENCY",
+      "criterion": "error-handling",
+      "condition": "inflight-repeat-pay-system-error-interrupted",
+      "expected_behavior": "先着が承認の反映途中の障害（E-031-08）で終わる間、および先着が結果の記録前に中断した場合の繰り返し「支払う」でも決済要求は1回だけ送信し、後着は E-031-08 を通知する。決済記録・注文状態は変化せず、その後に新たに表示した支払画面からの操作は新たな支払（ADDR-004 DD-013・DD-015、4.3 の11、4.4 検証方法）",
+      "coverage_key": "NFR-US-10, FR-031|Web(同一トークン×別接続)>SubmitToken(advisory lock・outcome)>orders.services>payments.gateway(mock)|CONCURRENCY|error-handling|inflight-repeat-pay-system-error-interrupted",
+      "revision": 3
+    },
+    {
+      "coverage_id": "RC-131",
+      "requirement_id": "NFR-US-10, FR-030",
+      "related_adr": "ADDR-004, ADDR-011",
+      "integration_point": "Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services(place_order)>DB",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "inflight-repeat-place-order",
+      "expected_behavior": "注文確定の処理中に同じ送信トークンの「注文を確定する」を別接続から繰り返すと、注文は1件・在庫の減算は1回分で、後着はカートが空（E-030-04）としてカート画面へ遷移する（AC-UC-006-021・AC-UC-006-026、BR-UC-006-012、ADDR-004 DD-010・DD-013）",
+      "coverage_key": "NFR-US-10, FR-030|Web(同一トークン×別接続)>SubmitToken(advisory lock)>orders.services(place_order)>DB|CONCURRENCY|database|inflight-repeat-place-order",
+      "revision": 3
+    },
+    {
+      "coverage_id": "RC-132",
+      "requirement_id": "NFR-US-10, FR-021",
+      "related_adr": "ADDR-004, ADDR-011",
+      "integration_point": "Web(同一トークン×別接続)>SubmitToken(advisory lock)>carts.services(add_item)>DB",
+      "test_category": "CONCURRENCY",
+      "criterion": "database",
+      "condition": "inflight-repeat-cart-add",
+      "expected_behavior": "「カートに入れる」の処理中に同じ送信トークンで別接続から繰り返しても数量は1回分だけ加算され、後着は先着の結果（成功）を通知する（NFR-US-10、ADDR-004 DD-013、4.4 検証方法）",
+      "coverage_key": "NFR-US-10, FR-021|Web(同一トークン×別接続)>SubmitToken(advisory lock)>carts.services(add_item)>DB|CONCURRENCY|database|inflight-repeat-cart-add",
+      "revision": 3
+    },
+    {
+      "coverage_id": "RC-133",
+      "requirement_id": "NFR-US-10, FR-002",
+      "related_adr": "ADDR-004, ADDR-011",
+      "integration_point": "Web(同一トークン×別接続)>SubmitToken(advisory lock)>accounts.services(login_web)>AuditLog",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "inflight-repeat-login-failure",
+      "expected_behavior": "先着が E-002-02 で終わる間の繰り返し「ログイン」で、ログイン失敗の監査ログは1件、後着は照合せず先着の結果（E-002-02）を通知しログイン状態を作らない。送信トークンの記録に入力値を残さない（ADDR-004 DD-013・DD-016、4.4 検証方法）",
+      "coverage_key": "NFR-US-10, FR-002|Web(同一トークン×別接続)>SubmitToken(advisory lock)>accounts.services(login_web)>AuditLog|AUTH|authentication|inflight-repeat-login-failure",
+      "revision": 3
+    },
+    {
+      "coverage_id": "RC-134",
+      "requirement_id": "NFR-PF-12, NFR-AV-01",
+      "related_adr": "ADDR-014",
+      "integration_point": "compose.yaml(app,db)>Dockerfile>requirements*.txt>manage.py commands",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "no-scheduled-batch",
+      "expected_behavior": "定期的に実行するバッチ処理・定期ジョブの定義を持たない（NFR-PF-12「該当なし」の根拠の前提）。起動定義（compose のサービスは app・db のみ、app の起動は移行適用・静的ファイル収集・Gunicorn だけ、Dockerfile に定期実行の仕組みなし）、依存に定期実行のライブラリなし、管理コマンドは手動実行の初期データ一括投入・試験用状態と無効化した Django 付属の2件だけ。NFR-AV-01 の代替確認（計画停止以外にサービス停止を要する定期処理が無い）のうちリポジトリ内の起動定義の範囲",
+      "coverage_key": "NFR-PF-12, NFR-AV-01|compose.yaml(app,db)>Dockerfile>requirements*.txt>manage.py commands|CONFIG|end-to-end-flow|no-scheduled-batch",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-135",
+      "requirement_id": "NFR-SC-28",
+      "related_adr": "ADDR-001, ADDR-012",
+      "integration_point": "API(JsonBodyParser)/Web(Template)>Models",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "no-file-upload",
+      "expected_behavior": "画面・API にファイルをアップロードする機能が無い（NFR-SC-28「該当なし」の根拠の前提）。ファイルを保存する項目を持つデータが無く、画面にファイル選択部品・multipart のフォームが無く、業務処理がアップロードされたファイルを参照せず、Web API は JSON の本文だけを解釈し、ファイルを伴う multipart の要求は 400 input_error でデータを変更しない（ADDR-001 4.3 の7）",
+      "coverage_key": "NFR-SC-28|API(JsonBodyParser)/Web(Template)>Models|API|api|no-file-upload",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-136",
+      "requirement_id": "NFR-SC-13, NFR-SC-14",
+      "related_adr": "ADDR-002, ADDR-003",
+      "integration_point": "API/Web>accounts.services>AuditLog",
+      "test_category": "AUTH",
+      "criterion": "authentication",
+      "condition": "single-factor-no-lockout",
+      "expected_behavior": "購入者はメールアドレス＋パスワードだけで1回の要求でログインが完了し追加の認証要素を求めない（NFR-SC-13「該当なし」の前提）。誤ったパスワードでの失敗を API・画面で各10回続けた後も正しいパスワードでログインでき（アカウントロック・試行回数制限なし：NFR-SC-14「該当なし」の前提）、失敗は監査ログに1回につき1件、対象利用者付きで記録される（NFR-SC-14 の根拠）",
+      "coverage_key": "NFR-SC-13, NFR-SC-14|API/Web>accounts.services>AuditLog|AUTH|authentication|single-factor-no-lockout",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-137",
+      "requirement_id": "NFR-SC-13, NFR-SC-17, NFR-LG-04",
+      "related_adr": "ADDR-001, ADDR-012",
+      "integration_point": "URLconf(API/Web)>management commands>Template",
+      "test_category": "WEB",
+      "criterion": "api",
+      "condition": "out-of-scope-functions-absent",
+      "expected_behavior": "画面・API に多要素認証・パスワードの変更／再設定・特定商取引法に基づく表記の要求先が無く（該当しそうな要求は 404）、Django 付属の changepassword は何も変更せずにエラー終了し、画面に特定商取引法の表記が無い（NFR-SC-13・NFR-SC-17（FR-OUT-09）・NFR-LG-04（FR-OUT-16）の「該当なし」・対象外の前提）",
+      "coverage_key": "NFR-SC-13, NFR-SC-17, NFR-LG-04|URLconf(API/Web)>management commands>Template|WEB|api|out-of-scope-functions-absent",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-138",
+      "requirement_id": "NFR-SC-27",
+      "related_adr": "ADDR-001",
+      "integration_point": "API/Web>Middleware>DRF settings",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "no-per-source-rate-limit",
+      "expected_behavior": "同一の送信元からの短時間の連続要求（商品一覧 API・商品一覧画面・ログイン API）を送信元単位で制限しない（429 を返さない。NFR-SC-27「該当なし」の根拠の前提）",
+      "coverage_key": "NFR-SC-27|API/Web>Middleware>DRF settings|API|api|no-per-source-rate-limit",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-139",
+      "requirement_id": "NFR-AV-10, NFR-LG-10",
+      "related_adr": "ADDR-008",
+      "integration_point": "orders.services>payments.client>payments.gateway>payments.mock",
+      "test_category": "API",
+      "criterion": "api",
+      "condition": "in-process-mock-payment-only",
+      "expected_behavior": "決済サービスは本システム内の模擬機能だけで（使用する実装はプログラム内の既定で模擬機能）、決済の部品に外部通信のモジュールを使わず、実在の決済サービスの接続先・認証情報の設定項目・連携ライブラリを持たない（NFR-AV-10・NFR-LG-10 の「該当なし」の根拠の前提。外部通信0件は RC-108）",
+      "coverage_key": "NFR-AV-10, NFR-LG-10|orders.services>payments.client>payments.gateway>payments.mock|API|api|in-process-mock-payment-only",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-140",
+      "requirement_id": "NFR-EN-03, NFR-OM-05, NFR-EN-08",
+      "related_adr": "ADDR-014",
+      "integration_point": "compose.yaml(app,db)>Dockerfile>gunicorn.conf>config.wsgi",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "compose-single-start-gunicorn",
+      "expected_behavior": "Docker Compose の定義で全構成要素（アプリケーション・データベース）を1回の起動操作で起動する（app は db の正常性確認後に、移行適用→静的ファイル収集→Gunicorn を1つの起動コマンドで行う）。起動定義は本番運用向けの AP サーバー（Gunicorn）で Django 付属の開発用サーバーを含まず、Gunicorn の設定が指す WSGI アプリケーションが商品一覧画面を返す。依存に特定のクラウド基盤の SDK を含まない（compose での実際の起動・本番環境の構成は対象外）",
+      "coverage_key": "NFR-EN-03, NFR-OM-05, NFR-EN-08|compose.yaml(app,db)>Dockerfile>gunicorn.conf>config.wsgi|CONFIG|end-to-end-flow|compose-single-start-gunicorn",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-141",
+      "requirement_id": "NFR-EN-07",
+      "related_adr": "ADDR-014",
+      "integration_point": "app(production code)>Python stdlib>Dockerfile",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "os-independent-code",
+      "expected_behavior": "Production Code が特定の OS に固有のモジュールを読み込まず、OS 固有の絶対パスを書かない。OS はコンテナのベースイメージ（python:3.12-slim、ダイジェスト固定）だけで決まる",
+      "coverage_key": "NFR-EN-07|app(production code)>Python stdlib>Dockerfile|CONFIG|end-to-end-flow|os-independent-code",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-142",
+      "requirement_id": "NFR-SC-21, NFR-EN-10",
+      "related_adr": "ADDR-014",
+      "integration_point": "requirements*.txt>Dockerfile>compose.yaml>.venv>dependency-inventory",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "pinned-reproducible-dependencies",
+      "expected_behavior": "依存ライブラリ・実行環境の取得元と版が特定でき同じ構成を再現できる（VUL-10、NFR-SC-21 の対策方針の一部）：依存は全件が版固定とハッシュ付き、イメージ構築は --require-hashes、ベースイメージ・DB イメージはダイジェスト固定、試験環境の版が固定した版と一致し、依存の一覧の版と一致する。採用製品の版が NFR-EN-10 のサポート期限の前提の版（Django 5.2 LTS 2028-04、Python 3.12 2028-10、PostgreSQL 16 2028-11）である（更新計画は対象外）",
+      "coverage_key": "NFR-SC-21, NFR-EN-10|requirements*.txt>Dockerfile>compose.yaml>.venv>dependency-inventory|CONFIG|end-to-end-flow|pinned-reproducible-dependencies",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-143",
+      "requirement_id": "NFR-EN-12",
+      "related_adr": "ADDR-014",
+      "integration_point": "requirements*.txt>.venv(package metadata)",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "dependency-licenses",
+      "expected_behavior": "固定した全依存ライブラリのライセンスがパッケージのメタデータから特定でき（ライセンス不明 0件）、AGPL のものが無い（利用条件の充足の判断は対象外）",
+      "coverage_key": "NFR-EN-12|requirements*.txt>.venv(package metadata)|CONFIG|end-to-end-flow|dependency-licenses",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-144",
+      "requirement_id": "NFR-EN-11",
+      "related_adr": "ADDR-014",
+      "integration_point": "ruff.toml>ruff>repository sources",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "static-analysis-zero",
+      "expected_behavior": "リポジトリの規約設定（ruff.toml。pycodestyle の E・W を含む）で全ソースコードを静的解析し違反0件（規則の選択が PEP 8 に一致するかは対象外）",
+      "coverage_key": "NFR-EN-11|ruff.toml>ruff>repository sources|CONFIG|end-to-end-flow|static-analysis-zero",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-145",
+      "requirement_id": "NFR-PF-16",
+      "related_adr": "ADDR-002, ADDR-014",
+      "integration_point": "gunicorn.conf(GUNICORN_WORKERS)>SessionStore(DB)>ApiLoginState(DB)>Cart(DB)",
+      "test_category": "CONFIG",
+      "criterion": "database",
+      "condition": "scale-out-state-preserved",
+      "expected_behavior": "処理能力の増強（実行単位内のプロセス数）を環境変数だけで変更でき、画面のログイン状態・Web API のログイン状態・カートの内容がデータベースに保持され、別のプロセスから同じ Cookie・Bearer でログイン中のカートを参照できる（増強手順のレビュー・2倍の負荷は対象外）",
+      "coverage_key": "NFR-PF-16|gunicorn.conf(GUNICORN_WORKERS)>SessionStore(DB)>ApiLoginState(DB)>Cart(DB)|CONFIG|database|scale-out-state-preserved",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-146",
+      "requirement_id": "NFR-SC-25",
+      "related_adr": "ADDR-009, ADDR-011",
+      "integration_point": "seed/initial_data.json>tests fixtures",
+      "test_category": "CONFIG",
+      "criterion": "database",
+      "condition": "fictional-initial-data",
+      "expected_behavior": "リポジトリの初期データ（検証用の定義ファイル）の利用者のメールアドレスは全件 example.com（VDC-01 の作成方法）で、それ以外のドメインを含まず、試験用の利用者は予約済みドメイン（example.test）で作る",
+      "coverage_key": "NFR-SC-25|seed/initial_data.json>tests fixtures|CONFIG|database|fictional-initial-data",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-147",
+      "requirement_id": "NFR-OM-19",
+      "related_adr": "ADDR-010, ADDR-014",
+      "integration_point": "README(ENV-01 手順)>.env.example>compose.yaml>manage.py>pytest/ruff",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "dev-procedure-document",
+      "expected_behavior": "開発・検証環境向けの手順書に、環境ごとの設定（秘密情報を含む）の作成・構築・起動・停止・データベースの初期化・初期データ一括投入・自動テスト・静的解析の手順があり、手順が参照するファイル・サービス・コマンドが存在し、初期データ一括投入の手順（seed/initial_data.json、--reset）が成功する（本番運用手順書・compose での構築・起動の実施は対象外）",
+      "coverage_key": "NFR-OM-19|README(ENV-01 手順)>.env.example>compose.yaml>manage.py>pytest/ruff|CONFIG|end-to-end-flow|dev-procedure-document",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-148",
+      "requirement_id": "NFR-LG-03",
+      "related_adr": "ADDR-004, ADDR-012",
+      "integration_point": "API>orders.services>DB(OrderItem/ShippingAddress/PaymentRecord/OrderStatusHistory)",
+      "test_category": "DATABASE",
+      "criterion": "state-transition",
+      "condition": "order-records-immutable",
+      "expected_behavior": "注文明細・配送先・決済記録・注文状態履歴は登録後に変更・削除されず（決済記録・履歴は追記のみ）、注文の登録後の更新は注文状態の遷移（支払・出荷登録・配達完了登録・キャンセル）に伴う注文状態・日時・配送伝票番号だけ（NFR-LG-03 の対応方針の一部。7年保存・削除手順は対象外）",
+      "coverage_key": "NFR-LG-03|API>orders.services>DB(OrderItem/ShippingAddress/PaymentRecord/OrderStatusHistory)|DATABASE|state-transition|order-records-immutable",
+      "revision": 4
+    },
+    {
+      "coverage_id": "RC-149",
+      "requirement_id": "NFR-US-01, NFR-US-02, NFR-US-06",
+      "related_adr": "ADDR-012, ADDR-014",
+      "integration_point": "Browser(Edge/Chrome, Windows 11)>Web>Static",
+      "test_category": "WEB",
+      "criterion": "end-to-end-flow",
+      "condition": "browser-display-and-operation",
+      "expected_behavior": "Windows 11 の PC にインストールした Microsoft Edge・Google Chrome で、表示領域 1280×720・表示倍率 100% のとき、全画面（SCR-001〜SCR-010、SCR-101〜SCR-103、SCR-901）が想定の状態コードで表示され、資源の読込失敗・スクリプトの例外・外部への要求が無く、横スクロール（表示領域の幅を超える内容・要素）が無い。来訪者・購入者・管理者の代表操作（会員登録・ログイン・カートに入れる・クーポン適用・注文確定・支払・キャンセル・出荷登録・配達完了登録・ログアウト）をブラウザのフォーム送信と確認ダイアログで行える（ヘッドレス表示。目視の表示崩れ・全操作の網羅・最新版であることは対象外）",
+      "coverage_key": "NFR-US-01, NFR-US-02, NFR-US-06|Browser(Edge/Chrome, Windows 11)>Web>Static|WEB|end-to-end-flow|browser-display-and-operation",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-150",
+      "requirement_id": "NFR-PF-03",
+      "related_adr": "ADDR-012",
+      "integration_point": "Browser(Edge/Chrome)>Web>Static",
+      "test_category": "PERF",
+      "criterion": "end-to-end-flow",
+      "condition": "screen-display-time-reference",
+      "expected_behavior": "全画面（14画面）を各ブラウザで30回以上表示し、画面要求の送信から構成に必要な全資源の読込完了（load イベント終了）までの時間の95パーセンタイルを画面ごとに記録し、単一利用者・小データ量でも 2.0秒以内（ピーク負荷・3年後データ量・ENV-01 の判定は対象外）",
+      "coverage_key": "NFR-PF-03|Browser(Edge/Chrome)>Web>Static|PERF|end-to-end-flow|screen-display-time-reference",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-151",
+      "requirement_id": "NFR-PF-06",
+      "related_adr": "ADDR-001",
+      "integration_point": "API/Web>services>DB(3年後データ量)",
+      "test_category": "PERF",
+      "criterion": "database",
+      "condition": "three-year-data-volume-reference",
+      "expected_behavior": "3年後相当のデータ量（VDC-01〜VDC-03 の件数：注文 110,000・注文明細 330,000・会員 10,000・商品 600・在庫単位 1,600 等）の DB で、照会系・更新系 API と画面の応答時間の95パーセンタイルを記録し、単一利用者でも目標値（照会 1.0秒・更新 2.0秒・画面 2.0秒）以内（ピーク負荷・ENV-01 の判定は対象外）",
+      "coverage_key": "NFR-PF-06|API/Web>services>DB(3年後データ量)|PERF|database|three-year-data-volume-reference",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-152",
+      "requirement_id": "NFR-PF-05, NFR-PF-04, NFR-PF-14, NFR-PF-15, NFR-PF-03",
+      "related_adr": "ADDR-001, ADDR-011",
+      "integration_point": "VirtualUsers(155)>HTTP>Web/API>DB",
+      "test_category": "PERF",
+      "criterion": "end-to-end-flow",
+      "condition": "concurrent-users-reference",
+      "expected_behavior": "同時155の仮想利用者（購入者・来訪者 150、管理者 5、思考時間 5〜15秒、照会：更新＝8：2＋認証系、業務エラーにならない条件）の負荷で、システムエラー0件・要求の全件成功・照会/更新/認証の95パーセンタイルが目標値以内、注文確定の到着 4件/分（異なる購入者、3明細・5点）の全件成功、負荷中のブラウザ表示の95パーセンタイル 2.0秒以内を確認し、アプリケーション・DB の CPU・メモリ使用量と応答時間の推移を記録する（60分・2時間の連続負荷・3年後データ量・ENV-01 の判定は対象外）",
+      "coverage_key": "NFR-PF-05, NFR-PF-04, NFR-PF-14, NFR-PF-15, NFR-PF-03|VirtualUsers(155)>HTTP>Web/API>DB|PERF|end-to-end-flow|concurrent-users-reference",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-153",
+      "requirement_id": "NFR-PF-11",
+      "related_adr": "ADDR-004, ADDR-011",
+      "integration_point": "VirtualUsers(310)>HTTP>API>orders.services>DB",
+      "test_category": "PERF",
+      "criterion": "database",
+      "condition": "overload-consistency-reference",
+      "expected_behavior": "想定の2倍（310）の仮想利用者で在庫不足が起きる負荷をかけた後、システムエラーとなる応答の割合が 1%以下、在庫数量が0未満の在庫単位 0件、金額整合を満たさない注文 0件、在庫の増減と注文明細（キャンセル以外）が一致（10分間・3年後データ量は対象外）",
+      "coverage_key": "NFR-PF-11|VirtualUsers(310)>HTTP>API>orders.services>DB|PERF|database|overload-consistency-reference",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-154",
+      "requirement_id": "NFR-SC-11",
+      "related_adr": "ADDR-014",
+      "integration_point": "requirements*.txt>OSV(公開脆弱性情報)>PyPI",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "dependency-known-vulnerabilities",
+      "expected_behavior": "固定した全依存ライブラリ（app/requirements.txt・requirements-dev.txt）を開発時に公開脆弱性情報（OSV）と照合し、照合対象が固定した版と一致し、CVSS 7.0以上（または重大度 HIGH/CRITICAL）・重大度不明の既知の脆弱性が0件（リリース前の再照合・コンテナイメージの OS パッケージは対象外）",
+      "coverage_key": "NFR-SC-11|requirements*.txt>OSV(公開脆弱性情報)>PyPI|CONFIG|end-to-end-flow|dependency-known-vulnerabilities",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-155",
+      "requirement_id": "NFR-LG-01",
+      "related_adr": "ADDR-001, ADDR-012, ADDR-013",
+      "integration_point": "API/Web>services>Logging>URLconf>socket",
+      "test_category": "SECURITY",
+      "criterion": "authentication",
+      "condition": "personal-information-handling",
+      "expected_behavior": "利用者の個人情報（メールアドレス・氏名・配送先）を扱う一連の操作（会員登録・ログイン・注文確定・支払・照会・管理者の検索）で、ログに個人情報・パスワードを出力せず、ファイルとして出力する要求先・応答が無く、外部へ送信しない。注文の参照は本人と管理者に限られる（利用目的の表示・通信の暗号化・法令適合の判断は対象外）",
+      "coverage_key": "NFR-LG-01|API/Web>services>Logging>URLconf>socket|SECURITY|authentication|personal-information-handling",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-156",
+      "requirement_id": "NFR-SC-29, NFR-LG-07",
+      "related_adr": "ADDR-001, ADDR-002, ADDR-012",
+      "integration_point": "Web/API(全要求先)>Middleware>services",
+      "test_category": "SECURITY",
+      "criterion": "api",
+      "condition": "dynamic-probe-all-endpoints",
+      "expected_behavior": "全画面・全 API に対し、利用者区分ごとのアクセス制御（VUL-01）、CSRF トークンなしの更新要求と参照用の要求での更新（VUL-06）、検索条件・パス・本文への攻撃文字列（VUL-04・VUL-05・VUL-13）を送り、システムエラー・無害化されない反映・内部情報の露出・セキュリティヘッダーの欠落が無く、外部へ要求を送る部品が無い（VUL-12）（診断ツールによる診断・指摘の対処は対象外）",
+      "coverage_key": "NFR-SC-29, NFR-LG-07|Web/API(全要求先)>Middleware>services|SECURITY|api|dynamic-probe-all-endpoints",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-157",
+      "requirement_id": "NFR-SC-20",
+      "related_adr": "ADDR-002, ADDR-006, ADDR-013, ADDR-014",
+      "integration_point": "settings>Models>Sessions>Logging>production code",
+      "test_category": "CONFIG",
+      "criterion": "database",
+      "condition": "persistent-data-only-in-database",
+      "expected_behavior": "保存データの所在がデータベースだけで（ファイル項目・ファイル型のセッション/キャッシュ・ファイルへの書込み・ログファイルが無い）、データベースとバックアップの暗号化で全保存データが対象になる前提（本番の暗号化の設定は対象外）",
+      "coverage_key": "NFR-SC-20|settings>Models>Sessions>Logging>production code|CONFIG|database|persistent-data-only-in-database",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-158",
+      "requirement_id": "NFR-OM-02",
+      "related_adr": "ADDR-008, ADDR-010, ADDR-013",
+      "integration_point": "Logging(stdout JSON)>gunicorn.conf>production code",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "application-log-output",
+      "expected_behavior": "LOG-01〜LOG-03・LOG-05・LOG-06 が標準出力へ1行1件の JSON（日本時間の日時・ログの種類・要求の識別子）で出力され、ファイル・ローテーションのハンドラーが無く、アプリケーションがログを削除しない（ENV-02 での90日保管・検索は対象外）",
+      "coverage_key": "NFR-OM-02|Logging(stdout JSON)>gunicorn.conf>production code|CONFIG|end-to-end-flow|application-log-output",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-159",
+      "requirement_id": "NFR-OM-03",
+      "related_adr": "ADDR-006, ADDR-010, ADDR-012",
+      "integration_point": "AuditLog(DB)>initial_data(--reset)>production code",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "audit-log-retention-premise",
+      "expected_behavior": "監査ログは DB に発生日時付きで追記のみで記録され、更新・削除の操作は拒否され、利用者への外部キーを持たず、初期データ一括投入（--reset）を含む本システムのどの処理も削除しない（1年保管・運用手順書の削除手順は対象外）",
+      "coverage_key": "NFR-OM-03|AuditLog(DB)>initial_data(--reset)>production code|DATABASE|database|audit-log-retention-premise",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-160",
+      "requirement_id": "NFR-SC-26",
+      "related_adr": "ADDR-012, ADDR-014",
+      "integration_point": "URLconf>HttpsOnlyMiddleware>gunicorn.conf>Dockerfile",
+      "test_category": "CONFIG",
+      "criterion": "end-to-end-flow",
+      "condition": "single-https-user-service",
+      "expected_behavior": "利用者向けサービス（画面・API・管理者の画面/API）は1つの待受け（Gunicorn の bind 1件、EXPOSE 8000）だけで提供し、本番プロファイルでは全要求先で HTTPS 以外を拒否し、管理サイト・デバッグ用の要求先・遠隔ログインのソフトウェアが無い（本番のネットワーク設定は対象外。compose.yaml の公開範囲は既知の未解決 SEC-IMPL-002 の対象で根拠に用いない）",
+      "coverage_key": "NFR-SC-26|URLconf>HttpsOnlyMiddleware>gunicorn.conf>Dockerfile|CONFIG|end-to-end-flow|single-https-user-service",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-161",
+      "requirement_id": "NFR-MG-05",
+      "related_adr": "ADDR-009, ADDR-010",
+      "integration_point": "load_initial_data>loader>StockUnit",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "initial-load-stock-sheet",
+      "expected_behavior": "初期データ一括投入は投入時点の在庫管理表の値（定義ファイルの在庫数量）をそのまま反映し、更新後の在庫管理表の値で再投入（--reset）すると後の値に置き換わる（移行計画の実施日・実施者・確定時刻のレビューは対象外）",
+      "coverage_key": "NFR-MG-05|load_initial_data>loader>StockUnit|DATABASE|database|initial-load-stock-sheet",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-162",
+      "requirement_id": "NFR-AV-04, NFR-AV-07, NFR-AV-08, NFR-AV-12, NFR-PF-13",
+      "related_adr": "ADDR-001, ADDR-011",
+      "integration_point": "DB(PostgreSQL 16)>pg_dump/pg_restore>API/Web/initial_data",
+      "test_category": "DATABASE",
+      "criterion": "database",
+      "condition": "backup-restore-resume",
+      "expected_behavior": "3年後相当のデータで、利用者の要求を処理しながら（全要求が成功）全データ（監査ログを含む）のバックアップを取得でき、全データの喪失後にバックアップから復元すると取得時点のデータ（取得前の注文あり・取得後の注文なし）に戻り、障害前の全業務（来訪者・購入者・管理者の操作、初期データ一括投入）を再開できる。リストア時間を記録する（本番のバックアップ方式・3:00・7世代・保管場所は対象外）",
+      "coverage_key": "NFR-AV-04, NFR-AV-07, NFR-AV-08, NFR-AV-12, NFR-PF-13|DB(PostgreSQL 16)>pg_dump/pg_restore>API/Web/initial_data|DATABASE|database|backup-restore-resume",
+      "revision": 5
+    },
+    {
+      "coverage_id": "RC-163",
+      "requirement_id": "NFR-OM-15",
+      "related_adr": "ADDR-014",
+      "integration_point": "migrations(catalog 0002)>pg_dump/pg_restore>Web/API",
+      "test_category": "CONFIG",
+      "criterion": "database",
+      "condition": "update-and-rollback",
+      "expected_behavior": "3年後相当のデータで、データ構造の変更を含む更新（マイグレーションの適用）と起動確認を行い、更新直前のバックアップから切戻すとデータ構造・データが更新前の状態に戻り、所要時間（取得・更新・切戻し）が 120分以内（プログラムの入替え・ENV-01 での実施は対象外）",
+      "coverage_key": "NFR-OM-15|migrations(catalog 0002)>pg_dump/pg_restore>Web/API|CONFIG|database|update-and-rollback",
+      "revision": 5
+    }
+  ]
+}

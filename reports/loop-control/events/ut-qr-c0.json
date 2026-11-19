@@ -1,0 +1,25 @@
+{
+  "signature": {
+    "origin_phase": "UNIT_TEST",
+    "classification": "TEST_ERROR",
+    "artifact": "app/tests/unit",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "unit_test_quality_QR-UT-1118-001-006"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "ut-qr-run-0",
+  "validation_result": "reports/loop-control/checks/ut-quality.json",
+  "repair": "",
+  "impact": "QR-UT-1118-001 判定順序ACの単体テスト欠落、002 evidence文字化け、003-006 LOW",
+  "recommended_route": "UNIT_TEST",
+  "errors": [
+    "Unit Test validation-result status is not PASS: 'FAIL'",
+    "Applicable criterion is not PASS: architecture-quality",
+    "Applicable criterion is not PASS: cross-phase-consistency",
+    "Applicable criterion is not PASS: implementation-quality",
+    "Applicable criterion is not PASS: unit-test-quality",
+    "Unresolved blocking Quality Review Issue(s): 2"
+  ]
+}

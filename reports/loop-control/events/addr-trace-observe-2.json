@@ -1,0 +1,28 @@
+{
+  "signature": {
+    "origin_phase": "ARCHITECTURE",
+    "classification": "DESIGN_ERROR",
+    "artifact": "docs/architecture",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "design_quality_QR-ARCH-001-004"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "addr-trace-run-2",
+  "validation_result": "reports/traceability/validation-result.json",
+  "repair": "",
+  "impact": "設計Gate/request/handoff欠落によるADDR Trace FAIL(新規なし)",
+  "recommended_route": "ARCHITECTURE",
+  "errors": [
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate snapshot coverage differs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate assurance: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate requires three independent Assurance results（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'（差し戻し先: ADDR）"
+  ]
+}

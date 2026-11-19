@@ -1,0 +1,17 @@
+{# trace: ADDR-012, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>注文完了</h1>
+<p>ご注文を受け付けました。</p>
+<dl>
+  <dt>注文番号</dt><dd>{{ order.order_number }}</dd>
+  <dt>合計（税込）</dt><dd>{{ order.amounts.total_amount|yen }}</dd>
+  <dt>注文状態</dt><dd>{{ order.status_label }}</dd>
+</dl>
+{% if order.can_pay %}
+  <p>お支払いの完了後に出荷します。</p>
+  <p><a href="/orders/{{ order.order_id }}/payment/">支払へ進む</a></p>
+{% endif %}
+<p><a href="/orders/{{ order.order_id }}/">注文詳細を見る</a></p>
+{% endblock %}

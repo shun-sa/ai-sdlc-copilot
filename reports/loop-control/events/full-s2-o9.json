@@ -1,0 +1,20 @@
+{
+  "signature": {
+    "origin_phase": "FULL",
+    "classification": "TEST_ERROR",
+    "artifact": "docs/requirements/non_functional_requirements.md",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "nfr_test_traceability_missing_C10"
+  },
+  "action": "OBSERVE",
+  "cycle": 3,
+  "run_id": "full-s2-o9",
+  "validation_result": "reports/loop-control/checks/full-security.json",
+  "repair": "",
+  "impact": "FULL最終Security: security-test-coverage(NFR-SC-29等の正式診断未実施)",
+  "recommended_route": "INTEGRATION_TEST",
+  "errors": [
+    "Applicable criterion is not PASS: security-test-coverage"
+  ]
+}

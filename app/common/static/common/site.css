@@ -1,0 +1,18 @@
+/* trace: ADDR-012 */
+body { font-family: sans-serif; margin: 0; color: #222; background: #fff; }
+.site-header { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; padding: .5rem 1rem; border-bottom: 1px solid #ccc; }
+.site-header nav { display: flex; gap: 1rem; align-items: center; }
+.site-name { font-weight: bold; font-size: 1.2rem; }
+.inline-form { display: inline-flex; gap: .3rem; align-items: center; margin: 0; }
+main { padding: 1rem; max-width: 1200px; }
+table { border-collapse: collapse; width: 100%; margin: .5rem 0; }
+th, td { border: 1px solid #ccc; padding: .3rem .5rem; text-align: left; vertical-align: top; word-break: break-all; }
+.messages { list-style: none; padding: 0; }
+.message { padding: .4rem .6rem; border: 1px solid #888; margin: .3rem 0; }
+.message.error, .field-error { color: #a00; }
+.required-mark::after { content: "（必須）"; color: #a00; }
+.pagination { display: flex; gap: .6rem; margin: .8rem 0; }
+.preserve-lines { white-space: pre-wrap; }
+label { margin-right: .3rem; }
+.form-row { margin: .4rem 0; }
+:focus { outline: 2px solid #1a5fb4; outline-offset: 1px; }

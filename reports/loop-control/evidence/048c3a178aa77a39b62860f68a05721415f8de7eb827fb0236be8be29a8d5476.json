@@ -1,0 +1,31 @@
+{
+  "status": "FAIL",
+  "audit_scope": "REQUIREMENTS",
+  "source_baseline_sha256": "02eb009bf2f4078cdfd3e90d1519e829d7a72a3b07c4fcd199b4bf7ade86eb41",
+  "criteria": {
+    "discovered": [
+      "authentication-authorization",
+      "cross-phase-security-consistency",
+      "data-protection",
+      "dependency-configuration",
+      "error-logging",
+      "input-validation-injection",
+      "secret-credentials",
+      "security-test-coverage"
+    ],
+    "total": 8,
+    "pass": 2,
+    "not_applicable": 4,
+    "fail": 2
+  },
+  "issues": {
+    "total": 4,
+    "unresolved": 4,
+    "blocking": 3
+  },
+  "errors": [
+    "Applicable criterion is not PASS: authentication-authorization",
+    "Applicable criterion is not PASS: data-protection",
+    "Unresolved blocking Security Review Issue(s): 3"
+  ]
+}

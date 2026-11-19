@@ -1,0 +1,8 @@
+{
+  "status": "BLOCKED",
+  "check_id": "producer",
+  "audit_scope": "INTEGRATION_TEST",
+  "agent": "IntegrationTest",
+  "reason": "final IMPLEMENTATION_FIX_REQUIRED due to known UNRESOLVED-6de5eec64599b907 (IT-058)",
+  "related_issue": "UNRESOLVED-6de5eec64599b907"
+}

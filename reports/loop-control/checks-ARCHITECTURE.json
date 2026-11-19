@@ -1,0 +1,8 @@
+{
+  "producer": "reports/loop-control/checks/arch-producer.json",
+  "design_final": "reports/loop-control/checks/arch-design-final.json",
+  "quality": "reports/loop-control/checks/arch-quality-rework.json",
+  "security": "reports/loop-control/checks/arch-security-rework.json",
+  "traceability": "reports/loop-control/checks/arch-traceability-rework.json",
+  "architecture_gate": "reports/loop-control/checks/arch-design-gate.json"
+}

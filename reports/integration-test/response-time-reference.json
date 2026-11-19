@@ -1,0 +1,222 @@
+{
+  "condition": "結合試験の参考計測（単一利用者・逐次・小データ量、試験クライアントの処理時間を含む）。NFR-PF-01/02/09 の測定条件（ピーク負荷 同時155利用者・3年後データ量）の判定ではない",
+  "measured_at": "2026-11-20T04:05:12+09:00",
+  "summary": {
+    "auth.login": {
+      "requests": 100,
+      "p95_seconds": 0.3142,
+      "max_seconds": 0.3375,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "auth.logout": {
+      "requests": 100,
+      "p95_seconds": 0.0075,
+      "max_seconds": 0.0105,
+      "limit_seconds": 2.0,
+      "statuses": [
+        204
+      ]
+    },
+    "auth.me": {
+      "requests": 100,
+      "p95_seconds": 0.0042,
+      "max_seconds": 0.0061,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "auth.register": {
+      "requests": 100,
+      "p95_seconds": 0.3141,
+      "max_seconds": 0.3481,
+      "limit_seconds": 2.0,
+      "statuses": [
+        201
+      ]
+    },
+    "read.admin_order_detail": {
+      "requests": 100,
+      "p95_seconds": 0.0105,
+      "max_seconds": 0.0225,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.admin_orders": {
+      "requests": 100,
+      "p95_seconds": 0.0085,
+      "max_seconds": 0.0132,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.cart": {
+      "requests": 100,
+      "p95_seconds": 0.0099,
+      "max_seconds": 0.0295,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.categories": {
+      "requests": 100,
+      "p95_seconds": 0.0016,
+      "max_seconds": 0.0031,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.order_detail": {
+      "requests": 100,
+      "p95_seconds": 0.0091,
+      "max_seconds": 0.0188,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.order_history": {
+      "requests": 100,
+      "p95_seconds": 0.0076,
+      "max_seconds": 0.0129,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.product_detail": {
+      "requests": 100,
+      "p95_seconds": 0.005,
+      "max_seconds": 0.0622,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.products": {
+      "requests": 100,
+      "p95_seconds": 0.0653,
+      "max_seconds": 0.0748,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "read.stock_units": {
+      "requests": 100,
+      "p95_seconds": 0.0102,
+      "max_seconds": 0.016,
+      "limit_seconds": 1.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.admin_cancel": {
+      "requests": 100,
+      "p95_seconds": 0.02,
+      "max_seconds": 0.0284,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.buyer_cancel": {
+      "requests": 100,
+      "p95_seconds": 0.0159,
+      "max_seconds": 0.0284,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.cart_add": {
+      "requests": 100,
+      "p95_seconds": 0.016,
+      "max_seconds": 0.0429,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.cart_change": {
+      "requests": 100,
+      "p95_seconds": 0.0153,
+      "max_seconds": 0.0241,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.cart_delete": {
+      "requests": 100,
+      "p95_seconds": 0.0158,
+      "max_seconds": 0.0542,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.coupon_apply": {
+      "requests": 100,
+      "p95_seconds": 0.0136,
+      "max_seconds": 0.0599,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.coupon_remove": {
+      "requests": 100,
+      "p95_seconds": 0.0107,
+      "max_seconds": 0.0168,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.deliver": {
+      "requests": 100,
+      "p95_seconds": 0.0154,
+      "max_seconds": 0.1076,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.pay": {
+      "requests": 100,
+      "p95_seconds": 0.0149,
+      "max_seconds": 0.0657,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    },
+    "update.place": {
+      "requests": 300,
+      "p95_seconds": 0.0449,
+      "max_seconds": 0.1081,
+      "limit_seconds": 2.0,
+      "statuses": [
+        201
+      ]
+    },
+    "update.ship": {
+      "requests": 100,
+      "p95_seconds": 0.0209,
+      "max_seconds": 0.0243,
+      "limit_seconds": 2.0,
+      "statuses": [
+        200
+      ]
+    }
+  }
+}

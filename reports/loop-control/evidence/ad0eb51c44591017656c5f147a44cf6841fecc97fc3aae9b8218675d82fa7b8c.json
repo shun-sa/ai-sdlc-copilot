@@ -1,0 +1,1001 @@
+{
+  "status": "FAIL",
+  "audit_scope": "FULL",
+  "method": "inline-annotation",
+  "source_baseline_sha256": "fea9a82a98b5e04a5b79e5e0fbbff4cddf37a3b19748634ee5d47b7bbe69865c",
+  "errors": [
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Design Gate snapshot coverage differs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate assurance: expected object array（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Gate requires three independent Assurance results（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ADDR）",
+    "[C01] reports/addr/implementation-handoff.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'（差し戻し先: ADDR）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\architecture-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\architecture-gate.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate is not PASS（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate requires ARCHITECTURE PASS（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Design Gate snapshot coverage differs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate assurance: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate requires three independent Assurance results（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Implementation handoff differs from frozen Architecture/ADDR inputs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Implementation release requires an independent ADDR Gate（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate snapshot coverage differs（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Gate assurance: expected object array（差し戻し先: ARCHITECTURE）",
+    "[C01] reports/architecture/architecture-gate.json: Architecture Gate requires three Assurance results（差し戻し先: ARCHITECTURE）",
+    "[C12] docs/requirements/expected-fr.txt:29: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-01: 対象外機能「実決済サービスとの連携」。理由: 決済代行事業者が未選定。代替手段・担当: 模擬決済（決済サービス（模擬））で代替する。後続フェーズで検討する'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:30: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-02: 対象外機能「商品・商品分類・仕入先・在庫単位・クーポンの画面／Web API による登録・更新・削除（マスタ保守）」。理由: 初期商品数が限られ、改廃頻度が低い。代替手段・担当: 運用者が初期データ一括投入（FR-060）で登録・再投入する'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:31: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-03: 対象外機能「入荷・在庫補充の登録」。理由: 現行の在庫管理表で運用を継続する。代替手段・担当: 稼働開始時の在庫数量は初期データ一括投入（FR-060）で登録する。稼働後の補充分の反映方法は FOQ-01 で決定する（本リリースは登録済みの在庫数量を補充する機能を持たない）'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:32: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-04: 対象外機能「返品・返金・部分出荷・分割配送」。理由: 件数が少ない。代替手段・担当: 支払済注文のキャンセル時の返金は、EC運営担当が本システム外で手作業で対応する'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:33: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-05: 対象外機能「複数クーポンの併用、ポイント、ギフト券、自動適用の割引キャンペーン」。理由: 割引は単一クーポンに限定する。代替手段・担当: 実施しない'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:34: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-06: 対象外機能「多通貨・多言語・海外配送・多国税制」。理由: 国内向け販売のみ。代替手段・担当: 実施しない（日本語・日本円・国内のみ）'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:35: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-07: 対象外機能「配送業者との連携、住所検証、配送日時指定、送料の地域別設定」。理由: 出荷は運営側の手作業で行う。代替手段・担当: 管理者が出荷登録（FR-043）・配達完了登録（FR-044）を行う'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:36: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-08: 対象外機能「メールその他の手段による利用者への通知（注文確認メールを含む）」。理由: 初期リリースでは画面・Web API での状態確認で代替する。代替手段・担当: 実施しない'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:37: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-09: 対象外機能「会員情報の変更、パスワード再設定、退会」。理由: 初期リリースの範囲を限定する。代替手段・担当: EC運営担当が問い合わせを受けて個別に対応する（本システム外）'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:38: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-10: 対象外機能「未ログイン状態でのカート利用（ゲスト購入）」。理由: 会員向けサービスとして開始する。代替手段・担当: カート・注文はログインを必須とする'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:39: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-11: 対象外機能「認証失敗時のアカウントロック、ログイン試行回数の制限」。理由: 初期リリースの範囲を限定する。代替手段・担当: 実施しない（後続フェーズで検討する）'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:40: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-12: 対象外機能「未払い注文の自動キャンセル（期限切れ処理）」。理由: 初期リリースの範囲を限定する。代替手段・担当: 購入者（FR-034）または管理者（FR-045）がキャンセルする'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:41: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-13: 対象外機能「商品画像、商品レビュー、お気に入り、おすすめ表示」。理由: 初期リリースの範囲を限定する。代替手段・担当: 実施しない'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:42: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-14: 対象外機能「スマートフォン専用画面」。理由: 初期リリースはPCブラウザを対象とする。代替手段・担当: 後続フェーズで検討する'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:43: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-15: 対象外機能「帳票（PDF・CSVを含むファイル出力）」。理由: 一覧画面での確認で足りる。代替手段・担当: 実施しない'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt:44: 実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-16: 対象外機能「「特定商取引法に基づく表記」を含む静的ページ」。理由: サイト運営側の静的コンテンツとして別途用意する。代替手段・担当: 本システムの対象外'（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-01 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-02 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-03 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-04 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-05 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-06 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-07 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-08 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-09 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-10 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-11 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-12 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-13 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-14 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-15 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C12] docs/requirements/expected-fr.txt: 正本の FR-OUT-16 が実装対象／対象外のどちらにもありません。（差し戻し先: REQUIREMENTS）",
+    "[C10] docs/requirements/functional_requirements.md:70: FR-OUT-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:71: FR-OUT-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:72: FR-OUT-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:73: FR-OUT-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:74: FR-OUT-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:75: FR-OUT-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:76: FR-OUT-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:77: FR-OUT-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:78: FR-OUT-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:79: FR-OUT-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:80: FR-OUT-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:81: FR-OUT-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:82: FR-OUT-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:83: FR-OUT-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:84: FR-OUT-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/functional_requirements.md:85: FR-OUT-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:107: NFR-AV-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:106: NFR-AV-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:113: NFR-AV-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:108: NFR-AV-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:109: NFR-AV-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:110: NFR-AV-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:111: NFR-AV-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:114: NFR-AV-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:115: NFR-AV-12 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:290: NFR-EN-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:300: NFR-EN-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:306: NFR-LG-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:313: NFR-LG-07 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:205: NFR-MG-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:206: NFR-MG-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:152: NFR-OM-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:153: NFR-OM-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:147: NFR-OM-08 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:148: NFR-OM-09 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:149: NFR-OM-10 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:156: NFR-OM-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:157: NFR-OM-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:159: NFR-OM-16 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:125: NFR-PF-03 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:128: NFR-PF-04 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:129: NFR-PF-05 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:136: NFR-PF-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:131: NFR-PF-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:133: NFR-PF-13 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:134: NFR-PF-14 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:135: NFR-PF-15 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:247: NFR-SC-11 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:232: NFR-SC-20 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:243: NFR-SC-26 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:246: NFR-SC-29 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:273: NFR-US-01 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:275: NFR-US-02 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）",
+    "[C10] docs/requirements/non_functional_requirements.md:274: NFR-US-06 を確かめるテストがありません。（差し戻し先: INTEGRATION_TEST）"
+  ],
+  "warnings": [],
+  "issues": [
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate requires ARCHITECTURE PASS",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate: expected object array",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Design Gate snapshot coverage differs",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Gate assurance: expected object array",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Gate requires three independent Assurance results",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "Implementation handoff differs from frozen Architecture/ADDR inputs",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ADDR_HANDOFF_INVALID",
+      "location": "reports/addr/implementation-handoff.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\addr-request.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\addr-request.json'",
+      "route": "ADDR"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\architecture-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\architecture-gate.json'",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate is not PASS",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\architecture\\design-gate.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\architecture\\\\design-gate.json'",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Design Gate requires ARCHITECTURE PASS",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Design Gate: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Design Gate snapshot coverage differs",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Gate assurance: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Gate requires three independent Assurance results",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "C:\\Users\\shuns\\Desktop\\project\\ai-sdlc-copilot\\reports\\addr\\implementation-handoff.json: [Errno 2] No such file or directory: 'C:\\\\Users\\\\shuns\\\\Desktop\\\\project\\\\ai-sdlc-copilot\\\\reports\\\\addr\\\\implementation-handoff.json'",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Implementation handoff differs from frozen Architecture/ADDR inputs",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Implementation release requires an independent ADDR Gate",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate snapshot coverage differs",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Gate assurance: expected object array",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C01",
+      "level": "FAIL",
+      "classification": "ARCHITECTURE_GATE_INVALID",
+      "location": "reports/architecture/architecture-gate.json",
+      "message": "Architecture Gate requires three Assurance results",
+      "route": "ARCHITECTURE"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:29",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-01: 対象外機能「実決済サービスとの連携」。理由: 決済代行事業者が未選定。代替手段・担当: 模擬決済（決済サービス（模擬））で代替する。後続フェーズで検討する'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:30",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-02: 対象外機能「商品・商品分類・仕入先・在庫単位・クーポンの画面／Web API による登録・更新・削除（マスタ保守）」。理由: 初期商品数が限られ、改廃頻度が低い。代替手段・担当: 運用者が初期データ一括投入（FR-060）で登録・再投入する'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:31",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-03: 対象外機能「入荷・在庫補充の登録」。理由: 現行の在庫管理表で運用を継続する。代替手段・担当: 稼働開始時の在庫数量は初期データ一括投入（FR-060）で登録する。稼働後の補充分の反映方法は FOQ-01 で決定する（本リリースは登録済みの在庫数量を補充する機能を持たない）'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:32",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-04: 対象外機能「返品・返金・部分出荷・分割配送」。理由: 件数が少ない。代替手段・担当: 支払済注文のキャンセル時の返金は、EC運営担当が本システム外で手作業で対応する'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:33",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-05: 対象外機能「複数クーポンの併用、ポイント、ギフト券、自動適用の割引キャンペーン」。理由: 割引は単一クーポンに限定する。代替手段・担当: 実施しない'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:34",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-06: 対象外機能「多通貨・多言語・海外配送・多国税制」。理由: 国内向け販売のみ。代替手段・担当: 実施しない（日本語・日本円・国内のみ）'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:35",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-07: 対象外機能「配送業者との連携、住所検証、配送日時指定、送料の地域別設定」。理由: 出荷は運営側の手作業で行う。代替手段・担当: 管理者が出荷登録（FR-043）・配達完了登録（FR-044）を行う'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:36",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-08: 対象外機能「メールその他の手段による利用者への通知（注文確認メールを含む）」。理由: 初期リリースでは画面・Web API での状態確認で代替する。代替手段・担当: 実施しない'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:37",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-09: 対象外機能「会員情報の変更、パスワード再設定、退会」。理由: 初期リリースの範囲を限定する。代替手段・担当: EC運営担当が問い合わせを受けて個別に対応する（本システム外）'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:38",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-10: 対象外機能「未ログイン状態でのカート利用（ゲスト購入）」。理由: 会員向けサービスとして開始する。代替手段・担当: カート・注文はログインを必須とする'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:39",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-11: 対象外機能「認証失敗時のアカウントロック、ログイン試行回数の制限」。理由: 初期リリースの範囲を限定する。代替手段・担当: 実施しない（後続フェーズで検討する）'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:40",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-12: 対象外機能「未払い注文の自動キャンセル（期限切れ処理）」。理由: 初期リリースの範囲を限定する。代替手段・担当: 購入者（FR-034）または管理者（FR-045）がキャンセルする'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:41",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-13: 対象外機能「商品画像、商品レビュー、お気に入り、おすすめ表示」。理由: 初期リリースの範囲を限定する。代替手段・担当: 実施しない'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:42",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-14: 対象外機能「スマートフォン専用画面」。理由: 初期リリースはPCブラウザを対象とする。代替手段・担当: 後続フェーズで検討する'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:43",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-15: 対象外機能「帳票（PDF・CSVを含むファイル出力）」。理由: 一覧画面での確認で足りる。代替手段・担当: 実施しない'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_INVALID",
+      "location": "docs/requirements/expected-fr.txt:44",
+      "message": "実装対象FRは1行にFR-nnnを1件だけ記載します: 'EXCLUDE FR-OUT-16: 対象外機能「「特定商取引法に基づく表記」を含む静的ページ」。理由: サイト運営側の静的コンテンツとして別途用意する。代替手段・担当: 本システムの対象外'",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-01 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-02 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-03 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-04 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-05 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-06 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-07 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-08 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-09 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-10 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-11 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-12 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-13 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-14 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-15 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C12",
+      "level": "FAIL",
+      "classification": "EXPECTED_FR_SCOPE_UNDECLARED",
+      "location": "docs/requirements/expected-fr.txt",
+      "message": "正本の FR-OUT-16 が実装対象／対象外のどちらにもありません。",
+      "route": "REQUIREMENTS"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:70",
+      "message": "FR-OUT-01 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:71",
+      "message": "FR-OUT-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:72",
+      "message": "FR-OUT-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:73",
+      "message": "FR-OUT-04 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:74",
+      "message": "FR-OUT-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:75",
+      "message": "FR-OUT-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:76",
+      "message": "FR-OUT-07 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:77",
+      "message": "FR-OUT-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:78",
+      "message": "FR-OUT-09 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:79",
+      "message": "FR-OUT-10 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:80",
+      "message": "FR-OUT-11 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:81",
+      "message": "FR-OUT-12 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:82",
+      "message": "FR-OUT-13 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:83",
+      "message": "FR-OUT-14 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:84",
+      "message": "FR-OUT-15 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/functional_requirements.md:85",
+      "message": "FR-OUT-16 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:107",
+      "message": "NFR-AV-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:106",
+      "message": "NFR-AV-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:113",
+      "message": "NFR-AV-04 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:108",
+      "message": "NFR-AV-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:109",
+      "message": "NFR-AV-07 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:110",
+      "message": "NFR-AV-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:111",
+      "message": "NFR-AV-09 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:114",
+      "message": "NFR-AV-11 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:115",
+      "message": "NFR-AV-12 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:290",
+      "message": "NFR-EN-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:300",
+      "message": "NFR-EN-13 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:306",
+      "message": "NFR-LG-01 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:313",
+      "message": "NFR-LG-07 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:205",
+      "message": "NFR-MG-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:206",
+      "message": "NFR-MG-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:152",
+      "message": "NFR-OM-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:153",
+      "message": "NFR-OM-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:147",
+      "message": "NFR-OM-08 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:148",
+      "message": "NFR-OM-09 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:149",
+      "message": "NFR-OM-10 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:156",
+      "message": "NFR-OM-14 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:157",
+      "message": "NFR-OM-15 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:159",
+      "message": "NFR-OM-16 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:125",
+      "message": "NFR-PF-03 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:128",
+      "message": "NFR-PF-04 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:129",
+      "message": "NFR-PF-05 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:136",
+      "message": "NFR-PF-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:131",
+      "message": "NFR-PF-11 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:133",
+      "message": "NFR-PF-13 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:134",
+      "message": "NFR-PF-14 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:135",
+      "message": "NFR-PF-15 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:247",
+      "message": "NFR-SC-11 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:232",
+      "message": "NFR-SC-20 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:243",
+      "message": "NFR-SC-26 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:246",
+      "message": "NFR-SC-29 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:273",
+      "message": "NFR-US-01 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:275",
+      "message": "NFR-US-02 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    },
+    {
+      "check": "C10",
+      "level": "FAIL",
+      "classification": "TEST_TRACEABILITY_MISSING",
+      "location": "docs/requirements/non_functional_requirements.md:274",
+      "message": "NFR-US-06 を確かめるテストがありません。",
+      "route": "INTEGRATION_TEST"
+    }
+  ]
+}

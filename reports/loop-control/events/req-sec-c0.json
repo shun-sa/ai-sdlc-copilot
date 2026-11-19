@@ -1,0 +1,23 @@
+{
+  "signature": {
+    "origin_phase": "REQUIREMENTS",
+    "classification": "REQUIREMENT_ERROR",
+    "artifact": "docs/requirements",
+    "requirement_reference": "",
+    "test_case": "",
+    "stable_error_type": "security_requirement_gaps_SEC-REQ-001-005"
+  },
+  "action": "FAILURE",
+  "cycle": 0,
+  "run_id": "req-sec-run-0",
+  "validation_result": "reports/security-review/validation-result.json",
+  "repair": "",
+  "impact": "SEC-REQ-001..004 Blocking: 本番模擬決済、総当たり対策欠如、管理者初期PW平文、全削除投入の本番矛盾",
+  "recommended_route": "REQUIREMENTS",
+  "errors": [
+    "Applicable criterion is not PASS: authentication-authorization",
+    "Applicable criterion is not PASS: data-protection",
+    "Applicable criterion is not PASS: error-logging",
+    "Unresolved blocking Security Review Issue(s): 4"
+  ]
+}

@@ -1,0 +1,23 @@
+{# trace: ADDR-012, ADDR-001 #}
+{% extends "common/base.html" %}
+{% load mc_format %}
+{% block content %}
+<h1>注文履歴一覧</h1>
+{% for e in errors.page %}<p class="field-error">ページ：{{ e }}</p>{% endfor %}
+{% if result %}
+  {% if result.items %}
+    <p>全{{ result.total_count }}件（{{ first_index }}〜{{ last_index }}件目を表示）</p>
+    <table>
+      <thead><tr><th scope="col">注文番号</th><th scope="col">注文日時</th><th scope="col">状態</th><th scope="col">合計（税込）</th><th scope="col">合計点数</th></tr></thead>
+      <tbody>
+      {% for o in result.items %}
+        <tr><td><a href="/orders/{{ o.order_id }}/">{{ o.order_number }}</a></td><td>{{ o.ordered_at|jst }}</td><td>{{ o.status_label }}</td><td>{{ o.total_amount|yen }}</td><td>{{ o.total_quantity }}点</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% include "common/pagination.html" %}
+  {% else %}
+    <p>注文履歴はありません。</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

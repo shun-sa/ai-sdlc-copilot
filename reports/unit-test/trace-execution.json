@@ -1,0 +1,11 @@
+{
+  "revision": "WORKTREE:b363b689cd3724ac665b87a5d8cbb7e286826c8f56d52cf98c923001e23b1b5b",
+  "git_commit": "958677fe4a672dc82902289cfd4b0da5cfac39e5",
+  "input_fingerprint": "b363b689cd3724ac665b87a5d8cbb7e286826c8f56d52cf98c923001e23b1b5b",
+  "junit_files": [
+    {
+      "path": "reports/unit-test/junit.xml",
+      "sha256": "c68368629d2af1633793ff108571dfffea3e6a991b6d8920083dffdb0c91a910"
+    }
+  ]
+}

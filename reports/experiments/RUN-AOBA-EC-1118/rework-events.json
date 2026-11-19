@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "events": [
+    {
+      "event_id": "dispatch-back-req-1",
+      "timestamp": "2026-11-19T08:57:36.988017+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "IMPLEMENTATION",
+      "to_phase": "REQUIREMENTS",
+      "classification": "REQUIREMENT_ERROR",
+      "reason": "expected-fr.txtにFR-OUT-01〜16の分類なし(Trace C12)",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-addr-1",
+      "timestamp": "2026-11-19T10:11:27.572152+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "IMPLEMENTATION",
+      "to_phase": "ADDR",
+      "classification": "ADR_REQUIRED",
+      "reason": "パスワード末尾NULがPBKDF2鍵パディングで一致(FR-002一致要件と矛盾)",
+      "trigger_agent": "Implementation",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-impl-1",
+      "timestamp": "2026-11-19T11:58:59.493383+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "UNIT_TEST",
+      "to_phase": "IMPLEMENTATION",
+      "classification": "IMPLEMENTATION_ERROR",
+      "reason": "UT-DEF-003 カート画面数量入力エラーの理由未表示(FR-022)",
+      "trigger_agent": "UnitTest",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-ut-1",
+      "timestamp": "2026-11-19T15:42:23.539010+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "INTEGRATION_TEST",
+      "to_phase": "UNIT_TEST",
+      "classification": "TEST_ERROR",
+      "reason": "単体テスト実行版記録が現行入力と不一致(INTEGRATION_TEST Trace監査)。正式再実行と再記録",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-ut-2",
+      "timestamp": "2026-11-19T16:35:33.762187+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "INTEGRATION_TEST",
+      "to_phase": "UNIT_TEST",
+      "classification": "TEST_ERROR",
+      "reason": "結合テスト変更で単体テスト実行版記録が入力と不一致。正式再実行と再記録",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-it-1",
+      "timestamp": "2026-11-19T17:13:41.432888+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "FINAL_ASSURANCE",
+      "to_phase": "INTEGRATION_TEST",
+      "classification": "TEST_ERROR",
+      "reason": "FULL Trace C10: NFR 60件のテスト到達なし",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-it-2",
+      "timestamp": "2026-11-19T17:52:29.575527+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "FINAL_ASSURANCE",
+      "to_phase": "INTEGRATION_TEST",
+      "classification": "TEST_ERROR",
+      "reason": "FULL Trace C10: NFR 38件のテスト到達なし(cycle2)",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-it-3",
+      "timestamp": "2026-11-19T19:38:01.720716+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "FINAL_ASSURANCE",
+      "to_phase": "INTEGRATION_TEST",
+      "classification": "TEST_ERROR",
+      "reason": "FULL Trace C10: NFR 13件のテスト到達なし(cycle3最終確認)",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    },
+    {
+      "event_id": "dispatch-back-ut-3",
+      "timestamp": "2026-11-19T19:41:38.627778+00:00",
+      "event_type": "PHASE_ROUTE",
+      "from_phase": "INTEGRATION_TEST",
+      "to_phase": "UNIT_TEST",
+      "classification": "TEST_ERROR",
+      "reason": "結合テスト追加で単体テスト実行版記録が入力と不一致(FULL確認表)。正式再実行と再記録",
+      "trigger_agent": "TraceabilityAuditor",
+      "minor_refactoring": false
+    }
+  ]
+}
